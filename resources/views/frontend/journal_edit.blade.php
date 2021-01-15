@@ -20,6 +20,26 @@
     </style>
   <!-- END Fonts Style : Kanit -->
 
+  <style>
+       button {
+        display: inline-block;
+        position: relative;
+        color: #1D9AF2;
+        background-color: #292D3E;
+        border: 1px solid #1D9AF2;
+        border-radius: 4px;
+        padding: 0 15px;
+        cursor: pointer;
+        height: 38px;
+        font-size: 14px;
+
+      }
+      button:active {
+        box-shadow: 0 3px 0 #1D9AF2;
+        top: 3px;
+      }
+  </style>
+
 @stop('css-custom')
 
 
@@ -46,9 +66,9 @@
     <!-- START EDIT RESEARCH PROJECT -------------------------------------------------->
       <div class="row">
         <div class="col-md-12">
-          <div class="card card-warning">
+          <div class="card card-success shadow">
             <div class="card-header">
-              <h3 class="card-title"> แก้ไขข้อมูลโครงการวิจัย </h3>
+              <h3 class="card-title"><b> แก้ไขข้อมูลโครงการวิจัย </b></h3>
             </div>
 
             <!-- <form role="form"> -->
@@ -60,118 +80,108 @@
                   <div class="col-md-6">
                     <div class="form-group">
                       <label for="exampleInput1"> ชื่อบทความ (ENG) </label>
-                      <input type="text" class="form-control" name="article_name_en" value="{{ $data->pro_name_th }}">
+                      <input type="text" class="form-control" name="article_name_en" value="{{ $data->article_name_en }}">
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="form-group">
                       <label for="exampleInput1"> ชื่อบทความ (TH) </label>
-                      <input type="text" class="form-control" name="article_name_th" value="{{ $data->pro_name_th }}">
+                      <input type="text" class="form-control" name="article_name_th" value="{{ $data->article_name_th }}">
                     </div>
                   </div>
                 </div>
-
-
 
 
                 <div class="row">
                   <div class="col-md-6">
                     <div class="form-group">
-                      <label for="exampleInput1"> ชื่อโครงการ (ภาษาไทย) </label>
-                      <input type="text" class="form-control" name="pro_name_th" value="{{ $data->pro_name_th }}">
+                      <label for="exampleInput1"> ชื่อวารสาร (ENG) </label>
+                      <input type="text" class="form-control" name="journal_name_en" value="{{ $data->journal_name_en }}">
                     </div>
                   </div>
 
                   <div class="col-md-6">
                     <div class="form-group">
-                      <label for="exampleInput1"> ชื่อโครงการ (ภาษาอังกฤษ) </label>
-                      <input type="text" class="form-control" name="pro_name_en" value="{{ $data->pro_name_en }}">
+                      <label for="exampleInput1"> ชื่อวารสาร (TH) </label>
+                      <input type="text" class="form-control" name="journal_name_th" value="{{ $data->journal_name_th }}">
                     </div>
                   </div>
                 </div>
 
                 <div class="row">
-                  <div class="col-md-6">
+                  <div class="col-md-3">
                     <div class="form-group">
-                      <label for="exampleSelect1"> ตำแหน่งในโครงการวิจัย </label>
-                      <!-- <select class="form-control" name="pro_position">
-                        <option value="" disabled="true" selected="true" >กรุณาเลือก</option>
-                        <option> ผู้วิจัยหลัก </option>
-                        <option> ผู้วิจัยหลัก-ร่วม </option>
-                        <option> ผู้วิจัยร่วม </option>
-                        <option> ผู้ช่วยวิจัย </option>
-                        <option> ที่ปรึกษาโครงการ </option>
-                      </select> -->
-
-                      <select class="form-control" name="pro_position">
-                        <option value="{{ '1' }}"> {{ 'ผู้วิจัยหลัก' }} </option>
-                        <option value="{{ '2' }}"> {{ 'ผู้วิจัยหลัก-ร่วม' }} </option>
-                        <option value="{{ '3' }}"> {{ 'ผู้วิจัยร่วม' }} </option>
-                        <option value="{{ '4' }}"> {{ 'ผู้ช่วยวิจัย' }} </option>
-                        <option value="{{ '5' }}"> {{ 'ที่ปรึกษาโครงการ' }} </option>
-                      </select>
+                      <label for="exampleDatepicker1"> ปีที่พิมพ์ (year) </label>
+                      <input type="text" class="form-control" name="publish_years" value="{{ $data->publish_years }}">
                     </div>
                   </div>
-
-                  <div class="col-md-6">
+                  <div class="col-md-3">
                     <div class="form-group">
-                      <label for="exampleSelect1"> จำนวนผู้ร่วมวิจัย </label>
-                      <select class="form-control" name="pro_co_researcher" required>
-                        <option value="" disabled="true" selected="true" >กรุณาเลือก</option>
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
-                        <option>6</option>
-                        <option>7</option>
-                        <option>8</option>
-                        <option>9</option>
-                      </select>
+                      <label for="exampleDatepicker1"> ฉบับที่ (issue) </label>
+                      <input type="text" class="form-control" name="publish_no" value="{{ $data->publish_no }}">
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label for="exampleDatepicker1"> เล่มที่ (volume) </label>
+                      <input type="text" class="form-control" name="publish_volume" value="{{ $data->publish_volume }}">
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label for="exampleDatepicker1"> หน้า (no) </label>
+                      <input type="text" class="form-control" name="publish_page" value="{{ $data->publish_page }}">
                     </div>
                   </div>
                 </div>
+
 
                 <div class="row">
-                  <div class="col-md-4">
+                  <div class="col-md-3">
                     <div class="form-group">
-                      <label for="exampleDatepicker1"> ปี พ.ศ. ที่เริ่มโครงการ </label>
-                      <input type="text" class="form-control" name="pro_start_date" value="{{ $data->pro_start_date }}">
-
-                    </div>
-                  </div>
-                  <div class="col-md-4">
-                    <div class="form-group">
-                      <label for="exampleDatepicker1"> ปี พ.ศ. ที่เสร็จสิ้นครงการ </label>
-                      <input type="text" class="form-control" name="pro_end_date" value="{{ $data->pro_end_date }}">
+                      <label for="exampleInput1"> เลข DOI </label>
+                      <input type="text" class="form-control" name="doi_number" value="{{ $data->doi_number }}">
                     </div>
                   </div>
 
-                  <div class="col-md-4">
+                  <div class="col-md-3">
                     <div class="form-group">
-                      <label for="exampleSelect1"> โครงการได้ตีพิมพ์ </label>
-                      <select class="form-control" name="publish_status" required>
-                        <option value="" disabled="true" selected="true" > กรุณาเลือก </option>
-                        <option> ใช่ </option>
-                        <option> ไม่ใช่ </option>
-                      </select>
+                      <label for="exampleSelect1"> การมีส่วนร่วมในบทความ </label>
+                      <input type="text" class="form-control" name="contribute" value="{{ $data->contribute }}">
+                    </div>
+                  </div>
+
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label for="exampleSelect1"> ท่านเป็นผู้รับผิดชอบบทความ </label>
+                      <input type="text" class="form-control" name="corres" value="{{ $data->corres }}">
+                    </div>
+                  </div>
+
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label for="exampleSelect1"> บทความที่เป็นผลจากโครงการวิจัย </label>
+                      <input type="text" class="form-control" name="result_pro_id" value="{{ $data->pro_name_en }}">
                     </div>
                   </div>
                 </div>
+
               </div>
+            </div>
 
-              <div class="card-footer">
-                <a class="btn btn-danger float-left" href="{{ route('page.research') }}">
+
+            <div class="card-footer">
+                <button type="button" class="btn bg-gradient-red" onclick="window.history.back();">
                   <i class="fas fa-arrow-alt-circle-left"></i>
-                    ย้อนกลับ
-                </a>
+                  ย้อนกลับ
+                </button>
 
-                <button type="submit" class="btn btn-success float-right" value="บันทึกข้อมูล">
-                  <i class="fas fa-save"></i> &nbsp;บันทึกข้อมูล </button>
-              </div>
+              <button type="submit" class="btn btn-success float-right" value="บันทึกข้อมูล">
+                <i class="fas fa-save"></i> &nbsp;บันทึกข้อมูล </button>
+            </div>
 
-            </form>
-            <br>
+          </form>
+          <br>
 
             <!-- Alert Notification -->
               @if(session()->has('success'))

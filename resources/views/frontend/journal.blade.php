@@ -24,6 +24,26 @@
     </style>
   <!-- END Fonts Style : Kanit -->
 
+  <style>
+       button {
+        display: inline-block;
+        position: relative;
+        color: #1D9AF2;
+        background-color: #292D3E;
+        border: 1px solid #1D9AF2;
+        border-radius: 4px;
+        padding: 0 15px;
+        cursor: pointer;
+        height: 38px;
+        font-size: 14px;
+
+      }
+      button:active {
+        box-shadow: 0 3px 0 #1D9AF2;
+        top: 3px;
+      }
+  </style>
+
 @stop('css-custom')
 
 
@@ -50,10 +70,10 @@
     <!-- START SUMMARY Total Box -->
       <div class="row">
         <div class="col-md-6 col-6">
-          <div class="small-box bg-warning">
+          <div class="small-box bg-info">
             <div class="inner">
               <h3>150</h3>
-              <p> บทความตีพิมพ์ทั้งหมด </p>
+              <p> บทความผู้นิพนธ์หลัก </p>
             </div>
             <div class="icon">
               <i class="ion ion-pie-graph"></i>
@@ -63,10 +83,10 @@
         </div>
 
         <div class="col-md-6 col-6">
-          <div class="small-box bg-warning">
+          <div class="small-box bg-danger">
             <div class="inner">
               <h3>53<sup style="font-size: 20px">%</sup></h3>
-              <p> บทความผู้นิพนธ์หลักทั้งหมด </p>
+              <p> บทความตีพิมพ์ทั้งหมด </p>
             </div>
             <div class="icon">
               <i class="ion ion-person"></i>
@@ -82,12 +102,14 @@
 
 
     <!-- START From Input JOURNAL PROJECT -------------------------------------------------->
-      <div class="row">
-        <div class="col-md-12">
-          <div class="card card-info">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card card-success shadow">
             <div class="card-header">
               <h5><b> เพิ่มข้อมูลการตีพิมพ์วารสาร </b></h5>
             </div>
+          </div>
 
             <!-- <form role="form"> -->
             <form method="POST" action="{{ route('journal.insert') }}">
@@ -141,8 +163,8 @@
                   </div>
                   <div class="col-md-3">
                     <div class="form-group">
-                      <label for="exampleInput1"> เล่มที่ (volum)  </label>
-                      <input type="text" class="form-control" name="publish_volume" maxlength="5"
+                      <label for="exampleInput1"> เล่มที่ (volume)  </label>
+                      <input type="text" class="form-control" name="publish_volume" maxlength="4"
                              onKeyUp="if(isNaN(this.value)){ alert('กรุณากรอกตัวเลขเท่านั้น !'); this.value='';}" required>
                     </div>
                   </div>
@@ -159,14 +181,14 @@
                   <div class="col-md-3">
                     <div class="form-group">
                       <label for="exampleInput1"> เลข DOI </label>
-                      <input type="text" class="form-control" name="doi_number" required>
+                      <input type="text" class="form-control" name="doi_number" maxlength="5" required>
                     </div>
                   </div>
                   <div class="col-md-3">
                     <div class="form-group">
                       <label for="exampleSelect1"> การมีส่วนร่วมในบทความ </label>
                       <select class="form-control" name="contribute" required>
-                        <option value="" disabled="true" selected="true"> กรุณาเลือก </option>
+                        <option value="" disabled="true" selected="true"> -- กรุณาเลือก -- </option>
                         <option> ผู้นิพนธ์หลัก (first-author) </option>
                         <option> ผู้นิพนธ์ร่วม (co-author) </option>
                       </select>
@@ -176,7 +198,7 @@
                     <div class="form-group">
                       <label for="exampleSelect1"> ท่านเป็นผู้รับผิดชอบบทความ </label>
                       <select class="form-control" name="corres" required>
-                        <option value="" disabled="true" selected="true"> กรุณาเลือก </option>
+                        <option value="" disabled="true" selected="true"> -- กรุณาเลือก -- </option>
                         <option> ใช่ </option>
                         <option> ไม่ใช่ </option>
                       </select>
@@ -188,7 +210,7 @@
 
                       <!-- SELECT ดึงข้อมูลชื่อโครงการมาจาก -> db_published_journal Table -->
                       <select class="form-control" name="result_pro_id">
-                          <option value="" disabled="true" selected="true"> กรุณาเลือก </option>
+                          <option value="" disabled="true" selected="true"> -- กรุณาเลือก -- </option>
                         @foreach ($journal_5 as $value)
                           <option value = "{{ $value->id }}"> {{ $value->pro_name_en }} </option>
                         @endforeach
@@ -252,7 +274,7 @@
     <!-- START TABLE -> JOURNAL PROJECT -------------------------------------------------->
       <section class="content">
         <div class="card">
-          <div class="card card-secondary">
+          <div class="card card-secondary shadow">
             <div class="card-header">
               <h3 class="card-title"> ข้อมูลบทความที่ตีพิมพ์แล้ว </h3>
             </div>
@@ -283,22 +305,27 @@
                     <td> {{ $value->corres }} </td>
                     <td> {{ $value->corres }} </td>
 
-                    <td class="project-actions text-right" href="#">
-                        <a class="btn btn-warning btn-sm" title="EDIT" href=" {{ route('journal.edit', $value->id) }} ">
-                          <i class="fas fa-edit"></i>
-                            EDIT
-                        </a>
 
-                        <a class="btn btn-primary btn-sm" title="DOWNLOAD" href="#">
+                    <td class="td-actions text-right text-nowrap" href="#">
+                      <a href="#">
+                        <button type="button" class="btn btn-danger btn-md" data-toggle="tooltip" title="Download">
                           <i class="fas fa-arrow-alt-circle-down"></i>
-                            DOWNLOAD
-                        </a>
+                        </button>
+                      </a>
 
-                        <a class="btn btn-danger btn-sm" title="VERIFIED" href="#">
-                          <i class="fas fa-paperclip"></i>
-                            VERIFIED
-                        </a>
+                      <a href=" {{ route('journal.edit', $value->id) }} ">
+                        <button type="button" class="btn btn-warning btn-md" data-toggle="tooltip" title="Edit">
+                          <i class="fas fa-edit"></i>
+                        </button>
+                      </a>
+
+                      <a href="#">
+                        <button type="button" class="btn btn-info btn-md" data-toggle="tooltip" title="Verfied">
+                          <i class="fas fa-user-check"></i>
+                        </button>
+                      </a>
                     </td>
+
 
                   </tr>
                   @endforeach
@@ -310,6 +337,7 @@
             </div>
           </div>
         </div>
+
       </section>
     <!-- END TABLE -> JOURNAL PROJECT -------------------------------------------------->
 

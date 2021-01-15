@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\journal;
 use App\research;
-// use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use File;
 
@@ -66,17 +66,23 @@ class JournalController extends Controller
 
   //  -- SELECT into DataTable --
   public function table_journal(){
-    // ถ้าเป็นภาษา SQL คือ select pro_code,pro_name from pop_prov orber by id,DESC limit 10
     $query  = research::select('id','pro_name_en')->get();
-    $query2 = journal::select('id','article_name_th','journal_name_th','publish_years','corres')
-                     ->ORDERBY('id','DESC')->get();
-                     // ->ORDERBY('id','DESC')->take(10)->get();
+
+    $query2 = journal::select(
+                              'id',
+                              'article_name_th',
+                              'journal_name_th',
+                              'publish_years',
+                              'corres'
+                              )
+                        ->ORDERBY('id','DESC')->get();
 
     //dd($query2);
     return view('frontend.journal',
-      ['journal_5' => $query,
-       'journals' => $query2,]
-    );
+      [
+        'journal_5' => $query,
+        'journals'  => $query2
+     ]);
   }
   //  -- END SELECT into DataTable --
 
@@ -84,11 +90,41 @@ class JournalController extends Controller
 
   //  -- EDIT --
   public function edit_journal_form(Request $request){
-    $edit = journal::where('id' , $request->id)->first();
+    //แสดงข้อมูล Query
+    $edit = DB::table('db_published_journal')
+              ->join('db_research_project', 'db_research_project.id', '=', 'db_published_journal.pro_id')
+              ->select(
+                        'db_published_journal.pro_id',
+                        'db_published_journal.article_name_th',
+                        'db_published_journal.article_name_en',
+                        'db_published_journal.journal_name_th',
+                        'db_published_journal.journal_name_en',
+                        'db_published_journal.publish_years',
+                        'db_published_journal.publish_no',
+                        'db_published_journal.publish_volume',
+                        'db_published_journal.publish_page',
+                        'db_published_journal.doi_number',
+                        'db_published_journal.contribute',
+                        'db_published_journal.corres',
+                        'db_published_journal.result_pro_id',
+                        'db_research_project.id',
+                        'db_research_project.pro_name_en',
+                      )
+              ->where('db_published_journal.id', $request->id)
+              ->first();
 
-     return view('frontend.research_edit',
-       ['data' => $edit]  /*นำตัวแปร data ไปใส่ใน research_edit.blade.php  คือ  value = "{{ $data->id }}"*/
-    );
+    $edit2 = [1=> 'ผู้วิจัยหลัก',
+              2=> 'ผู้วิจัยหลัก-ร่วม',
+              3=> 'ผู้วิจัยร่วม',
+              4=> 'ผู้ช่วยวิจัย',
+              5=> 'ที่ปรึกษาโครงการ'
+             ];
+
+     return view('frontend.journal_edit',
+     [
+        'data'  => $edit,
+        'datax' => $edit2,
+     ]);
   }
   //  -- END EDIT --
 
@@ -97,14 +133,20 @@ class JournalController extends Controller
   //  -- SAVE --
   public function save_journal_form(Request $request){
     // dd($request);
-    $update = research::where('id',$request->id)
-                      ->update(['pro_name_th'     => $request->pro_name_th,
-                                'pro_name_en'     => $request->pro_name_en,
-                                'pro_position'    => $request->pro_position,
-                                'pro_co_researcher' => $request->pro_co_researcher,
-                                'pro_start_date'  => $request->pro_start_date,
-                                'pro_end_date'    => $request->pro_end_date,
-                                'publish_status'  => $request->publish_status
+    $update = journal::where('id',$request->id)
+                      ->update([
+                                "article_name_th"   => $request->article_name_th,
+                                "article_name_en"   => $request->article_name_en,
+                                "journal_name_th"   => $request->journal_name_th,
+                                "journal_name_en"   => $request->journal_name_en,
+                                "publish_years"     => $request->publish_years,
+                                "publish_no"        => $request->publish_no,
+                                "publish_volume"    => $request->publish_volume,
+                                "publish_page"      => $request->publish_page,
+                                "doi_number"        => $request->doi_number,
+                                "contribute"        => $request->contribute,
+                                "corres"            => $request->corres,
+                                "result_pro_id"     => $request->result_pro_id,
                               ]);
 
     if($update){

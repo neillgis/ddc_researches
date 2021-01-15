@@ -24,6 +24,26 @@
     </style>
   <!-- END Fonts Style : Kanit -->
 
+  <style>
+       button {
+        display: inline-block;
+        position: relative;
+        color: #1D9AF2;
+        background-color: #292D3E;
+        border: 1px solid #1D9AF2;
+        border-radius: 4px;
+        padding: 0 15px;
+        cursor: pointer;
+        height: 38px;
+        font-size: 14px;
+
+      }
+      button:active {
+        box-shadow: 0 3px 0 #1D9AF2;
+        top: 3px;
+      }
+  </style>
+
 @stop('css-custom')
 
 
@@ -49,8 +69,8 @@
 
     <!-- START SUMMARY Total Box -->
       <div class="row">
-        <div class="col-md-4 col-4">
-          <div class="small-box bg-info">
+        <div class="col-md-4 col-4 mx-auto">
+          <div class="small-box bg-success">
             <div class="inner">
               <h3>150</h3>
               <p> โครงการวิจัยที่ทำเสร็จทั้งหมด </p>
@@ -63,7 +83,7 @@
         </div>
 
         <div class="col-md-4 col-4">
-          <div class="small-box bg-info">
+          <div class="small-box bg-info mx-auto">
             <div class="inner">
               <h3>53<sup style="font-size: 20px">%</sup></h3>
               <p> โครงการวิจัยที่เป็นผู้วิจัยหลัก </p>
@@ -76,7 +96,7 @@
         </div>
 
         <div class="col-md-4 col-4">
-          <div class="small-box bg-info">
+          <div class="small-box bg-danger mx-auto">
             <div class="inner">
               <h3>44</h3>
               <p> โครงการวิจัยที่ตีพิมพ์ทั้งหมด </p>
@@ -96,9 +116,11 @@
     <!-- START From Input RESEARCH PROJECT -------------------------------------------------->
       <div class="row">
         <div class="col-md-12">
-          <div class="card card-warning">
-            <div class="card-header">
-              <h5><b> เพิ่มข้อมูลโครงการวิจัย </b></h5>
+          <div class="card">
+            <div class="card card-warning shadow">
+              <div class="card-header">
+                <h5><b> เพิ่มข้อมูลโครงการวิจัย </b></h5>
+              </div>
             </div>
 
             <!-- <form role="form"> -->
@@ -153,14 +175,16 @@
                   <div class="col-md-4">
                     <div class="form-group">
                       <label for="exampleDatepicker1"> ปี พ.ศ. ที่เริ่มโครงการ </label>
-                      <input type="text" class="form-control" id="datepicker1" placeholder="กรุณาเลือก วัน/เดือน/ปี" name="pro_start_date" required>
+                      <input type="text" class="form-control" id="datepicker1" placeholder="กรุณาเลือก ปี/เดือน/วัน"
+                             name="pro_start_date" autocomplete="off" required>
                     </div>
                   </div>
 
                   <div class="col-md-4">
                     <div class="form-group">
                       <label for="exampleDatepicker1"> ปี พ.ศ. ที่เสร็จสิ้นครงการ </label>
-                      <input type="text" class="form-control" id="datepicker2" placeholder="กรุณาเลือก วัน/เดือน/ปี" name="pro_end_date" required>
+                      <input type="text" class="form-control" id="datepicker2" placeholder="กรุณาเลือก ปี/เดือน/วัน"
+                             name="pro_end_date" autocomplete="off" required>
                     </div>
                   </div>
 
@@ -201,6 +225,7 @@
 
             </form>
 
+
             <!-- Alert Notification -->
               @if(session()->has('success'))
                 <div class="alert alert-success" id="success-alert">
@@ -224,7 +249,7 @@
           </div>
         </div>
       </div>
-      <br>
+    <br>
     <!-- END From Input RESEARCH PROJECT -------------------------------------------------->
 
 
@@ -233,9 +258,9 @@
     <!-- START TABLE -> RESEARCH PROJECT -------------------------------------------------->
       <section class="content">
         <div class="card">
-          <div class="card card-secondary">
+          <div class="card card-secondary shadow">
             <div class="card-header">
-              <h3 class="card-title"> ข้อมูลโครงการที่เสร็จสิ้นแล้ว </h3>
+              <h3 class="card-title"><b> โครงการวิจัยที่เสร็จสิ้นแล้ว </b></h3>
             </div>
           </div>
 
@@ -264,22 +289,26 @@
                     <td> {{ $publish_status [ $value->publish_status ] }} </td>
                     <td> {{ $publish_status [ $value->publish_status ] }} </td>
 
-                    <td class="project-actions text-right" href="#">
-                        <a class="btn btn-warning btn-sm" title="EDIT" href=" {{ route('research.edit', $value->id) }} ">
-                          <i class="fas fa-edit"></i>
-                            EDIT
-                        </a>
-
-                        <a class="btn btn-primary btn-sm" title="DOWNLOAD" href="#">
+                    <td class="td-actions text-right text-nowrap" href="#">
+                      <a href="#">
+                        <button type="button" class="btn btn-danger btn-md" data-toggle="tooltip" title="Download">
                           <i class="fas fa-arrow-alt-circle-down"></i>
-                            DOWNLOAD
-                        </a>
+                        </button>
+                      </a>
 
-                        <a class="btn btn-danger btn-sm" title="VERIFIED" href="#">
-                          <i class="fas fa-paperclip"></i>
-                            VERIFIED
-                        </a>
+                      <a href=" {{ route('research.edit', $value->id) }} ">
+                        <button type="button" class="btn btn-warning btn-md" data-toggle="tooltip" title="Edit">
+                          <i class="fas fa-edit"></i>
+                        </button>
+                      </a>
+
+                      <a href="#">
+                        <button type="button" class="btn btn-info btn-md" data-toggle="tooltip" title="Verfied">
+                          <i class="fas fa-user-check"></i>
+                        </button>
+                      </a>
                     </td>
+
                   </tr>
                   @endforeach
                 </tbody>

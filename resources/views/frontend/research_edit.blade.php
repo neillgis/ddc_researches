@@ -20,6 +20,26 @@
     </style>
   <!-- END Fonts Style : Kanit -->
 
+  <style>
+       button {
+        display: inline-block;
+        position: relative;
+        color: #1D9AF2;
+        background-color: #292D3E;
+        border: 1px solid #1D9AF2;
+        border-radius: 4px;
+        padding: 0 15px;
+        cursor: pointer;
+        height: 38px;
+        font-size: 14px;
+
+      }
+      button:active {
+        box-shadow: 0 3px 0 #1D9AF2;
+        top: 3px;
+      }
+  </style>
+
 @stop('css-custom')
 
 
@@ -81,7 +101,8 @@
                       <select class="form-control" name="pro_position">
                         @foreach ($data2 as $key => $value)
                           <option value="{{ $key }}"
-                          {{ $data->pro_position == $key ? 'selected' : '' }}> {{ $value }} </option>
+                          {{ $data->pro_position == $key ? 'selected' : '' }}> {{ $value }}
+                          </option>
                         @endforeach
                       </select>
                     </div>
@@ -133,11 +154,12 @@
                 </div>
               </div>
 
+
               <div class="card-footer">
-                <a class="btn btn-danger float-left" href="{{ route('page.research') }}">
-                  <i class="fas fa-arrow-alt-circle-left"></i>
+                  <button type="button" class="btn bg-gradient-red" onclick="window.history.back();">
+                    <i class="fas fa-arrow-alt-circle-left"></i>
                     ย้อนกลับ
-                </a>
+                  </button>
 
                 <button type="submit" class="btn btn-success float-right" value="บันทึกข้อมูล">
                   <i class="fas fa-save"></i>
