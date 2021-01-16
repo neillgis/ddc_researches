@@ -13,6 +13,9 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
 
+<!-- SweetAlert2 -->
+<link rel="stylesheet" href="{{ asset('bower_components/admin-lte/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
+
   <!-- Fonts Style : Kanit -->
     <style>
     body {
@@ -243,7 +246,7 @@
             </form>
 
             <!-- Alert Notification -->
-              @if(session()->has('success'))
+              <!-- @if(session()->has('success'))
                 <div class="alert alert-success" id="success-alert">
                   <strong> {{ session()->get('success') }} </strong>
                   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -259,7 +262,7 @@
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
-              @endif
+              @endif -->
             <!-- END Alert Notification -->
 
           </div>
@@ -349,6 +352,32 @@
 
 @section('js-custom-script')
 
+<!-- SweetAlert2 -->
+<script src="{{ asset('bower_components/admin-lte/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
+
+    @if(session()->has('swl_add'))
+      <script>
+          Swal.fire({
+              icon: 'success',
+              title: 'บันทึกข้อมูลเรียบร้อยแล้ว',
+              showConfirmButton: false,
+              timer: 2800
+          })
+      </script>
+
+    @elseif(session()->has('swl_del'))
+      <script>
+          Swal.fire({
+              icon: 'error',
+              title: 'บันทึกข้อมูลไม่สำเร็จ !!!',
+              showConfirmButton: false,
+              timer: 2800
+          })
+      </script>
+    @endif
+<!-- END SweetAlert2 -->
+
+
 <!-- START ALERT บันทึกข้อมูลสำเร็จ  -->
 <script type="text/javascript">
   $(document).ready(function () {
@@ -356,7 +385,7 @@
       $(".alert").fadeTo(1000, 0).slideUp(1000, function(){
           $(this).remove();
       });
-    }, 3000);
+    }, 2000);
   });
 </script>
 <!-- END ALERT บันทึกข้อมูลสำเร็จ  -->

@@ -181,25 +181,10 @@
             </div>
 
           </form>
-          <br>
-
-            <!-- Alert Notification -->
-              @if(session()->has('success'))
-                <div class="alert alert-success">
-                  {{ session()->get('success') }}
-                </div>
-              @endif
-              @if (Session::has('failure'))
-                <div class="alert alert-danger">
-                   {{ Session::get('failure') }}
-                </div>
-              @endif
-            <!-- END Alert Notification -->
-
-          </div>
         </div>
       </div>
-      <!-- END EDIT RESEARCH PROJECT -------------------------------------------------->
+    </div>
+    <!--- END EDIT  --->
 
     </div>
 </section>

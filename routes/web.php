@@ -39,6 +39,8 @@ Route::post('/research_insert','ResearchController@insert') -> name('research.in
 Route::get('/research_edit/{id}','ResearchController@edit_research_form') -> name('research.edit');
 //  -- SAVE --
 Route::post('/save_research_edit','ResearchController@save_research_form') -> name('research.save');
+//  -- DOWNLOAD --
+Route::get('/download-file/{id}','ResearchController@download_file') -> name('downloadfile');
 
 
 

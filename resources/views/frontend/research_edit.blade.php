@@ -66,9 +66,11 @@
     <!-- START EDIT RESEARCH PROJECT -------------------------------------------------->
       <div class="row">
         <div class="col-md-12">
-          <div class="card card-warning">
-            <div class="card-header">
-              <h5><b> แก้ไขข้อมูลโครงการวิจัย </b></h5>
+          <div class="card">
+            <div class="card card-warning shadow">
+              <div class="card-header">
+                <h5><b> แก้ไขข้อมูลโครงการวิจัย </b></h5>
+              </div>
             </div>
 
             <!-- <form role="form"> -->
@@ -80,6 +82,9 @@
                   <div class="col-md-6">
                     <div class="form-group">
                       <label for="exampleInput1"> ชื่อโครงการ (ENG) </label>
+                      <!-- hidden = id -->
+                      <input type="hidden" class="form-control" name="id" value="{{ $data->id }}">
+
                       <input type="text" class="form-control" name="pro_name_en" value="{{ $data->pro_name_en }}">
                     </div>
                   </div>
@@ -156,10 +161,10 @@
 
 
               <div class="card-footer">
-                  <button type="button" class="btn bg-gradient-red" onclick="window.history.back();">
-                    <i class="fas fa-arrow-alt-circle-left"></i>
+                <a class="btn btn-danger float-left" href="{{ route('page.research') }}">
+                  <i class="fas fa-arrow-alt-circle-left"></i>
                     ย้อนกลับ
-                  </button>
+                </a>
 
                 <button type="submit" class="btn btn-success float-right" value="บันทึกข้อมูล">
                   <i class="fas fa-save"></i>
@@ -169,25 +174,6 @@
 
             </form>
 
-            <!-- Alert Notification -->
-              @if(session()->has('success'))
-                <div class="alert alert-success" id="success-alert">
-                  <strong> {{ session()->get('success') }} </strong>
-                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-              @endif
-
-              @if (Session::has('failure'))
-                <div class="alert alert-danger">
-                  <strong> {{ Session::get('failure') }} </strong>
-                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-              @endif
-            <!-- END Alert Notification -->
 
           </div>
         </div>
@@ -209,7 +195,7 @@
       $(".alert").fadeTo(1000, 0).slideUp(1000, function(){
           $(this).remove();
       });
-    }, 3000);
+    }, 2000);
   });
 </script>
 <!-- END ALERT บันทึกข้อมูลสำเร็จ  -->

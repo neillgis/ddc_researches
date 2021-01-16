@@ -1,0 +1,9 @@
+.picker__select--month {
+	height: 100%;
+}
+.picker__select--year {
+	height: 100%;
+}
+.tox-statusbar__branding {
+	display:none;
+}

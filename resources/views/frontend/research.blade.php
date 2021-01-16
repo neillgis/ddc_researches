@@ -1,9 +1,10 @@
 @extends('layout.main')
 
+<?php
+  use App\CmsHelper as CmsHelper;
+?>
 
 @section('css-custom')
-<!-- <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="http://www.datatables.net/rss.xml"> -->
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css">
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.6.4/css/buttons.dataTables.min.css">
 <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
@@ -12,6 +13,10 @@
 <!-- DatePicker Style -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+
+<!-- SweetAlert2 -->
+<link rel="stylesheet" href="{{ asset('bower_components/admin-lte/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
+
 
   <!-- Fonts Style : Kanit -->
     <style>
@@ -226,25 +231,6 @@
             </form>
 
 
-            <!-- Alert Notification -->
-              @if(session()->has('success'))
-                <div class="alert alert-success" id="success-alert">
-                  <strong> {{ session()->get('success') }} </strong>
-                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-              @endif
-
-              @if (Session::has('failure'))
-                <div class="alert alert-danger">
-                  <strong> {{ Session::get('failure') }} </strong>
-                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-              @endif
-            <!-- END Alert Notification -->
 
           </div>
         </div>
@@ -284,13 +270,19 @@
                   <tr>
                     <td> {{ $value->id }} </td>
                     <td> {{ $value->pro_name_en }} </td>
-                    <td> {{ $value->pro_start_date }} </td>
-                    <td> {{ $value->pro_end_date }} </td>
-                    <td> {{ $publish_status [ $value->publish_status ] }} </td>
+                    <td> {{ CmsHelper::DateThai($value->pro_start_date) }} </td>
+                    <td> {{ CmsHelper::DateThai($value->pro_end_date) }} </td>
                     <td> {{ $publish_status [ $value->publish_status ] }} </td>
 
+                    <td> @if($value->publish_status == "รออนุมัติ")
+                        <span class="badge bg-secondary"> {{ $value->publish_status }} </span>
+                      else
+                        <span class="badge bg-danger"> {{ $value->publish_status }} </span>
+                      @endif
+                    </td>
+
                     <td class="td-actions text-right text-nowrap" href="#">
-                      <a href="#">
+                      <a href="{{ route('downloadfile', $value->id) }}">
                         <button type="button" class="btn btn-danger btn-md" data-toggle="tooltip" title="Download">
                           <i class="fas fa-arrow-alt-circle-down"></i>
                         </button>
@@ -329,6 +321,33 @@
 
 @section('js-custom-script')
 
+<!-- SweetAlert2 -->
+<script src="{{ asset('bower_components/admin-lte/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
+
+    @if(session()->has('swl_add'))
+      <script>
+          Swal.fire({
+              icon: 'success',
+              title: 'บันทึกข้อมูลเรียบร้อยแล้ว',
+              showConfirmButton: false,
+              timer: 2800
+          })
+      </script>
+
+    @elseif(session()->has('swl_del'))
+      <script>
+          Swal.fire({
+              icon: 'error',
+              title: 'บันทึกข้อมูลไม่สำเร็จ !!!',
+              showConfirmButton: false,
+              timer: 2800
+          })
+      </script>
+    @endif
+<!-- END SweetAlert2 -->
+
+
+
 <!-- <script type="text/javascript">
     var pro_position =
     <?php echo json_encode($pro_position, JSON_PRETTY_PRINT) ?>;
@@ -342,7 +361,7 @@
       $(".alert").fadeTo(1000, 0).slideUp(1000, function(){
           $(this).remove();
       });
-    }, 3000);
+    }, 2000);
   });
 </script>
 <!-- END ALERT บันทึกข้อมูลสำเร็จ  -->

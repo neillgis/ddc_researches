@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\journal;
 use App\research;
+use App\journal;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use File;
@@ -23,6 +23,7 @@ class JournalController extends Controller
   public function insert(Request $request){
     // dd($data_post);
     $data_post = [
+      "pro_id"            => $request->id,
       "article_name_th"   => $request->article_name_th,
       "article_name_en"   => $request->article_name_en,
       "journal_name_th"   => $request->journal_name_th,
@@ -36,7 +37,7 @@ class JournalController extends Controller
       "corres"            => $request->corres,
       "result_pro_id"     => $request->result_pro_id,
       "files"             => $request->files,
-      "date_entry"        => date('Y-m-d H:i:s')
+      "created_at"        => date('Y-m-d H:i:s')
     ];
       //  --  UPLOAD FILE journal_form  --
     if ($request->file('files')->isValid()) {
@@ -50,14 +51,13 @@ class JournalController extends Controller
         $data_post['files'] = $file_name;
   }
 
-
     $insert = journal::insert($data_post);
-    // $insert = DB::table('person_ddc_table')->insert($data_post);  /*person_ddc_table คือ = ชื่อ table*/
 
     if($insert){
-      return redirect()->back()->with('success','การบันทึกข้อมูลของคุณเสร็จสิ้นแล้ว');
-    } else {
-      return redirect()->back()->with('success','การบันทึกข้อมูลของคุณไม่สำเร็จ !!!');
+      //return Sweet Alert
+        return redirect()->route('page.journal')->with('swl_add', 'เพิ่มข้อมูลสำเร็จแล้ว');
+    }else {
+        return redirect()->back()->with('swl_err', 'บันทึกแล้ว');
     }
   }
   //  -- END INSERT --
