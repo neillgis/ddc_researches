@@ -37,7 +37,6 @@
                 <p> DASHBOARD </p>
               </a>
             </li> -->
-
             <li class="nav-item">
              <a class="nav-link {{ Active::check('summary_form') }}" href="{{ route('page.summary') }}" >
                <i class="nav-icon far fas fa-chart-line"></i>
@@ -45,6 +44,7 @@
              </a>
             </li>
 
+            {{-- @if(Auth::user()->roles_type == '1') --}}
              <li class="nav-item ">
                <a class="nav-link {{ Active::check('research_form') }} " href="{{ route('page.research') }}" >
                  <i class="nav-icon fas fa-book"></i>
@@ -52,13 +52,13 @@
                </a>
              </li>
 
-
              <li class="nav-item ">
                <a class="nav-link {{ Active::check('journal_form') }} " href="{{ route('page.journal') }}" >
                  <i class="nav-icon fa fa-map"></i>
                  <p> ข้อมูลการตีพิมพ์วารสาร </p>
                </a>
              </li>
+             {{-- @elseif --}}
 
 
              <li class="nav-item ">

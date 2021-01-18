@@ -105,6 +105,7 @@
 
 
     <!-- START From Input JOURNAL PROJECT -------------------------------------------------->
+  {{-- @if(Auth::user()->roles_type != '1') --}}
     <div class="row">
       <div class="col-md-12">
         <div class="card">
@@ -115,7 +116,7 @@
           </div>
 
             <!-- <form role="form"> -->
-            <form method="POST" action="{{ route('journal.insert') }}">
+            <form method="POST" action="{{ route('journal.insert') }}" enctype="multipart/form-data">
              @csrf
 
               <div class="card-body">
@@ -190,20 +191,24 @@
                   <div class="col-md-3">
                     <div class="form-group">
                       <label for="exampleSelect1"> การมีส่วนร่วมในบทความ </label>
+                      <!-- SELECT option ดึงมาจาก ARRAY->contribute -->
                       <select class="form-control" name="contribute" required>
-                        <option value="" disabled="true" selected="true"> -- กรุณาเลือก -- </option>
-                        <option> ผู้นิพนธ์หลัก (first-author) </option>
-                        <option> ผู้นิพนธ์ร่วม (co-author) </option>
+                        <option value="" disabled="true" selected="true" >กรุณาเลือก</option>
+                        @foreach ($contribute as $key => $value)
+                          <option value="{{ $key }}"> {{ $value }} </option>
+                        @endforeach
                       </select>
                     </div>
                   </div>
                   <div class="col-md-3">
                     <div class="form-group">
                       <label for="exampleSelect1"> ท่านเป็นผู้รับผิดชอบบทความ </label>
+                      <!-- SELECT option ดึงมาจาก ARRAY->corres -->
                       <select class="form-control" name="corres" required>
-                        <option value="" disabled="true" selected="true"> -- กรุณาเลือก -- </option>
-                        <option> ใช่ </option>
-                        <option> ไม่ใช่ </option>
+                        <option value="" disabled="true" selected="true" >กรุณาเลือก</option>
+                        @foreach ($corres as $key => $value)
+                          <option value="{{ $key }}"> {{ $value }} </option>
+                        @endforeach
                       </select>
                     </div>
                   </div>
@@ -212,7 +217,7 @@
                       <label for="exampleSelect1"> บทความที่เป็นผลจากโครงการวิจัย </label>
 
                       <!-- SELECT ดึงข้อมูลชื่อโครงการมาจาก -> db_published_journal Table -->
-                      <select class="form-control" name="result_pro_id">
+                      <select class="form-control" name="pro_id">
                           <option value="" disabled="true" selected="true"> -- กรุณาเลือก -- </option>
                         @foreach ($journal_5 as $value)
                           <option value = "{{ $value->id }}"> {{ $value->pro_name_en }} </option>
@@ -269,6 +274,7 @@
         </div>
       </div>
       <br>
+    {{-- @endif --}}
     <!-- END From Input JOURNAL PROJECT -------------------------------------------------->
 
 
@@ -293,7 +299,7 @@
                       <th> ชื่อวารสาร </th>
                       <th> ตีพิมพ์ </th>
                       <th> ผู้รับผิดชอบบทความ </th>
-                      <th> สถานะการตรวจสอบ </th>
+                      <th> การตรวจสอบ </th>
                       <th class="text-right"> ACTIONS </th>
                     </tr>
                 </thead>
@@ -305,9 +311,14 @@
                     <td> {{ $value->article_name_th }} </td>
                     <td> {{ $value->journal_name_th }} </td>
                     <td> {{ $value->publish_years }} </td>
-                    <td> {{ $value->corres }} </td>
-                    <td> {{ $value->corres }} </td>
-
+                    <td> {{ $corres [ $value->corres ] }} </td>
+                    <td>
+                      @if($value->corres == "1")
+                        <span class="badge bg-danger badge-pill"> {{ $value->corres }} </span> <!-- null = รอการอนุมัติ -->
+                      @else
+                        <span class="badge bg-success badge-pill"> {{ $value->corres }} </span> <!--  2 = ไม่อนุมัติ -->
+                      @endif
+                    </td>
 
                     <td class="td-actions text-right text-nowrap" href="#">
                       <a href="#">

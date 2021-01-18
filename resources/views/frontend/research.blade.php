@@ -77,7 +77,7 @@
         <div class="col-md-4 col-4 mx-auto">
           <div class="small-box bg-success">
             <div class="inner">
-              <h3>150</h3>
+              <h3> {{ empty($Total_research)?'0': $Total_research }} </h3>
               <p> โครงการวิจัยที่ทำเสร็จทั้งหมด </p>
             </div>
             <div class="icon">
@@ -90,7 +90,7 @@
         <div class="col-md-4 col-4">
           <div class="small-box bg-info mx-auto">
             <div class="inner">
-              <h3>53<sup style="font-size: 20px">%</sup></h3>
+              <h3> {{ empty($Total_master_pro)?'0': $Total_master_pro }} </h3>
               <p> โครงการวิจัยที่เป็นผู้วิจัยหลัก </p>
             </div>
             <div class="icon">
@@ -103,7 +103,7 @@
         <div class="col-md-4 col-4">
           <div class="small-box bg-danger mx-auto">
             <div class="inner">
-              <h3>44</h3>
+              <h3> {{ empty($Total_publish_pro)?'0': $Total_publish_pro }} </h3>
               <p> โครงการวิจัยที่ตีพิมพ์ทั้งหมด </p>
             </div>
             <div class="icon">
@@ -119,6 +119,7 @@
 
 
     <!-- START From Input RESEARCH PROJECT -------------------------------------------------->
+  {{-- @if(Auth::user()->roles_type != '1') --}}
       <div class="row">
         <div class="col-md-12">
           <div class="card">
@@ -230,14 +231,13 @@
 
             </form>
 
-
-
           </div>
         </div>
       </div>
     <br>
-    <!-- END From Input RESEARCH PROJECT -------------------------------------------------->
+    {{-- @endif --}}
 
+    <!-- END From Input RESEARCH PROJECT -------------------------------------------------->
 
 
 
@@ -282,7 +282,7 @@
                     </td>
 
                     <td class="td-actions text-right text-nowrap" href="#">
-                      <a href="{{ route('downloadfile', $value->id) }}">
+                      <a href=" {{ route('downloadfile') }} ">
                         <button type="button" class="btn btn-danger btn-md" data-toggle="tooltip" title="Download">
                           <i class="fas fa-arrow-alt-circle-down"></i>
                         </button>

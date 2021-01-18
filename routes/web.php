@@ -31,28 +31,28 @@ Route::get('/member_form','MemberController@member') -> name('page.member');
 
 
 // FORM  RESEARCH  PROJECT
-Route::get('/research_form','ResearchController@research') -> name('page.research');
-Route::get('/research_form','ResearchController@table_research') -> name('page.research');
+Route::get('/research_form','ResearchController@research')->name('page.research');
+Route::get('/research_form','ResearchController@table_research')->name('page.research');
 //  -- INSERT --
-Route::post('/research_insert','ResearchController@insert') -> name('research.insert');
+Route::post('/research_insert','ResearchController@insert')->name('research.insert');
 //  -- EDIT --
-Route::get('/research_edit/{id}','ResearchController@edit_research_form') -> name('research.edit');
+Route::get('/research_edit/{id}','ResearchController@edit_research_form')->name('research.edit');
 //  -- SAVE --
-Route::post('/save_research_edit','ResearchController@save_research_form') -> name('research.save');
+Route::post('/save_research_edit','ResearchController@save_research_form')->name('research.save');
 //  -- DOWNLOAD --
-Route::get('/download-file/{id}','ResearchController@download_file') -> name('downloadfile');
+// Route::get('/download-file','ResearchController@download_file')->name('downloadfile');
 
 
 
 // FORM  JOURNAL
-Route::get('/journal_form','JournalController@journal') -> name('page.journal');
-Route::get('/journal_form','JournalController@table_journal') -> name('page.journal');
+Route::get('/journal_form','JournalController@journal')->name('page.journal');
+Route::get('/journal_form','JournalController@table_journal')->name('page.journal');
 //  -- INSERT --
-Route::post('/journal_insert','JournalController@insert') -> name('journal.insert');
+Route::post('/journal_insert','JournalController@insert')->name('journal.insert');
 //  -- EDIT --
-Route::get('/journal_edit/{id}','JournalController@edit_journal_form') -> name('journal.edit');
+Route::get('/journal_edit/{id}','JournalController@edit_journal_form')->name('journal.edit');
 //  -- SAVE --
-Route::post('/save_journal_edit','JournalController@save_journal_form') -> name('journal.save');
+Route::post('/save_journal_edit','JournalController@save_journal_form')->name('journal.save');
 
 
 

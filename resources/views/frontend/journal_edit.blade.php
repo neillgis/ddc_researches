@@ -39,9 +39,7 @@
         top: 3px;
       }
   </style>
-
 @stop('css-custom')
-
 
 
 @section('contents')
@@ -66,9 +64,11 @@
     <!-- START EDIT RESEARCH PROJECT -------------------------------------------------->
       <div class="row">
         <div class="col-md-12">
-          <div class="card card-success shadow">
-            <div class="card-header">
-              <h3 class="card-title"><b> แก้ไขข้อมูลโครงการวิจัย </b></h3>
+          <div class="card">
+            <div class="card card-success shadow">
+              <div class="card-header">
+                <h5><b> แก้ไขข้อมูลการตีพิมพ์วารสาร </b></h5>
+              </div>
             </div>
 
             <!-- <form role="form"> -->
@@ -81,6 +81,9 @@
                     <div class="form-group">
                       <label for="exampleInput1"> ชื่อบทความ (ENG) </label>
                       <input type="text" class="form-control" name="article_name_en" value="{{ $data->article_name_en }}">
+                      <!-- hidden = id -->
+                      <input type="hidden" class="form-control" name="id" value="{{ $data->id }}">
+
                     </div>
                   </div>
                   <div class="col-md-6">
@@ -99,7 +102,6 @@
                       <input type="text" class="form-control" name="journal_name_en" value="{{ $data->journal_name_en }}">
                     </div>
                   </div>
-
                   <div class="col-md-6">
                     <div class="form-group">
                       <label for="exampleInput1"> ชื่อวารสาร (TH) </label>
@@ -143,38 +145,45 @@
                       <input type="text" class="form-control" name="doi_number" value="{{ $data->doi_number }}">
                     </div>
                   </div>
-
                   <div class="col-md-3">
                     <div class="form-group">
                       <label for="exampleSelect1"> การมีส่วนร่วมในบทความ </label>
-                      <input type="text" class="form-control" name="contribute" value="{{ $data->contribute }}">
+                      <!-- <input type="text" class="form-control" name="contribute" value="{{-- $data->contribute --}}"> -->
+
+                      <select class="form-control" name="contribute">
+                        @foreach ($datay as $key => $value)
+                          <option value="{{ $key }}" {{ $data->contribute == $key ? 'selected' : '' }}> {{ $value }} </option>
+                        @endforeach
+                      </select>
+
                     </div>
                   </div>
-
                   <div class="col-md-3">
                     <div class="form-group">
                       <label for="exampleSelect1"> ท่านเป็นผู้รับผิดชอบบทความ </label>
-                      <input type="text" class="form-control" name="corres" value="{{ $data->corres }}">
+                      <select class="form-control" name="corres">
+                        @foreach ($dataz as $key => $value)
+                          <option value="{{ $key }}" {{ $data->corres == $key ? 'selected' : '' }}> {{ $value }} </option>
+                        @endforeach
+                      </select>
                     </div>
                   </div>
-
                   <div class="col-md-3">
                     <div class="form-group">
                       <label for="exampleSelect1"> บทความที่เป็นผลจากโครงการวิจัย </label>
-                      <input type="text" class="form-control" name="result_pro_id" value="{{ $data->pro_name_en }}">
+                      <input type="text" class="form-control" name="pro_id" value="{{ $data->pro_name_en }}" readonly>
                     </div>
                   </div>
                 </div>
 
               </div>
-            </div>
-
+            <!-- </div> -->
 
             <div class="card-footer">
-                <button type="button" class="btn bg-gradient-red" onclick="window.history.back();">
-                  <i class="fas fa-arrow-alt-circle-left"></i>
+              <a class="btn btn-danger float-left" href="{{ route('page.journal') }}">
+                <i class="fas fa-arrow-alt-circle-left"></i>
                   ย้อนกลับ
-                </button>
+              </a>
 
               <button type="submit" class="btn btn-success float-right" value="บันทึกข้อมูล">
                 <i class="fas fa-save"></i> &nbsp;บันทึกข้อมูล </button>
@@ -184,6 +193,7 @@
         </div>
       </div>
     </div>
+
     <!--- END EDIT  --->
 
     </div>

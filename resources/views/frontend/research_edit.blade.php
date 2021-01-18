@@ -39,9 +39,7 @@
         top: 3px;
       }
   </style>
-
 @stop('css-custom')
-
 
 
 @section('contents')
@@ -132,16 +130,15 @@
                   <div class="col-md-4">
                     <div class="form-group">
                       <label for="exampleDatepicker1"> ปี พ.ศ. ที่เริ่มโครงการ </label>
-                      <input type="text" class="form-control" name="pro_start_date" value="{{ $data->pro_start_date }}">
+                      <input type="text" class="form-control" name="pro_start_date" value="{{ $data->pro_start_date }}" readonly>
                     </div>
                   </div>
                   <div class="col-md-4">
                     <div class="form-group">
                       <label for="exampleDatepicker1"> ปี พ.ศ. ที่เสร็จสิ้นครงการ </label>
-                      <input type="text" class="form-control" name="pro_end_date" value="{{ $data->pro_end_date }}">
+                      <input type="text" class="form-control" name="pro_end_date" value="{{ $data->pro_end_date }}" readonly>
                     </div>
                   </div>
-
                   <div class="col-md-4">
                     <div class="form-group">
                       <label for="exampleSelect1"> โครงการได้ตีพิมพ์ </label>
@@ -157,6 +154,7 @@
                     </div>
                   </div>
                 </div>
+
               </div>
 
 
@@ -173,7 +171,6 @@
               </div>
 
             </form>
-
 
           </div>
         </div>
