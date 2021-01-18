@@ -24,30 +24,6 @@ class SummaryController extends Controller
     }
 
 
-    // public function insert(Request $request){
-    //   // dd($data_post);
-    //   $data_post = [
-    //     "orcid_id"              => $request->orcid_id,
-    //     "pro_end_total"         => $request->pro_end_total,
-    //     "pro_major_total"       => $request->pro_major_total,
-    //     "pro_publish_total"     => $request->pro_publish_total,
-    //     "util_result_academic"  => $request->util_result_academic,
-    //     "researcher_level"      => $request->researcher_level,
-    //     "data_auditor"          => $request->data_auditor,
-    //   ];
-    //   $insert = summary::insert($data_post);
-    //   // $insert = DB::table('person_ddc_table')->insert($data_post);  /*person_ddc_table คือ = ชื่อ table*/
-    //
-    //   if($insert){
-    //     return redirect()->back()->with('success','Insert Succussfully');
-    //   } else {
-    //     return redirect()->back()->with('success','Insert Failed');
-    //   }
-    // }
-
-
-
-
     public function table_summary(){
 
 // SUM BOX ------------------------------------------------------------------------>
@@ -73,12 +49,12 @@ class SummaryController extends Controller
       $Total_publish_pro = DB::table('db_research_project')
                         -> select('db_research_project.users_id','pro_name_th','pro_name_en','pro_position',
                                   'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
-                        -> whereIn ('publish_status', [1])
+                        -> whereIn ('publish_status', ['1'])
                         ->get()->count();
 // dd($Total_publish_pro);
 
 
-      // บทความผู้นิพนธ์หลัก db_published_journal -> โดย count id -> contribute = 0 , ผู้นิพนธ์หลัก (first-author) --------->
+      // บทความผู้นิพนธ์หลัก db_published_journal -> โดย count id -> contribute = ผู้นิพนธ์หลัก (first-author) --------->
       $Total_master_journal = DB::table('db_published_journal')
                             -> select('db_published_journal.id','article_name_th','article_name_en','journal_name_th','journal_name_en',
                                       'publish_years','publish_no','publish_volume','publish_page','doi_number',
@@ -96,39 +72,55 @@ class SummaryController extends Controller
                              ->get ()->count();
 // dd($Total_publish_journal);
 
+
 // END SUM BOX ------------------------------------------------------------------------>
 
 
-// TABLE ------------------------------------------------------------------------------------------>
+// INSERT ------------------------------------------------------------->
+    // public function insert(Request $request){
+    //   // dd($data_post);
+    //   $data_post = [
+    //     "orcid_id"              => $request->orcid_id,
+    //     "pro_end_total"         => $request->pro_end_total,
+    //     "pro_major_total"       => $request->pro_major_total,
+    //     "pro_publish_total"     => $request->pro_publish_total,
+    //     "util_result_academic"  => $request->util_result_academic,
+    //     "researcher_level"      => $request->researcher_level,
+    //     "data_auditor"          => $request->data_auditor,
+    //   ];
+    //   $insert = summary::insert($data_post);
+    //   // $insert = DB::table('person_ddc_table')->insert($data_post);  /*person_ddc_table คือ = ชื่อ table*/
+    //
+    //   if($insert){
+    //     return redirect()->back()->with('success','Insert Succussfully');
+    //   } else {
+    //     return redirect()->back()->with('success','Insert Failed');
+    //   }
+    // }
+// END INSERT ----------------------------------------------------------->
 
-      // $sl_member = member::select ('orcid_id','prefix','fname_th','lname_th','dep_id')
-      //            // -> ORDERBY ('orcid_id','ASC')
-      //            -> get ();
+
+// TABLE LIST ------------------------------------------------------------------------------------------>
+
+      $users_dep = DB::table ('users')
+               	 -> join ('depart', 'depart.id', '=', 'users.depart_id')
+               	 -> select ('depart.id','depart.depart_name',
+                            'users.orcid_id','users.prefix','users.fname_th','users.lname_th')
+                 ->get ();
+// dd($users_dep);
 
       $sl_research = research::select ('id','pro_name_th','pro_name_en','pro_position',
                                        'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
                    ->get ();
+
 
       $sl_journal = journal::select ('id','article_name_th','article_name_en','journal_name_th','journal_name_en',
                                     'publish_years','publish_no','publish_volume','publish_page','doi_number',
                                     'contribute','corres')
                   ->get ();
 
-      $users_dep = DB::table ('users')
-               	    -> join ('depart', 'depart.id', '=', 'users.depart_id')
-               	    -> select ('depart.id','depart.depart_name',
-                               'users.orcid_id','users.prefix','users.fname_th','users.lname_th')
-                    ->get ();
-// dd($users_dep);
 
-      // $Total_publish_pro = DB::table('db_research_project')
-      //             -> join ('users', 'db_research_project.users_id', '=', 'users.id')
-      //             -> select('db_research_project.id','pro_name_th','pro_name_en','pro_position',
-      //                       'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
-      //             -> whereIn ('publish_status', [1])
-      //             // -> GROUPBY ('db_research_project.users_id')
-      //             ->get()->count();
-
+      // EDIT ระดับนักวิจัย , ผู้ตรวจสอบข้อมูล ----------------------------------------->
       $researcher_level = [1=> 'นักวิจัยฝึกหัด',
                            2=> 'นักวิจัยรุ่นใหม่',
                            3=> 'นักวิจัยรุ่นกลาง',
@@ -139,10 +131,9 @@ class SummaryController extends Controller
                        2=> 'นางสาวชลนที รอดสว่าง',
                        3=> 'นายอภิสิทธิ์ สนองค์'
                        ];
+      // END EDIT ระดับนักวิจัย , ผู้ตรวจสอบข้อมูล ----------------------------------------->
 
-
-// END TABLE ------------------------------------------------------------------------------------------>
-
+// END TABLE LIST ------------------------------------------------------------------------------------------>
 
       return view('frontend.summary',
       [
@@ -159,7 +150,8 @@ class SummaryController extends Controller
         "researcher_level"      => $researcher_level,
         "data_auditor"          => $data_auditor
 
-    ]);
+      ]);
 }
+
 
 }

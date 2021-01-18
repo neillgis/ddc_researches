@@ -59,7 +59,7 @@ Route::post('/save_journal_edit','JournalController@save_journal_form')->name('j
 // FORM  ULTILIZATION
 Route::get('/util_form','UtilizationController@util') -> name('page.util');
 Route::get('/util_form','UtilizationController@table_util') -> name('page.util');
-
+//  -- INSERT --
 Route::post('/util_insert','UtilizationController@insert') -> name('util.insert');
 
 
@@ -67,7 +67,7 @@ Route::post('/util_insert','UtilizationController@insert') -> name('util.insert'
 // FORM  SUMMARY
 Route::get('/summary_form','SummaryController@summary') -> name('page.summary');
 Route::get('/summary_form','SummaryController@table_summary') -> name('page.summary');
-
+//  -- INSERT --
 Route::post('/summary_insert','SummaryController@insert') -> name('summary.insert');
 
 

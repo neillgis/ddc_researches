@@ -41,10 +41,9 @@
 <!-- START SUM  BOX ------------------------------------------------------->
         <section class="content">
           <div class="container-fluid">
-            <!-- Small boxes (Stat box) -->
             <div class="row">
 
-              <div class="col-md-2 mx-auto">
+              <div class="col-md-12 mx-auto">
                 <div class="small-box bg-secondary">
                   <div class="inner">
                     <!-- เรียกจาก db_research_project -> โดย count id (All Record)--------->
@@ -58,7 +57,7 @@
                 </div>
               </div>
 
-              <div class="col-md-2 mx-auto">
+              <div class="col-md-3 mx-auto">
                 <div class="small-box bg-warning">
                   <div class="inner">
                     <!-- เรียกจาก db_research_project -> โดย count id -> pro_position = 1 ( เป็นผู้วิจัยหลัก ) ------------>
@@ -72,7 +71,7 @@
                 </div>
               </div>
 
-              <div class="col-md-2 mx-auto">
+              <div class="col-md-3 mx-auto">
                 <div class="small-box bg-danger">
                   <div class="inner">
                     <!-- เรียกจาก db_research_project -> โดย count id -> publish_status = 1 (ใช่ ) ------------>
@@ -89,7 +88,7 @@
               <div class="col-md-3 mx-auto">
                 <div class="small-box bg-success">
                   <div class="inner">
-                    <!-- เรียกจาก db_published_journal -> โดย count id -> contribute = 0 ( ผู้นิพนธ์หลัก ) ---------->
+                    <!-- เรียกจาก db_published_journal -> โดย count id -> contribute = ผู้นิพนธ์หลัก (first-author)---------->
                     <h4> บทความผู้นิพนธ์หลัก </h4>
                     <br>
                     <h3> {{ empty($Total_master_journal)?'0': $Total_master_journal }} โครงการ </h3>
@@ -120,84 +119,6 @@
             </div>
             <br>
 <!-- END SUM  BOX --------------------------------------------------------->
-
-<!-- START FORM  INSERT ------------------------------------------------------->
-          <!-- <div class="row">
-            <div class="col-md-12">
-              <div class="card card-gray">
-                <div class="card-header">
-                  <h3 class="card-title"> แบบฟอร์มการนำไปใช้ประโยชน์ </h3>
-                </div>
-
-
-                <form method="POST" action="{{ route('util.insert') }}">
-                  @csrf
-
-              <div class="card-body">
-                <div class="row">
-                  <div class="col-md-5">
-                    <div class="form-group">
-                      <b><lebel for="fname_th"> ชื่อโครงการ (th-en) </lebel></b>
-                      <select class="form-control" id="fname_th" name="fname_th" required>
-                        <option value="">กรุณาเลือก</option>
-                        <option value="โครงการ A">โครงการ A</option>
-                        <option value="โครงการ B">โครงการ B</option>
-                        <option value="โครงการ C">โครงการ C</option>
-                        <option value="โครงการ D">โครงการ D</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div class="col-md-4">
-                    <div class="form-group">
-                      <b><lebel for="lname_th"> การนำไปใช้ประโยชน์ </lebel></b>
-                      <select class="form-control" id="lname_th" name="lname_th" required>
-                        <option value="">กรุณาเลือก</option>
-                        <option value="เชิงวิชาการ">เชิงวิชาการ</option>
-                        <option value="เชิงสังคม/ชุมชน">เชิงสังคม/ชุมชน</option>
-                        <option value="เชิงนโยบาย">เชิงนโยบาย</option>
-                        <option value="เชิงพาณิชย์">เชิงพาณิชย์</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div class="col-md-3">
-                    <b><lebel for="files"> แนบไฟล์ </lebel></b>
-                    <div class="input-group">
-                      <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="files">
-                        <label class="custom-file-label" for="files">Choose file</label>
-                      </div>
-                    </div>
-                  </div>
-              </div>
-            </div>
-              <br>
-
-              <div class="card-footer">
-                    <button type="submit" class="btn btn-success float-right" value="บันทึกข้อมูล"> บันทึกข้อมูล </button>
-              </div>
-
-              </form> -->
-
-              <!-- Alert Notification -->
-                <!-- @if(session()->has('success'))
-                  <div class="alert alert-success">
-                    {{ session()->get('success') }}
-                  </div>
-                @endif
-                @if (Session::has('failure'))
-                  <div class="alert alert-danger">
-                     {{ Session::get('failure') }}
-                  </div>
-                @endif -->
-              <!-- END Alert Notification -->
-
-            <!-- </div>
-            </div>
-          </div>
-          <br> -->
-<!-- END FORM  INSERT --------------------------------------------------------->
 
 
 <!-- START TABLE LIST --------------------------------------------------------->
@@ -244,12 +165,6 @@
                               <a href="{{ route('downloadfile', $value->id) }}">
                                 <button type="button" class="btn btn-danger btn-md" data-toggle="tooltip" title="Download">
                                   <i class="fas fa-arrow-alt-circle-down"></i>
-                                </button>
-                              </a>
-
-                              <a href=" {{ route('research.edit', $value->id) }} ">
-                                <button type="button" class="btn btn-warning btn-md" data-toggle="tooltip" title="Edit">
-                                  <i class="fas fa-edit"></i>
                                 </button>
                               </a>
 
