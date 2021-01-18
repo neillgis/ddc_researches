@@ -50,7 +50,7 @@
                     <!-- เรียกจาก db_research_project -> โดย count id (All Record)--------->
                     <h4> โครงการวิจัยที่ทำเสร็จ </h4>
                     <br>
-                    <h3> {{ empty($Total_research)?'0': $Total_research }} โครงการ <h3>
+                    <h3> {{ empty($Total_research)?'0': $Total_research }} โครงการ </h3>
                   </div>
                   <div class="icon">
                     <i class="fas fa-battery-empty"></i>
@@ -64,7 +64,7 @@
                     <!-- เรียกจาก db_research_project -> โดย count id -> pro_position = 1 ( เป็นผู้วิจัยหลัก ) ------------>
                     <h4> โครงการวิจัยที่เป็นผู้วิจัยหลัก </h4>
                     <br>
-                    <h3> {{ empty($Total_master_pro)?'0': $Total_master_pro }} โครงการ <h3>
+                    <h3> {{ empty($Total_master_pro)?'0': $Total_master_pro }} โครงการ </h3>
                   </div>
                   <div class="icon">
                     <i class="fas fa-battery-half"></i>
@@ -78,7 +78,7 @@
                     <!-- เรียกจาก db_research_project -> โดย count id -> publish_status = 1 (ใช่ ) ------------>
                     <h4> โครงการวิจัยที่ตีพิมพ์ </h4>
                     <br>
-                    <h3> {{ empty($Total_publish_pro)?'0': $Total_publish_pro }} โครงการ <h3>
+                    <h3> {{ empty($Total_publish_pro)?'0': $Total_publish_pro }} โครงการ </h3>
                   </div>
                   <div class="icon">
                     <i class="fas fa-fire"></i>
@@ -92,7 +92,7 @@
                     <!-- เรียกจาก db_published_journal -> โดย count id -> contribute = 0 ( ผู้นิพนธ์หลัก ) ---------->
                     <h4> บทความผู้นิพนธ์หลัก </h4>
                     <br>
-                    <h3> {{ empty($Total_master_journal)?'0': $Total_master_journal }} โครงการ <h3>
+                    <h3> {{ empty($Total_master_journal)?'0': $Total_master_journal }} โครงการ </h3>
                   </div>
                   <div class="icon">
                     <i class="fas fa-battery-full"></i>
@@ -106,7 +106,7 @@
                     <!-- เรียกจาก db_published_journal โดย count id (All Record) ------------>
                     <h4> บทความตีพิมพ์ </h4>
                     <br>
-                    <h3> {{ empty($Total_publish_journal)?'0': $Total_publish_journal }} โครงการ <h3>
+                    <h3> {{ empty($Total_publish_journal)?'0': $Total_publish_journal }} โครงการ </h3>
                   </div>
                   <div class="icon">
                     <i class="fas fa-cubes"></i>
@@ -259,7 +259,7 @@
                                 </button>
                               </a>
                             </td>
-                            
+
                         </tr>
                         @endforeach
                     </tbody>

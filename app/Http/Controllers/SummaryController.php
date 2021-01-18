@@ -54,8 +54,7 @@ class SummaryController extends Controller
 
       // โครงการวิจัยที่ทำเสร็จ db_research_project -> โดย count id (All Record)--------->
       $Total_research = DB::table('db_research_project')
-
-                      -> select('id','pro_name_th','pro_name_en','pro_position',
+                      -> select('db_research_project.id','pro_name_th','pro_name_en','pro_position',
                                 'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
                       ->get()->count();
 // dd($Total_research);
@@ -63,8 +62,7 @@ class SummaryController extends Controller
 
       // โครงการวิจัยที่เป็นผู้วิจัยหลัก db_research_project -> โดย count id -> pro_position = 1 (เป็นผู้วิจัยหลัก)--------->
       $Total_master_pro = DB::table('db_research_project')
-
-                        -> select('id','pro_name_th','pro_name_en','pro_position',
+                        -> select('db_research_project.id','pro_name_th','pro_name_en','pro_position',
                                   'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
                         -> whereIn ('pro_position', ['1'])
                         ->get()->count();
@@ -73,16 +71,16 @@ class SummaryController extends Controller
 
       // โครงการวิจัยที่ตีพิมพ์ db_research_project -> โดย count id -> publish_status = 1 (ใช่ )--------->
       $Total_publish_pro = DB::table('db_research_project')
-                        -> select('id','pro_name_th','pro_name_en','pro_position',
+                        -> select('db_research_project.users_id','pro_name_th','pro_name_en','pro_position',
                                   'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
-                        -> whereIn ('publish_status', ['1'])
+                        -> whereIn ('publish_status', [1])
                         ->get()->count();
 // dd($Total_publish_pro);
 
 
       // บทความผู้นิพนธ์หลัก db_published_journal -> โดย count id -> contribute = 0 , ผู้นิพนธ์หลัก (first-author) --------->
       $Total_master_journal = DB::table('db_published_journal')
-                            -> select('id','article_name_th','article_name_en','journal_name_th','journal_name_en',
+                            -> select('db_published_journal.id','article_name_th','article_name_en','journal_name_th','journal_name_en',
                                       'publish_years','publish_no','publish_volume','publish_page','doi_number',
                                       'contribute','corres')
                             -> where ('contribute', '=', 'ผู้นิพนธ์หลัก (first-author)')
@@ -92,10 +90,10 @@ class SummaryController extends Controller
 
       // บทความตีพิมพ์ db_published_journal โดย count id (All Record) --------->
       $Total_publish_journal = DB::table('db_published_journal')
-                             -> select('id','article_name_th','article_name_en','journal_name_th','journal_name_en',
+                             -> select ('id','article_name_th','article_name_en','journal_name_th','journal_name_en',
                                        'publish_years','publish_no','publish_volume','publish_page','doi_number',
                                        'contribute','corres')
-                             ->get()->count();
+                             ->get ()->count();
 // dd($Total_publish_journal);
 
 // END SUM BOX ------------------------------------------------------------------------>
@@ -109,20 +107,28 @@ class SummaryController extends Controller
 
       $sl_research = research::select ('id','pro_name_th','pro_name_en','pro_position',
                                        'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
-                   -> get ();
+                   ->get ();
 
-      $sl_journal = journal::select('id','article_name_th','article_name_en','journal_name_th','journal_name_en',
+      $sl_journal = journal::select ('id','article_name_th','article_name_en','journal_name_th','journal_name_en',
                                     'publish_years','publish_no','publish_volume','publish_page','doi_number',
                                     'contribute','corres')
-                  -> get ();
+                  ->get ();
 
-
-      $users_dep = DB::table('users')
-               	    -> join ('depart', 'depart.id', '=', 'users.dep_id')
+      $users_dep = DB::table ('users')
+               	    -> join ('depart', 'depart.id', '=', 'users.depart_id')
                	    -> select ('depart.id','depart.depart_name',
-                               'users.orcid_id','users.prefix','users.fname_th','users.lname_th',)
-                    -> get ();
+                               'users.orcid_id','users.prefix','users.fname_th','users.lname_th')
+                    ->get ();
 // dd($users_dep);
+
+      // $Total_publish_pro = DB::table('db_research_project')
+      //             -> join ('users', 'db_research_project.users_id', '=', 'users.id')
+      //             -> select('db_research_project.id','pro_name_th','pro_name_en','pro_position',
+      //                       'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
+      //             -> whereIn ('publish_status', [1])
+      //             // -> GROUPBY ('db_research_project.users_id')
+      //             ->get()->count();
+
       $researcher_level = [1=> 'นักวิจัยฝึกหัด',
                            2=> 'นักวิจัยรุ่นใหม่',
                            3=> 'นักวิจัยรุ่นกลาง',
