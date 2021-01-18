@@ -44,7 +44,7 @@
              </a>
             </li>
 
-            {{-- @if(Auth::user()->roles_type == '1') --}}
+            {{-- @if(Auth::user()->roles_type != '1') --}}
              <li class="nav-item ">
                <a class="nav-link {{ Active::check('research_form') }} " href="{{ route('page.research') }}" >
                  <i class="nav-icon fas fa-book"></i>
@@ -58,7 +58,7 @@
                  <p> ข้อมูลการตีพิมพ์วารสาร </p>
                </a>
              </li>
-             {{-- @elseif --}}
+             {{-- @endif --}}
 
 
              <li class="nav-item ">

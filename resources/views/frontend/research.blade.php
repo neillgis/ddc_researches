@@ -260,7 +260,11 @@
                       <th> เริ่มโครงการ </th>
                       <th> เสร็จสิ้นโครงการ </th>
                       <th> ตีพิมพ์ </th>
+
+                  {{-- @if(Auth::user()->roles_type != '1') --}}
                       <th> สถานะการตรวจสอบ </th>
+                  {{-- @endif --}}
+
                       <th class="text-right"> ACTIONS </th>
                     </tr>
                 </thead>
@@ -274,12 +278,14 @@
                     <td> {{ CmsHelper::DateThai($value->pro_end_date) }} </td>
                     <td> {{ $publish_status [ $value->publish_status ] }} </td>
 
+                {{-- @if(Auth::user()->roles_type != '1') --}}
                     <td> @if($value->publish_status == "รออนุมัติ")
                         <span class="badge bg-secondary"> {{ $value->publish_status }} </span>
                       else
                         <span class="badge bg-danger"> {{ $value->publish_status }} </span>
                       @endif
                     </td>
+                {{-- @endif --}}
 
                     <td class="td-actions text-right text-nowrap" href="#">
                       <a href=" {{ route('downloadfile') }} ">

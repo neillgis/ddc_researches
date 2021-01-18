@@ -40,7 +40,7 @@ Route::get('/research_edit/{id}','ResearchController@edit_research_form')->name(
 //  -- SAVE --
 Route::post('/save_research_edit','ResearchController@save_research_form')->name('research.save');
 //  -- DOWNLOAD --
-// Route::get('/download-file','ResearchController@download_file')->name('downloadfile');
+Route::get('/download-file','ResearchController@download_file')->name('downloadfile');
 
 
 

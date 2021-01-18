@@ -299,7 +299,11 @@
                       <th> ชื่อวารสาร </th>
                       <th> ตีพิมพ์ </th>
                       <th> ผู้รับผิดชอบบทความ </th>
-                      <th> การตรวจสอบ </th>
+
+                  {{-- @if(Auth::user()->roles_type != '1') --}}
+                      <th> สถานะการตรวจสอบ </th>
+                  {{-- @endif --}}
+
                       <th class="text-right"> ACTIONS </th>
                     </tr>
                 </thead>
@@ -312,6 +316,8 @@
                     <td> {{ $value->journal_name_th }} </td>
                     <td> {{ $value->publish_years }} </td>
                     <td> {{ $corres [ $value->corres ] }} </td>
+
+                {{-- @if(Auth::user()->roles_type != '1') --}}
                     <td>
                       @if($value->corres == "1")
                         <span class="badge bg-danger badge-pill"> {{ $value->corres }} </span> <!-- null = รอการอนุมัติ -->
@@ -319,6 +325,8 @@
                         <span class="badge bg-success badge-pill"> {{ $value->corres }} </span> <!--  2 = ไม่อนุมัติ -->
                       @endif
                     </td>
+                {{-- @endif --}}
+
 
                     <td class="td-actions text-right text-nowrap" href="#">
                       <a href="#">
