@@ -38,52 +38,88 @@
   </div>
 <!-- /.content-header -->
 
-<!-- START CONTENT  BOX ------------------------------------------------------->
+<!-- START SUM  BOX ------------------------------------------------------->
         <section class="content">
           <div class="container-fluid">
             <!-- Small boxes (Stat box) -->
             <div class="row">
-              <div class="col-md-4 col-4">
-                <div class="small-box bg-yellow">
+
+              <div class="col-md-2 mx-auto">
+                <div class="small-box bg-secondary">
                   <div class="inner">
-                    <h3>150</h3>
-                    <p> หัวข้อ ??? </p>
+                    <!-- เรียกจาก db_research_project -> โดย count id (All Record)--------->
+                    <h4> โครงการวิจัยที่ทำเสร็จ </h4>
+                    <br>
+                    <h3> {{ empty($Total_research)?'0': $Total_research }} โครงการ <h3>
                   </div>
                   <div class="icon">
-                    <i class="ion ion-pie-graph"></i>
+                    <i class="fas fa-battery-empty"></i>
                   </div>
-                  <!-- <a class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
                 </div>
               </div>
 
-              <div class="col-md-4 col-4">
-                <div class="small-box bg-yellow">
+              <div class="col-md-2 mx-auto">
+                <div class="small-box bg-warning">
                   <div class="inner">
-                    <h3>53<sup style="font-size: 20px">%</sup></h3>
-                    <p> หัวข้อ ??? </p>
+                    <!-- เรียกจาก db_research_project -> โดย count id -> pro_position = 1 ( เป็นผู้วิจัยหลัก ) ------------>
+                    <h4> โครงการวิจัยที่เป็นผู้วิจัยหลัก </h4>
+                    <br>
+                    <h3> {{ empty($Total_master_pro)?'0': $Total_master_pro }} โครงการ <h3>
                   </div>
                   <div class="icon">
-                    <i class="ion ion-person"></i>
+                    <i class="fas fa-battery-half"></i>
                   </div>
-                  <!-- <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
                 </div>
               </div>
 
-              <div class="col-md-4 col-4">
-                <div class="small-box bg-yellow">
+              <div class="col-md-2 mx-auto">
+                <div class="small-box bg-danger">
                   <div class="inner">
-                    <h3>44</h3>
-                    <p> หัวข้อ ??? </p>
+                    <!-- เรียกจาก db_research_project -> โดย count id -> publish_status = 1 (ใช่ ) ------------>
+                    <h4> โครงการวิจัยที่ตีพิมพ์ </h4>
+                    <br>
+                    <h3> {{ empty($Total_publish_pro)?'0': $Total_publish_pro }} โครงการ <h3>
                   </div>
                   <div class="icon">
-                    <i class="ion ion-stats-bars"></i>
+                    <i class="fas fa-fire"></i>
                   </div>
-                  <!-- <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
                 </div>
               </div>
+
+              <div class="col-md-3 mx-auto">
+                <div class="small-box bg-success">
+                  <div class="inner">
+                    <!-- เรียกจาก db_published_journal -> โดย count id -> contribute = 0 ( ผู้นิพนธ์หลัก ) ---------->
+                    <h4> บทความผู้นิพนธ์หลัก </h4>
+                    <br>
+                    <h3> {{ empty($Total_master_journal)?'0': $Total_master_journal }} โครงการ <h3>
+                  </div>
+                  <div class="icon">
+                    <i class="fas fa-battery-full"></i>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-3 mx-auto">
+                <div class="small-box bg-info">
+                  <div class="inner">
+                    <!-- เรียกจาก db_published_journal โดย count id (All Record) ------------>
+                    <h4> บทความตีพิมพ์ </h4>
+                    <br>
+                    <h3> {{ empty($Total_publish_journal)?'0': $Total_publish_journal }} โครงการ <h3>
+                  </div>
+                  <div class="icon">
+                    <i class="fas fa-cubes"></i>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+
             </div>
             <br>
-<!-- END CONTENT  BOX --------------------------------------------------------->
+<!-- END SUM  BOX --------------------------------------------------------->
 
 <!-- START FORM  INSERT ------------------------------------------------------->
           <!-- <div class="row">
@@ -178,48 +214,52 @@
                     <table class="table table-hover" id="example1" style="width:100%">
                     <thead>
                         <tr>
-                            <th style="text-align:center">ลำดับที่</th>
                             <th style="text-align:center">รหัสประจำตัวนักวิจัย</th>
                             <th style="text-align:center">ชื่อ-นามสกุล</th>
                             <th style="text-align:center">หน่วยงาน</th>
-                            <th style="text-align:center">จำนวนโครงการวิจัยทั้งหมด</th>
-                            <th style="text-align:center">จำนวนโครงการวิจัยที่เป็นผู้วิจัยหลักทั้งหมด</th>
-                            <th style="text-align:center">จำนวนบทความที่ตีพิมพ์ทั้งหมด</th>
-                            <th style="text-align:center">จำนวนบทความที่นำไปใช้ประโยชน์เชิงวิชาการ </th>
+                            <th style="text-align:center">โครงการวิจัยทั้งหมด</th>
+                            <th style="text-align:center">โครงการวิจัยที่เป็นผู้วิจัยหลักทั้งหมด</th>
+                            <th style="text-align:center">บทความที่ตีพิมพ์ทั้งหมด</th>
+                            <th style="text-align:center">บทความที่นำไปใช้ประโยชน์เชิงวิชาการ</th>
                             <th style="text-align:center">ระดับนักวิจัย</th>
                             <th style="text-align:center">ผู้ตรวจสอบข้อมูล</th>
-                            <th class="text-right"> จัดการข้อมูล </th>
+                            <th class="text-right">จัดการข้อมูล</th>
                         </tr>
                     </thead>
 
                     <tbody>
                         @foreach( $datas as $value )
                         <tr>
-                            <td>{{ $value->id }}</td>
-                            <td>{{ $value->orcid_id }}</td>
+                            <td style="text-align:center">{{ $value->orcid_id }}</td>
                             <td>{{ $value->prefix.$value->fname_th." ".$value->lname_th }}</td>
-                            <td>{{ $value->dep_id }}</td>
-                            <td>{{ $value->pro_end_total }}</td>
-                            <td>{{ $value->pro_major_total }}</td>
-                            <td>{{ $value->pro_publish_total }}</td>
-                            <td>{{ $value->util_result_academic }}</td>
-                            <td>{{ $value->researcher_level }}</td>
-                            <td>{{ $value->data_auditor }}</td>
+                            <td style="text-align:center">{{ $value->depart_name }}</td>
+                            <td style="text-align:center">{{ $value->pro_end_total }}</td>
+                            <td style="text-align:center">{{ $value->pro_major_total }}</td>
+                            <td style="text-align:center">{{ $value->pro_publish_total }}</td>
+                            <td style="text-align:center">{{ $value->util_result_academic }}</td>
+                            <td style="text-align:center">{{ $value->researcher_level }}</td>
+                            <td style="text-align:center">{{ $value->data_auditor }}</td>
 
-                            <td class="project-actions text-right">
-                                <a class="btn btn-info btn-sm" href="#">
-                                  <i class="fas fa-folder"></i>
-                                    VIEW
-                                </a>
-                                <a class="btn btn-danger btn-sm" href="#">
+                            <td class="td-actions text-right text-nowrap" href="#">
+                              <a href="{{ route('downloadfile', $value->id) }}">
+                                <button type="button" class="btn btn-danger btn-md" data-toggle="tooltip" title="Download">
+                                  <i class="fas fa-arrow-alt-circle-down"></i>
+                                </button>
+                              </a>
+
+                              <a href=" {{ route('research.edit', $value->id) }} ">
+                                <button type="button" class="btn btn-warning btn-md" data-toggle="tooltip" title="Edit">
                                   <i class="fas fa-edit"></i>
-                                    EDIT
-                                </a>
-                                <a class="btn btn-success btn-sm" href="#">
-                                  <i class="fas fa-paperclip"></i>
-                                    VERIFIED
-                                </a>
+                                </button>
+                              </a>
+
+                              <a href="#">
+                                <button type="button" class="btn btn-info btn-md" data-toggle="tooltip" title="Verfied">
+                                  <i class="fas fa-user-check"></i>
+                                </button>
+                              </a>
                             </td>
+                            
                         </tr>
                         @endforeach
                     </tbody>
