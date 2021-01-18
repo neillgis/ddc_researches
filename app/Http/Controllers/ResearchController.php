@@ -50,36 +50,61 @@ class ResearchController extends Controller
                  ];
 
 
-     // โครงการวิจัยที่ทำเสร็จ db_research_project -> โดย count (All Record)
-       $Total_research = DB::table('db_research_project')
-                       -> select('id','pro_name_th','pro_name_en','pro_position',
-                                 'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
-                       // ->where('db_research_project.users_id', Auth::user()->id)
-                       ->get()
-                       ->count();
+      // if(Auth::user()->roles_type == 1){
+          // count (All Record)
+            $Total_research = DB::table('db_research_project')
+                            -> select('id','pro_name_th','pro_name_en','pro_position',
+                                      'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
+                            ->get()
+                            ->count();
+      // }else {
+      //       $Total_research = DB::table('db_research_project')
+      //                       -> select('id','pro_name_th','pro_name_en','pro_position',
+      //                                 'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
+      //                       // ->where('db_research_project.users_id', Auth::user()->id)
+      //                       ->get()
+      //                       ->count();
+      // }
 
 
-       // โครงการวิจัยที่เป็นผู้วิจัยหลัก db_research_project -> โดย count (pro_position) = 1
-       $Total_master_pro = DB::table('db_research_project')
-                         -> select('id','pro_name_th','pro_name_en','pro_position',
-                                   'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
-                         -> whereIn ('pro_position', ['1'])
-                         // ->where('db_research_project.users_id', Auth::user()->id
-                         ->get()
-                         ->count();
+      // if(Auth::user()->roles_type == 1){
+          // count (pro_position) = 1
+          $Total_master_pro = DB::table('db_research_project')
+                            -> select('id','pro_name_th','pro_name_en','pro_position',
+                                      'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
+                            -> whereIn ('pro_position', ['1'])
+                            ->get()
+                            ->count();
+      // }else {
+      //     $Total_master_pro = DB::table('db_research_project')
+      //                       -> select('id','pro_name_th','pro_name_en','pro_position',
+      //                                 'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
+      //                       -> whereIn ('pro_position', ['1'])
+      //                       // ->where('db_research_project.users_id', Auth::user()->id
+      //                       ->get()
+      //                       ->count();
+      // }
 
 
-       // โครงการวิจัยที่ตีพิมพ์ db_research_project -> โดย count (publish_status) = 1
-       $Total_publish_pro = DB::table('db_research_project')
-                         -> select('id','pro_name_th','pro_name_en','pro_position',
-                                   'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
-                         -> whereIn ('publish_status', ['1'])
-                         // ->where('db_research_project.users_id', Auth::user()->id)
-                         ->get()
-                         ->count();
+      // if(Auth::user()->roles_type == 1){
+          // count (publish_status) = 1
+          $Total_publish_pro = DB::table('db_research_project')
+                            -> select('id','pro_name_th','pro_name_en','pro_position',
+                                      'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
+                            -> whereIn ('publish_status', ['1'])
+                            ->get()
+                            ->count();
+      // }else {
+      //     $Total_publish_pro = DB::table('db_research_project')
+      //                       -> select('id','pro_name_th','pro_name_en','pro_position',
+      //                                 'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
+      //                       -> whereIn ('publish_status', ['1'])
+      //                       // ->where('db_research_project.users_id', Auth::user()->id)
+      //                       ->get()
+      //                       ->count();
+      // }
 
 
-    //dd($query);
     return view('frontend.research',
       [
        'research'          => $query,
