@@ -48,6 +48,19 @@ return [
             'root' => storage_path('app'),
         ],
 
+        'research' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/file_upload'),
+            'url' => env('APP_URL').'/storage',
+        ],
+
+        'journal' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/file_upload_journal'),
+            'url' => env('APP_URL').'/storage',
+        ],
+
+
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),

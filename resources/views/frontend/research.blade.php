@@ -74,11 +74,11 @@
 
     <!-- START SUMMARY Total Box -->
       <div class="row">
-        <div class="col-md-4 col-4 mx-auto">
+        <div class="col-md-4 mx-auto">
           <div class="small-box bg-success">
             <div class="inner">
               <h3> {{ empty($Total_research)?'0': $Total_research }} </h3>
-              <p> โครงการวิจัยที่ทำเสร็จทั้งหมด </p>
+              <p> โครงการวิจัยทั้งหมด </p>
             </div>
             <div class="icon">
               <i class="ion ion-pie-graph"></i>
@@ -87,7 +87,7 @@
           </div>
         </div>
 
-        <div class="col-md-4 col-4">
+        <div class="col-md-4 mx-auto">
           <div class="small-box bg-info mx-auto">
             <div class="inner">
               <h3> {{ empty($Total_master_pro)?'0': $Total_master_pro }} </h3>
@@ -100,14 +100,14 @@
           </div>
         </div>
 
-        <div class="col-md-4 col-4">
+        <div class="col-md-4 mx-auto">
           <div class="small-box bg-danger mx-auto">
             <div class="inner">
               <h3> {{ empty($Total_publish_pro)?'0': $Total_publish_pro }} </h3>
               <p> โครงการวิจัยที่ตีพิมพ์ทั้งหมด </p>
             </div>
             <div class="icon">
-              <i class="ion ion-stats-bars"></i>
+              <i class="ion ion-bookmark"></i>
             </div>
             <!-- <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
           </div>
@@ -246,7 +246,7 @@
         <div class="card">
           <div class="card card-secondary shadow">
             <div class="card-header">
-              <h3 class="card-title"><b> โครงการวิจัยที่เสร็จสิ้นแล้ว </b></h3>
+              <h3 class="card-title"> โครงการวิจัยที่เสร็จสิ้นแล้ว </h3>
             </div>
           </div>
 
@@ -262,7 +262,7 @@
                       <th> ตีพิมพ์ </th>
 
                   {{-- @if(Auth::user()->roles_type != '1') --}}
-                      <th> สถานะการตรวจสอบ </th>
+                  <th> การตรวจสอบ </th>
                   {{-- @endif --}}
 
                       <th class="text-right"> ACTIONS </th>
@@ -288,7 +288,7 @@
                 {{-- @endif --}}
 
                     <td class="td-actions text-right text-nowrap" href="#">
-                      <a href=" {{ route('downloadfile') }} ">
+                      <a href=" {{ route('DownloadFile.research', ['id' => $value->id, 'files' => $value->files]) }} ">
                         <button type="button" class="btn btn-danger btn-md" data-toggle="tooltip" title="Download">
                           <i class="fas fa-arrow-alt-circle-down"></i>
                         </button>

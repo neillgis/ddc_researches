@@ -4,14 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
-// use Storage;
+// use Illuminate\Support\Facades\Storage;
 use App\CmsHelper;
 use App\research;
 use App\journal;
+use Storage;
 use File;
 use Auth;
-
 
 class ResearchController extends Controller
 {
@@ -22,13 +21,11 @@ class ResearchController extends Controller
   }
 
 
-
-
   //  -- SELECT DataTables RESEARCH --
   public function table_research(){
 
       $query = research::select('id','pro_name_th','pro_name_en','pro_position',
-                                'pro_start_date','pro_end_date','publish_status')
+                                'pro_start_date','pro_end_date','publish_status', 'files')
                        ->ORDERBY('id','DESC')
                        ->get();
 
@@ -159,7 +156,7 @@ class ResearchController extends Controller
   public function insert(Request $request){
 
     $data_post = [
-      // "id"          => $request->id,
+      // "users_id"          => Auth::user()->id,
       "pro_name_th"       => $request->pro_name_th,
       "pro_name_en"       => $request->pro_name_en,
       "pro_position"      => $request->pro_position,
@@ -225,34 +222,19 @@ class ResearchController extends Controller
 
 
 
-  public function download_file(Request $request){
-    $pathToFile = DB::table('db_research_project')
-                  ->select('files')
-                  ->where('files', $request->files)
+  //  -- DOWNLOAD --
+  public function DownloadFile(Request $request){
+    $query = DB::table('db_research_project')
+                  ->select('id', 'files')
+                  ->where('id', $request->id)
                   ->first();
 
+    if(!$query) return abort(404);
+
+    $path = $query->files;
+
+    return Storage::disk('research')->download($path);
+  }
 
 
-    return response()->download($pathToFile);
-
-    // $path = $file->storeAs('public/file_upload', $file_name);
-    //
-    //
-    // return Storage::download($path);
-
-
-
-        // if(!asset($file_name)){
-        //   return abort(404);
-        // }
-        // //
-        // // $path = $download->files;
-        // // DD($path);
-        //
-
-        // return Storage::download($download);
-      }
-    }
-
-
-// }
+}
