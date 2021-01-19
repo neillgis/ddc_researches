@@ -149,6 +149,7 @@ class JournalController extends Controller
   public function insert(Request $request){
     // dd($data_post);
     $data_post = [
+      // "users_id"          => Auth::user()->id,
       "article_name_th"   => $request->article_name_th,
       "article_name_en"   => $request->article_name_en,
       "journal_name_th"   => $request->journal_name_th,
