@@ -52,7 +52,7 @@
                     <h3> {{ empty($Total_research)?'0': $Total_research }} โครงการ </h3>
                   </div>
                   <div class="icon">
-                    <i class="fas fa-battery-empty"></i>
+                    <i class="fas fa-chart-line" style="font-size:100px"> </i>
                   </div>
                 </div>
               </div>
@@ -66,7 +66,7 @@
                     <h3> {{ empty($Total_master_pro)?'0': $Total_master_pro }} โครงการ </h3>
                   </div>
                   <div class="icon">
-                    <i class="fas fa-battery-half"></i>
+                    <i class="fas fa-chalkboard-teacher"></i>
                   </div>
                 </div>
               </div>
@@ -80,7 +80,7 @@
                     <h3> {{ empty($Total_publish_pro)?'0': $Total_publish_pro }} โครงการ </h3>
                   </div>
                   <div class="icon">
-                    <i class="fas fa-fire"></i>
+                    <i class="fas fa-dice-d20"></i>
                   </div>
                 </div>
               </div>
@@ -94,7 +94,7 @@
                     <h3> {{ empty($Total_master_journal)?'0': $Total_master_journal }} โครงการ </h3>
                   </div>
                   <div class="icon">
-                    <i class="fas fa-battery-full"></i>
+                    <i class="fas fa-book-reader"></i>
                   </div>
                 </div>
               </div>
@@ -114,9 +114,6 @@
               </div>
 
             </div>
-
-
-            </div>
             <br>
 <!-- END SUM  BOX --------------------------------------------------------->
 
@@ -125,41 +122,45 @@
           <section class="content">
             <div class="card">
                 <div class="card card-gray">
-                <div class="card-header">
-                    <h3 class="card-title"> ตารางสรุปข้อมูลนักวิจัย </h3>
-                </div>
+                  <div class="card-header">
+                      <h3 class="card-title"> สรุปข้อมูลนักวิจัย </h3>
+                  </div>
                 </div>
 
                 <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-hover" id="example1" style="width:100%">
+                    <table class="table table-hover" style="width:100%" id="example1" >
                     <thead>
                         <tr>
-                            <th style="text-align:center">รหัสประจำตัวนักวิจัย</th>
-                            <th style="text-align:center">ชื่อ-นามสกุล</th>
-                            <th style="text-align:center">หน่วยงาน</th>
-                            <th style="text-align:center">โครงการวิจัยทั้งหมด</th>
-                            <th style="text-align:center">โครงการวิจัยที่เป็นผู้วิจัยหลักทั้งหมด</th>
-                            <th style="text-align:center">บทความที่ตีพิมพ์ทั้งหมด</th>
-                            <th style="text-align:center">บทความที่นำไปใช้ประโยชน์เชิงวิชาการ</th>
-                            <th style="text-align:center">ระดับนักวิจัย</th>
-                            <th style="text-align:center">ผู้ตรวจสอบข้อมูล</th>
-                            <th class="text-right">จัดการข้อมูล</th>
+                            <th class="text-center"> รหัสประจำตัวนักวิจัย </th>
+                            <th class="text-center"> ชื่อ-นามสกุล </th>
+                            <th class="text-center"> หน่วยงาน </th>
+                            <th class="text-center"> โครงการวิจัยทั้งหมด </th>
+                            <th class="text-center"> โครงการวิจัยที่เป็นผู้วิจัยหลักทั้งหมด </th>
+                            <th class="text-center"> บทความที่ตีพิมพ์ทั้งหมด </th>
+                            <th class="text-center"> บทความที่นำไปใช้ประโยชน์เชิงวิชาการ </th>
+
+                            <th class="text-center"> ระดับนักวิจัย </th>
+
+                            <th class="text-center"> ผู้ตรวจสอบข้อมูล </th>
+
+                            <th class="text-right"> จัดการข้อมูล </th>
                         </tr>
                     </thead>
 
                     <tbody>
-                        @foreach( $datas as $value )
+                        @foreach( $table_list as $value )
                         <tr>
-                            <td style="text-align:center">{{ $value->orcid_id }}</td>
-                            <td>{{ $value->prefix.$value->fname_th." ".$value->lname_th }}</td>
-                            <td style="text-align:center">{{ $value->depart_name }}</td>
-                            <td style="text-align:center">{{ $value->pro_end_total }}</td>
-                            <td style="text-align:center">{{ $value->pro_major_total }}</td>
-                            <td style="text-align:center">{{ $value->pro_publish_total }}</td>
-                            <td style="text-align:center">{{ $value->util_result_academic }}</td>
-                            <td style="text-align:center">{{ $value->researcher_level }}</td>
-                            <td style="text-align:center">{{ $value->data_auditor }}</td>
+                            <td class="text-center"> {{ $value->orcid_id }} </td>
+                            <td class="text-left"> {{ $value->prefix.$value->fname_th." ".$value->lname_th }} </td>
+                            <td class="text-left"> {{ $value->depart_name }} </td>
+                            <td class="text-center"> {{ $value->id }} </td>
+                            <td class="text-center"> {{ $value->id }} </td>
+                            <td class="text-center"> {{ $value->id }} </td>
+                            <td class="text-center"> {{ $value->id }} </td>
+                            <td class="text-center"> {{ $value->researcher_level }} </td>
+
+                            <td class="text-center"> {{ $value->data_auditor }} </td>
 
                             <td class="td-actions text-right text-nowrap" href="#">
                               <a href="{{ route('downloadfile', $value->id) }}">
@@ -188,11 +189,26 @@
 <!-- END TABLE LIST ----------------------------------------------------------->
 
 
-
 @stop('contents')
 
 <!-- SCRIPT ------------------------------------------------------------------->
 @section('js-custom-script')
+
+
+<!-- START ALERT บันทึกข้อมูลสำเร็จ  -->
+<script type="text/javascript">
+  $(document).ready(function () {
+    window.setTimeout(function() {
+      $(".alert").fadeTo(1000, 0).slideUp(1000, function(){
+          $(this).remove();
+      });
+    }, 2000);
+  });
+</script>
+<!-- END ALERT บันทึกข้อมูลสำเร็จ  -->
+
+
+<!-- REPORT FILE -->
 <script type="text/javascript" class="init">
   $(document).ready(function() {
     $('#example1').DataTable({
@@ -203,6 +219,8 @@
     });
   });
 </script>
+<!-- END REPORT FILE -->
+
 
 <script>
   $(document).ready(function() {
@@ -210,13 +228,14 @@
   });
 </script>
 
-<!-- bs-custom-file-input -->
-<script src="plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
+
+<!-- FILE INPUT -->
 <script type="text/javascript">
 $(document).ready(function () {
   bsCustomFileInput.init();
 });
 </script>
+<!-- END FILE INPUT -->
 
 @stop('js-custom-script')
 

@@ -57,7 +57,7 @@
                     <h3> {{ empty($Total_util)?'0': $Total_util }} โครงการ </h3>
                   </div>
                   <div class="icon">
-                    <i class="ion ion-pie-graph"></i>
+                    <i class="fas fa-chart-line" style="font-size:100px"> </i>
                   </div>
                 </div>
               </div>
@@ -210,7 +210,7 @@
             <div class="card">
               <div class="card card-gray">
                 <div class="card-header">
-                  <h3 class="card-title"> รายชื่อโครงการที่นำไปใช้ประโยชน์ </h3>
+                  <h3 class="card-title"> โครงการที่นำไปใช้ประโยชน์ </h3>
                 </div>
               </div>
 
@@ -231,7 +231,7 @@
                         @foreach ($sl_util as $value)
                         <tr>
                           <td class="text-center"> {{ $value->id }} </td>
-                          <td class="text-right"> {{ $value->pro_name_th." ".$value->pro_name_en }} </td>
+                          <td class="text-left"> {{ $value->pro_name_th." ".$value->pro_name_en }} </td>
                           <td class="text-center"> {{ $value->util_type }} </td>
                           <td class="text-center"> {{ $value->review_status }} </td>
 
@@ -266,6 +266,7 @@
 <!-- SCRIPT ------------------------------------------------------------------->
 @section('js-custom-script')
 
+
 <!-- START ALERT บันทึกข้อมูลสำเร็จ  -->
 <script type="text/javascript">
   $(document).ready(function () {
@@ -273,10 +274,11 @@
       $(".alert").fadeTo(1000, 0).slideUp(1000, function(){
           $(this).remove();
       });
-    }, 3000);
+    }, 2000);
   });
 </script>
 <!-- END ALERT บันทึกข้อมูลสำเร็จ  -->
+
 
 <!-- REPORT FILE -->
 <script type="text/javascript" class="init">

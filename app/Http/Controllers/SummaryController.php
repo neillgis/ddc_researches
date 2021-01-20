@@ -19,9 +19,9 @@ class SummaryController extends Controller
 {
 
 
-    public function summary(){
-      return view('frontend.summary');
-    }
+  public function summary(){
+    return view('frontend.summary');
+  }
 
 
     public function table_summary(){
@@ -69,71 +69,70 @@ class SummaryController extends Controller
                              -> select ('id','article_name_th','article_name_en','journal_name_th','journal_name_en',
                                        'publish_years','publish_no','publish_volume','publish_page','doi_number',
                                        'contribute','corres')
-                             ->get ()->count();
+                             ->get()->count();
 // dd($Total_publish_journal);
 
 
-// END SUM BOX ------------------------------------------------------------------------>
+// END SUM BOX -------------------------------------------------------------------------->
 
 
-// INSERT ------------------------------------------------------------->
-    // public function insert(Request $request){
-    //   // dd($data_post);
-    //   $data_post = [
-    //     "orcid_id"              => $request->orcid_id,
-    //     "pro_end_total"         => $request->pro_end_total,
-    //     "pro_major_total"       => $request->pro_major_total,
-    //     "pro_publish_total"     => $request->pro_publish_total,
-    //     "util_result_academic"  => $request->util_result_academic,
-    //     "researcher_level"      => $request->researcher_level,
-    //     "data_auditor"          => $request->data_auditor,
-    //   ];
-    //   $insert = summary::insert($data_post);
-    //   // $insert = DB::table('person_ddc_table')->insert($data_post);  /*person_ddc_table คือ = ชื่อ table*/
-    //
-    //   if($insert){
-    //     return redirect()->back()->with('success','Insert Succussfully');
-    //   } else {
-    //     return redirect()->back()->with('success','Insert Failed');
-    //   }
-    // }
-// END INSERT ----------------------------------------------------------->
+// TABLE LIST ---------------------------------------------------------------------------->
 
-
-// TABLE LIST ------------------------------------------------------------------------------------------>
-
-      $users_dep = DB::table ('users')
+      // รหัสประจำตัวนักวิจัย - ชื่อ-นามสกุล - หน่วยงาน - ระดับนักวิจัย
+      $data_table_1 = DB::table ('users')
                	 -> join ('depart', 'depart.id', '=', 'users.depart_id')
                	 -> select ('depart.id','depart.depart_name',
-                            'users.orcid_id','users.prefix','users.fname_th','users.lname_th')
-                 ->get ();
-// dd($users_dep);
+                            'users.id','users.orcid_id','users.prefix','users.fname_th','users.lname_th','users.researcher_level','users.data_auditor')                 -> ORDERBY ('users.id','ASC')
+                 ->get();
+// dd($data_table_1);
 
-      $sl_research = research::select ('id','pro_name_th','pro_name_en','pro_position',
-                                       'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
-                   ->get ();
+      // จำนวน โครงการวิจัยทั้งหมด ------------------------------------------------------------>
+      $data_table_2 = DB::table ('users')
+                 -> join ('db_research_project', 'db_research_project.users_id', '=', 'users.id')
+                 -> selectRaw ('users.id, count(DISTINCT db_research_project.id) AS total_research_count')
+                 -> GROUPBY ('users.id')
+                 -> ORDERBY('users.id','DESC')
+                 ->get();
+// dd($data_table_2);
 
+      // จำนวน โครงการวิจัยที่เป็นผู้วิจัยหลักทั้งหมด ------------------------------------------------>
+      $data_table_2_1 = DB::table ('users')
+                 -> join ('db_research_project', 'db_research_project.users_id', '=', 'users.id')
+                 -> selectRaw ('users.id, count(DISTINCT db_research_project.id) AS master_research_count')
+                 -> whereIn ('pro_position', ['1'])
+                 -> GROUPBY ('users.id')
+                 ->get();
+// dd($data_table_2_1);
 
-      $sl_journal = journal::select ('id','article_name_th','article_name_en','journal_name_th','journal_name_en',
-                                    'publish_years','publish_no','publish_volume','publish_page','doi_number',
-                                    'contribute','corres')
-                  ->get ();
+      // จำนวน บทความที่ตีพิมพ์ทั้งหมด --------------------------------------------------------->
+      $data_table_3 = DB::table ('users')
+                  -> join ('db_published_journal', 'db_published_journal.users_id', '=', 'users.id')
+                  -> selectRaw ('users.id, count(DISTINCT db_published_journal.id) AS total_journal_count')
+                  -> GROUPBY ('users.id')
+                  ->get();
+// dd($data_table_3);
 
+      // จำนวน บทความที่นำไปใช้ประโยชน์เชิงวิชาการ ---------------------------------------------->
+      $data_table_3_1 = DB::table ('users')
+                  -> join ('db_utilization', 'db_utilization.users_id', '=', 'users.id')
+                  -> selectRaw ('users.id, count(DISTINCT db_utilization.id) AS total_util_count')
+                  -> where ('util_type', '=', 'เชิงวิชาการ')
+                  -> GROUPBY ('users.id')
+                  ->get();
+// dd($data_table_3_1);
 
-      // EDIT ระดับนักวิจัย , ผู้ตรวจสอบข้อมูล ----------------------------------------->
+      // ระดับนักวิจัย researcher_level ------------------------------------------------------>
       $researcher_level = [1=> 'นักวิจัยฝึกหัด',
                            2=> 'นักวิจัยรุ่นใหม่',
                            3=> 'นักวิจัยรุ่นกลาง',
                            4=> 'นักวิจัยอวุโส'
                            ];
+// dd($researcher_level);
 
-      $data_auditor = [1=> 'นางสาวนัยนา ประดิษฐ์สิทธิกร',
-                       2=> 'นางสาวชลนที รอดสว่าง',
-                       3=> 'นายอภิสิทธิ์ สนองค์'
-                       ];
-      // END EDIT ระดับนักวิจัย , ผู้ตรวจสอบข้อมูล ----------------------------------------->
 
-// END TABLE LIST ------------------------------------------------------------------------------------------>
+
+// END TABLE LIST ----------------------------------------------------------------->
+
 
       return view('frontend.summary',
       [
@@ -143,15 +142,58 @@ class SummaryController extends Controller
         "Total_master_journal"  => $Total_master_journal,
         "Total_publish_journal" => $Total_publish_journal,
 
-        "datas"    => $sl_research, $sl_journal,
+        "table_list"            => $data_table_1,$data_table_2,$data_table_2_1,
+                                   $data_table_3,$data_table_3_1,
 
-        "users_dep"             => $users_dep,
-
-        "researcher_level"      => $researcher_level,
-        "data_auditor"          => $data_auditor
-
+        "researcher_level"      => $researcher_level
       ]);
 }
+
+
+      // INSERT ------------------------------------------------------------->
+          // public function insert(Request $request){
+          //   $data_post = [
+          //     // AUTH
+          //     "orcid_id"              => $request->orcid_id,
+          //     "nrms_id"               => $request->nrms_id,
+          //     "card_id"               => $request->card_id,
+          //     "depart_id"             => $request->depart_id,
+          //     "fname_th"              => $request->fname_th,
+          //     "lname_th"              => $request->lname_th,
+          //     "fname_en"              => $request->fname_en,
+          //     "lname_en"              => $request->lname_en,
+          //     "position"              => $request->position,
+          //     "researcher_level"      => $request->researcher_level,
+          //     "data_auditor"          => $request->data_auditor,
+          //     "updated_at"            => date('Y-m-d H:i:s')
+          //   ];
+          //   $insert = summary::insert($data_post);
+          //
+          //   if($insert){
+          //     return redirect()->route('page.summary')->with('swl_add', 'เพิ่มข้อมูลสำเร็จแล้ว');
+          // }else {
+          //     return redirect()->back()->with('swl_err', 'บันทึกแล้ว');
+          //   }
+          // }
+      // END INSERT ----------------------------------------------------------->
+
+
+      // SAVE ----------------------------------------------------------------->
+      public function save_summary_form(Request $request){
+      // dd($request);
+      $update = member::where('id',$request->id)
+                      ->update([
+                              'researcher_level'  => $request->researcher_level
+                              ]);
+
+      if($update){
+        //return Sweet Alert
+         return redirect()->back()->with('success','การบันทึกข้อมูลสำเร็จ');
+      } else {
+         return redirect()->back()->with('failure','การบันทึกข้อมูลไม่สำเร็จ !!');
+      }
+      }
+      // END SAVE ----------------------------------------------------------------->
 
 
 }
