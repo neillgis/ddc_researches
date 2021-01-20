@@ -40,7 +40,7 @@ Route::get('/research_edit/{id}','ResearchController@edit_research_form')->name(
 //  -- SAVE --
 Route::post('/save_research_edit','ResearchController@save_research_form')->name('research.save');
 //  -- DOWNLOAD --
-Route::get('/download-file','ResearchController@download_file')->name('downloadfile');
+Route::get('/Download-Files/research/{id}/{files}','ResearchController@DownloadFile')->name('DownloadFile.research');
 
 
 
@@ -53,6 +53,8 @@ Route::post('/journal_insert','JournalController@insert')->name('journal.insert'
 Route::get('/journal_edit/{id}','JournalController@edit_journal_form')->name('journal.edit');
 //  -- SAVE --
 Route::post('/save_journal_edit','JournalController@save_journal_form')->name('journal.save');
+//  -- DOWNLOAD --
+Route::get('/Download-Files/journal/{id}/{files}','JournalController@DownloadFile')->name('DownloadFile.journal');
 
 
 

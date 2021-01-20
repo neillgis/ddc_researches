@@ -72,29 +72,29 @@
 
     <!-- START SUMMARY Total Box -->
       <div class="row">
-        <div class="col-md-6 col-6">
+        <div class="col-md-6 mx-auto">
           <div class="small-box bg-info">
             <div class="inner">
-              <h3>150</h3>
-              <p> บทความผู้นิพนธ์หลัก </p>
+              <h3> {{ empty($Total_journal)?'0': $Total_journal }} </h3>
+              <p> บทความตีพิมพ์ทั้งหมด </p>
             </div>
             <div class="icon">
-              <i class="ion ion-pie-graph"></i>
+              <i class="ion ion-bookmark"></i>
             </div>
-            <!-- <a class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
+            <!-- <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
           </div>
         </div>
 
-        <div class="col-md-6 col-6">
+        <div class="col-md-6 mx-auto">
           <div class="small-box bg-danger">
             <div class="inner">
-              <h3>53<sup style="font-size: 20px">%</sup></h3>
-              <p> บทความตีพิมพ์ทั้งหมด </p>
+              <h3> {{ empty($Total_master_jour)?'0': $Total_master_jour }} </h3>
+              <p> บทความที่เป็นผู้นิพนธ์หลัก </p>
             </div>
             <div class="icon">
               <i class="ion ion-person"></i>
             </div>
-            <!-- <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
+            <!-- <a class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
           </div>
         </div>
 
@@ -219,7 +219,7 @@
                       <!-- SELECT ดึงข้อมูลชื่อโครงการมาจาก -> db_published_journal Table -->
                       <select class="form-control" name="pro_id">
                           <option value="" disabled="true" selected="true"> -- กรุณาเลือก -- </option>
-                        @foreach ($journal_5 as $value)
+                        @foreach ($journal_res as $value)
                           <option value = "{{ $value->id }}"> {{ $value->pro_name_en }} </option>
                         @endforeach
                       </select>
@@ -301,7 +301,7 @@
                       <th> ผู้รับผิดชอบบทความ </th>
 
                   {{-- @if(Auth::user()->roles_type != '1') --}}
-                      <th> สถานะการตรวจสอบ </th>
+                      <th> การตรวจสอบ </th>
                   {{-- @endif --}}
 
                       <th class="text-right"> ACTIONS </th>
@@ -329,7 +329,7 @@
 
 
                     <td class="td-actions text-right text-nowrap" href="#">
-                      <a href="#">
+                      <a href=" {{ route('DownloadFile.journal', ['id' => $value->id, 'files' => $value->files]) }} ">
                         <button type="button" class="btn btn-danger btn-md" data-toggle="tooltip" title="Download">
                           <i class="fas fa-arrow-alt-circle-down"></i>
                         </button>

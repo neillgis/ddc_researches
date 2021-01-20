@@ -4,14 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
-// use Storage;
+// use Illuminate\Support\Facades\Storage;
 use App\CmsHelper;
 use App\research;
 use App\journal;
+use Storage;
 use File;
 use Auth;
-
 
 class JournalController extends Controller
 {
@@ -25,17 +24,20 @@ class JournalController extends Controller
 
   //  -- SELECT SHOW DataTables--
   public function table_journal(){
-    $query  = research::select('id','pro_name_en')->get();
 
-    $query2 = journal::select(
-                              'id',
-                              'article_name_th',
-                              'journal_name_th',
-                              'publish_years',
-                              'corres'
-                              )
-                        ->ORDERBY('id','DESC')
-                        ->get();
+    $query  = DB::table('db_published_journal')
+                ->join('db_research_project', 'db_research_project.id' ,'=', 'db_published_journal.pro_id')
+                ->select('db_research_project.id',
+                         'db_research_project.pro_name_en',
+                         'db_published_journal.pro_id'
+                         )
+                // ->where('db_published_journal.users_id', Auth::user()->id)
+                ->get();
+      // dd($query);
+
+    $query2 = journal::select('id', 'article_name_th', 'journal_name_th', 'publish_years','corres', 'files')
+                    ->ORDERBY('id','DESC')
+                    ->get();
 
     $query3 = [1=> 'ผู้นิพนธ์หลัก (first-author)',
                2=> 'ผู้นิพนธ์ร่วม (co-author)'
@@ -45,12 +47,42 @@ class JournalController extends Controller
                2=> 'ไม่ใช่'
               ];
 
+
+    // if(Auth::user()->roles_type == 1){
+        // count (All Record)
+          $Total_journal = journal::select('id')->get()->count();
+    // }else {
+          // $Total_journal = journal::select('id',)
+          //                           ->where('id', Auth::user()->id)
+          //                           ->get()
+          //                           ->count();
+    // }
+
+
+    // if(Auth::user()->roles_type == 1){
+        // count (contribute) = 1
+        $Total_master_jour = journal::select('id', 'contribute')
+                                    ->whereIn ('contribute', ['1'])
+                                    ->get()
+                                    ->count();
+    // }else {
+        // $Total_master_jour = journal::select('id', 'contribute')
+        //                             ->whereIn ('contribute', ['1'])
+        //                             ->where('contribute', Auth::user()->id)
+        //                             ->get()
+        //                             ->count();
+    // }
+
+
     return view('frontend.journal',
       [
-        'journal_5'   => $query,
-        'journals'    => $query2,
-        'contribute'  => $query3,
-        'corres'      => $query4
+        'journal_res'     => $query,
+        'journals'        => $query2,
+        'contribute'      => $query3,
+        'corres'          => $query4,
+        'corres'          => $query4,
+        'Total_journal'   => $Total_journal,
+        'Total_master_jour'  => $Total_master_jour,
 
      ]);
   }
@@ -117,6 +149,7 @@ class JournalController extends Controller
   public function insert(Request $request){
     // dd($data_post);
     $data_post = [
+      // "users_id"          => Auth::user()->id,
       "article_name_th"   => $request->article_name_th,
       "article_name_en"   => $request->article_name_en,
       "journal_name_th"   => $request->journal_name_th,
@@ -142,8 +175,8 @@ class JournalController extends Controller
           //ตั้งชื่อตัวแปร $file_name เพื่อเปลี่ยนชื่อ + นามสกุลไฟล์
         $name='file_'.date('dmY_His');
         $file_name = $name.'.'.$file->getClientOriginalExtension();
-          // upload file ไปที่ PATH : public/file_upload
-        $path = $file->storeAs('public/file_upload',$file_name);
+          // upload file ไปที่ PATH : Storage/app/public/file_upload_journal
+        $path = $file->storeAs('public/file_upload_journal',$file_name);
         $data_post['files'] = $file_name;
     }
 
@@ -157,11 +190,6 @@ class JournalController extends Controller
     }
   }
   //  -- END INSERT --
-
-
-
-
-
 
 
 
@@ -192,5 +220,22 @@ class JournalController extends Controller
     }
   }
   //  -- END SAVE --
+
+
+
+  //  -- DOWNLOAD --
+  public function DownloadFile(Request $request){
+    $query2 = DB::table('db_published_journal')
+                  ->select('id', 'files')
+                  ->where('id', $request->id)
+                  ->first();
+
+    if(!$query2) return abort(404);
+
+    $path = $query2->files;
+
+    return Storage::disk('journal')->download($path);
+  }
+
 
 }
