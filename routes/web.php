@@ -41,6 +41,9 @@ Route::get('/research_edit/{id}','ResearchController@edit_research_form')->name(
 Route::post('/save_research_edit','ResearchController@save_research_form')->name('research.save');
 //  -- DOWNLOAD --
 Route::get('/Download-Files/research/{id}/{files}','ResearchController@DownloadFile')->name('DownloadFile.research');
+//  -- VERIFIED --
+Route::get('/research/verified/{id}', 'ResearchController@action_verified')->name('research.verified');
+
 
 
 
@@ -55,6 +58,8 @@ Route::get('/journal_edit/{id}','JournalController@edit_journal_form')->name('jo
 Route::post('/save_journal_edit','JournalController@save_journal_form')->name('journal.save');
 //  -- DOWNLOAD --
 Route::get('/Download-Files/journal/{id}/{files}','JournalController@DownloadFile')->name('DownloadFile.journal');
+//  -- VERIFIED --
+// Route::get('/journal/verified/{id}', 'JournalController@action_verified')->name('journal.verified');
 
 
 

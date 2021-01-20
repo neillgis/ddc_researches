@@ -73,7 +73,7 @@
     <!-- START SUMMARY Total Box -->
       <div class="row">
         <div class="col-md-6 mx-auto">
-          <div class="small-box bg-info">
+          <div class="small-box" style="background-color: #8B88FF;">
             <div class="inner">
               <h3> {{ empty($Total_journal)?'0': $Total_journal }} </h3>
               <p> บทความตีพิมพ์ทั้งหมด </p>
@@ -86,7 +86,7 @@
         </div>
 
         <div class="col-md-6 mx-auto">
-          <div class="small-box bg-danger">
+          <div class="small-box" style="background-color: #FF9C00;">
             <div class="inner">
               <h3> {{ empty($Total_master_jour)?'0': $Total_master_jour }} </h3>
               <p> บทความที่เป็นผู้นิพนธ์หลัก </p>
@@ -109,7 +109,7 @@
     <div class="row">
       <div class="col-md-12">
         <div class="card">
-          <div class="card card-success shadow">
+          <div class="card shadow" style="background-color: #7BB31A;">
             <div class="card-header">
               <h5><b> เพิ่มข้อมูลการตีพิมพ์วารสาร </b></h5>
             </div>
@@ -299,11 +299,7 @@
                       <th> ชื่อวารสาร </th>
                       <th> ตีพิมพ์ </th>
                       <th> ผู้รับผิดชอบบทความ </th>
-
-                  {{-- @if(Auth::user()->roles_type != '1') --}}
                       <th> การตรวจสอบ </th>
-                  {{-- @endif --}}
-
                       <th class="text-right"> ACTIONS </th>
                     </tr>
                 </thead>
@@ -317,7 +313,6 @@
                     <td> {{ $value->publish_years }} </td>
                     <td> {{ $corres [ $value->corres ] }} </td>
 
-                {{-- @if(Auth::user()->roles_type != '1') --}}
                     <td>
                       @if($value->corres == "1")
                         <span class="badge bg-danger badge-pill"> {{ $value->corres }} </span> <!-- null = รอการอนุมัติ -->
@@ -325,8 +320,6 @@
                         <span class="badge bg-success badge-pill"> {{ $value->corres }} </span> <!--  2 = ไม่อนุมัติ -->
                       @endif
                     </td>
-                {{-- @endif --}}
-
 
                     <td class="td-actions text-right text-nowrap" href="#">
                       <a href=" {{ route('DownloadFile.journal', ['id' => $value->id, 'files' => $value->files]) }} ">
@@ -341,13 +334,14 @@
                         </button>
                       </a>
 
+                  {{-- @if(Auth::user()->roles_type != '1') --}}
                       <a href="#">
-                        <button type="button" class="btn btn-info btn-md" data-toggle="tooltip" title="Verfied">
+                        <button type="button" class="btn btn-md" data-toggle="tooltip" title="Verfied" style="background-color: #336699;">
                           <i class="fas fa-user-check"></i>
                         </button>
                       </a>
+                  {{-- @endif --}}
                     </td>
-
 
                   </tr>
                   @endforeach

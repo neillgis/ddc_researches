@@ -25,7 +25,14 @@ class ResearchController extends Controller
   public function table_research(){
 
       $query = research::select('id','pro_name_th','pro_name_en','pro_position',
-                                'pro_start_date','pro_end_date','publish_status', 'files')
+                                'pro_start_date','pro_end_date','publish_status',
+                                'files', 'verified',
+
+                                \DB::raw('(CASE
+                                              WHEN verified = "1" THEN "อนุมัติแล้ว"
+                                              ELSE "ยังไม่ได้อนุมัติ"
+                                              END) AS verified'
+                                ))
                        ->ORDERBY('id','DESC')
                        ->get();
 
@@ -209,8 +216,6 @@ class ResearchController extends Controller
                             'publish_status'  => $request->publish_status
                           ]);
 
-          // dd($request->id);
-
     if($update){
       //return Sweet Alert
         return redirect()->route('page.research')->with('swl_add', 'แก้ไขข้อมูลสำเร็จแล้ว');
@@ -235,6 +240,38 @@ class ResearchController extends Controller
 
     return Storage::disk('research')->download($path);
   }
+  //  -- END DOWNLOAD --
+
+
+
+  //  -- VERIFIED --
+  public function action_verified(Request $request){
+
+      //UPDATE db_research_project
+      $verified = DB::table('db_research_project')
+                ->where('id', $request->id)
+                ->update(['verified' => "1"]);
+                // ->get();
+
+       // dd($verified);
+
+      if(!$verified = '1'){
+        return abort(404);
+      }
+
+      if($verified) {
+          return redirect()->back()->with('swl_verified', '555ลบข้อมูลเรียบร้อยแล้ว');
+      }else {
+          return redirect()->back()->with('swl_del', 'ไม่สามารถลบข้อมูลได้');
+      }
+
+    }
+      // else {
+      //     return redirect()->back()->with('swl_verified', 'ลบข้อมูลเรียบร้อยแล้ว');
+      // }
+
+  // }
+  //  -- END VERIFIED --
 
 
 }

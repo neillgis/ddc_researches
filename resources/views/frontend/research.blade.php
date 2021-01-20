@@ -17,7 +17,6 @@
 <!-- SweetAlert2 -->
 <link rel="stylesheet" href="{{ asset('bower_components/admin-lte/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
 
-
   <!-- Fonts Style : Kanit -->
     <style>
     body {
@@ -123,7 +122,7 @@
       <div class="row">
         <div class="col-md-12">
           <div class="card">
-            <div class="card card-warning shadow">
+            <div class="card shadow" style="background-color: #ff851b;">
               <div class="card-header">
                 <h5><b> เพิ่มข้อมูลโครงการวิจัย </b></h5>
               </div>
@@ -260,11 +259,7 @@
                       <th> เริ่มโครงการ </th>
                       <th> เสร็จสิ้นโครงการ </th>
                       <th> ตีพิมพ์ </th>
-
-                  {{-- @if(Auth::user()->roles_type != '1') --}}
-                  <th> การตรวจสอบ </th>
-                  {{-- @endif --}}
-
+                      <th> การตรวจสอบ </th>
                       <th class="text-right"> ACTIONS </th>
                     </tr>
                 </thead>
@@ -278,14 +273,13 @@
                     <td> {{ CmsHelper::DateThai($value->pro_end_date) }} </td>
                     <td> {{ $publish_status [ $value->publish_status ] }} </td>
 
-                {{-- @if(Auth::user()->roles_type != '1') --}}
-                    <td> @if($value->publish_status == "รออนุมัติ")
-                        <span class="badge bg-secondary"> {{ $value->publish_status }} </span>
-                      else
-                        <span class="badge bg-danger"> {{ $value->publish_status }} </span>
+                    <td>
+                      @if($value->verified == "อนุมัติแล้ว")
+                        <span class="badge bg-secondary badge-pill"> {{ $value->verified }} </span> <!-- null = รอการอนุมัติ -->
+                      @else
+                        <span class="badge bg-danger badge-pill"> {{ $value->verified }} </span> <!--  2 = ไม่อนุมัติ -->
                       @endif
                     </td>
-                {{-- @endif --}}
 
                     <td class="td-actions text-right text-nowrap" href="#">
                       <a href=" {{ route('DownloadFile.research', ['id' => $value->id, 'files' => $value->files]) }} ">
@@ -300,11 +294,14 @@
                         </button>
                       </a>
 
-                      <a href="#">
-                        <button type="button" class="btn btn-info btn-md" data-toggle="tooltip" title="Verfied">
+                  {{-- @if(Auth::user()->roles_type != '1') --}}
+                      <a href=" {{ route('research.verified', $value->id) }} ">
+                        <button type="button" class="btn btn-md"
+                                data-toggle="tooltip" title="Verfied" style="background-color: #336699;">
                           <i class="fas fa-user-check"></i>
                         </button>
                       </a>
+                  {{-- @endif --}}
                     </td>
 
                   </tr>
@@ -327,7 +324,7 @@
 
 @section('js-custom-script')
 
-<!-- SweetAlert2 -->
+<!-- SweetAlert2 INSERT -->
 <script src="{{ asset('bower_components/admin-lte/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
 
     @if(session()->has('swl_add'))
@@ -353,11 +350,103 @@
 <!-- END SweetAlert2 -->
 
 
+<!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
-<!-- <script type="text/javascript">
-    var pro_position =
-    <?php echo json_encode($pro_position, JSON_PRETTY_PRINT) ?>;
-</script> -->
+  @if(session()->has('swl_verified'))
+    <script>
+      // $.ajaxSetup({
+      //   headers: {
+      //     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      //   }
+      // });
+
+        Swal.fire({
+          title: 'Are you sure?',
+          text: "รายการนี้ถูกตรวจสอบแล้วใช่ไหม",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: '#208a17',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Confirm',
+          cancelButtonText: "No Cancel",
+          reverseButtons: !0,
+        }).then((result) => {
+          if (result.isConfirmed) {
+            Swal.fire(
+              'Verfied Success',
+              'Your data has been verfied.',
+              'success'
+              // icon: 'success',
+              // title: 'รายการนี้ถูกตรวจสอบเรียบร้อยแล้ว',
+              // showConfirmButton: true,
+              // timer: 1000
+
+            )
+          }
+        })
+          // reverseButtons: !0
+        // }).then(function (e) {
+        //
+        //     if (e.value === true) {
+        //         var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+        //
+        //         $.ajax({
+        //             type: 'GET',
+        //             url: "{{ route('research.verified', $value->id) }}",
+        //             data: {_token: CSRF_TOKEN},
+        //             dataType: 'JSON',
+        //             success: function (results) {
+        //
+        //                 if (results.success === true) {
+        //                     swal("Done!", results.message, "success");
+        //                     setTimeout(function(){
+        //                       location.reload();
+        //                       }, 1000);
+        //                 } else {
+        //                     swal("Error!", results.message, "error");
+        //                 }
+        //             }
+        //         });
+        //
+        //     } else {
+        //         e.dismiss;
+        //     }
+        //
+        // }, function (dismiss) {
+        //     return false;
+        // });
+
+
+        // }).then((result) => {
+        //   if (result.isConfirmed) {
+        //     window.location.href = "{{ route('research.verified', $value->id) }}";
+            // $.ajax({
+            //   url: "{{ route('research.verified', $value->id) }}",
+            //   type: "get",
+            //   data: {
+            //     'id': id,
+            //   },
+            //   success: function(data) {
+            //     if (data.verified != 'ok') {
+            //       Swal.fire({
+            //         icon: 'success',
+            //         title: 'รายการนี้ถูกตรวจสอบเรียบร้อยแล้ว',
+            //         showConfirmButton: true,
+            //         timer: 1000
+            //       }).then((result) => {
+            //         if (result) {
+            //           location.reload();
+            //         }
+            //       })
+            //     }
+            //   }
+            // })
+        //   }
+        // });
+    </script>
+  @endif
+<!-- END SweetAlert2 -->
 
 
 <!-- START ALERT บันทึกข้อมูลสำเร็จ  -->
@@ -437,4 +526,6 @@
 <script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
 <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.6.4/js/buttons.html5.min.js"></script>
 <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.6.4/js/buttons.print.min.js"></script>
+
+
 @stop('js-custom')
