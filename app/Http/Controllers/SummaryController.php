@@ -9,9 +9,7 @@ use App\member;
 use App\depart;
 use App\research;
 use App\journal;
-
-
-use Illuminate\Support\Facades\Storage;
+use Storage;
 use File;
 
 
@@ -24,7 +22,7 @@ class SummaryController extends Controller
   }
 
 
-    public function table_summary(){
+    public function table_summary(Request $request){
 
 // SUM BOX ------------------------------------------------------------------------>
 
@@ -121,17 +119,21 @@ class SummaryController extends Controller
                   ->get();
 // dd($data_table_3_1);
 
-      // ระดับนักวิจัย researcher_level ------------------------------------------------------>
-      $researcher_level = [1=> 'นักวิจัยฝึกหัด',
-                           2=> 'นักวิจัยรุ่นใหม่',
-                           3=> 'นักวิจัยรุ่นกลาง',
-                           4=> 'นักวิจัยอวุโส'
-                           ];
-// dd($researcher_level);
+      // ระดับนักวิจัย researcher_level
+      $data_table_4 = [1=> 'นักวิจัยฝึกหัด',
+                       2=> 'นักวิจัยรุ่นใหม่',
+                       3=> 'นักวิจัยรุ่นกลาง',
+                       4=> 'นักวิจัยอวุโส'
+                       ];
+// dd($data_table_4);
 
+    // ผู้ตรวจสอบข้อมูล data_auditor
+      $data_table_5 = [1=> 'นางสาวนัยนา ประดิษฐ์สิทธิกร',
+                       2=> 'นางสาวชลนที รอดสว่าง',
+                       3=> 'นายอภิสิทธิ์ สนองค์'
+                       ];
+// dd($data_table_5);
 
-
-// END TABLE LIST ----------------------------------------------------------------->
 
 
       return view('frontend.summary',
@@ -142,44 +144,85 @@ class SummaryController extends Controller
         "Total_master_journal"  => $Total_master_journal,
         "Total_publish_journal" => $Total_publish_journal,
 
-        "table_list"            => $data_table_1,$data_table_2,$data_table_2_1,
+        "table_list_1"          => $data_table_1,$data_table_2,$data_table_2_1,
                                    $data_table_3,$data_table_3_1,
 
-        "researcher_level"      => $researcher_level
+        // ระดับนักวิจัย researcher_level
+        "sl_researchlev"        => $data_table_4,
+
+        // ผู้ตรวจสอบข้อมูล data_auditor
+        "sl_auditorchk"       => $data_table_5
+
       ]);
 }
+// END TABLE LIST ----------------------------------------------------------------->
+
+
+    // EDIT ----------------------------------------------------------------->
+    public function edit_summary(Request $request){
+
+      $edit_1 = member::select ('users.id','users.researcher_level','users.data_auditor')
+                 -> where ('users.id', $request->id)
+                 ->first();
+// dd($$request->id);
+
+      // ระดับนักวิจัย researcher_level
+      $edit_2 = [1=> 'นักวิจัยฝึกหัด',
+                 2=> 'นักวิจัยรุ่นใหม่',
+                 3=> 'นักวิจัยรุ่นกลาง',
+                 4=> 'นักวิจัยอาวุโส'
+                 ];
+
+      // ผู้ตรวจสอบข้อมูล data_auditor
+      $edit_3 = [1=> 'นางสาวนัยนา ประดิษฐ์สิทธิกร',
+                       2=> 'นางสาวชลนที รอดสว่าง',
+                       3=> 'นายอภิสิทธิ์ สนองค์'
+                      ];
+
+
+
+      return view('frontend.summary.edit',
+      [
+         "edit_users"        => $edit_1,
+         "edit_researchlev"  => $edit_2,
+         "edit_auditorchk"   => $edit_3
+
+
+      ]);
+      }
+      // END EDIT ----------------------------------------------------------------->
 
 
       // INSERT ------------------------------------------------------------->
-          // public function insert(Request $request){
-          //   $data_post = [
-          //     // AUTH
-          //     "orcid_id"              => $request->orcid_id,
-          //     "nrms_id"               => $request->nrms_id,
-          //     "card_id"               => $request->card_id,
-          //     "depart_id"             => $request->depart_id,
-          //     "fname_th"              => $request->fname_th,
-          //     "lname_th"              => $request->lname_th,
-          //     "fname_en"              => $request->fname_en,
-          //     "lname_en"              => $request->lname_en,
-          //     "position"              => $request->position,
-          //     "researcher_level"      => $request->researcher_level,
-          //     "data_auditor"          => $request->data_auditor,
-          //     "updated_at"            => date('Y-m-d H:i:s')
-          //   ];
-          //   $insert = summary::insert($data_post);
-          //
-          //   if($insert){
-          //     return redirect()->route('page.summary')->with('swl_add', 'เพิ่มข้อมูลสำเร็จแล้ว');
-          // }else {
-          //     return redirect()->back()->with('swl_err', 'บันทึกแล้ว');
-          //   }
-          // }
+          public function insert(Request $request){
+            $data_post = [
+              // AUTH
+              "orcid_id"              => $request->orcid_id,
+              "nrms_id"               => $request->nrms_id,
+              "card_id"               => $request->card_id,
+              "depart_id"             => $request->depart_id,
+              "fname_th"              => $request->fname_th,
+              "lname_th"              => $request->lname_th,
+              "fname_en"              => $request->fname_en,
+              "lname_en"              => $request->lname_en,
+              "position"              => $request->position,
+              "researcher_level"      => $request->researcher_level,
+              "data_auditor"          => $request->data_auditor,
+              "updated_at"            => date('Y-m-d H:i:s')
+            ];
+            $insert = summary::insert($data_post);
+
+            if($insert){
+              return redirect()->back()->with('success', 'เพิ่มข้อมูลสำเร็จแล้ว');
+          }else {
+              return redirect()->back()->with('success', 'บันทึกแล้ว');
+            }
+          }
       // END INSERT ----------------------------------------------------------->
 
 
       // SAVE ----------------------------------------------------------------->
-      public function save_summary_form(Request $request){
+      public function save_summary(Request $request){
       // dd($request);
       $update = member::where('id',$request->id)
                       ->update([

@@ -127,6 +127,10 @@
                   </div>
                 </div>
 
+
+                <form method="POST" action="{{ route('summary.insert') }}">
+                  @csrf
+
                 <div class="card-body">
                 <div class="table-responsive">
                     <table class="table table-hover" style="width:100%" id="example1" >
@@ -149,32 +153,60 @@
                     </thead>
 
                     <tbody>
-                        @foreach( $table_list as $value )
+                        @foreach( $table_list_1 as $value )
                         <tr>
                             <td class="text-center"> {{ $value->orcid_id }} </td>
                             <td class="text-left"> {{ $value->prefix.$value->fname_th." ".$value->lname_th }} </td>
                             <td class="text-left"> {{ $value->depart_name }} </td>
-                            <td class="text-center"> {{ $value->id }} </td>
-                            <td class="text-center"> {{ $value->id }} </td>
-                            <td class="text-center"> {{ $value->id }} </td>
-                            <td class="text-center"> {{ $value->id }} </td>
-                            <td class="text-center"> {{ $value->researcher_level }} </td>
+                            <td class="text-center"> # </td>
+                            <td class="text-center"> # </td>
+                            <td class="text-center"> # </td>
+                            <td class="text-center"> # </td>
 
-                            <td class="text-center"> {{ $value->data_auditor }} </td>
+                            <!-- researcher_level -->
+                            <td>
+                            <select class="custom-select custom-select-sm" name="sl_researchlev">
+                              <option value="" disabled="true" selected="true" >กรุณาเลือก</option>
+                              @foreach ($sl_researchlev as $key => $value)
+                                <option value="{{ $key }}"> {{ $value }} </option>
+                              @endforeach
+                            </select>
+                            </td>
 
+                            <!-- data_auditor -->
+                            <td>
+                            <select class="custom-select custom-select-sm" name="sl_auditorchk">
+                              <option value="" disabled="true" selected="true" >กรุณาเลือก</option>
+                              @foreach ($sl_auditorchk as $key => $value)
+                                <option value="{{ $key }}"> {{ $value }} </option>
+                              @endforeach
+                            </select>
+                            </td>
+
+                            <!-- จัดการข้อมูล -->
                             <td class="td-actions text-right text-nowrap" href="#">
-                              <a href="{{ route('downloadfile', $value->id) }}">
+                              <a href="#">
                                 <button type="button" class="btn btn-danger btn-md" data-toggle="tooltip" title="Download">
                                   <i class="fas fa-arrow-alt-circle-down"></i>
                                 </button>
                               </a>
 
                               <a href="#">
-                                <button type="button" class="btn btn-info btn-md" data-toggle="tooltip" title="Verfied">
+                                <button type="button" class="btn btn-warning btn-md" data-toggle="tooltip" title="Edit">
+                                  <i class="fas fa-edit"></i>
+                                </button>
+                              </a>
+
+                          {{-- @if(Auth::user()->roles_type != '1') --}}
+                              <a href="#">
+                                <button type="button" class="btn btn-md"
+                                        data-toggle="tooltip" title="Verfied" style="background-color: #336699;">
                                   <i class="fas fa-user-check"></i>
                                 </button>
                               </a>
+                          {{-- @endif --}}
                             </td>
+
 
                         </tr>
                         @endforeach
@@ -182,9 +214,13 @@
                     </table>
                 </div>
                 </div>
-              </div>
+
+                </form>
+
             </div>
           </section>
+
+          </div>
       </section>
 <!-- END TABLE LIST ----------------------------------------------------------->
 
@@ -193,6 +229,17 @@
 
 <!-- SCRIPT ------------------------------------------------------------------->
 @section('js-custom-script')
+
+
+
+<script type="text/javascript">
+  $(document).ready(function(){
+   $(".dropdown-menu").on('click', 'a', function(){
+       $(this).parents('.dropdown').find('button').text($(this).text());
+   });
+});
+</script>
+
 
 
 <!-- START ALERT บันทึกข้อมูลสำเร็จ  -->

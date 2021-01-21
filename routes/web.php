@@ -68,6 +68,10 @@ Route::get('/util_form','UtilizationController@util') -> name('page.util');
 Route::get('/util_form','UtilizationController@table_util') -> name('page.util');
 //  -- INSERT --
 Route::post('/util_insert','UtilizationController@insert') -> name('util.insert');
+//  -- EDIT --
+Route::post('/util_edit','UtilizationController@edit_util') -> name('util.edit');
+//  -- SAVE --
+Route::post('/save_util_edit','UtilizationController@save_util') -> name('util.save');
 
 
 
@@ -75,7 +79,11 @@ Route::post('/util_insert','UtilizationController@insert') -> name('util.insert'
 Route::get('/summary_form','SummaryController@summary') -> name('page.summary');
 Route::get('/summary_form','SummaryController@table_summary') -> name('page.summary');
 //  -- INSERT --
-Route::post('/summary_insert','SummaryController@insert') -> name('summary.insert');
+Route::post('/summary_insert','SummaryController@insert_summary') -> name('summary.insert');
+//  -- EDIT --
+Route::post('/summary_edit','SummaryController@edit_summary') -> name('summary.edit');
+//  -- SAVE --
+Route::post('/save_summary_edit','SummaryController@save_summary') -> name('summary.save');
 
 
 

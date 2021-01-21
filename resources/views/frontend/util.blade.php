@@ -235,19 +235,30 @@
                           <td class="text-center"> {{ $value->util_type }} </td>
                           <td class="text-center"> {{ $value->review_status }} </td>
 
+                          <!-- จัดการข้อมูล -->
                           <td class="td-actions text-right text-nowrap" href="#">
-                            <a href="{{ route('downloadfile', $value->id) }}">
+                            <a href="#">
                               <button type="button" class="btn btn-danger btn-md" data-toggle="tooltip" title="Download">
                                 <i class="fas fa-arrow-alt-circle-down"></i>
                               </button>
                             </a>
 
                             <a href="#">
-                              <button type="button" class="btn btn-info btn-md" data-toggle="tooltip" title="Verfied">
+                              <button type="button" class="btn btn-warning btn-md" data-toggle="tooltip" title="Edit">
+                                <i class="fas fa-edit"></i>
+                              </button>
+                            </a>
+
+                        {{-- @if(Auth::user()->roles_type != '1') --}}
+                            <a href="#">
+                              <button type="button" class="btn btn-md"
+                                      data-toggle="tooltip" title="Verfied" style="background-color: #336699;">
                                 <i class="fas fa-user-check"></i>
                               </button>
                             </a>
+                        {{-- @endif --}}
                           </td>
+
 
                         </tr>
                         @endforeach
