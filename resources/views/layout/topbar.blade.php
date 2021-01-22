@@ -29,10 +29,12 @@
 
            <div class="dropdown-divider"></div> -->
 
-           <a class="dropdown-item" href="#"
+           <!-- <a class="dropdown-item" href="#"
               onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                {{ __('ออกจากระบบ') }}
-           </a>
+           </a> -->
+           <a class="dropdown-item" href="{{ route('keycloak.logout') }}">{{ __('ออกจากระบบ') }}</a>
+
 
            <form id="logout-form" action="#" method="POST" style="display: none;">
                @csrf

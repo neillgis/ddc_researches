@@ -37,7 +37,7 @@ return [
 
     'guards' => [
         'web' => [
-            'driver' => 'session',
+            'driver' => 'keycloak-web',
             'provider' => 'users',
         ],
 
@@ -47,6 +47,7 @@ return [
             'hash' => false,
         ],
     ],
+
 
     /*
     |--------------------------------------------------------------------------
@@ -67,9 +68,10 @@ return [
 
     'providers' => [
         'users' => [
-            'driver' => 'eloquent',
-            'model' => App\User::class,
+            'driver' => 'keycloak-users',
+            'model' => App\KeycloakUser::class,
         ],
+
 
         // 'users' => [
         //     'driver' => 'database',
