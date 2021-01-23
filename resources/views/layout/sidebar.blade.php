@@ -31,12 +31,6 @@
         <!-- Add icons to the links using the .nav-icon class
              with font-awesome or any other icon font library -->
 
-             <!-- <li class="nav-item">
-              <a class="nav-link {{ Active::check('dashboard') }}" href="{{ route('page.dashboard') }}" >
-                <i class="nav-icon far fas fa-chart-pie"></i>
-                <p> DASHBOARD </p>
-              </a>
-            </li> -->
             <li class="nav-item">
              <a class="nav-link {{ Active::check('summary_form') }}" href="{{ route('page.summary') }}" >
                <i class="nav-icon far fas fa-chart-line"></i>
@@ -79,21 +73,13 @@
                   </a>
                   <ul class="nav nav-treeview">
 
-                    <li class="nav-item {{ Active::check('home') }} ">
-                      <a class="nav-link" href="{{ route('page.home') }}" >
+                    <li class="nav-item {{-- Active::check('home') --}} ">
+                      <a class="nav-link" href="{{-- route('page.home') --}}" >
                         <i class="far fa-circle nav-icon"></i>
                         <p>Treeview 1</p>
                       </a>
                     </li>
 
-                    <li class="nav-item {{ Active::check('dashboard') }} ">
-                      <a class="nav-link" href="{{ route('page.dashboard') }}" >
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Treeview 2</p>
-                      </a>
-                    </li>
-                  </ul>
-                </li> -->
         <!-- TREEVIEW End----------------------------------------------------------------->
 
 

@@ -68,9 +68,9 @@
             @if (Route::has('login'))
                 <div class="top-right links">
                     @auth
-                        <a href="{{ url('/home') }}">Home</a>
+                        <a href="{{ url('/research_form') }}"> Back </a>
                     @else
-                        <a href="{{ route('keycloak.login') }}">Login</a>
+                        <a href="{{ route('keycloak.login') }}"> Login </a>
 
                         <!-- {{-- @if (Route::has('keycloak.register')) --}}
                             <a href="{{-- route('keycloak.register') --}}">Register</a>

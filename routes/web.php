@@ -16,13 +16,12 @@ Auth::routes();
 
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('keycloak/login');
+    // return view('welcome');
 });
 
 // Route::group(['middleware' => 'keycloak-web'], function () {
     Route::get('/keycloak/demo','KeycloakDemoController@index') -> name('page.keycloak.demo');
-    Route::get('/home','MainController@index') -> name('page.home');
-    Route::get('/dashboard','MainController@dashboard') -> name('page.dashboard');
 
 
     // FORM  RESEARCH  PROJECT
@@ -38,7 +37,6 @@ Route::get('/', function () {
     Route::get('/Download-Files/research/{id}/{files}','ResearchController@DownloadFile')->name('DownloadFile.research');
     //  -- VERIFIED --
     Route::get('/research/verified/{id}', 'ResearchController@action_verified')->name('research.verified');
-
 
 
 
