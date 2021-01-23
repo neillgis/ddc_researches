@@ -105,7 +105,7 @@
 
 
     <!-- START From Input JOURNAL PROJECT -------------------------------------------------->
-  {{-- @if(Auth::user()->roles_type != '1') --}}
+  @if (Gate::allows('keycloak-web', ['user']))
     <div class="row">
       <div class="col-md-12">
         <div class="card">
@@ -274,7 +274,7 @@
         </div>
       </div>
       <br>
-    {{-- @endif --}}
+  @endif
     <!-- END From Input JOURNAL PROJECT -------------------------------------------------->
 
 
@@ -334,13 +334,13 @@
                         </button>
                       </a>
 
-                  {{-- @if(Auth::user()->roles_type != '1') --}}
+                  @if (Gate::allows('keycloak-web', ['admin']))
                       <a href="#">
                         <button type="button" class="btn btn-md" data-toggle="tooltip" title="Verfied" style="background-color: #336699;">
                           <i class="fas fa-user-check"></i>
                         </button>
                       </a>
-                  {{-- @endif --}}
+                  @endif
                     </td>
 
                   </tr>
