@@ -516,6 +516,55 @@
 
 
 @section('js-custom')
+<script>
+    $(document).ready(function() {
+        $.ajax({
+            url: "https://hr.ddc.moph.go.th/api/v2/employee/{{ Auth::user()->preferred_username }}",
+            type: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "bearer {{ KeycloakWeb::retrieveToken()['access_token'] }}"
+            },
+            success: function(result) {
+                //console.log(result)
+
+                $("#employee_id").text(result.employeeId);
+                $("#cid").text(result.idCard);
+                $("#dept_id").text(result.deptId + '|'+result.deptName);
+                $("#edu_class").text(result.educationLevel);
+                $("#prefix").text(result.title);
+                $("#fname_th").text(result.fname);
+                $("#lname_th").text(result.lname);
+                $("#fname_en").text(result.efname);
+                $("#lname_en").text(result.elname);
+                $("#gender").text(result.sex);
+                $("#birthdate").text(result.birthday);
+                $("#position").text(result.position);
+                $("#tel").text(result.telephone);
+                $("#email").text(result.email);
+            }
+        });
+
+
+        $.ajax({
+            url: "https://hr.ddc.moph.go.th/api/v2/employee/pic/{{ Auth::user()->preferred_username }}",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "bearer {{ KeycloakWeb::retrieveToken()['access_token'] }}"
+            },
+            xhrFields: {
+                responseType: 'blob'
+            },
+            success (data) {
+                const url = window.URL || window.webkitURL;
+                const src = url.createObjectURL(data);
+                $('#image').attr('src', src);
+            }
+        });
+    });
+
+</script>
+
 <!-- DataTables -->
 <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>

@@ -72,9 +72,9 @@
                     @else
                         <a href="{{ route('keycloak.login') }}">Login</a>
 
-                        @if (Route::has('keycloak.register'))
-                            <a href="{{ route('keycloak.register') }}">Register</a>
-                        @endif
+                        <!-- {{-- @if (Route::has('keycloak.register')) --}}
+                            <a href="{{-- route('keycloak.register') --}}">Register</a>
+                        {{--@endif--}} -->
                     @endauth
                 </div>
             @endif

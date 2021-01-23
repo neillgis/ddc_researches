@@ -25,12 +25,6 @@ Route::get('/', function () {
     Route::get('/dashboard','MainController@dashboard') -> name('page.dashboard');
 
 
-    // FORM  MEMBER
-    Route::get('/member_form','MemberController@member') -> name('page.member');
-    // FORM  MEMBER  -- INSERT
-    // Route::post('/member_insert','MemberController@insert') -> name('member.insert');
-
-
     // FORM  RESEARCH  PROJECT
     Route::get('/research_form','ResearchController@research')->name('page.research');
     Route::get('/research_form','ResearchController@table_research')->name('page.research');

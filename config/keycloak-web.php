@@ -49,7 +49,8 @@ return [
      *
      * @see Vizir\KeycloakWebGuard\Controllers\AuthController::callback()
      */
-    'redirect_url' => '/keycloak/demo',
+    'redirect_url' => '/research_form',
+    // 'redirect_url' => '/keycloak/demo',
 
     /**
      * The routes for authenticate

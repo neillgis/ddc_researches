@@ -17,7 +17,13 @@
          <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false" id="navbarDropdown" v-pre>
              <i class="nav-icon far fas fa-user"></i>
-              <b> นำตัวแปร username มาใส่ตรงนี้  </b>
+                 {{ Auth::user()->preferred_username }}
+                 <!-- <i class="far fa-user"></i> -->
+                 <!-- <div class="row"> -->
+                     <!-- <div id="fname_th"></div>
+                     <div id="lname_th"></div> -->
+                 <!-- </div> -->
+
               <span class="caret"></span>
          </a>
 
@@ -28,27 +34,13 @@
            </a>
 
            <div class="dropdown-divider"></div> -->
-
-           <!-- <a class="dropdown-item" href="#"
-              onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-               {{ __('ออกจากระบบ') }}
-           </a> -->
            <a class="dropdown-item" href="{{ route('keycloak.logout') }}">{{ __('ออกจากระบบ') }}</a>
-
 
            <form id="logout-form" action="#" method="POST" style="display: none;">
                @csrf
            </form>
          </div>
        </li>
-
-
-      <!-- <li class="nav-item">
-        <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
-          <i class="fas fa-th-large"></i>
-        </a>
-      </li> -->
-
 
     </ul>
   </nav>
