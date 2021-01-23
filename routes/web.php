@@ -62,7 +62,7 @@ Route::get('/', function () {
     //  -- INSERT --
     Route::post('/util_insert','UtilizationController@insert') -> name('util.insert');
     //  -- EDIT --
-    Route::post('/util_edit','UtilizationController@edit_util') -> name('util.edit');
+    Route::get('/util_edit/{id}','UtilizationController@edit_util') -> name('util.edit');
     //  -- SAVE --
     Route::post('/save_util_edit','UtilizationController@save_util') -> name('util.save');
 
@@ -74,7 +74,7 @@ Route::get('/', function () {
     //  -- INSERT --
     Route::post('/summary_insert','SummaryController@insert_summary') -> name('summary.insert');
     //  -- EDIT --
-    Route::post('/summary_edit','SummaryController@edit_summary') -> name('summary.edit');
+    Route::get('/summary_edit/{id}','SummaryController@edit_summary') -> name('summary.edit');
     //  -- SAVE --
     Route::post('/save_summary_edit','SummaryController@save_summary') -> name('summary.save');
 

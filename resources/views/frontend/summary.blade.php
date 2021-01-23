@@ -128,7 +128,7 @@
                 </div>
 
 
-                <form method="POST" action="{{ route('summary.insert') }}">
+                <form method="POST" action="{{ route('summary.insert') }}" enctype="multipart/form-data">
                   @csrf
 
                 <div class="card-body">
@@ -139,6 +139,7 @@
                             <th class="text-center"> รหัสประจำตัวนักวิจัย </th>
                             <th class="text-center"> ชื่อ-นามสกุล </th>
                             <th class="text-center"> หน่วยงาน </th>
+
                             <th class="text-center"> โครงการวิจัยทั้งหมด </th>
                             <th class="text-center"> โครงการวิจัยที่เป็นผู้วิจัยหลักทั้งหมด </th>
                             <th class="text-center"> บทความที่ตีพิมพ์ทั้งหมด </th>
@@ -153,7 +154,7 @@
                     </thead>
 
                     <tbody>
-                        @foreach( $table_list_1 as $value )
+                        @foreach( $table_list as $value )
                         <tr>
                             <td class="text-center"> {{ $value->orcid_id }} </td>
                             <td class="text-left"> {{ $value->prefix.$value->fname_th." ".$value->lname_th }} </td>
@@ -164,34 +165,20 @@
                             <td class="text-center"> # </td>
 
                             <!-- researcher_level -->
-                            <td>
-                            <select class="custom-select custom-select-sm" name="sl_researchlev">
-                              <option value="" disabled="true" selected="true" >กรุณาเลือก</option>
-                              @foreach ($sl_researchlev as $key => $value)
-                                <option value="{{ $key }}"> {{ $value }} </option>
-                              @endforeach
-                            </select>
-                            </td>
+                            <td class="text-center"> {{ $value->researcher_level }} </td>
 
                             <!-- data_auditor -->
-                            <td>
-                            <select class="custom-select custom-select-sm" name="sl_auditorchk">
-                              <option value="" disabled="true" selected="true" >กรุณาเลือก</option>
-                              @foreach ($sl_auditorchk as $key => $value)
-                                <option value="{{ $key }}"> {{ $value }} </option>
-                              @endforeach
-                            </select>
-                            </td>
+                            <td class="text-center"> {{ $value->data_auditor }} </td>
 
                             <!-- จัดการข้อมูล -->
                             <td class="td-actions text-right text-nowrap" href="#">
-                              <a href="#">
+                              <a href=" # ">
                                 <button type="button" class="btn btn-danger btn-md" data-toggle="tooltip" title="Download">
                                   <i class="fas fa-arrow-alt-circle-down"></i>
                                 </button>
                               </a>
 
-                              <a href="#">
+                              <a href=" {{ route('summary.edit', $value->id) }} ">
                                 <button type="button" class="btn btn-warning btn-md" data-toggle="tooltip" title="Edit">
                                   <i class="fas fa-edit"></i>
                                 </button>

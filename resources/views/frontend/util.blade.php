@@ -139,7 +139,7 @@
                     <div class="form-group">
                       <b><lebel for="exampleSelect1"> ชื่อโครงการ (th-en) </lebel></b>
                       <!-- SELECT ดึงข้อมูลชื่อโครงการมาจาก -> db_research_project Table -->
-                      <select class="form-control" name="result_pro_id" required>
+                      <select class="form-control" name="pro_id" required>
                           <option value="" disabled="true" selected="true"> กรุณาเลือก </option>
                         @foreach ($sl_research as $value)
                           <option value = "{{ $value->id }}"> {{ $value->pro_name_th." ".$value->pro_name_en }} </option>
@@ -243,7 +243,7 @@
                               </button>
                             </a>
 
-                            <a href="#">
+                            <a href=" {{ route('util.edit', $value->id) }} ">
                               <button type="button" class="btn btn-warning btn-md" data-toggle="tooltip" title="Edit">
                                 <i class="fas fa-edit"></i>
                               </button>

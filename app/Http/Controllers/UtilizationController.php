@@ -3,12 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\util;
 use App\research;
 use App\member;
-use Illuminate\Support\Facades\Storage;
+use Storage;
 use File;
-use DB;
+
 
 class UtilizationController extends Controller
 {
@@ -34,9 +35,9 @@ class UtilizationController extends Controller
     // $insert = DB::table('person_ddc_table')->insert($data_post);  /*person_ddc_table คือ = ชื่อ table*/
 
     if($insert){
-      return redirect()->back()->with('success','การบันทึกข้อมูลสำเร็จ');
+      return redirect()->route('page.util')->with('success','บันทึกข้อมูลสำเร็จ');
     } else {
-      return redirect()->back()->with('failure','การบันทึกข้อมูลไม่สำเร็จ !!');
+      return redirect()->back()->with('failure','บันทึกข้อมูลไม่สำเร็จ !!');
     }
   }
 // END INSERT ----------------------------------------------------------->
@@ -125,23 +126,23 @@ class UtilizationController extends Controller
 }
 
     // EDIT ---------------------------------------------------------------->
-  // public function edit_util_form(Request $request){
-  //
-  //   $edit = util::where('id' , $request->id)->first();
-  //
-  //
-  //   $edit2 = [1 => 'เชิงวิชาการ',
-  //             2 => 'เชิงสังคม/ชุมชน',
-  //             3 => 'เชิงนโยบาย',
-  //             4 => 'เชิงพาณิชย์'
-  //             ];
-  //
-  //    return view('frontend.util_edit',
-  //      ['data'      => $edit,
-  //       'data2'     => $edit2
-  //      ]   /*นำตัวแปร data ไปใส่ใน research_edit.blade.php  คือ  value = "{{ $data->id }}"*/
-  //   );
-  // }
+  public function edit_util_form(Request $request){
+
+    $edit = util::where('id' , $request->id)->first();
+
+
+    $edit2 = [1 => 'เชิงวิชาการ',
+              2 => 'เชิงสังคม/ชุมชน',
+              3 => 'เชิงนโยบาย',
+              4 => 'เชิงพาณิชย์'
+              ];
+
+     return view('frontend.util_edit',
+       ['data'      => $edit,
+        'data2'     => $edit2
+       ]   /*นำตัวแปร data ไปใส่ใน research_edit.blade.php  คือ  value = "{{ $data->id }}"*/
+    );
+  }
     // END EDIT ------------------------------------------------------------>
 
 
@@ -149,15 +150,15 @@ class UtilizationController extends Controller
   public function save_util_form(Request $request){
     // dd($request);
     $update = util::where('id',$request->id)
-                  ->update(['pro_id'        => $request->pro_id,
-                            'util_type'            => $request->util_type,
-                            'review_status'        => $request->review_status,
+                  ->update(['pro_id'             => $request->pro_id,
+                            'util_type'          => $request->util_type,
+                            'review_status'      => $request->review_status,
                             ]);
 
     if($update){
-       return redirect()->back()->with('success','การบันทึกข้อมูลสำเร็จ');
+       return redirect()->route('page.util')->with('success','แก้ไขข้อมูลสำเร็จ');
     } else {
-       return redirect()->back()->with('failure','การบันทึกข้อมูลไม่สำเร็จ !!');
+       return redirect()->back()->with('failure','แก้ไขข้อมูลไม่สำเร็จ !!');
     }
   }
     // END SAVE ------------------------------------------------------------>
