@@ -30,15 +30,15 @@
       <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
         <!-- Add icons to the links using the .nav-icon class
              with font-awesome or any other icon font library -->
-
+          @if (Gate::allows('keycloak-web', ['admin']))
             <li class="nav-item">
              <a class="nav-link {{ Active::check('summary_form') }}" href="{{ route('page.summary') }}" >
                <i class="nav-icon far fas fa-chart-line"></i>
                <p> สรุปข้อมูลสำหรับ (กนว.) </p>
              </a>
             </li>
+          @endif
 
-            {{-- @if(Auth::user()->roles_type != '1') --}}
              <li class="nav-item ">
                <a class="nav-link {{ Active::check('research_form') }} " href="{{ route('page.research') }}" >
                  <i class="nav-icon fas fa-book"></i>
@@ -52,7 +52,6 @@
                  <p> ข้อมูลการตีพิมพ์วารสาร </p>
                </a>
              </li>
-             {{-- @endif --}}
 
 
              <li class="nav-item ">

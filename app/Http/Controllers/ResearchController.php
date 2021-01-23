@@ -23,11 +23,10 @@ class ResearchController extends Controller
 
   //  -- SELECT DataTables RESEARCH --
   public function table_research(){
-
+    if(Auth::hasRole('admin')){
       $query = research::select('id','pro_name_th','pro_name_en','pro_position',
                                 'pro_start_date','pro_end_date','publish_status',
                                 'files', 'verified',
-
                                 \DB::raw('(CASE
                                               WHEN verified = "1" THEN "อนุมัติแล้ว"
                                               ELSE "ยังไม่ได้อนุมัติ"
@@ -35,6 +34,19 @@ class ResearchController extends Controller
                                 ))
                        ->ORDERBY('id','DESC')
                        ->get();
+    }else {
+      $query = research::select('id','pro_name_th','pro_name_en','pro_position',
+                                'pro_start_date','pro_end_date','publish_status',
+                                'files', 'verified',
+                                \DB::raw('(CASE
+                                              WHEN verified = "1" THEN "อนุมัติแล้ว"
+                                              ELSE "ยังไม่ได้อนุมัติ"
+                                              END) AS verified'
+                                ))
+                       ->where('users_id', Auth::user()->name)
+                       ->ORDERBY('id','DESC')
+                       ->get();
+    }
 
       $query2 = [1=> 'ผู้วิจัยหลัก',
                  2=> 'ผู้วิจัยหลัก-ร่วม',

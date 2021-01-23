@@ -118,7 +118,7 @@
 
 
     <!-- START From Input RESEARCH PROJECT -------------------------------------------------->
-  {{-- @if(Auth::user()->roles_type != '1') --}}
+    @if (Gate::allows('keycloak-web', ['user']))
       <div class="row">
         <div class="col-md-12">
           <div class="card">
@@ -234,7 +234,7 @@
         </div>
       </div>
     <br>
-    {{-- @endif --}}
+  @endif
 
     <!-- END From Input RESEARCH PROJECT -------------------------------------------------->
 
@@ -294,14 +294,14 @@
                         </button>
                       </a>
 
-                  {{-- @if(Auth::user()->roles_type != '1') --}}
+                    @if (Gate::allows('keycloak-web', ['admin']))
                       <a href=" {{ route('research.verified', $value->id) }} ">
                         <button type="button" class="btn btn-md"
                                 data-toggle="tooltip" title="Verfied" style="background-color: #336699;">
                           <i class="fas fa-user-check"></i>
                         </button>
                       </a>
-                  {{-- @endif --}}
+                  @endif
                     </td>
 
                   </tr>

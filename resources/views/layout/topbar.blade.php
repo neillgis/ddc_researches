@@ -17,12 +17,8 @@
          <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false" id="navbarDropdown" v-pre>
              <i class="nav-icon far fas fa-user"></i>
-                 {{ Auth::user()->preferred_username }}
+                 <b> {{ Auth::user()->name }}</b>
                  <!-- <i class="far fa-user"></i> -->
-                 <!-- <div class="row"> -->
-                     <!-- <div id="fname_th"></div>
-                     <div id="lname_th"></div> -->
-                 <!-- </div> -->
 
               <span class="caret"></span>
          </a>
