@@ -65,6 +65,10 @@ Route::get('/', function () {
     Route::get('/util_edit/{id}','UtilizationController@edit_util') -> name('util.edit');
     //  -- SAVE --
     Route::post('/save_util_edit','UtilizationController@save_util') -> name('util.save');
+    //  -- DOWNLOAD --
+    Route::get('/Download-Files/util/{id}/{files}','UtilizationController@DownloadFile')->name('DownloadFile.util');
+    //  -- VERIFIED --
+    Route::get('/util/verified/{id}', 'UtilizationController@action_verified')->name('util.verified');
 
 
 
@@ -77,6 +81,9 @@ Route::get('/', function () {
     Route::get('/summary_edit/{id}','SummaryController@edit_summary') -> name('summary.edit');
     //  -- SAVE --
     Route::post('/save_summary_edit','SummaryController@save_summary') -> name('summary.save');
+    //  -- DOWNLOAD --
+    Route::get('/Download-Files/summary/{id}/{files}','SummaryController@DownloadFile')->name('DownloadFile.summary');
+
 
 
 
