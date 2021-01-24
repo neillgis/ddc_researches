@@ -79,10 +79,13 @@ class SummaryController extends Controller
       // รหัสประจำตัวนักวิจัย - ชื่อ-นามสกุล - หน่วยงาน - ระดับนักวิจัย
       $data_table_1 = DB::table ('users')
                	 -> join ('depart', 'depart.id', '=', 'users.depart_id')
-               	 -> select ('depart.id','depart.depart_name',
-                           'users.id','users.orcid_id','users.prefix',
-                           'users.fname_th','users.lname_th',
-                           'users.researcher_level','users.data_auditor')
+               	 -> select ('depart.id as dept_id',
+                            'depart.depart_name as dept_name',
+                            'users.id as id',
+                            'users.orcid_id','users.prefix',
+                            'users.fname_th','users.lname_th',
+                            'users.researcher_level','users.data_auditor')
+                 ->ORDERBY('id','DESC')
                  ->get();
 // dd($data_table_1);
 
@@ -191,13 +194,24 @@ class SummaryController extends Controller
     // EDIT ----------------------------------------------------------------->
     public function edit_summary(Request $request){
 
-      // users
-      $edit_0 = member::where ('users.id', $request->id)
-                      ->first();
+      // $edit_0 = DB::table ('users')
+      //          	 -> join ('depart', 'depart.id', '=', 'users.depart_id')
+      //          	 -> select ('depart.id as dept_id',
+      //                       'depart.depart_name as dept_name',
+      //                       'users.id as id',
+      //                       'users.orcid_id','users.prefix',
+      //                       'users.fname_th','users.lname_th',
+      //                       'users.researcher_level','users.data_auditor')
+      //            ->ORDERBY('id','DESC')
+      //            ->first();
 
-      // depart
-      $edit_1 = depart::select ('depart.id','depart.depart_name')
+      // // users
+      $edit_0 = member::where ('id', $request->id)
                       ->first();
+      //
+      // depart
+      // $edit_1 = depart::select ('depart.id','depart.depart_name')
+      //                 ->first();
 
       // ระดับนักวิจัย researcher_level
       $edit_2 = [1=> 'นักวิจัยฝึกหัด',
@@ -216,7 +230,6 @@ class SummaryController extends Controller
       return view('frontend.summary.edit',
       [
          "edit_users"        => $edit_0,
-         "edit_depart"       => $edit_1,
          "edit_researchlev"  => $edit_2,
          "edit_auditorchk"   => $edit_3
 
@@ -230,16 +243,6 @@ class SummaryController extends Controller
           public function insert(Request $request){
             $data_post = [
               // "users_id"          => Auth::user()->id,
-              "orcid_id"              => $request->orcid_id,
-              "nrms_id"               => $request->nrms_id,
-              "card_id"               => $request->card_id,
-              "depart_id"             => $request->depart_id,
-              "depart_name"           => $request->depart_name,
-              "fname_th"              => $request->fname_th,
-              "lname_th"              => $request->lname_th,
-              "fname_en"              => $request->fname_en,
-              "lname_en"              => $request->lname_en,
-              "position"              => $request->position,
               "researcher_level"      => $request->researcher_level,
               "data_auditor"          => $request->data_auditor,
               "updated_at"            => date('Y-m-d H:i:s')
@@ -260,8 +263,8 @@ class SummaryController extends Controller
       // dd($request);
       $update = member::where('id',$request->id)
                       ->update([
-                        'researcher_level'  => $request->researcher_level,
-                        'data_auditor'      => $request->data_auditor
+                              'researcher_level'  => $request->researcher_level,
+                              'data_auditor'      => $request->data_auditor
                               ]);
 
       if($update){
@@ -272,6 +275,22 @@ class SummaryController extends Controller
       }
       }
       // END SAVE ----------------------------------------------------------------->
+
+
+      //  -- DOWNLOAD --
+      // public function DownloadFile(Request $request){
+      //   $query = DB::table('db_research_project')
+      //                 ->select('id', 'files')
+      //                 ->where('id', $request->id)
+      //                 ->first();
+      //
+      //   if(!$query) return abort(404);
+      //
+      //   $path = $query->files;
+      //
+      //   return Storage::disk('research')->download($path);
+
+      //  -- END DOWNLOAD --
 
 
 }

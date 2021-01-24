@@ -119,6 +119,7 @@
 
 
 <!-- START TABLE LIST --------------------------------------------------------->
+<!-- {{-- @if(Auth::user()->roles_type != '1') --}} -->
           <section class="content">
             <div class="card">
                 <div class="card card-gray">
@@ -128,15 +129,11 @@
                 </div>
 
 
-                <form method="POST" action="{{ route('summary.insert') }}" enctype="multipart/form-data">
-                  @csrf
-
                 <div class="card-body">
                 <div class="table-responsive">
                     <table class="table table-hover" style="width:100%" id="example1" >
                     <thead>
                         <tr>
-                            <th class="text-center"> รหัสประจำตัวนักวิจัย </th>
                             <th class="text-center"> ชื่อ-นามสกุล </th>
                             <th class="text-center"> หน่วยงาน </th>
 
@@ -156,9 +153,10 @@
                     <tbody>
                         @foreach( $table_list as $value )
                         <tr>
-                            <td class="text-center"> {{ $value->orcid_id }} </td>
                             <td class="text-left"> {{ $value->prefix.$value->fname_th." ".$value->lname_th }} </td>
-                            <td class="text-left"> {{ $value->depart_name }} </td>
+                            <td class="text-left"> {{ $value->dept_name }} </td>
+
+                            <!-- จำนวน -->
                             <td class="text-center"> # </td>
                             <td class="text-center"> # </td>
                             <td class="text-center"> # </td>
