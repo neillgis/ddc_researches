@@ -145,6 +145,7 @@ class ResearchController extends Controller
 
   //  -- Edit RESEARCH --
   public function edit_research_form(Request $request){
+    //แสดงข้อมูล Query EDIT
     $edit = research::where('id' , $request->id)->first();
 
     $edit2 = [1=> 'ผู้วิจัยหลัก',

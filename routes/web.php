@@ -46,13 +46,13 @@ Route::get('/', function () {
     //  -- INSERT --
     Route::post('/journal_insert','JournalController@insert')->name('journal.insert');
     //  -- EDIT --
-    Route::get('/journal_edit/{id}','JournalController@edit_journal_form')->name('journal.edit');
+    Route::get('/journal_edit/{id}/{pro_id}','JournalController@edit_journal_form')->name('journal.edit');
     //  -- SAVE --
     Route::post('/save_journal_edit','JournalController@save_journal_form')->name('journal.save');
     //  -- DOWNLOAD --
     Route::get('/Download-Files/journal/{id}/{files}','JournalController@DownloadFile')->name('DownloadFile.journal');
     //  -- VERIFIED --
-    // Route::get('/journal/verified/{id}', 'JournalController@action_verified')->name('journal.verified');
+    Route::get('/journal/verified/{id}', 'JournalController@action_verified')->name('journal.verified');
 
 
 

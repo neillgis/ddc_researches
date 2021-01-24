@@ -23,17 +23,52 @@ class JournalController extends Controller
 
   //  -- SELECT DataTables JOURNAL --
   public function table_journal(){
+    if(Auth::hasRole('admin')){
       $query  = DB::table('db_research_project')
                      ->select('db_research_project.id',
                               'db_research_project.pro_name_en',
-                              )
+                      \DB::raw('(CASE
+                                    WHEN verified = "1" THEN "อนุมัติแล้ว"
+                                    ELSE "ยังไม่ได้อนุมัติ"
+                                    END) AS verified'
+                      ))
+                     ->orderby('id', 'DESC')
+                     ->get();
+
+    }elseif(Auth::hasRole('user')) {
+      $query  = DB::table('db_research_project')
+                     ->select('db_research_project.id',
+                              'db_research_project.pro_name_en',
+                      \DB::raw('(CASE
+                                    WHEN verified = "1" THEN "อนุมัติแล้ว"
+                                    ELSE "ยังไม่ได้อนุมัติ"
+                                    END) AS verified'
+                      ))
                      ->where('users_id', Auth::user()->preferred_username)
                      ->orderby('id', 'DESC')
                      ->get();
 
-      $query2 = journal::select('id', 'pro_id', 'article_name_th', 'journal_name_th', 'publish_years','corres', 'files')
+     }else {
+       return response(redirect(url('/keycloak/login')), 404);
+       // return abort(404);
+     }
+
+
+    if(Auth::hasRole('admin')){
+      $query2 = journal::select('id', 'pro_id', 'article_name_th', 'article_name_en',
+                                'journal_name_th', 'journal_name_en', 'publish_years',
+                                'corres', 'files')
                       ->ORDERBY('id','DESC')
                       ->get();
+    }else {
+      $query2 = journal::select('id', 'pro_id', 'article_name_th', 'article_name_en',
+                                'journal_name_th', 'journal_name_en', 'publish_years',
+                                'corres', 'files')
+                      ->where('users_id', Auth::user()->preferred_username)
+                      ->ORDERBY('id','DESC')
+                      ->get();
+    }
+
 
       $query3 = [1=> 'ผู้นิพนธ์หลัก (first-author)',
                  2=> 'ผู้นิพนธ์ร่วม (co-author)'
@@ -91,29 +126,28 @@ class JournalController extends Controller
 
   //  -- EDIT JOURNAL--
   public function edit_journal_form(Request $request){
-    //แสดงข้อมูล Query
-    $edit = DB::table('db_published_journal')
-              ->join('db_research_project', 'db_research_project.id', '=', 'db_published_journal.pro_id')
-              ->select(
-                        'db_research_project.id',
-                        'db_research_project.pro_name_en',
+    //แสดงข้อมูล Query EDIT
+     $edit = DB::table('db_published_journal')
+               ->join('db_research_project', 'db_research_project.id', '=', 'db_published_journal.pro_id')
+               ->select('db_research_project.pro_name_en',
+                        'db_published_journal.id',
                         'db_published_journal.pro_id',
-                        'db_published_journal.article_name_th',
-                        'db_published_journal.article_name_en',
-                        'db_published_journal.journal_name_th',
-                        'db_published_journal.journal_name_en',
-                        'db_published_journal.publish_years',
-                        'db_published_journal.publish_no',
-                        'db_published_journal.publish_volume',
-                        'db_published_journal.publish_page',
-                        'db_published_journal.doi_number',
-                        'db_published_journal.contribute',
-                        'db_published_journal.corres'
-                      )
-              ->where('db_research_project.id', $request->id)
-              ->first();
+                        'article_name_th',
+                        'article_name_en',
+                        'journal_name_th',
+                        'journal_name_en',
+                        'publish_years',
+                        'publish_no',
+                        'publish_volume',
+                        'publish_page',
+                        'doi_number',
+                        'contribute',
+                        'corres'
+                        )
+               ->where('db_published_journal.id', $request->id)
+               ->orderby('id', 'DESC')
+               ->first();
 
-              // dd($edit);
 
     $edit2 = [1=> 'ผู้วิจัยหลัก',
               2=> 'ผู้วิจัยหลัก-ร่วม',
@@ -122,9 +156,11 @@ class JournalController extends Controller
               5=> 'ที่ปรึกษาโครงการ'
              ];
 
+
      $edit3 = [1=> 'ผู้นิพนธ์หลัก (first-author)',
                2=> 'ผู้นิพนธ์ร่วม (co-author)'
               ];
+
 
       $edit4 = [1=> 'ใช่',
                 2=> 'ไม่ใช่'
@@ -145,7 +181,7 @@ class JournalController extends Controller
 
   //  INSERT
   public function insert(Request $request){
-    // dd($data_post);
+
     $data_post = [
       "pro_id"            => $request->pro_id,
       "users_id"          => Auth::user()->preferred_username,
@@ -163,7 +199,6 @@ class JournalController extends Controller
       "files"             => $request->files,
       "created_at"        => date('Y-m-d H:i:s')
     ];
-    // dd($data_post);
 
       //  --  UPLOAD FILE journal_form  --
     if ($request->file('files')->isValid()) {
@@ -190,33 +225,35 @@ class JournalController extends Controller
 
 
 
-
   //  -- SAVE --
   public function save_journal_form(Request $request){
     // dd($request);
-    $update = journal::where('id',$request->id)
-                      ->update([
-                                "pro_id"            => $request->pro_id,
-                                "article_name_th"   => $request->article_name_th,
-                                "article_name_en"   => $request->article_name_en,
-                                "journal_name_th"   => $request->journal_name_th,
-                                "journal_name_en"   => $request->journal_name_en,
-                                "publish_years"     => $request->publish_years,
-                                "publish_no"        => $request->publish_no,
-                                "publish_volume"    => $request->publish_volume,
-                                "publish_page"      => $request->publish_page,
-                                "doi_number"        => $request->doi_number,
-                                "contribute"        => $request->contribute,
-                                "corres"            => $request->corres,
-                              ]);
+    $update = DB::table('db_published_journal')
+                  ->where('id', $request->id)
+                  ->update([
+                            // "pro_id"            => $request->pro_id,
+                            "article_name_th"   => $request->article_name_th,
+                            "article_name_en"   => $request->article_name_en,
+                            "journal_name_th"   => $request->journal_name_th,
+                            "journal_name_en"   => $request->journal_name_en,
+                            "publish_years"     => $request->publish_years,
+                            "publish_no"        => $request->publish_no,
+                            "publish_volume"    => $request->publish_volume,
+                            "publish_page"      => $request->publish_page,
+                            "doi_number"        => $request->doi_number,
+                            "contribute"        => $request->contribute,
+                            "corres"            => $request->corres,
+                          ]);
 
     if($update){
-       return redirect()->back()->with('success','การบันทึกข้อมูลของคุณเสร็จสิ้นแล้ว');
-    } else {
-       return redirect()->back()->with('success','การบันทึกข้อมูลของคุณไม่สำเร็จ !!!');
+      //return Sweet Alert
+        return redirect()->route('page.journal')->with('swl_update', 'แก้ไขข้อมูลสำเร็จแล้ว');
+    }else {
+        return redirect()->back()->with('swl_errx', 'บันทึกแล้ว');
     }
   }
   //  -- END SAVE --
+
 
 
 
@@ -233,6 +270,39 @@ class JournalController extends Controller
 
     return Storage::disk('journal')->download($path);
   }
+  //  -- END DOWNLOAD --
+
+
+
+  //  -- VERIFIED --
+  public function action_verified(Request $request){
+
+      //UPDATE db_published_journal
+      $verified = DB::table('db_published_journal')
+                ->where('id', $request->id)
+                ->update(['verified' => "1"]);
+                // ->get();
+
+       // dd($verified);
+
+      if(!$verified = '1'){
+        return abort(404);
+      }
+
+      if($verified) {
+          return redirect()->back()->with('swl_verified', '555ลบข้อมูลเรียบร้อยแล้ว');
+      }else {
+          return redirect()->back()->with('swl_del', 'ไม่สามารถลบข้อมูลได้');
+      }
+
+    }
+      // else {
+      //     return redirect()->back()->with('swl_verified', 'ลบข้อมูลเรียบร้อยแล้ว');
+      // }
+
+  // }
+  //  -- END VERIFIED --
+
 
 
 }

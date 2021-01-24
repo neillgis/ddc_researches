@@ -294,7 +294,7 @@
               <table class="table table-hover" id="example44">
                 <thead>
                     <tr>
-                      <th> PRO_ID </th>
+                      <th> Project ID </th>
                       <th> ชื่อบทความ </th>
                       <th> ชื่อวารสาร </th>
                       <th> ตีพิมพ์ </th>
@@ -308,16 +308,16 @@
                   @foreach ($journals as $value)
                   <tr>
                     <td> {{ $value->pro_id }} </td>
-                    <td> {{ $value->article_name_th }} </td>
-                    <td> {{ $value->journal_name_th }} </td>
+                    <td> {{ $value->article_name_en }} </td>
+                    <td> {{ $value->journal_name_en }} </td>
                     <td> {{ $value->publish_years }} </td>
                     <td> {{ $corres [ $value->corres ] }} </td>
 
                     <td>
-                      @if($value->corres == "1")
-                        <span class="badge bg-danger badge-pill"> {{ $value->corres }} </span> <!-- null = รอการอนุมัติ -->
+                      @if($value->verified == "อนุมัติแล้ว")
+                        <span class="badge bg-secondary badge-pill"> {{ $value->verified }} </span> <!-- null = รอการอนุมัติ -->
                       @else
-                        <span class="badge bg-success badge-pill"> {{ $value->corres }} </span> <!--  2 = ไม่อนุมัติ -->
+                        <span class="badge bg-danger badge-pill"> {{ $value->verified }} </span> <!--  2 = ไม่อนุมัติ -->
                       @endif
                     </td>
 
@@ -328,14 +328,14 @@
                         </button>
                       </a>
 
-                      <a href=" {{ route('journal.edit', $value->id) }} ">
+                      <a href=" {{ route('journal.edit', ['id' => $value->id, 'pro_id' => $value->pro_id]) }} ">
                         <button type="button" class="btn btn-warning btn-md" data-toggle="tooltip" title="Edit">
                           <i class="fas fa-edit"></i>
                         </button>
                       </a>
 
                   @if (Gate::allows('keycloak-web', ['admin']))
-                      <a href="#">
+                      <a href=" {{ route('journal.verified', $value->id) }} ">
                         <button type="button" class="btn btn-md" data-toggle="tooltip" title="Verfied" style="background-color: #336699;">
                           <i class="fas fa-user-check"></i>
                         </button>
@@ -368,6 +368,7 @@
 <!-- SweetAlert2 -->
 <script src="{{ asset('bower_components/admin-lte/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
 
+  <!-- INSERT -->
     @if(session()->has('swl_add'))
       <script>
           Swal.fire({
@@ -388,6 +389,29 @@
           })
       </script>
     @endif
+
+    <!-- UPDATE -->
+    @if(session()->has('swl_update'))
+      <script>
+          Swal.fire({
+              icon: 'success',
+              title: 'บันทึกข้อมูลเรียบร้อยแล้ว',
+              showConfirmButton: false,
+              timer: 2800
+          })
+      </script>
+
+    @elseif(session()->has('swl_errx'))
+      <script>
+          Swal.fire({
+              icon: 'error',
+              title: 'บันทึกข้อมูลไม่สำเร็จ !!!',
+              showConfirmButton: false,
+              timer: 2800
+          })
+      </script>
+    @endif
+
 <!-- END SweetAlert2 -->
 
 

@@ -65,7 +65,7 @@
       <div class="row">
         <div class="col-md-12">
           <div class="card">
-            <div class="card card-success shadow">
+            <div class="card shadow" style="background-color: #7BB31A;">
               <div class="card-header">
                 <h5><b> แก้ไขข้อมูลการตีพิมพ์วารสาร </b></h5>
               </div>
@@ -83,7 +83,8 @@
                       <input type="text" class="form-control" name="article_name_en" value="{{ $data->article_name_en }}">
                       <!-- hidden = id -->
                       <input type="hidden" class="form-control" name="id" value="{{ $data->id }}">
-
+                      <!-- hidden = pro_id -->
+                      <input type="hidden" class="form-control" name="pro_id" value="{{ $data->pro_id }}">
                     </div>
                   </div>
                   <div class="col-md-6">
@@ -139,13 +140,13 @@
 
 
                 <div class="row">
-                  <div class="col-md-3">
+                  <div class="col-md-4">
                     <div class="form-group">
                       <label for="exampleInput1"> เลข DOI </label>
                       <input type="text" class="form-control" name="doi_number" value="{{ $data->doi_number }}">
                     </div>
                   </div>
-                  <div class="col-md-3">
+                  <div class="col-md-4">
                     <div class="form-group">
                       <label for="exampleSelect1"> การมีส่วนร่วมในบทความ </label>
                       <!-- <input type="text" class="form-control" name="contribute" value="{{-- $data->contribute --}}"> -->
@@ -158,7 +159,7 @@
 
                     </div>
                   </div>
-                  <div class="col-md-3">
+                  <div class="col-md-4">
                     <div class="form-group">
                       <label for="exampleSelect1"> ท่านเป็นผู้รับผิดชอบบทความ </label>
                       <select class="form-control" name="corres">
@@ -168,16 +169,18 @@
                       </select>
                     </div>
                   </div>
-                  <div class="col-md-3">
-                    <div class="form-group">
-                      <label for="exampleSelect1"> บทความที่เป็นผลจากโครงการวิจัย </label>
-                      <input type="text" class="form-control" name="pro_id" value="{{ $data->pro_name_en }}" readonly>
-                    </div>
-                  </div>
                 </div>
 
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="form-group">
+                        <label for="exampleSelect1"> บทความที่เป็นผลจากโครงการวิจัย </label>
+                        <input type="text" class="form-control" name="pro_id" value="{{ $data->pro_name_en }}" disabled>
+                      </div>
+                    </div>
+                </div>
               </div>
-            <!-- </div> -->
+
 
             <div class="card-footer">
               <a class="btn btn-danger float-left" href="{{ route('page.journal') }}">
