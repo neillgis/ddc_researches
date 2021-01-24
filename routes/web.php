@@ -25,7 +25,7 @@ Route::get('/', function () {
 
 
     // FORM  RESEARCH  PROJECT
-    Route::get('/research_form','ResearchController@research')->name('page.research');
+    // Route::get('/research_form','ResearchController@research')->name('page.research');
     Route::get('/research_form','ResearchController@table_research')->name('page.research');
     //  -- INSERT --
     Route::post('/research_insert','ResearchController@insert')->name('research.insert');
@@ -41,7 +41,7 @@ Route::get('/', function () {
 
 
     // FORM  JOURNAL
-    Route::get('/journal_form','JournalController@journal')->name('page.journal');
+    // Route::get('/journal_form','JournalController@journal')->name('page.journal');
     Route::get('/journal_form','JournalController@table_journal')->name('page.journal');
     //  -- INSERT --
     Route::post('/journal_insert','JournalController@insert')->name('journal.insert');

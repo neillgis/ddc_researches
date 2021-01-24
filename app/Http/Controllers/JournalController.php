@@ -16,63 +16,61 @@ class JournalController extends Controller
 {
 
 
-  public function journal(){
-    return view('frontend.journal');
-  }
+  // public function journal(){
+  //   return view('frontend.journal');
+  // }
 
 
-
-  //  -- SELECT SHOW DataTables--
+  //  -- SELECT DataTables JOURNAL --
   public function table_journal(){
+      $query  = DB::table('db_research_project')
+                     ->select('db_research_project.id',
+                              'db_research_project.pro_name_en',
+                              )
+                     ->where('users_id', Auth::user()->preferred_username)
+                     ->orderby('id', 'DESC')
+                     ->get();
 
-    $query  = DB::table('db_published_journal')
-                ->join('db_research_project', 'db_research_project.id' ,'=', 'db_published_journal.pro_id')
-                ->select('db_research_project.id',
-                         'db_research_project.pro_name_en',
-                         'db_published_journal.pro_id'
-                         )
-                // ->where('db_published_journal.users_id', Auth::user()->id)
-                ->get();
-      // dd($query);
+      $query2 = journal::select('id', 'pro_id', 'article_name_th', 'journal_name_th', 'publish_years','corres', 'files')
+                      ->ORDERBY('id','DESC')
+                      ->get();
 
-    $query2 = journal::select('id', 'article_name_th', 'journal_name_th', 'publish_years','corres', 'files')
-                    ->ORDERBY('id','DESC')
-                    ->get();
+      $query3 = [1=> 'ผู้นิพนธ์หลัก (first-author)',
+                 2=> 'ผู้นิพนธ์ร่วม (co-author)'
+                ];
 
-    $query3 = [1=> 'ผู้นิพนธ์หลัก (first-author)',
-               2=> 'ผู้นิพนธ์ร่วม (co-author)'
-              ];
+      $query4 = [1=> 'ใช่',
+                 2=> 'ไม่ใช่'
+                ];
 
-    $query4 = [1=> 'ใช่',
-               2=> 'ไม่ใช่'
-              ];
-
-
-    // if(Auth::user()->roles_type == 1){
-        // count (All Record)
-          $Total_journal = journal::select('id')->get()->count();
-    // }else {
-          // $Total_journal = journal::select('id',)
-          //                           ->where('id', Auth::user()->id)
-          //                           ->get()
-          //                           ->count();
-    // }
+// --- COUNT 2 BOX on TOP ---
+      // COUNT = All Record
+      if(Auth::hasRole('admin')){
+            $Total_journal = journal::select('id', 'users_id')
+                                      ->get()
+                                      ->count();
+      }else {
+            $Total_journal = journal::select('id', 'users_id')
+                                      ->where('users_id', Auth::user()->preferred_username)
+                                      ->get()
+                                      ->count();
+      }
 
 
-    // if(Auth::user()->roles_type == 1){
-        // count (contribute) = 1
-        $Total_master_jour = journal::select('id', 'contribute')
-                                    ->whereIn ('contribute', ['1'])
-                                    ->get()
-                                    ->count();
-    // }else {
-        // $Total_master_jour = journal::select('id', 'contribute')
-        //                             ->whereIn ('contribute', ['1'])
-        //                             ->where('contribute', Auth::user()->id)
-        //                             ->get()
-        //                             ->count();
-    // }
-
+        // COUNT = contribute = 1
+        if(Auth::hasRole('admin')){
+            $Total_master_jour = journal::select('id', 'contribute')
+                                        ->whereIn ('contribute', ['1'])
+                                        ->get()
+                                        ->count();
+        }else {
+            $Total_master_jour = journal::select('id', 'contribute')
+                                        ->whereIn ('contribute', ['1'])
+                                        ->where('users_id', Auth::user()->preferred_username)
+                                        ->get()
+                                        ->count();
+        }
+// --- END COUNT 2 BOX on TOP ---
 
     return view('frontend.journal',
       [
@@ -149,7 +147,8 @@ class JournalController extends Controller
   public function insert(Request $request){
     // dd($data_post);
     $data_post = [
-      // "users_id"          => Auth::user()->id,
+      "pro_id"            => $request->pro_id,
+      "users_id"          => Auth::user()->preferred_username,
       "article_name_th"   => $request->article_name_th,
       "article_name_en"   => $request->article_name_en,
       "journal_name_th"   => $request->journal_name_th,
@@ -161,11 +160,9 @@ class JournalController extends Controller
       "doi_number"        => $request->doi_number,
       "contribute"        => $request->contribute,
       "corres"            => $request->corres,
-      "pro_id"            => $request->pro_id,
       "files"             => $request->files,
       "created_at"        => date('Y-m-d H:i:s')
     ];
-
     // dd($data_post);
 
       //  --  UPLOAD FILE journal_form  --

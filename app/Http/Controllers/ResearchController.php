@@ -16,12 +16,12 @@ class ResearchController extends Controller
 {
 
 
-  public function research(){
-    return view('frontend.research');
-  }
+  // public function research(){
+  //   return view('frontend.research');
+  // }
 
 
-  //  -- SELECT DataTables RESEARCH --
+// -- SELECT DataTables RESEARCH --
   public function table_research(){
     if(Auth::hasRole('admin')){
       $query = research::select('id','pro_name_th','pro_name_en','pro_position',
@@ -34,7 +34,8 @@ class ResearchController extends Controller
                                 ))
                        ->ORDERBY('id','DESC')
                        ->get();
-    }else {
+
+    }elseif(Auth::hasRole('user')) {
       $query = research::select('id','pro_name_th','pro_name_en','pro_position',
                                 'pro_start_date','pro_end_date','publish_status',
                                 'files', 'verified',
@@ -43,9 +44,13 @@ class ResearchController extends Controller
                                               ELSE "ยังไม่ได้อนุมัติ"
                                               END) AS verified'
                                 ))
-                       ->where('users_id', Auth::user()->name)
+                       ->where('users_id', Auth::user()->preferred_username)
                        ->ORDERBY('id','DESC')
                        ->get();
+
+    }else {
+      return response(redirect(url('/keycloak/login')), 404);
+      // return abort(404);
     }
 
       $query2 = [1=> 'ผู้วิจัยหลัก',
@@ -66,60 +71,61 @@ class ResearchController extends Controller
                  ];
 
 
-      // if(Auth::user()->roles_type == 1){
-          // count (All Record)
+// --- COUNT 3 BOX on TOP ---
+      // COUNT = All Record
+      if(Auth::hasRole('admin')){
             $Total_research = DB::table('db_research_project')
                             -> select('id','pro_name_th','pro_name_en','pro_position',
                                       'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
                             ->get()
                             ->count();
-      // }else {
-      //       $Total_research = DB::table('db_research_project')
-      //                       -> select('id','pro_name_th','pro_name_en','pro_position',
-      //                                 'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
-      //                       // ->where('db_research_project.users_id', Auth::user()->id)
-      //                       ->get()
-      //                       ->count();
-      // }
+      }else {
+            $Total_research = DB::table('db_research_project')
+                            -> select('id','pro_name_th','pro_name_en','pro_position',
+                                      'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
+                            ->where('users_id', Auth::user()->preferred_username)
+                            ->get()
+                            ->count();
+      }
 
 
-      // if(Auth::user()->roles_type == 1){
-          // count (pro_position) = 1
+      // COUNT = pro_position = 1
+      if(Auth::hasRole('admin')){
           $Total_master_pro = DB::table('db_research_project')
                             -> select('id','pro_name_th','pro_name_en','pro_position',
                                       'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
                             -> whereIn ('pro_position', ['1'])
                             ->get()
                             ->count();
-      // }else {
-      //     $Total_master_pro = DB::table('db_research_project')
-      //                       -> select('id','pro_name_th','pro_name_en','pro_position',
-      //                                 'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
-      //                       -> whereIn ('pro_position', ['1'])
-      //                       // ->where('db_research_project.users_id', Auth::user()->id
-      //                       ->get()
-      //                       ->count();
-      // }
+      }else {
+          $Total_master_pro = DB::table('db_research_project')
+                            -> select('id','pro_name_th','pro_name_en','pro_position',
+                                      'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
+                            -> whereIn ('pro_position', ['1'])
+                            ->where('users_id', Auth::user()->preferred_username)
+                            ->get()
+                            ->count();
+      }
 
 
-      // if(Auth::user()->roles_type == 1){
-          // count (publish_status) = 1
+      // COUNT = publish_status = 1
+      if(Auth::hasRole('admin')){
           $Total_publish_pro = DB::table('db_research_project')
                             -> select('id','pro_name_th','pro_name_en','pro_position',
                                       'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
                             -> whereIn ('publish_status', ['1'])
                             ->get()
                             ->count();
-      // }else {
-      //     $Total_publish_pro = DB::table('db_research_project')
-      //                       -> select('id','pro_name_th','pro_name_en','pro_position',
-      //                                 'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
-      //                       -> whereIn ('publish_status', ['1'])
-      //                       // ->where('db_research_project.users_id', Auth::user()->id)
-      //                       ->get()
-      //                       ->count();
-      // }
-
+      }else {
+          $Total_publish_pro = DB::table('db_research_project')
+                            -> select('id','pro_name_th','pro_name_en','pro_position',
+                                      'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
+                            -> whereIn ('publish_status', ['1'])
+                            ->where('users_id', Auth::user()->preferred_username)
+                            ->get()
+                            ->count();
+      }
+// --- END COUNT 3 BOX on TOP ---
 
     return view('frontend.research',
       [
@@ -163,8 +169,7 @@ class ResearchController extends Controller
         'data2'   => $edit2,
         'data3'   => $edit3,
         'data4'   => $edit4,
-       ]  /*นำตัวแปร data ไปใส่ใน research_edit.blade.php  คือ  value = "{{ $data->id }}"*/
-    );
+       ]);
   }
   //  -- END Edit RESEARCH --
 
@@ -175,7 +180,7 @@ class ResearchController extends Controller
   public function insert(Request $request){
 
     $data_post = [
-      // "users_id"          => Auth::user()->id,
+      "users_id"          => Auth::user()->preferred_username,
       "pro_name_th"       => $request->pro_name_th,
       "pro_name_en"       => $request->pro_name_en,
       "pro_position"      => $request->pro_position,
@@ -230,9 +235,9 @@ class ResearchController extends Controller
 
     if($update){
       //return Sweet Alert
-        return redirect()->route('page.research')->with('swl_add', 'แก้ไขข้อมูลสำเร็จแล้ว');
+        return redirect()->route('page.research')->with('swl_update', 'แก้ไขข้อมูลสำเร็จแล้ว');
     }else {
-        return redirect()->back()->with('swl_err', 'บันทึกแล้ว');
+        return redirect()->back()->with('swl_errs', 'บันทึกแล้ว');
     }
   }
   //  -- END SAVE --

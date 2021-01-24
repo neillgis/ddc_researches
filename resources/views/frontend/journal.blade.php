@@ -216,7 +216,7 @@
                     <div class="form-group">
                       <label for="exampleSelect1"> บทความที่เป็นผลจากโครงการวิจัย </label>
 
-                      <!-- SELECT ดึงข้อมูลชื่อโครงการมาจาก -> db_published_journal Table -->
+                      <!-- SELECT Table -> db_research_project -->
                       <select class="form-control" name="pro_id">
                           <option value="" disabled="true" selected="true"> -- กรุณาเลือก -- </option>
                         @foreach ($journal_res as $value)
@@ -234,7 +234,7 @@
                       <label for="expInputFile"> อัพโหลดไฟล์ :<font color="red"> การตีพิมพ์วารสาร </font></label>
                       <div class="input-group">
                         <div class="custom-file">
-                          <input type="file" class="custom-file-input" name="files">
+                          <input type="file" class="custom-file-input" name="files" required>
                           <label class="custom-file-label" for="expInputFile"> Upload File ขนาดไม่เกิน 10 MB </label>
                         </div>
                       </div>
@@ -294,7 +294,7 @@
               <table class="table table-hover" id="example44">
                 <thead>
                     <tr>
-                      <th> ลำดับ </th>
+                      <th> PRO_ID </th>
                       <th> ชื่อบทความ </th>
                       <th> ชื่อวารสาร </th>
                       <th> ตีพิมพ์ </th>
@@ -307,7 +307,7 @@
                 <tbody>
                   @foreach ($journals as $value)
                   <tr>
-                    <td> {{ $value->id }} </td>
+                    <td> {{ $value->pro_id }} </td>
                     <td> {{ $value->article_name_th }} </td>
                     <td> {{ $value->journal_name_th }} </td>
                     <td> {{ $value->publish_years }} </td>

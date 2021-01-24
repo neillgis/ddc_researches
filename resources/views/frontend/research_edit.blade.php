@@ -65,7 +65,7 @@
       <div class="row">
         <div class="col-md-12">
           <div class="card">
-            <div class="card card-warning shadow">
+            <div class="card shadow" style="background-color: #ff851b;">
               <div class="card-header">
                 <h5><b> แก้ไขข้อมูลโครงการวิจัย </b></h5>
               </div>
@@ -164,12 +164,14 @@
                     ย้อนกลับ
                 </a>
 
+              @if (Gate::allows('keycloak-web', ['user']))
                 <button type="submit" class="btn btn-success float-right" value="บันทึกข้อมูล">
                   <i class="fas fa-save"></i>
                     &nbsp;บันทึกข้อมูล
                 </button>
-              </div>
+              @endif
 
+              </div>
             </form>
 
           </div>

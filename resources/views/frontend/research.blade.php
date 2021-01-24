@@ -214,7 +214,7 @@
 
                       <div class="input-group">
                         <div class="custom-file">
-                          <input type="file" class="custom-file-input" name="files">
+                          <input type="file" class="custom-file-input" name="files" required>
                           <label class="custom-file-label" for="expInputFile"> Upload File ขนาดไม่เกิน 20 MB </label>
                         </div>
                       </div>
@@ -323,10 +323,9 @@
 
 
 @section('js-custom-script')
-
-<!-- SweetAlert2 INSERT -->
+<!-- SweetAlert2 -->
 <script src="{{ asset('bower_components/admin-lte/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
-
+    <!-- INSERT -->
     @if(session()->has('swl_add'))
       <script>
           Swal.fire({
@@ -337,7 +336,7 @@
           })
       </script>
 
-    @elseif(session()->has('swl_del'))
+    @elseif(session()->has('swl_err'))
       <script>
           Swal.fire({
               icon: 'error',
@@ -347,7 +346,32 @@
           })
       </script>
     @endif
+
+
+    <!-- UPDATE -->
+    @if(session()->has('swl_update'))
+      <script>
+          Swal.fire({
+              icon: 'success',
+              title: 'บันทึกข้อมูลเรียบร้อยแล้ว',
+              showConfirmButton: false,
+              timer: 2800
+          })
+      </script>
+
+    @elseif(session()->has('swl_errs'))
+      <script>
+          Swal.fire({
+              icon: 'error',
+              title: 'บันทึกข้อมูลไม่สำเร็จ !!!',
+              showConfirmButton: false,
+              timer: 2800
+          })
+      </script>
+    @endif
+
 <!-- END SweetAlert2 -->
+
 
 
 <!-- SweetAlert2 -->
@@ -360,7 +384,6 @@
       //     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
       //   }
       // });
-
         Swal.fire({
           title: 'Are you sure?',
           text: "รายการนี้ถูกตรวจสอบแล้วใช่ไหม",
@@ -377,76 +400,14 @@
               'Verfied Success',
               'Your data has been verfied.',
               'success'
-              // icon: 'success',
-              // title: 'รายการนี้ถูกตรวจสอบเรียบร้อยแล้ว',
-              // showConfirmButton: true,
-              // timer: 1000
-
             )
           }
         })
-          // reverseButtons: !0
-        // }).then(function (e) {
-        //
-        //     if (e.value === true) {
-        //         var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
-        //
-        //         $.ajax({
-        //             type: 'GET',
-        //             url: "{{ route('research.verified', $value->id) }}",
-        //             data: {_token: CSRF_TOKEN},
-        //             dataType: 'JSON',
-        //             success: function (results) {
-        //
-        //                 if (results.success === true) {
-        //                     swal("Done!", results.message, "success");
-        //                     setTimeout(function(){
-        //                       location.reload();
-        //                       }, 1000);
-        //                 } else {
-        //                     swal("Error!", results.message, "error");
-        //                 }
-        //             }
-        //         });
-        //
-        //     } else {
-        //         e.dismiss;
-        //     }
-        //
-        // }, function (dismiss) {
-        //     return false;
-        // });
-
-
-        // }).then((result) => {
-        //   if (result.isConfirmed) {
-        //     window.location.href = "{{ route('research.verified', $value->id) }}";
-            // $.ajax({
-            //   url: "{{ route('research.verified', $value->id) }}",
-            //   type: "get",
-            //   data: {
-            //     'id': id,
-            //   },
-            //   success: function(data) {
-            //     if (data.verified != 'ok') {
-            //       Swal.fire({
-            //         icon: 'success',
-            //         title: 'รายการนี้ถูกตรวจสอบเรียบร้อยแล้ว',
-            //         showConfirmButton: true,
-            //         timer: 1000
-            //       }).then((result) => {
-            //         if (result) {
-            //           location.reload();
-            //         }
-            //       })
-            //     }
-            //   }
-            // })
-        //   }
-        // });
     </script>
   @endif
 <!-- END SweetAlert2 -->
+
+
 
 
 <!-- START ALERT บันทึกข้อมูลสำเร็จ  -->
@@ -516,54 +477,6 @@
 
 
 @section('js-custom')
-<script>
-    $(document).ready(function() {
-        $.ajax({
-            url: "https://hr.ddc.moph.go.th/api/v2/employee/{{ Auth::user()->preferred_username }}",
-            type: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": "bearer {{ KeycloakWeb::retrieveToken()['access_token'] }}"
-            },
-            success: function(result) {
-                //console.log(result)
-
-                $("#employee_id").text(result.employeeId);
-                $("#cid").text(result.idCard);
-                $("#dept_id").text(result.deptId + '|'+result.deptName);
-                $("#edu_class").text(result.educationLevel);
-                $("#prefix").text(result.title);
-                $("#fname_th").text(result.fname);
-                $("#lname_th").text(result.lname);
-                $("#fname_en").text(result.efname);
-                $("#lname_en").text(result.elname);
-                $("#gender").text(result.sex);
-                $("#birthdate").text(result.birthday);
-                $("#position").text(result.position);
-                $("#tel").text(result.telephone);
-                $("#email").text(result.email);
-            }
-        });
-
-
-        $.ajax({
-            url: "https://hr.ddc.moph.go.th/api/v2/employee/pic/{{ Auth::user()->preferred_username }}",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": "bearer {{ KeycloakWeb::retrieveToken()['access_token'] }}"
-            },
-            xhrFields: {
-                responseType: 'blob'
-            },
-            success (data) {
-                const url = window.URL || window.webkitURL;
-                const src = url.createObjectURL(data);
-                $('#image').attr('src', src);
-            }
-        });
-    });
-
-</script>
 
 <!-- DataTables -->
 <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
