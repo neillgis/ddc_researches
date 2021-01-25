@@ -7,12 +7,12 @@
 @section('css-custom')
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css">
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.6.4/css/buttons.dataTables.min.css">
-<link rel="stylesheet" href="{{ asset('bower_components/admin-lte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
-<link rel="stylesheet" href="{{ asset('bower_components/admin-lte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
+<link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
 
 <!-- DatePicker Style -->
 <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
-<link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css">
+<link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
 
 <!-- SweetAlert2 -->
 <link rel="stylesheet" href="{{ asset('bower_components/admin-lte/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
@@ -118,7 +118,7 @@
 
 
     <!-- START From Input RESEARCH PROJECT -------------------------------------------------->
-    @if(Auth::hasRole('user'))
+    @if (Gate::allows('keycloak-web', ['user']))
       <div class="row">
         <div class="col-md-12">
           <div class="card">
@@ -181,7 +181,7 @@
                     <div class="form-group">
                       <label for="exampleDatepicker1"> ปี พ.ศ. ที่เริ่มโครงการ </label>
                       <input type="text" class="form-control" id="datepicker1" placeholder="กรุณาเลือก ปี/เดือน/วัน"
-                             name="pro_start_date" autocomplete="off" >
+                             name="pro_start_date" autocomplete="off" required>
                     </div>
                   </div>
 
@@ -189,7 +189,7 @@
                     <div class="form-group">
                       <label for="exampleDatepicker1"> ปี พ.ศ. ที่เสร็จสิ้นครงการ </label>
                       <input type="text" class="form-control" id="datepicker2" placeholder="กรุณาเลือก ปี/เดือน/วัน"
-                             name="pro_end_date" autocomplete="off" >
+                             name="pro_end_date" autocomplete="off" required>
                     </div>
                   </div>
 
@@ -282,13 +282,11 @@
                     </td>
 
                     <td class="td-actions text-right text-nowrap" href="#">
-                    @if(Auth::hasRole('manager') || Auth::hasRole('user'))
                       <a href=" {{ route('DownloadFile.research', ['id' => $value->id, 'files' => $value->files]) }} ">
                         <button type="button" class="btn btn-danger btn-md" data-toggle="tooltip" title="Download">
                           <i class="fas fa-arrow-alt-circle-down"></i>
                         </button>
                       </a>
-                    @endif
 
                       <a href=" {{ route('research.edit', $value->id) }} ">
                         <button type="button" class="btn btn-warning btn-md" data-toggle="tooltip" title="Edit">
@@ -296,7 +294,7 @@
                         </button>
                       </a>
 
-                  @if(Auth::hasRole('manager'))
+                    @if (Gate::allows('keycloak-web', ['manager']))
                       <a href=" {{ route('research.verified', $value->id) }} ">
                         <button type="button" class="btn btn-md"
                                 data-toggle="tooltip" title="Verfied" style="background-color: #336699;">
@@ -327,8 +325,7 @@
 @section('js-custom-script')
 
 <!-- SweetAlert2 -->
-<!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script> -->
-<script src="{{ asset('bower_components/admin-lte/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
     <!-- <script>
         Swal.fire({
@@ -340,27 +337,28 @@
     </script> -->
 
 
-        @if(session()->has('swl_add'))
-          <script>
-              Swal.fire({
-                  icon: 'success',
-                  title: 'บันทึกข้อมูลเรียบร้อยแล้ว',
-                  showConfirmButton: false,
-                  timer: 2800
-              })
-          </script>
-          @endif
+    @if(session()->has('swl_add'))
+    <script>
+      Swal.fire({
+        icon: 'success',
+        title: 'บันทึกข้อมูลแล้ว',
+        showConfirmButton: false,
+        timer: 1000
+      })
+    </script>
+    @endif
 
-        @if(session()->has('swl_del'))
-          <script>
-              Swal.fire({
-                  icon: 'error',
-                  title: 'บันทึกข้อมูลไม่สำเร็จ !!!',
-                  showConfirmButton: false,
-                  timer: 2800
-              })
-          </script>
-        @endif
+    @if(Session::has('swl_del'))
+    <script>
+      Swal.fire({
+        icon: 'success',
+        title: 'ลบข้อมูลเรียบร้อยแล้ว',
+        showConfirmButton: false,
+        timer: 1000
+      })
+    </script>
+    @endif
+
 
 
 <!-- FILE INPUT -->
@@ -406,6 +404,12 @@
   });
 </script>
 
+
+<script>
+  $(document).ready(function() {
+    $('[data-toggle="tooltip"]').tooltip();
+  });
+</script>
 @stop('js-custom-script')
 
 

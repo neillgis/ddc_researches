@@ -246,9 +246,9 @@ class ResearchController extends Controller
 
     if($insert){
       //return Sweet Alert
-        return redirect()->back()->with('swl_add', 'เพิ่มข้อมูลสำเร็จแล้ว');
+        return redirect()->route('page.research')->with('swl_add', 'เพิ่มข้อมูลสำเร็จแล้ว');
     }else {
-        return redirect()->back()->with('swl_del', 'บันทึกแล้ว');
+        return redirect()->back()->with('swl_err', 'บันทึกแล้ว');
     }
   }
   //  -- END INSERT --

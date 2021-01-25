@@ -16,67 +16,92 @@ class JournalController extends Controller
 {
 
 
-  // public function journal(){
-  //   return view('frontend.journal');
-  // }
+  public function journal(){
+    return view('frontend.journal');
+  }
 
 
   //  -- SELECT DataTables JOURNAL --
   public function table_journal(){
-    if(Auth::hasRole('admin')){
+    if(Auth::hasRole('manager')){
       $query  = DB::table('db_research_project')
                      ->select('db_research_project.id',
                               'db_research_project.pro_name_en',
-                      \DB::raw('(CASE
-                                    WHEN verified = "1" THEN "อนุมัติแล้ว"
-                                    ELSE "ยังไม่ได้อนุมัติ"
-                                    END) AS verified'
-                      ))
+                              )
                      ->orderby('id', 'DESC')
                      ->get();
 
-    }elseif(Auth::hasRole('user')) {
+    }elseif(Auth::hasRole('admin')) {
       $query  = DB::table('db_research_project')
                      ->select('db_research_project.id',
                               'db_research_project.pro_name_en',
-                      \DB::raw('(CASE
-                                    WHEN verified = "1" THEN "อนุมัติแล้ว"
-                                    ELSE "ยังไม่ได้อนุมัติ"
-                                    END) AS verified'
-                      ))
-                     ->where('users_id', Auth::user()->preferred_username)
+                              )
                      ->orderby('id', 'DESC')
                      ->get();
 
      }else {
-       return response(redirect(url('/keycloak/login')), 404);
-       // return abort(404);
+       $query  = DB::table('db_research_project')
+                      ->select('db_research_project.id',
+                               'db_research_project.pro_name_en',
+                               )
+                      ->where('users_id', Auth::user()->preferred_username)
+                      ->orderby('id', 'DESC')
+                      ->get();
      }
 
+     //   return response(redirect(url('/keycloak/login')), 404);
+     //   return abort(404);
 
-    if(Auth::hasRole('admin')){
+
+    if(Auth::hasRole('manager')){
       $query2 = journal::select('id', 'pro_id', 'article_name_th', 'article_name_en',
                                 'journal_name_th', 'journal_name_en', 'publish_years',
-                                'corres', 'files')
+                                'corres', 'files', 'verified',
+                                \DB::raw('(CASE
+                                              WHEN verified = "1" THEN "อนุมัติแล้ว"
+                                              ELSE "ยังไม่ได้อนุมัติ"
+                                              END) AS verified'
+                                ))
                       ->ORDERBY('id','DESC')
                       ->get();
+
+    }elseif(Auth::hasRole('admin')){
+      $query2 = journal::select('id', 'pro_id', 'article_name_th', 'article_name_en',
+                                'journal_name_th', 'journal_name_en', 'publish_years',
+                                'corres', 'files', 'verified',
+                                \DB::raw('(CASE
+                                              WHEN verified = "1" THEN "อนุมัติแล้ว"
+                                              ELSE "ยังไม่ได้อนุมัติ"
+                                              END) AS verified'
+                                ))
+                      ->ORDERBY('id','DESC')
+                      ->get();
+
     }else {
       $query2 = journal::select('id', 'pro_id', 'article_name_th', 'article_name_en',
                                 'journal_name_th', 'journal_name_en', 'publish_years',
-                                'corres', 'files')
+                                'corres', 'files', 'verified',
+                                \DB::raw('(CASE
+                                              WHEN verified = "1" THEN "อนุมัติแล้ว"
+                                              ELSE "ยังไม่ได้อนุมัติ"
+                                              END) AS verified'
+                                ))
                       ->where('users_id', Auth::user()->preferred_username)
                       ->ORDERBY('id','DESC')
                       ->get();
     }
 
 
+
       $query3 = [1=> 'ผู้นิพนธ์หลัก (first-author)',
                  2=> 'ผู้นิพนธ์ร่วม (co-author)'
                 ];
 
+
       $query4 = [1=> 'ใช่',
                  2=> 'ไม่ใช่'
                 ];
+
 
 // --- COUNT 2 BOX on TOP ---
       // COUNT = All Record
@@ -90,7 +115,6 @@ class JournalController extends Controller
                                       ->get()
                                       ->count();
       }
-
 
         // COUNT = contribute = 1
         if(Auth::hasRole('admin')){
@@ -112,7 +136,6 @@ class JournalController extends Controller
         'journal_res'     => $query,
         'journals'        => $query2,
         'contribute'      => $query3,
-        'corres'          => $query4,
         'corres'          => $query4,
         'Total_journal'   => $Total_journal,
         'Total_master_jour'  => $Total_master_jour,

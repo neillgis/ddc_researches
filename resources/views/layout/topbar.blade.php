@@ -25,11 +25,11 @@
 
          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
 
-           <!-- <a class="dropdown-item" href="#">
-             {{ __('แก้ไขประวัติส่วนตัว') }}
+           <a class="dropdown-item" href="#">
+             {{ __('แก้ไขข้อมูลส่วนตัว') }}
            </a>
 
-           <div class="dropdown-divider"></div> -->
+           <div class="dropdown-divider"></div>
            <a class="dropdown-item" href="{{ route('keycloak.logout') }}">{{ __('ออกจากระบบ') }}</a>
 
            <form id="logout-form" action="#" method="POST" style="display: none;">

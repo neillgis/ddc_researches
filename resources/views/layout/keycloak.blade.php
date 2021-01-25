@@ -26,12 +26,14 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th scope="col">Gate::allows('keycloak-web', ['admin'])</th>
+                        <th scope="col"> สิทธิ์ในการเข้าถึงของคุณ คือ </th>
                         <th scope="col">
-                            @if (Gate::allows('keycloak-web', ['admin']))
-                                true
+                            @if (Gate::allows('keycloak-web', ['manager']))
+                                manager
+                            @elseif (Gate::allows('keycloak-web', ['admin']))
+                                admin
                             @else
-                                false
+                                user
                             @endif
                         </th>
                     </tr>

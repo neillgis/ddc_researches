@@ -1,9 +1,10 @@
 @extends('layout.main')
 
+<?php
+  use App\CmsHelper as CmsHelper;
+?>
 
 @section('css-custom')
-<!-- <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="http://www.datatables.net/rss.xml"> -->
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css">
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.6.4/css/buttons.dataTables.min.css">
 <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
@@ -105,7 +106,7 @@
 
 
     <!-- START From Input JOURNAL PROJECT -------------------------------------------------->
-  @if (Gate::allows('keycloak-web', ['user']))
+    @if(Auth::hasRole('user'))
     <div class="row">
       <div class="col-md-12">
         <div class="card">
@@ -322,11 +323,15 @@
                     </td>
 
                     <td class="td-actions text-right text-nowrap" href="#">
+
+                    @if(Auth::hasRole('manager') || Auth::hasRole('user'))
                       <a href=" {{ route('DownloadFile.journal', ['id' => $value->id, 'files' => $value->files]) }} ">
                         <button type="button" class="btn btn-danger btn-md" data-toggle="tooltip" title="Download">
                           <i class="fas fa-arrow-alt-circle-down"></i>
                         </button>
                       </a>
+                    @endif
+
 
                       <a href=" {{ route('journal.edit', ['id' => $value->id, 'pro_id' => $value->pro_id]) }} ">
                         <button type="button" class="btn btn-warning btn-md" data-toggle="tooltip" title="Edit">
@@ -334,7 +339,7 @@
                         </button>
                       </a>
 
-                  @if (Gate::allows('keycloak-web', ['admin']))
+                  @if(Auth::hasRole('manager'))
                       <a href=" {{ route('journal.verified', $value->id) }} ">
                         <button type="button" class="btn btn-md" data-toggle="tooltip" title="Verfied" style="background-color: #336699;">
                           <i class="fas fa-user-check"></i>
