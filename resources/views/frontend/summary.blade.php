@@ -10,16 +10,38 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
 
-  <!-- Fonts Style : Kanit -->
-    <style>
-    body {
-      font-family: 'Kanit', sans-serif;
+<!-- Fonts Style : Kanit -->
+  <style>
+  body {
+    font-family: 'Kanit', sans-serif;
+  }
+  h1 {
+    font-family: 'Kanit', sans-serif;
+  }
+  </style>
+<!-- END Fonts Style : Kanit -->
+
+<style>
+     button {
+      display: inline-block;
+      position: relative;
+      color: #1D9AF2;
+      background-color: #292D3E;
+      border: 1px solid #1D9AF2;
+      border-radius: 4px;
+      padding: 0 15px;
+      cursor: pointer;
+      height: 38px;
+      font-size: 14px;
+
     }
-    h1 {
-      font-family: 'Kanit', sans-serif;
+    button:active {
+      box-shadow: 0 3px 0 #1D9AF2;
+      top: 3px;
     }
-    </style>
-  <!-- END Fonts Style : Kanit -->
+</style>
+
+
 @stop('css-custom')
 
 @section('contents')
@@ -134,6 +156,7 @@
                     <table class="table table-hover" style="width:100%" id="example1" >
                     <thead>
                         <tr>
+                            <th class="text-center"> ลำดับ </th>
                             <th class="text-center"> ชื่อ-นามสกุล </th>
                             <th class="text-center"> หน่วยงาน </th>
 
@@ -151,16 +174,17 @@
                     </thead>
 
                     <tbody>
-                        @foreach( $table_list as $value )
+                        @foreach( $user_list as $value )
                         <tr>
+                            <td class="text-center"> {{ $value->uid }} </td>
                             <td class="text-left"> {{ $value->prefix.$value->fname_th." ".$value->lname_th }} </td>
-                            <td class="text-left"> {{ $value->dept_name }} </td>
+                            <td class="text-left"> {{ $value->depart_name }} </td>
 
                             <!-- จำนวน -->
-                            <td class="text-center"> # </td>
-                            <td class="text-center"> # </td>
-                            <td class="text-center"> # </td>
-                            <td class="text-center"> # </td>
+                            <td class="text-center"> {{ empty($research_count_2)?'0': $research_count_2 }} </td>
+                            <td class="text-center"> {{ empty($total_research_count)?'0': $total_research_count }} </td>
+                            <td class="text-center"> {{ empty($total_research_count)?'0': $total_research_count }} </td>
+                            <td class="text-center"> {{ empty($total_research_count)?'0': $total_research_count }} </td>
 
                             <!-- researcher_level -->
                             <td class="text-center"> {{ $value->researcher_level }} </td>
@@ -170,26 +194,17 @@
 
                             <!-- จัดการข้อมูล -->
                             <td class="td-actions text-right text-nowrap" href="#">
-                              <a href=" # ">
+                              <!-- <a href=" # ">
                                 <button type="button" class="btn btn-danger btn-md" data-toggle="tooltip" title="Download">
                                   <i class="fas fa-arrow-alt-circle-down"></i>
                                 </button>
-                              </a>
+                              </a> -->
 
-                              <a href=" {{ route('summary.edit', $value->id) }} ">
+                              <a href=" {{ route('summary.edit', $value->uid) }} ">
                                 <button type="button" class="btn btn-warning btn-md" data-toggle="tooltip" title="Edit">
                                   <i class="fas fa-edit"></i>
                                 </button>
                               </a>
-
-                          {{-- @if(Auth::user()->roles_type != '1') --}}
-                              <a href="#">
-                                <button type="button" class="btn btn-md"
-                                        data-toggle="tooltip" title="Verfied" style="background-color: #336699;">
-                                  <i class="fas fa-user-check"></i>
-                                </button>
-                              </a>
-                          {{-- @endif --}}
                             </td>
 
 
@@ -214,17 +229,6 @@
 
 <!-- SCRIPT ------------------------------------------------------------------->
 @section('js-custom-script')
-
-
-
-<script type="text/javascript">
-  $(document).ready(function(){
-   $(".dropdown-menu").on('click', 'a', function(){
-       $(this).parents('.dropdown').find('button').text($(this).text());
-   });
-});
-</script>
-
 
 
 <!-- START ALERT บันทึกข้อมูลสำเร็จ  -->

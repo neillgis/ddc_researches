@@ -5,9 +5,6 @@
 <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
 <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
 
-<!-- DatePicker Style -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-<link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
 
   <!-- Fonts Style : Kanit -->
     <style>
@@ -39,6 +36,8 @@
         top: 3px;
       }
   </style>
+
+
 @stop('css-custom')
 
 
@@ -61,7 +60,7 @@
   <section class="content">
     <div class="container">
 
-    <!-- START EDIT SUMMARY -------------------------------------------------->
+<!-- START EDIT SUMMARY -------------------------------------------------->
       <div class="row">
         <div class="col-md-12">
           <div class="card">
@@ -79,8 +78,8 @@
                 <div class="row">
                   <div class="col-md-4">
                     <div class="form-group">
-                      <label for="exampleSelect1"> รหัสประจำตัวนักวิจัย </label>
-                      <input type="text" class="form-control" name="orcid_id" value="{{ $edit_users->orcid_id }}" readonly>
+                      <label for="exampleSelect1"> ลำดับนักวิจัย </label>
+                      <input type="text" class="form-control" name="id" value="{{ $edit_users->id }}" readonly>
                     </div>
                   </div>
                   <div class="col-md-4">
@@ -101,7 +100,7 @@
                   <div class="col-md-12">
                     <div class="form-group">
                       <label for="exampleSelect1"> หน่วยงาน </label>
-                      <input type="text" class="form-control" name="depart_id" value="{{ $edit_depart->depart_id }}" readonly>
+                      <input type="text" class="form-control" name="depart_name" value="{{ $edit_depart->depart_name }}" readonly>
                     </div>
                   </div>
                 </div>
@@ -157,7 +156,7 @@
           </div>
         </div>
       </div>
-      <!-- END EDIT RESEARCH PROJECT -------------------------------------------------->
+<!-- END EDIT SUMMARY ------------------------------------------------------------->
 
     </div>
 </section>

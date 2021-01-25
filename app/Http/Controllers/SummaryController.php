@@ -76,115 +76,85 @@ class SummaryController extends Controller
 
 // TABLE LIST ---------------------------------------------------------------------------->
 
-      // รหัสประจำตัวนักวิจัย - ชื่อ-นามสกุล - หน่วยงาน - ระดับนักวิจัย
+      // ชื่อ-นามสกุล, หน่วยงาน - ระดับนักวิจัย researcher_level, ผู้ตรวจสอบข้อมูล data_auditor
       $data_table_1 = DB::table ('users')
                	 -> join ('depart', 'depart.id', '=', 'users.depart_id')
+                 // -> join ('db_research_project', 'db_research_project.users_id', '=', 'users.card_id')
+
                	 -> select ('depart.id as dept_id',
-                            'depart.depart_name as dept_name',
-                            'users.id as id',
+                            'depart.depart_name',
+                            'users.id as uid','users.card_id',
                             'users.orcid_id','users.prefix',
                             'users.fname_th','users.lname_th',
                             'users.researcher_level','users.data_auditor')
-                 ->ORDERBY('id','DESC')
+
+                 -> ORDERBY('uid','ASC')
                  ->get();
 // dd($data_table_1);
 
       // จำนวน โครงการวิจัยทั้งหมด ------------------------------------------------------------>
       $data_table_2 = DB::table ('users')
-                 -> join ('db_research_project', 'db_research_project.users_id', '=', 'users.id')
-                 -> selectRaw ('users.id, count(DISTINCT db_research_project.id) AS total_research_count')
-                 -> GROUPBY ('users.id')
-                 -> ORDERBY('users.id','DESC')
+                 -> join ('db_research_project', 'db_research_project.users_id', '=', 'users.card_id')
+                 -> selectRaw ('users.id as uid, count(DISTINCT db_research_project.id) AS total_research_count')
+                 -> GROUPBY ('uid')
+                 -> ORDERBY('uid','ASC')
                  ->get();
 // dd($data_table_2);
 
-      $data_table_2_count = count($data_table_2);
-
-// dd($data_table_2_count);
-
       // จำนวน โครงการวิจัยที่เป็นผู้วิจัยหลักทั้งหมด ------------------------------------------------>
       $data_table_2_1 = DB::table ('users')
-                 -> join ('db_research_project', 'db_research_project.users_id', '=', 'users.id')
-                 -> selectRaw ('users.id, count(DISTINCT db_research_project.id) AS master_research_count')
+                 -> join ('db_research_project', 'db_research_project.users_id', '=', 'users.card_id')
+                 -> selectRaw ('users.id as uid, count(DISTINCT db_research_project.id) AS master_research_count')
                  -> whereIn ('pro_position', ['1'])
-                 -> GROUPBY ('users.id')
+                 -> GROUPBY ('uid')
+                 -> ORDERBY('uid','ASC')
                  ->get();
 // dd($data_table_2_1);
 
-      $data_table_2_1_count = count($data_table_2_1);
-
-// dd($data_table_2_1_count);
-
       // จำนวน บทความที่ตีพิมพ์ทั้งหมด --------------------------------------------------------->
       $data_table_3 = DB::table ('users')
-                  -> join ('db_published_journal', 'db_published_journal.users_id', '=', 'users.id')
-                  -> selectRaw ('users.id, count(DISTINCT db_published_journal.id) AS total_journal_count')
-                  -> GROUPBY ('users.id')
+                  -> join ('db_published_journal', 'db_published_journal.users_id', '=', 'users.card_id')
+                  -> selectRaw ('users.id as uid, count(DISTINCT db_published_journal.id) AS total_journal_count')
+                  -> GROUPBY ('uid')
+                  -> ORDERBY('uid','ASC')
                   ->get();
 // dd($data_table_3);
 
-      $data_table_3_count = count($data_table_3);
-
-// dd($data_table_3_count);
-
       // จำนวน บทความที่นำไปใช้ประโยชน์เชิงวิชาการ ---------------------------------------------->
       $data_table_3_1 = DB::table ('users')
-                  -> join ('db_utilization', 'db_utilization.users_id', '=', 'users.id')
-                  -> selectRaw ('users.id, count(DISTINCT db_utilization.id) AS total_util_count')
+                  -> join ('db_utilization', 'db_utilization.users_id', '=', 'users.card_id')
+                  -> selectRaw ('users.id as uid, count(DISTINCT db_utilization.id) AS total_util_count')
                   -> where ('util_type', '=', 'เชิงวิชาการ')
-                  -> GROUPBY ('users.id')
+                  -> GROUPBY ('uid')
+                  -> ORDERBY('uid','ASC')
                   ->get();
 // dd($data_table_3_1);
-
-      $data_table_3_1_count = count($data_table_3_1);
-
-// dd($data_table_3_1_count);
-
-      // ระดับนักวิจัย researcher_level
-      $data_table_4 = [1=> 'นักวิจัยฝึกหัด',
-                       2=> 'นักวิจัยรุ่นใหม่',
-                       3=> 'นักวิจัยรุ่นกลาง',
-                       4=> 'นักวิจัยอวุโส'
-                       ];
-// dd($data_table_4);
-
-    // ผู้ตรวจสอบข้อมูล data_auditor
-      $data_table_5 = [1=> 'นางสาวนัยนา ประดิษฐ์สิทธิกร',
-                       2=> 'นางสาวชลนที รอดสว่าง',
-                       3=> 'นายอภิสิทธิ์ สนองค์'
-                       ];
-// dd($data_table_5);
-
 
 
       return view('frontend.summary',
       [
         // Sum Box
-        "Total_research"        => $Total_research,
-        "Total_master_pro"      => $Total_master_pro,
-        "Total_publish_pro"     => $Total_publish_pro,
-        "Total_master_journal"  => $Total_master_journal,
-        "Total_publish_journal" => $Total_publish_journal,
+        'Total_research'        => $Total_research,
+        'Total_master_pro'      => $Total_master_pro,
+        'Total_publish_pro'     => $Total_publish_pro,
+        'Total_master_journal'  => $Total_master_journal,
+        'Total_publish_journal' => $Total_publish_journal,
 
-        // Users
-        "table_list"          => $data_table_1,
+        //  ชื่อ-สกุล users, ระดับนักวิจัย researcher_level, ผู้ตรวจสอบข้อมูล data_auditor
+        'user_list'               => $data_table_1,
 
         // จำนวน โครงการวิจัยทั้งหมด
-        "research_count"           => $data_table_2_count,
+        'research_count'          => $data_table_2,
 
         // จำนวน โครงการวิจัยที่เป็นผู้วิจัยหลักทั้งหมด
-        "master_pro_count"         => $data_table_2_1_count,
+        'master_pro_count'        => $data_table_2_1,
 
         // จำนวน บทความที่ตีพิมพ์ทั้งหมด
-        "publish_journal_count"    => $data_table_3_count,
+        'publish_journal_count'   => $data_table_3,
 
         // จำนวน บทความที่นำไปใช้ประโยชน์เชิงวิชาการ
-        "journal_academic_count"   => $data_table_3_1_count,
-        // ระดับนักวิจัย researcher_level
-        "sl_researchlev"           => $data_table_4,
+        'journal_academic_count'  => $data_table_3_1,
 
-        // ผู้ตรวจสอบข้อมูล data_auditor
-        "sl_auditorchk"       => $data_table_5
 
       ]);
 }
@@ -194,46 +164,36 @@ class SummaryController extends Controller
     // EDIT ----------------------------------------------------------------->
     public function edit_summary(Request $request){
 
-      // $edit_0 = DB::table ('users')
-      //          	 -> join ('depart', 'depart.id', '=', 'users.depart_id')
-      //          	 -> select ('depart.id as dept_id',
-      //                       'depart.depart_name as dept_name',
-      //                       'users.id as id',
-      //                       'users.orcid_id','users.prefix',
-      //                       'users.fname_th','users.lname_th',
-      //                       'users.researcher_level','users.data_auditor')
-      //            ->ORDERBY('id','DESC')
-      //            ->first();
-
       // // users
       $edit_0 = member::where ('id', $request->id)
                       ->first();
       //
       // depart
-      // $edit_1 = depart::select ('depart.id','depart.depart_name')
-      //                 ->first();
+      $edit_1 = DB::table ('users')
+               	 -> join ('depart', 'depart.id', '=', 'users.depart_id')
+               	 -> select ('depart.id','depart.depart_name')
+                 ->first();
 
       // ระดับนักวิจัย researcher_level
-      $edit_2 = [1=> 'นักวิจัยฝึกหัด',
-                 2=> 'นักวิจัยรุ่นใหม่',
-                 3=> 'นักวิจัยรุ่นกลาง',
-                 4=> 'นักวิจัยอาวุโส'
+      $edit_2 = ['นักวิจัยฝึกหัด'     => 'นักวิจัยฝึกหัด',
+                 'นักวิจัยรุ่นใหม่'     => 'นักวิจัยรุ่นใหม่',
+                 'นักวิจัยรุ่นกลาง'    => 'นักวิจัยรุ่นกลาง',
+                 'นักวิจัยอาวุโส'     => 'นักวิจัยอาวุโส'
                  ];
 
       // ผู้ตรวจสอบข้อมูล data_auditor
-      $edit_3 = [1=> 'นางสาวนัยนา ประดิษฐ์สิทธิกร',
-                 2=> 'นางสาวชลนที รอดสว่าง',
-                 3=> 'นายอภิสิทธิ์ สนองค์'
+      $edit_3 = ['นางสาวนัยนา ประดิษฐ์สิทธิกร'  => 'นางสาวนัยนา ประดิษฐ์สิทธิกร',
+                 'นางสาวชลนที รอดสว่าง'      => 'นางสาวชลนที รอดสว่าง',
+                 'นายอภิสิทธิ์ สนองค์'         => 'นายอภิสิทธิ์ สนองค์'
                 ];
 
 
-      return view('frontend.summary.edit',
+      return view('frontend.summary_edit',
       [
-         "edit_users"        => $edit_0,
-         "edit_researchlev"  => $edit_2,
-         "edit_auditorchk"   => $edit_3
-
-
+         'edit_users'        => $edit_0,
+         'edit_depart'       => $edit_1,
+         'edit_researchlev'  => $edit_2,
+         'edit_auditorchk'   => $edit_3
       ]);
       }
       // END EDIT ----------------------------------------------------------------->
