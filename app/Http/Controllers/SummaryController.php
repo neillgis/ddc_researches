@@ -14,7 +14,6 @@ use Storage;
 use File;
 use Auth;
 
-
 class SummaryController extends Controller
 {
 
@@ -82,17 +81,15 @@ class SummaryController extends Controller
       $data_table_1 = DB::table ('users')
                	 -> join ('depart', 'depart.id', '=', 'users.depart_id')
                  // -> join ('db_research_project', 'db_research_project.users_id', '=', 'users.card_id')
-
                	 -> select ('depart.id as dept_id',
                             'depart.depart_name',
                             'users.id as uid','users.card_id',
                             'users.orcid_id','users.prefix',
                             'users.fname_th','users.lname_th',
                             'users.researcher_level','users.data_auditor')
+                            -> ORDERBY('uid','ASC')
+                            ->get();
 
-                 -> ORDERBY('uid','ASC')
-                 ->get();
-                 // dd(Auth::user());
 // dd($data_table_1);
 
       // จำนวน โครงการวิจัยทั้งหมด ------------------------------------------------------------>
@@ -132,7 +129,7 @@ class SummaryController extends Controller
                   -> ORDERBY('uid','ASC')
                   ->get();
 // dd($data_table_3_1);
-
+      //dd(CmsHelper::GetProfile('1160100373591'));
 
       return view('frontend.summary',
       [

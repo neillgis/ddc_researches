@@ -9,7 +9,6 @@
 <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
-
 <!-- Fonts Style : Kanit -->
   <style>
   body {
@@ -140,7 +139,7 @@
 <!-- {{-- @if(Auth::user()->roles_type != '1') --}} -->
           <section class="content">
             <div class="card">
-                <div class="card" style="background-color: #669999;">
+                <div class="card" style="background-color: #FFCC99;">
                   <div class="card-header">
                       <h3 class="card-title"><b> สรุปข้อมูลนักวิจัย </b></h3>
                   </div>
@@ -171,9 +170,10 @@
 
                     <tbody>
                         @foreach( $user_list as $value )
+
                         <tr>
                             <td class="text-center"> {{ $value->uid }} </td>
-                            <td class="text-left"> {{ $value->prefix.$value->fname_th." ".$value->lname_th }} </td>
+                            <td class="text-left">  </td>
                             <td class="text-left"> {{ $value->depart_name }} </td>
 
                             <!-- จำนวน -->

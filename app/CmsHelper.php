@@ -7,6 +7,7 @@ use App\Roles;
 use Cache;
 use App\User;
 
+
     class CmsHelper{
         function __construct()
         {
@@ -275,5 +276,32 @@ use App\User;
           	  }
           	  return $split_word;
         	}
+
+
+          // Get user profile [Individual] from SSO hr.ddc.moph.go.th
+          public static function GetProfile($cid){
+            $client = new \GuzzleHttp\Client();
+            $response = $client->get('https://hr.ddc.moph.go.th/api/v2/employee/'.$cid, [
+             'headers' => [
+                 'Authorization' => 'Bearer '.env('TOKEN_GET')
+             ],
+             'verify' => false
+            ]);
+            $decoded = json_decode($response->getBody(), true);
+            return $decoded['fname'].' '.$decoded['lname'];
+          }
+
+
+          // Get user profile [ALL] from SSO hr.ddc.moph.go.th
+          public static function GetProfileAll(){
+            $client = new \GuzzleHttp\Client();
+            $response = $client->get('https://hr.ddc.moph.go.th/api/v2/employee/', [
+             'headers' => [
+                 'Authorization' => 'Bearer '.env('TOKEN_GET')
+             ],
+             'verify' => false
+            ]);
+            return json_decode($response->getBody(), true);
+          }
 
 }
