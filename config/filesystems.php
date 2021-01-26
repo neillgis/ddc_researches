@@ -60,6 +60,11 @@ return [
             'url' => env('APP_URL').'/storage',
         ],
 
+        'util' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/file_upload_util'),
+            'url' => env('APP_URL').'/storage',
+        ],
 
         'public' => [
             'driver' => 'local',
