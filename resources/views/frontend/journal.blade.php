@@ -315,7 +315,7 @@
                     <td> {{ $corres [ $value->corres ] }} </td>
 
                     <td>
-                      @if($value->verified == "อนุมัติแล้ว")
+                      @if($value->verified == "ตรวจสอบแล้ว")
                         <span class="badge bg-secondary badge-pill"> {{ $value->verified }} </span> <!-- null = รอการอนุมัติ -->
                       @else
                         <span class="badge bg-danger badge-pill"> {{ $value->verified }} </span> <!--  2 = ไม่อนุมัติ -->

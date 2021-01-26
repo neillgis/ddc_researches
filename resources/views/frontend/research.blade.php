@@ -274,7 +274,7 @@
                     <td> {{ $publish_status [ $value->publish_status ] }} </td>
 
                     <td>
-                      @if($value->verified == "อนุมัติแล้ว")
+                      @if($value->verified == "ตรวจสอบแล้ว")
                         <span class="badge bg-secondary badge-pill"> {{ $value->verified }} </span> <!-- null = รอการอนุมัติ -->
                       @else
                         <span class="badge bg-danger badge-pill"> {{ $value->verified }} </span> <!--  2 = ไม่อนุมัติ -->
@@ -327,8 +327,8 @@
 @section('js-custom-script')
 
 <!-- SweetAlert2 -->
-<!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script> -->
-<script src="{{ asset('bower_components/admin-lte/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<!-- <script src="{{-- asset('bower_components/admin-lte/plugins/sweetalert2/sweetalert2.min.js') --}}"></script> -->
 
     <!-- <script>
         Swal.fire({
@@ -340,27 +340,26 @@
     </script> -->
 
 
-        @if(session()->has('swl_add'))
-          <script>
-              Swal.fire({
-                  icon: 'success',
-                  title: 'บันทึกข้อมูลเรียบร้อยแล้ว',
-                  showConfirmButton: false,
-                  timer: 2800
-              })
-          </script>
-          @endif
+    @if(session()->has('swl_add'))
+      <script>
+          Swal.fire({
+              icon: 'success',
+              title: 'บันทึกข้อมูลเรียบร้อยแล้ว',
+              showConfirmButton: false,
+              timer: 2800
+          })
+      </script>
 
-        @if(session()->has('swl_del'))
-          <script>
-              Swal.fire({
-                  icon: 'error',
-                  title: 'บันทึกข้อมูลไม่สำเร็จ !!!',
-                  showConfirmButton: false,
-                  timer: 2800
-              })
-          </script>
-        @endif
+    @elseif(session()->has('swl_del'))
+      <script>
+          Swal.fire({
+              icon: 'error',
+              title: 'บันทึกข้อมูลไม่สำเร็จ !!!',
+              showConfirmButton: false,
+              timer: 2800
+          })
+      </script>
+    @endif
 
 
 <!-- FILE INPUT -->
