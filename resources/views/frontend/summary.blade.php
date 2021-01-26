@@ -9,7 +9,6 @@
 <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
-
 <!-- Fonts Style : Kanit -->
   <style>
   body {
@@ -63,29 +62,27 @@
 <!-- START SUM  BOX ------------------------------------------------------->
         <section class="content">
           <div class="container-fluid">
-            <div class="row">
 
-              <div class="col-md-12 mx-auto">
-                <div class="small-box bg-secondary">
+            <div class="row">
+              <div class="col-md-4 mx-auto">
+                <div class="small-box" style="background-color: #9999CC;">
                   <div class="inner">
-                    <!-- เรียกจาก db_research_project -> โดย count id (All Record)--------->
-                    <h4> โครงการวิจัยที่ทำเสร็จ </h4>
-                    <br>
-                    <h3> {{ empty($Total_research)?'0': $Total_research }} โครงการ </h3>
+                    <h3> {{ empty($Total_research)?'0': $Total_research }} </h3>
+                    <p> โครงการวิจัยที่ทำเสร็จ </p>
                   </div>
                   <div class="icon">
-                    <i class="fas fa-chart-line" style="font-size:100px"> </i>
+                    <i class="ion ion-pie-graph"></i>
                   </div>
+                  <!-- <a class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
                 </div>
               </div>
 
-              <div class="col-md-3 mx-auto">
-                <div class="small-box bg-warning">
+              <div class="col-md-4 mx-auto">
+                <div class="small-box" style="background-color: #FFFFCC;">
                   <div class="inner">
                     <!-- เรียกจาก db_research_project -> โดย count id -> pro_position = 1 ( เป็นผู้วิจัยหลัก ) ------------>
-                    <h4> โครงการวิจัยที่เป็นผู้วิจัยหลัก </h4>
-                    <br>
-                    <h3> {{ empty($Total_master_pro)?'0': $Total_master_pro }} โครงการ </h3>
+                    <h3> {{ empty($Total_master_pro)?'0': $Total_master_pro }} </h3>
+                    <p>โครงการวิจัยที่เป็นผู้วิจัยหลัก</p>
                   </div>
                   <div class="icon">
                     <i class="fas fa-chalkboard-teacher"></i>
@@ -93,27 +90,27 @@
                 </div>
               </div>
 
-              <div class="col-md-3 mx-auto">
-                <div class="small-box bg-danger">
+              <div class="col-md-4 mx-auto">
+                <div class="small-box" style="background-color: #99CC99;">
                   <div class="inner">
                     <!-- เรียกจาก db_research_project -> โดย count id -> publish_status = 1 (ใช่ ) ------------>
-                    <h4> โครงการวิจัยที่ตีพิมพ์ </h4>
-                    <br>
-                    <h3> {{ empty($Total_publish_pro)?'0': $Total_publish_pro }} โครงการ </h3>
+                    <h3> {{ empty($Total_publish_pro)?'0': $Total_publish_pro }} </h3>
+                    <p>โครงการวิจัยที่ตีพิมพ์</p>
                   </div>
                   <div class="icon">
                     <i class="fas fa-dice-d20"></i>
                   </div>
                 </div>
               </div>
+            </div>
 
-              <div class="col-md-3 mx-auto">
-                <div class="small-box bg-success">
+            <div class="row">
+              <div class="col-md-4">
+                <div class="small-box" style="background-color: #CCCC99;">
                   <div class="inner">
                     <!-- เรียกจาก db_published_journal -> โดย count id -> contribute = ผู้นิพนธ์หลัก (first-author)---------->
-                    <h4> บทความผู้นิพนธ์หลัก </h4>
-                    <br>
-                    <h3> {{ empty($Total_master_journal)?'0': $Total_master_journal }} โครงการ </h3>
+                    <h3> {{ empty($Total_master_journal)?'0': $Total_master_journal }} </h3>
+                    <p>บทความผู้นิพนธ์หลัก</p>
                   </div>
                   <div class="icon">
                     <i class="fas fa-book-reader"></i>
@@ -121,20 +118,18 @@
                 </div>
               </div>
 
-              <div class="col-md-3 mx-auto">
-                <div class="small-box bg-info">
+              <div class="col-md-4">
+                <div class="small-box" style="background-color: #CD5C5C;">
                   <div class="inner">
                     <!-- เรียกจาก db_published_journal โดย count id (All Record) ------------>
-                    <h4> บทความตีพิมพ์ </h4>
-                    <br>
-                    <h3> {{ empty($Total_publish_journal)?'0': $Total_publish_journal }} โครงการ </h3>
+                    <h3> {{ empty($Total_publish_journal)?'0': $Total_publish_journal }} </h3>
+                    <p>บทความตีพิมพ์</p>
                   </div>
                   <div class="icon">
                     <i class="fas fa-cubes"></i>
                   </div>
                 </div>
               </div>
-
             </div>
             <br>
 <!-- END SUM  BOX --------------------------------------------------------->
@@ -144,9 +139,9 @@
 <!-- {{-- @if(Auth::user()->roles_type != '1') --}} -->
           <section class="content">
             <div class="card">
-                <div class="card card-gray">
+                <div class="card" style="background-color: #FFCC99;">
                   <div class="card-header">
-                      <h3 class="card-title"> สรุปข้อมูลนักวิจัย </h3>
+                      <h3 class="card-title"><b> สรุปข้อมูลนักวิจัย </b></h3>
                   </div>
                 </div>
 
@@ -175,9 +170,10 @@
 
                     <tbody>
                         @foreach( $user_list as $value )
+
                         <tr>
                             <td class="text-center"> {{ $value->uid }} </td>
-                            <td class="text-left"> {{ $value->prefix.$value->fname_th." ".$value->lname_th }} </td>
+                            <td class="text-left">  </td>
                             <td class="text-left"> {{ $value->depart_name }} </td>
 
                             <!-- จำนวน -->

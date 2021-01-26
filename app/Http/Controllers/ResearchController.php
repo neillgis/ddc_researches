@@ -16,9 +16,9 @@ class ResearchController extends Controller
 {
 
 
-  public function research(){
-    return view('frontend.research');
-  }
+  // public function research(){
+  //   return view('frontend.research');
+  // }
 
 
 // -- SELECT DataTables RESEARCH --
@@ -28,8 +28,8 @@ class ResearchController extends Controller
                                 'pro_start_date','pro_end_date','publish_status',
                                 'files', 'verified',
                                 \DB::raw('(CASE
-                                              WHEN verified = "1" THEN "อนุมัติแล้ว"
-                                              ELSE "ยังไม่ได้อนุมัติ"
+                                              WHEN verified = "1" THEN "ตรวจสอบแล้ว"
+                                              ELSE "รอตรวจสอบ"
                                               END) AS verified'
                                 ))
                        ->ORDERBY('id','DESC')
@@ -40,8 +40,8 @@ class ResearchController extends Controller
                                 'pro_start_date','pro_end_date','publish_status',
                                 'files', 'verified',
                                 \DB::raw('(CASE
-                                              WHEN verified = "1" THEN "อนุมัติแล้ว"
-                                              ELSE "ยังไม่ได้อนุมัติ"
+                                              WHEN verified = "1" THEN "ตรวจสอบแล้ว"
+                                              ELSE "รอตรวจสอบ"
                                               END) AS verified'
                                 ))
                        ->ORDERBY('id','DESC')
@@ -52,8 +52,8 @@ class ResearchController extends Controller
                                  'pro_start_date','pro_end_date','publish_status',
                                  'files', 'verified',
                                  \DB::raw('(CASE
-                                               WHEN verified = "1" THEN "อนุมัติแล้ว"
-                                               ELSE "ยังไม่ได้อนุมัติ"
+                                               WHEN verified = "1" THEN "ตรวจสอบแล้ว"
+                                               ELSE "รอตรวจสอบ"
                                                END) AS verified'
                                  ))
                         ->where('users_id', Auth::user()->preferred_username)
@@ -240,17 +240,27 @@ class ResearchController extends Controller
         $data_post['files'] = $file_name;
     }
 
-    $insert = research::insert($data_post);
+    $output = research::insert($data_post);
 
-    // dd($insert);
 
-    if($insert){
+    if($output){
       //return Sweet Alert
-        return redirect()->back()->with('swl_add', 'เพิ่มข้อมูลสำเร็จแล้ว');
-    }else {
-        return redirect()->back()->with('swl_del', 'บันทึกแล้ว');
+      if(Auth::hasRole('user'))
+        {
+          return redirect()->back()->with('swl_add', 'เพิ่มข้อมูลสำเร็จแล้ว');
+        }
+
+        return redirect()->route('page.research')->with('swl_add', 'เพิ่มข้อมูลสำเร็จแล้ว');
+      }else {
+        return abort(404);
+        // return redirect()->back()->with('swl_err', 'บันทึกแล้ว');
     }
   }
+
+    //   else {
+    //       return redirect()->back()->with('swl_del', 'บันทึกแล้ว');
+    //   }
+    // }
   //  -- END INSERT --
 
 

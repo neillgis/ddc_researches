@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\CmsHelper;
 use App\summary;
 use App\member;
 use App\depart;
@@ -11,15 +12,15 @@ use App\research;
 use App\journal;
 use Storage;
 use File;
-
+use Auth;
 
 class SummaryController extends Controller
 {
 
 
-  public function summary(){
-    return view('frontend.summary');
-  }
+  // public function summary(){
+  //   return view('frontend.summary');
+  // }
 
 
     public function table_summary(){
@@ -57,7 +58,7 @@ class SummaryController extends Controller
                             -> select('db_published_journal.id','article_name_th','article_name_en','journal_name_th','journal_name_en',
                                       'publish_years','publish_no','publish_volume','publish_page','doi_number',
                                       'contribute','corres')
-                            -> where ('contribute', '=', 'ผู้นิพนธ์หลัก (first-author)')
+                            -> where ('contribute', ['1'])
                             ->get()->count();
 // dd($Total_master_journal);
 
@@ -80,16 +81,15 @@ class SummaryController extends Controller
       $data_table_1 = DB::table ('users')
                	 -> join ('depart', 'depart.id', '=', 'users.depart_id')
                  // -> join ('db_research_project', 'db_research_project.users_id', '=', 'users.card_id')
-
                	 -> select ('depart.id as dept_id',
                             'depart.depart_name',
                             'users.id as uid','users.card_id',
                             'users.orcid_id','users.prefix',
                             'users.fname_th','users.lname_th',
                             'users.researcher_level','users.data_auditor')
+                            -> ORDERBY('uid','ASC')
+                            ->get();
 
-                 -> ORDERBY('uid','ASC')
-                 ->get();
 // dd($data_table_1);
 
       // จำนวน โครงการวิจัยทั้งหมด ------------------------------------------------------------>
@@ -129,7 +129,7 @@ class SummaryController extends Controller
                   -> ORDERBY('uid','ASC')
                   ->get();
 // dd($data_table_3_1);
-
+      //dd(CmsHelper::GetProfile('1160100373591'));
 
       return view('frontend.summary',
       [

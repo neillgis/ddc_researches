@@ -73,7 +73,7 @@ Route::get('/', function () {
 
 
     // FORM  SUMMARY
-    Route::get('/summary_form','SummaryController@summary') -> name('page.summary');
+    // Route::get('/summary_form','SummaryController@summary') -> name('page.summary');
     Route::get('/summary_form','SummaryController@table_summary') -> name('page.summary');
     //  -- INSERT --
     Route::post('/summary_insert','SummaryController@insert_summary') -> name('summary.insert');

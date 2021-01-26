@@ -16,9 +16,9 @@ class JournalController extends Controller
 {
 
 
-  public function journal(){
-    return view('frontend.journal');
-  }
+  // public function journal(){
+  //   return view('frontend.journal');
+  // }
 
 
   //  -- SELECT DataTables JOURNAL --
@@ -58,8 +58,8 @@ class JournalController extends Controller
                                 'journal_name_th', 'journal_name_en', 'publish_years',
                                 'corres', 'files', 'verified',
                                 \DB::raw('(CASE
-                                              WHEN verified = "1" THEN "อนุมัติแล้ว"
-                                              ELSE "ยังไม่ได้อนุมัติ"
+                                              WHEN verified = "1" THEN "ตรวจสอบแล้ว"
+                                              ELSE "รอตรวจสอบ"
                                               END) AS verified'
                                 ))
                       ->ORDERBY('id','DESC')
@@ -70,8 +70,8 @@ class JournalController extends Controller
                                 'journal_name_th', 'journal_name_en', 'publish_years',
                                 'corres', 'files', 'verified',
                                 \DB::raw('(CASE
-                                              WHEN verified = "1" THEN "อนุมัติแล้ว"
-                                              ELSE "ยังไม่ได้อนุมัติ"
+                                              WHEN verified = "1" THEN "ตรวจสอบแล้ว"
+                                              ELSE "รอตรวจสอบ"
                                               END) AS verified'
                                 ))
                       ->ORDERBY('id','DESC')
@@ -82,8 +82,8 @@ class JournalController extends Controller
                                 'journal_name_th', 'journal_name_en', 'publish_years',
                                 'corres', 'files', 'verified',
                                 \DB::raw('(CASE
-                                              WHEN verified = "1" THEN "อนุมัติแล้ว"
-                                              ELSE "ยังไม่ได้อนุมัติ"
+                                              WHEN verified = "1" THEN "ตรวจสอบแล้ว"
+                                              ELSE "รอตรวจสอบ"
                                               END) AS verified'
                                 ))
                       ->where('users_id', Auth::user()->preferred_username)
