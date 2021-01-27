@@ -11,8 +11,13 @@
 <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
 
 <!-- DatePicker Style -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-<link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" /> -->
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.css" rel="stylesheet"/>
+
+<!-- <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/> -->
+
 
 <!-- SweetAlert2 -->
 <link rel="stylesheet" href="{{ asset('bower_components/admin-lte/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
@@ -155,8 +160,8 @@
                   <div class="col-md-3">
                     <div class="form-group">
                       <label for="exampleInput1"> ปีที่พิมพ์ (year) </label>
-                      <input type="text" class="form-control" placeholder="ปี ค.ศ." name="publish_years" maxlength="4" minlength="4"
-                             onKeyUp="if(isNaN(this.value)){ alert('กรุณากรอกตัวเลขเท่านั้น !'); this.value='';}" required>
+                      <input type="text" class="form-control" placeholder="ปี ค.ศ." name="publish_years"
+                             id="datepicker4" autocomplete="off" required>
                     </div>
                   </div>
                   <div class="col-md-3">
@@ -186,7 +191,7 @@
                   <div class="col-md-3">
                     <div class="form-group">
                       <label for="exampleInput1"> เลข DOI </label>
-                      <input type="text" class="form-control" name="doi_number" maxlength="5" required>
+                      <input type="text" class="form-control" name="doi_number" maxlength="10" required>
                     </div>
                   </div>
                   <div class="col-md-3">
@@ -431,6 +436,40 @@
   });
 </script>
 <!-- END ALERT บันทึกข้อมูลสำเร็จ  -->
+
+
+
+<!-- DatePicker Style -->
+<!-- <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script> -->
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<script>
+  $("#datepicker4").datepicker({
+      format: "yyyy",
+      viewMode: "years",
+      minViewMode: "years",
+      autoclose: true,
+  });
+</script>
+
+
+<!-- <script>
+    $('#datepicker4').datepicker({
+        uiLibrary: 'bootstrap4',
+        format: 'yyyy',
+        changeYear: true,
+        changeMonth: false,
+        autoclose: true,
+        todayHighlight: true
+    });
+</script> -->
+<!-- END DatePicker Style -->
+
 
 
 <!-- FILE INPUT -->

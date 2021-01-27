@@ -230,6 +230,17 @@
 
             </form>
 
+
+            <!-- @if(session('success'))
+              <div class="alert alert-success" id="success-alert">
+                <strong> {{ session()->get('success') }} </strong>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+            @endif -->
+
+
           </div>
         </div>
       </div>
@@ -327,18 +338,9 @@
 @section('js-custom-script')
 
 <!-- SweetAlert2 -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-<!-- <script src="{{-- asset('bower_components/admin-lte/plugins/sweetalert2/sweetalert2.min.js') --}}"></script> -->
-
-    <!-- <script>
-        Swal.fire({
-            icon: 'success',
-            title: 'บันทึกข้อมูลเรียบร้อยแล้ว',
-            showConfirmButton: false,
-            timer: 2800
-        })
-    </script> -->
-
+<!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script> -->
+<!-- SweetAlert2 -->
+<script src="{{ asset('bower_components/admin-lte/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
 
     @if(session()->has('swl_add'))
       <script>
@@ -360,6 +362,23 @@
           })
       </script>
     @endif
+<!-- END SweetAlert2 -->
+
+
+
+    <!-- START ALERT บันทึกข้อมูลสำเร็จ  -->
+    <script type="text/javascript">
+      $(document).ready(function () {
+        window.setTimeout(function() {
+          $(".alert").fadeTo(1000, 0).slideUp(1000, function(){
+              $(this).remove();
+          });
+        }, 3000);
+      });
+    </script>
+    <!-- END ALERT บันทึกข้อมูลสำเร็จ  -->
+
+
 
 
 <!-- FILE INPUT -->
