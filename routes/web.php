@@ -20,7 +20,7 @@ Route::get('/', function () {
     // return view('welcome');
 });
 
-// Route::group(['middleware' => 'keycloak-web'], function () {
+Route::group(['middleware' => 'keycloak-web'], function () {
     Route::get('/keycloak/demo','KeycloakDemoController@index') -> name('page.keycloak.demo');
 
 
@@ -90,4 +90,4 @@ Route::get('/', function () {
     Route::get('dynamic_field', 'DynamicFieldUtilController@index');
     Route::post('dynamic_field/insert', 'DynamicFieldUtilController@insert')->name('dynamic-field.insert');
 
-  // });
+  });
