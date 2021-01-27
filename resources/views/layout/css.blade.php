@@ -37,7 +37,7 @@
 
   <!-- Styles -->
   <!-- <link href="{{ asset('css/app.css') }}" rel="stylesheet"> -->
-  <link href="{{ asset('assets/css/bootstrap.min.css')}}" rel="stylesheet" />
-  <link href="{{ asset('plugins/autocomplete/autocomplete.css')}}" rel="stylesheet" />
+  <!-- <link href="{{ asset('assets/css/bootstrap.min.css')}}" rel="stylesheet" /> -->
+  <!-- <link href="{{ asset('plugins/autocomplete/autocomplete.css')}}" rel="stylesheet" /> -->
 
 <!-- END Custom Custom CSS+fonts this template -->

@@ -493,11 +493,11 @@
   });
 </script>
 
-<script>
+<!-- <script>
   $(document).ready(function() {
     $('[data-toggle="tooltip"]').tooltip();
   });
-</script>
+</script> -->
 @stop('js-custom-script')
 
 

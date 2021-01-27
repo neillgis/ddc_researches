@@ -11,6 +11,11 @@ use App\journal;
 use Storage;
 use File;
 use Auth;
+// use app\Exceptions\Handler;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Routing\Controller;
+use App\KeycloakUser;
+
 
 class ResearchController extends Controller
 {
@@ -240,27 +245,17 @@ class ResearchController extends Controller
         $data_post['files'] = $file_name;
     }
 
+
     $output = research::insert($data_post);
 
-
     if($output){
-      //return Sweet Alert
-      if(Auth::hasRole('user'))
-        {
-          return redirect()->back()->with('swl_add', 'เพิ่มข้อมูลสำเร็จแล้ว');
-        }
-
-        return redirect()->route('page.research')->with('swl_add', 'เพิ่มข้อมูลสำเร็จแล้ว');
-      }else {
-        return abort(404);
-        // return redirect()->back()->with('swl_err', 'บันทึกแล้ว');
+          // return redirect("/research_form")->with(["swl_add"=>"Success!"]);
+          // return redirect('research_form')->with('swl_add', 'Profile updated!');
+        return redirect()->route('page.research')->with('swl_add', 'บันทึกแล้ว');
+    }else{
+        return redirect()->back()->with('swl_err', 'บันทึกแล้ว');
     }
   }
-
-    //   else {
-    //       return redirect()->back()->with('swl_del', 'บันทึกแล้ว');
-    //   }
-    // }
   //  -- END INSERT --
 
 
