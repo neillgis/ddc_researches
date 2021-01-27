@@ -9,159 +9,353 @@ use App\research;
 use App\member;
 use Storage;
 use File;
+use Auth;
 
 
 class UtilizationController extends Controller
 {
 
 
-  public function util(){
-    return view('frontend.util');
-  }
-
-
-// INSERT ------------------------------------------------------------->
-  public function insert(Request $request){
-     //dd($request->pro_id);
-    $data_post = [
-      "pro_id"        => $request->pro_id,
-      "util_type"            => $request->util_type,
-      "review_status"        => $request->review_status,
-      "date_entry"           => date('Y-m-d H:i:s')
-    ];
-
-
-    $insert = util::insert($data_post);
-    // $insert = DB::table('person_ddc_table')->insert($data_post);  /*person_ddc_table คือ = ชื่อ table*/
-
-    if($insert){
-      return redirect()->route('page.util')->with('success','บันทึกข้อมูลสำเร็จ');
-    } else {
-      return redirect()->back()->with('failure','บันทึกข้อมูลไม่สำเร็จ !!');
-    }
-  }
-// END INSERT ----------------------------------------------------------->
+  // public function util(){
+  //   return view('frontend.util');
+  // }
 
 
   public function table_util(){
-
 // SUM BOX ------------------------------------------------------------------------>
-
+  if(Auth::hasRole('manager')){
     // โครงการที่นำไปใช้ประโยชน์ทั้งหมด db_utilization -> โดย count id (All Record) --------->
     $Total_util = DB::table('db_utilization')
-                    -> select('db_utilization.id','pro_id','util_type')
+                    -> select('pro_id','util_type')
                     ->get()->count();
+
+  }elseif(Auth::hasRole('admin')) {
+    $Total_util = DB::table('db_utilization')
+                    -> select('pro_id','util_type')
+                    ->get()->count();
+  }else {
+    $Total_util = DB::table('db_utilization')
+                    -> select('pro_id','util_type')
+                    -> where ('users_id', Auth::user()->preferred_username)
+                    ->get()->count();
+  }
 // dd($Total_util);
 
 
+  if(Auth::hasRole('manager')){
     // โครงการที่นำไปใช้ประโยชน์เชิงวิชาการ db_utilization -> โดย count id -> util_type = เชิงวิชาการ --------->
     $Total_academic_util = DB::table('db_utilization')
-                          -> select('db_utilization.id','pro_id','util_type')
+                          -> select('pro_id','util_type')
                           -> where ('util_type', '=', 'เชิงวิชาการ')
                           ->get()->count();
+
+  }elseif(Auth::hasRole('admin')) {
+    $Total_academic_util = DB::table('db_utilization')
+                          -> select('pro_id','util_type')
+                          -> where ('util_type', '=', 'เชิงวิชาการ')
+                          ->get()->count();
+
+  }else {
+    $Total_academic_util = DB::table('db_utilization')
+                          -> select('pro_id','util_type')
+                          -> where ('util_type', '=', 'เชิงวิชาการ')
+                          -> where ('users_id', Auth::user()->preferred_username)
+                          ->get()->count();
+  }
 // dd($Total_academic_util);
 
 
+  if(Auth::hasRole('manager')){
     // โครงการที่นำไปใช้ประโยชน์เชิงสังคม/ชุมชน db_utilization -> โดย count id -> util_type = เชิงสังคม/ชุมชน --------->
     $Total_social_util = DB::table('db_utilization')
-                          -> select('db_utilization.id','pro_id','util_type')
+                          -> select('pro_id','util_type')
                           -> where ('util_type', '=', 'เชิงสังคม/ชุมชน')
                           ->get()->count();
+
+  }elseif(Auth::hasRole('admin')) {
+    $Total_social_util = DB::table('db_utilization')
+                          -> select('pro_id','util_type')
+                          -> where ('util_type', '=', 'เชิงสังคม/ชุมชน')
+                          ->get()->count();
+
+  }else {
+    $Total_social_util = DB::table('db_utilization')
+                          -> select('pro_id','util_type')
+                          -> where ('util_type', '=', 'เชิงสังคม/ชุมชน')
+                          -> where ('users_id', Auth::user()->preferred_username)
+                          ->get()->count();
+  }
 // dd($Total_social_util);
 
 
+  if(Auth::hasRole('manager')){
     // โครงการที่นำไปใช้ประโยชน์เชิงนโยบาย db_utilization -> โดย count id -> util_type = เชิงนโยบาย --------->
     $Total_policy_util = DB::table('db_utilization')
-                          -> select('db_utilization.id','pro_id','util_type')
+                          -> select('pro_id','util_type')
                           -> where ('util_type', '=', 'เชิงนโยบาย')
                           ->get()->count();
+
+  }elseif(Auth::hasRole('admin')) {
+    $Total_policy_util = DB::table('db_utilization')
+                          -> select('pro_id','util_type')
+                          -> where ('util_type', '=', 'เชิงนโยบาย')
+                          ->get()->count();
+
+  }else {
+    $Total_policy_util = DB::table('db_utilization')
+                          -> select('pro_id','util_type')
+                          -> where ('util_type', '=', 'เชิงนโยบาย')
+                          -> where ('users_id', Auth::user()->preferred_username)
+                          ->get()->count();
+  }
 // dd($Total_policy_util);
 
 
+  if(Auth::hasRole('manager')){
     // โครงการที่นำไปใช้ประโยชน์เชิงนโยบาย db_utilization -> โดย count id -> util_type = เชิงพาณิชย์ --------->
     $Total_commercial_util = DB::table('db_utilization')
-                          -> select('db_utilization.id','pro_id','util_type')
+                          -> select('pro_id','util_type')
                           -> where ('util_type', '=', 'เชิงพาณิชย์')
                           ->get()->count();
+
+  }elseif(Auth::hasRole('admin')) {
+    $Total_commercial_util = DB::table('db_utilization')
+                          -> select('pro_id','util_type')
+                          -> where ('util_type', '=', 'เชิงพาณิชย์')
+                          ->get()->count();
+
+  }else {
+    $Total_commercial_util = DB::table('db_utilization')
+                          -> select('pro_id','util_type')
+                          -> where ('util_type', '=', 'เชิงพาณิชย์')
+                          -> where ('users_id', Auth::user()->preferred_username)
+                          ->get()->count();
+  }
 // dd($Total_commercial_util);
 
 // END SUM BOX ------------------------------------------------------------------------>
 
 
-// TABLE LIST------------------------------------------------------------->
+// TABLE LIST--------------------------------------------------------------------------->
 
-    // FORM ----------------------------------------------------------------->
-    $query_research   = research::select('id','pro_name_th','pro_name_en')
-                                ->ORDERBY('id','DESC')
+  // SELECT FORM --------------------------------------------------------------------->
+  if(Auth::hasRole('manager')) {
+    $query_research   = research::select ('id','pro_name_th','pro_name_en')
                                 ->get();
 
+  }elseif(Auth::hasRole('admin')) {
+    $query_research   = research::select ('id','pro_name_th','pro_name_en')
+                                ->get();
 
-    $query_util  = DB::table('db_utilization')
-                    ->join('db_research_project', 'db_utilization.pro_id', '=', 'db_research_project.id')
-                    ->selectRaw('db_utilization.id,db_research_project.pro_name_th,db_research_project.pro_name_en,
-                                db_utilization.util_type,db_utilization.review_status')
-                    ->ORDERBY('id','ASC')
+  }else {
+    $query_research   = research::select ('id','pro_name_th','pro_name_en')
+                                -> where ('users_id', Auth::user()->preferred_username)
+                                ->get();
+  }
+
+
+    $query_util_type = ['เชิงวิชาการ'    => 'เชิงวิชาการ',
+               'เชิงสังคม/ชุมชน'         => 'เชิงสังคม/ชุมชน',
+               'เชิงนโยบาย'             => 'เชิงนโยบาย',
+               'เชิงพาณิชย์'             => 'เชิงพาณิชย์'
+               ];
+
+
+  // SELECT TABLE ----------------------------------------------------------------------->
+  if(Auth::hasRole('manager')){
+    $query_util = DB::table('db_utilization')
+                    -> join ('db_research_project', 'db_utilization.pro_id', '=', 'db_research_project.id')
+                    -> select ('db_utilization.id','db_utilization.util_type','db_utilization.files',
+                               'db_utilization.verified',
+                               'db_research_project.pro_name_th','db_research_project.pro_name_en',
+                               \DB::raw('(CASE
+                                             WHEN db_utilization.verified = "1" THEN "อนุมัติแล้ว"
+                                             ELSE "ยังไม่ได้อนุมัติ"
+                                             END) AS verified'
+                               ))
+                    ->get();
+// dd($query_util);
+  }elseif(Auth::hasRole('admin')){
+    $query_util = DB::table('db_utilization')
+                    -> join ('db_research_project', 'db_utilization.pro_id', '=', 'db_research_project.id')
+                    -> select ('db_utilization.id','db_utilization.util_type','db_utilization.files',
+                                'db_utilization.verified',
+                                'db_research_project.pro_name_th','db_research_project.pro_name_en',
+                               \DB::raw('(CASE
+                                             WHEN db_utilization.verified = "1" THEN "อนุมัติแล้ว"
+                                             ELSE "ยังไม่ได้อนุมัติ"
+                                             END) AS verified'
+                               ))
                     ->get();
 
-    $query_util_type = [1 => 'เชิงวิชาการ',
-                        2 => 'เชิงสังคม/ชุมชน',
-                        3 => 'เชิงนโยบาย',
-                        4 => 'เชิงพาณิชย์'
-                        ];
-    // END FORM ----------------------------------------------------------------->
+  }else {
+    $query_util = DB::table('db_utilization')
+                    -> join ('db_research_project', 'db_utilization.pro_id', '=', 'db_research_project.id')
+                    -> select ('db_utilization.id','db_utilization.util_type','db_utilization.files',
+                                'db_utilization.verified',
+                                'db_research_project.pro_name_th','db_research_project.pro_name_en',
+                               \DB::raw('(CASE
+                                             WHEN db_utilization.verified = "1" THEN "อนุมัติแล้ว"
+                                             ELSE "ยังไม่ได้อนุมัติ"
+                                             END) AS verified'
+                               ))
+                    -> where ('db_utilization.users_id', Auth::user()->preferred_username)
+                    ->get();
+  }
+  // dd($query_util);
+
+
 
     return view('frontend.util',
     [
-      "Total_util"             => $Total_util,
-      "Total_academic_util"    => $Total_academic_util,
-      "Total_social_util"      => $Total_social_util,
-      "Total_policy_util"      => $Total_policy_util,
-      "Total_commercial_util"  => $Total_commercial_util,
+      'Total_util'             => $Total_util,
+      'Total_academic_util'    => $Total_academic_util,
+      'Total_social_util'      => $Total_social_util,
+      'Total_policy_util'      => $Total_policy_util,
+      'Total_commercial_util'  => $Total_commercial_util,
+      // SELECT FORM
+      'form_research'          => $query_research,
+      'form_util_type'         => $query_util_type,
+      // SELECT TABLE
+      'table_util'             => $query_util,
 
-      'sl_research'  => $query_research,
-      'sl_util'      => $query_util,
-      'util_type'    => $query_util_type
 
     ]);
 }
 
+
     // EDIT ---------------------------------------------------------------->
-  public function edit_util_form(Request $request){
+  public function edit_util(Request $request){
 
-    $edit = util::where('id' , $request->id)->first();
+    $edit = util::where('id' , $request->id)
+                ->first();
 
+    $edit_1 = DB::table('db_utilization')
+                -> join ('db_research_project', 'db_utilization.pro_id', '=', 'db_research_project.id')
+                -> select ('db_utilization.id','db_utilization.util_type','db_utilization.files',
+                           'db_utilization.verified',
+                           'db_research_project.pro_name_th','db_research_project.pro_name_en')
+                ->first();
 
-    $edit2 = [1 => 'เชิงวิชาการ',
-              2 => 'เชิงสังคม/ชุมชน',
-              3 => 'เชิงนโยบาย',
-              4 => 'เชิงพาณิชย์'
-              ];
+    $edit_2 = ['เชิงวิชาการ'      => 'เชิงวิชาการ',
+               'เชิงสังคม/ชุมชน'  => 'เชิงสังคม/ชุมชน',
+               'เชิงนโยบาย'      => 'เชิงนโยบาย',
+               'เชิงพาณิชย์'      => 'เชิงพาณิชย์'
+               ];
 
      return view('frontend.util_edit',
-       ['data'      => $edit,
-        'data2'     => $edit2
-       ]   /*นำตัวแปร data ไปใส่ใน research_edit.blade.php  คือ  value = "{{ $data->id }}"*/
-    );
+       [
+        'edit_util'       => $edit,
+        'edit_data'       => $edit_1,
+        'edit_utiltype'   => $edit_2
+       ]);
   }
     // END EDIT ------------------------------------------------------------>
 
 
+    // INSERT ------------------------------------------------------------->
+      public function insert(Request $request){
+
+        $data_post = [
+          "users_id"          => Auth::user()->preferred_username,
+          "pro_id"            => $request->pro_id,
+          "util_type"         => $request->util_type,
+          "files"             => $request->files,
+          "created_at"        => date('Y-m-d H:i:s')
+        ];
+
+        if ($request->file('files')->isValid()) {
+              //TAG input [type=file] ดึงมาพักไว้ในตัวแปรที่ชื่อ files
+            $file=$request->file('files');
+              //ตั้งชื่อตัวแปร $file_name เพื่อเปลี่ยนชื่อ + นามสกุลไฟล์
+            $name='file_'.date('dmY_His');
+            $file_name = $name.'.'.$file->getClientOriginalExtension();
+              // upload file ไปที่ PATH : public/file_upload
+            $path = $file->storeAs('public/file_upload_util',$file_name);
+            $data_post['files'] = $file_name;
+        }
+
+        $insert = util::insert($data_post);
+        // $insert = DB::table('person_ddc_table')->insert($data_post);  /*person_ddc_table คือ = ชื่อ table*/
+
+        if($insert){
+          //return Sweet Alert
+          if(Auth::hasRole('user'))
+            {
+              return redirect()->back()->with('swl_add', 'เพิ่มข้อมูลสำเร็จแล้ว');
+            }
+
+            return redirect()->route('page.util')->with('swl_add', 'เพิ่มข้อมูลสำเร็จแล้ว');
+          }else {
+            return abort(404);
+            // return redirect()->back()->with('swl_err', 'บันทึกแล้ว');
+        }
+      }
+    // END INSERT ----------------------------------------------------------->
+
+
     // SAVE ----------------------------------------------------------------->
-  public function save_util_form(Request $request){
+  public function save_util(Request $request){
     // dd($request);
     $update = util::where('id',$request->id)
-                  ->update(['pro_id'             => $request->pro_id,
-                            'util_type'          => $request->util_type,
-                            'review_status'      => $request->review_status,
+                  ->update([
+                            "util_type"       => $request->util_type
                             ]);
 
     if($update){
-       return redirect()->route('page.util')->with('success','แก้ไขข้อมูลสำเร็จ');
+       return redirect()->route('page.util')->with('swl_add','แก้ไขข้อมูลสำเร็จ');
     } else {
-       return redirect()->back()->with('failure','แก้ไขข้อมูลไม่สำเร็จ !!');
+       return redirect()->back()->with('swl_del','แก้ไขข้อมูลไม่สำเร็จ !!');
     }
   }
     // END SAVE ------------------------------------------------------------>
+
+
+    //  -- DOWNLOAD --
+    public function DownloadFile(Request $request){
+      $query = DB::table('db_utilization')
+                    ->select('id', 'files')
+                    ->where('id', $request->id)
+                    ->first();
+
+      if(!$query) return abort(404);
+
+      $path = $query->files;
+
+      return Storage::disk('util')->download($path);
+    }
+    //  -- END DOWNLOAD --
+
+
+    //  -- VERIFIED --
+    public function action_verified(Request $request){
+
+        //UPDATE db_research_project
+        $verified = DB::table('db_utilization')
+                  ->where('id', $request->id)
+                  ->update(['verified' => "1"]);
+                  // ->get();
+
+         // dd($verified);
+
+        if(!$verified = '1'){
+          return abort(404);
+        }
+
+        if($verified) {
+            return redirect()->back()->with('swl_verified', 'ลบข้อมูลเรียบร้อยแล้ว');
+        }else {
+            return redirect()->back()->with('swl_del', 'ไม่สามารถลบข้อมูลได้ !!');
+        }
+
+      }
+        // else {
+        //     return redirect()->back()->with('swl_verified', 'ลบข้อมูลเรียบร้อยแล้ว');
+        // }
+
+    // }
+    //  -- END VERIFIED --
+
 
 // END TABLE LIST------------------------------------------------------------------>
 

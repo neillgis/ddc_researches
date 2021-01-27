@@ -9,20 +9,38 @@
 <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
 <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
 
-<!-- DatePicker Style -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-<link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
 
-  <!-- Fonts Style : Kanit -->
-    <style>
-    body {
-      font-family: 'Kanit', sans-serif;
+<!-- Fonts Style : Kanit -->
+  <style>
+  body {
+    font-family: 'Kanit', sans-serif;
+  }
+  h1 {
+    font-family: 'Kanit', sans-serif;
+  }
+  </style>
+<!-- END Fonts Style : Kanit -->
+
+<style>
+     button {
+      display: inline-block;
+      position: relative;
+      color: #1D9AF2;
+      background-color: #292D3E;
+      border: 1px solid #1D9AF2;
+      border-radius: 4px;
+      padding: 0 15px;
+      cursor: pointer;
+      height: 38px;
+      font-size: 14px;
+
     }
-    h1 {
-      font-family: 'Kanit', sans-serif;
+    button:active {
+      box-shadow: 0 3px 0 #1D9AF2;
+      top: 3px;
     }
-    </style>
-  <!-- END Fonts Style : Kanit -->
+</style>
+
 
 @stop('css-custom')
 
@@ -66,7 +84,7 @@
                 <div class="small-box bg-green">
                   <div class="inner">
                     <!-- เรียกจาก db_utilization -> โดย count id -> util_type = เชิงวิชาการ --------->
-                    <h4> โครงการที่นำไปใช้ประโยชน์เชิงวิชาการ </h4>
+                    <h4> เชิงวิชาการ </h4>
                     <br>
                     <h3> {{ empty($Total_academic_util)?'0': $Total_academic_util }} โครงการ </h3>
                   </div>
@@ -80,7 +98,7 @@
                 <div class="small-box bg-green">
                   <div class="inner">
                     <!-- เรียกจาก db_utilization -> โดย count id -> util_type = เชิงสังคม/ชุมชน --------->
-                    <h4> โครงการที่นำไปใช้ประโยชน์เชิงสังคม/ชุมชน </h4>
+                    <h4> เชิงสังคม/ชุมชน </h4>
                     <br>
                     <h3> {{ empty($Total_social_util)?'0': $Total_social_util }} โครงการ </h3>
                   </div>
@@ -94,7 +112,7 @@
                 <div class="small-box bg-green">
                   <div class="inner">
                     <!-- เรียกจาก db_utilization -> โดย count id -> util_type = เชิงนโยบาย --------->
-                    <h4> โครงการที่นำไปใช้ประโยชน์เชิงนโยบาย </h4>
+                    <h4> เชิงนโยบาย </h4>
                     <br>
                     <h3> {{ empty($Total_policy_util)?'0': $Total_policy_util }} โครงการ </h3>
                   </div>
@@ -108,7 +126,7 @@
                 <div class="small-box bg-green">
                   <div class="inner">
                     <!-- เรียกจาก db_utilization -> โดย count id -> util_type = เชิงพาณิชย์ --------->
-                    <h4> โครงการที่นำไปใช้ประโยชน์เชิงพาณิชย์ </h4>
+                    <h4> เชิงพาณิชย์ </h4>
                     <br>
                     <h3> {{ empty($Total_commercial_util)?'0': $Total_commercial_util }} โครงการ </h3>
                   </div>
@@ -122,7 +140,7 @@
 <!-- END CONTENT  BOX --------------------------------------------------------->
 
 <!-- START FORM  INSERT ------------------------------------------------------->
-    @if (Gate::allows('keycloak-web', ['user']))
+        @if(Auth::hasRole('user'))
           <div class="row">
             <div class="col-md-12">
               <div class="card card-gray">
@@ -131,18 +149,18 @@
                 </div>
 
 
-                <form method="POST" action="{{ route('util.insert') }}">
+                <form method="POST" action="{{ route('util.insert') }}" enctype="multipart/form-data">
                   @csrf
 
               <div class="card-body">
               <div class="row">
                   <div class="col-md-5">
                     <div class="form-group">
-                      <b><lebel for="exampleSelect1"> ชื่อโครงการ (th-en) </lebel></b>
+                      <b><lebel for="exampleSelect1"> ชื่อโครงการ (TH-EN) </lebel></b>
                       <!-- SELECT ดึงข้อมูลชื่อโครงการมาจาก -> db_research_project Table -->
                       <select class="form-control" name="pro_id" required>
                           <option value="" disabled="true" selected="true"> กรุณาเลือก </option>
-                        @foreach ($sl_research as $value)
+                        @foreach ($form_research as $value)
                           <option value = "{{ $value->id }}"> {{ $value->pro_name_th." ".$value->pro_name_en }} </option>
                         @endforeach
                       </select>
@@ -154,7 +172,7 @@
                       <b><lebel for="util_type"> ประเภทการนำไปใช้ประโยชน์ </lebel></b>
                       <select class="form-control" name="util_type" required>
                         <option value="" disabled="true" selected="true" > กรุณาเลือก </option>
-                        @foreach ($util_type as $key => $value)
+                        @foreach ($form_util_type as $key => $value)
                           <option value="{{ $value }}"> {{ $value }} </option>
                         @endforeach
                       </select>
@@ -162,11 +180,11 @@
                   </div>
 
                   <div class="col-md-3">
-                    <b><lebel for="files"> อัพโหลดไฟล์ : <font color="red"> การนำไปใช้ประโยชน์ </font></lebel></b>
+                    <b><lebel for="expInputFile"> อัพโหลดไฟล์ : <font color="red"> การนำไปใช้ประโยชน์ </font></lebel></b>
                     <div class="input-group">
                       <div class="custom-file">
-                        <input type="file" class="custom-file-input" name="files">
-                        <label class="custom-file-label" for="files"> Upload File ขนาดไม่เกิน 20 MB </label>
+                        <input type="file" class="custom-file-input" name="files" required>
+                        <label class="custom-file-label" for="expInputFile"> Upload File ขนาดไม่เกิน 20 MB </label>
                       </div>
                     </div>
                   </div>
@@ -180,25 +198,6 @@
               </div>
 
               </form>
-
-              <!-- Alert Notification -->
-                @if(session()->has('success'))
-                  <div class="alert alert-success" id="success-alert">
-                    <strong> {{ session()->get('success') }} </strong>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                @endif
-                @if (Session::has('failure'))
-                  <div class="alert alert-danger">
-                    <strong> {{ Session::get('failure') }} </strong>
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                @endif
-              <!-- END Alert Notification -->
 
             </div>
             </div>
@@ -230,20 +229,29 @@
                     </thead>
 
                     <tbody>
-                        @foreach ($sl_util as $value)
+                        @foreach ($table_util as $value)
                         <tr>
                           <td class="text-center"> {{ $value->id }} </td>
                           <td class="text-left"> {{ $value->pro_name_th." ".$value->pro_name_en }} </td>
                           <td class="text-center"> {{ $value->util_type }} </td>
-                          <td class="text-center"> {{ $value->review_status }} </td>
+
+                          <td class="text-center">
+                            @if($value->verified == "อนุมัติแล้ว")
+                              <span class="badge bg-secondary badge-pill"> {{ $value->verified }} </span> <!-- null = รอการอนุมัติ -->
+                            @else
+                              <span class="badge bg-danger badge-pill"> {{ $value->verified }} </span> <!--  2 = ไม่อนุมัติ -->
+                            @endif
+                          </td>
 
                           <!-- จัดการข้อมูล -->
                           <td class="td-actions text-right text-nowrap" href="#">
-                            <a href="#">
+                          @if(Auth::hasRole('manager') || Auth::hasRole('user'))
+                            <a href=" {{ route('DownloadFile.util', ['id' => $value->id, 'files' => $value->files]) }} ">
                               <button type="button" class="btn btn-danger btn-md" data-toggle="tooltip" title="Download">
                                 <i class="fas fa-arrow-alt-circle-down"></i>
                               </button>
                             </a>
+                          @endif
 
                             <a href=" {{ route('util.edit', $value->id) }} ">
                               <button type="button" class="btn btn-warning btn-md" data-toggle="tooltip" title="Edit">
@@ -251,8 +259,8 @@
                               </button>
                             </a>
 
-                        @if (Gate::allows('keycloak-web', ['admin']))
-                            <a href="#">
+                        @if(Auth::hasRole('manager'))
+                            <a href=" {{ route('util.verified', $value->id) }} ">
                               <button type="button" class="btn btn-md"
                                       data-toggle="tooltip" title="Verfied" style="background-color: #336699;">
                                 <i class="fas fa-user-check"></i>
@@ -260,7 +268,6 @@
                             </a>
                         @endif
                           </td>
-
 
                         </tr>
                         @endforeach
@@ -280,6 +287,8 @@
 @section('js-custom-script')
 
 
+
+
 <!-- START ALERT บันทึกข้อมูลสำเร็จ  -->
 <script type="text/javascript">
   $(document).ready(function () {
@@ -291,6 +300,15 @@
   });
 </script>
 <!-- END ALERT บันทึกข้อมูลสำเร็จ  -->
+
+
+<!-- FILE INPUT -->
+<script type="text/javascript">
+$(document).ready(function () {
+  bsCustomFileInput.init();
+});
+</script>
+<!-- END FILE INPUT -->
 
 
 <!-- REPORT FILE -->
@@ -312,13 +330,6 @@
   });
 </script>
 
-<!-- FILE INPUT -->
-<script type="text/javascript">
-$(document).ready(function () {
-  bsCustomFileInput.init();
-});
-</script>
-<!-- END FILE INPUT -->
 
 @stop('js-custom-script')
 
