@@ -76,8 +76,9 @@
         <div class="col-md-4 mx-auto">
           <div class="small-box bg-success">
             <div class="inner">
-              <h3> {{ empty($Total_research)?'0': $Total_research }} </h3>
-              <p> โครงการวิจัยทั้งหมด </p>
+              <h4> โครงการวิจัยทั้งหมด </h4>
+              <br>
+              <h3> {{ empty($Total_research)?'0': $Total_research }} โครงการ </h3>
             </div>
             <div class="icon">
               <i class="ion ion-pie-graph"></i>
@@ -89,8 +90,9 @@
         <div class="col-md-4 mx-auto">
           <div class="small-box bg-info mx-auto">
             <div class="inner">
-              <h3> {{ empty($Total_master_pro)?'0': $Total_master_pro }} </h3>
-              <p> โครงการวิจัยที่เป็นผู้วิจัยหลัก </p>
+              <h4> โครงการวิจัยที่เป็นผู้วิจัยหลัก </h4>
+              <br>
+              <h3> {{ empty($Total_master_pro)?'0': $Total_master_pro }} โครงการ </h3>
             </div>
             <div class="icon">
               <i class="ion ion-person"></i>
@@ -102,8 +104,9 @@
         <div class="col-md-4 mx-auto">
           <div class="small-box bg-danger mx-auto">
             <div class="inner">
-              <h3> {{ empty($Total_publish_pro)?'0': $Total_publish_pro }} </h3>
-              <p> โครงการวิจัยที่ตีพิมพ์ทั้งหมด </p>
+              <h4> โครงการวิจัยที่ตีพิมพ์ทั้งหมด </h4>
+              <br>
+              <h3> {{ empty($Total_publish_pro)?'0': $Total_publish_pro }} โครงการ </h3>
             </div>
             <div class="icon">
               <i class="ion ion-bookmark"></i>
@@ -124,7 +127,7 @@
           <div class="card">
             <div class="card shadow" style="background-color: #ff851b;">
               <div class="card-header">
-                <h5><b> เพิ่มข้อมูลโครงการวิจัย </b></h5>
+                <h5 class="card-title"><b> เพิ่มข้อมูลโครงการวิจัย </b></h5>
               </div>
             </div>
 
@@ -179,7 +182,7 @@
                 <div class="row">
                   <div class="col-md-4">
                     <div class="form-group">
-                      <label for="exampleDatepicker1"> ปี พ.ศ. ที่เริ่มโครงการ </label>
+                      <label for="exampleDatepicker1"> ปี พ.ศ. ที่เริ่มโครงการ : <font color="red"> กรณีไม่ทราบวันเดือน *กรุณาใส่ ปีพ.ศ.ที่เริ่มทำ /01/01 </font></label>
                       <input type="text" class="form-control" id="datepicker1" placeholder="กรุณาเลือก ปี/เดือน/วัน"
                              name="pro_start_date" autocomplete="off" >
                     </div>
@@ -187,7 +190,7 @@
 
                   <div class="col-md-4">
                     <div class="form-group">
-                      <label for="exampleDatepicker1"> ปี พ.ศ. ที่เสร็จสิ้นครงการ </label>
+                      <label for="exampleDatepicker1"> ปี พ.ศ. ที่เสร็จสิ้นโครงการ : <font color="red"> กรณีไม่ทราบวันเดือน *กรุณาใส่ ปีพ.ศ.ที่เสร็จสิ้น /12/31 </font></label>
                       <input type="text" class="form-control" id="datepicker2" placeholder="กรุณาเลือก ปี/เดือน/วัน"
                              name="pro_end_date" autocomplete="off" >
                     </div>
@@ -230,17 +233,6 @@
 
             </form>
 
-
-            <!-- @if(session('success'))
-              <div class="alert alert-success" id="success-alert">
-                <strong> {{ session()->get('success') }} </strong>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-            @endif -->
-
-
           </div>
         </div>
       </div>
@@ -254,9 +246,9 @@
     <!-- START TABLE -> RESEARCH PROJECT -------------------------------------------------->
       <section class="content">
         <div class="card">
-          <div class="card card-secondary shadow">
+          <div class="card card-gray">
             <div class="card-header">
-              <h3 class="card-title"> โครงการวิจัยที่เสร็จสิ้นแล้ว </h3>
+              <h5 class="card-title"> โครงการวิจัยที่เสร็จสิ้นแล้ว </h5>
             </div>
           </div>
 
@@ -265,12 +257,12 @@
               <table class="table table-hover" id="example55">
                 <thead>
                     <tr>
-                      <th> ลำดับ </th>
-                      <th> ชื่อโครงการ (ENG) </th>
-                      <th> เริ่มโครงการ </th>
-                      <th> เสร็จสิ้นโครงการ </th>
-                      <th> ตีพิมพ์ </th>
-                      <th> การตรวจสอบ </th>
+                      <th class="text-center"> ลำดับ </th>
+                      <th class="text-center"> ชื่อโครงการ (ENG) </th>
+                      <th class="text-center"> เริ่มโครงการ </th>
+                      <th class="text-center"> เสร็จสิ้นโครงการ </th>
+                      <th class="text-center"> ตีพิมพ์ </th>
+                      <th class="text-center"> การตรวจสอบ </th>
                       <th class="text-right"> ACTIONS </th>
                     </tr>
                 </thead>
@@ -278,15 +270,15 @@
                 <tbody>
                   @foreach ($research as $value)
                   <tr>
-                    <td> {{ $value->id }} </td>
-                    <td> {{ $value->pro_name_en }} </td>
-                    <td> {{ CmsHelper::DateThai($value->pro_start_date) }} </td>
-                    <td> {{ CmsHelper::DateThai($value->pro_end_date) }} </td>
-                    <td> {{ $publish_status [ $value->publish_status ] }} </td>
+                    <td class="text-center"> {{ $value->id }} </td>
+                    <td class="text-left"> {{ $value->pro_name_en }} </td>
+                    <td class="text-center"> {{ CmsHelper::DateThai($value->pro_start_date) }} </td>
+                    <td class="text-center"> {{ CmsHelper::DateThai($value->pro_end_date) }} </td>
+                    <td class="text-center"> {{ $publish_status [ $value->publish_status ] }} </td>
 
-                    <td>
+                    <td class="text-center">
                       @if($value->verified == "ตรวจสอบแล้ว")
-                        <span class="badge bg-secondary badge-pill"> {{ $value->verified }} </span> <!-- null = รอการอนุมัติ -->
+                        <span class="badge bg-secondary badge-pill"> {{ $value->verified }} </span> <!-- null = รอการตรวจสอบ -->
                       @else
                         <span class="badge bg-danger badge-pill"> {{ $value->verified }} </span> <!--  2 = ไม่อนุมัติ -->
                       @endif
@@ -338,9 +330,18 @@
 @section('js-custom-script')
 
 <!-- SweetAlert2 -->
-<!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script> -->
-<!-- SweetAlert2 -->
-<script src="{{ asset('bower_components/admin-lte/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<!-- <script src="{{-- asset('bower_components/admin-lte/plugins/sweetalert2/sweetalert2.min.js') --}}"></script> -->
+
+    <!-- <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'บันทึกข้อมูลเรียบร้อยแล้ว',
+            showConfirmButton: false,
+            timer: 2800
+        })
+    </script> -->
+
 
     @if(session()->has('swl_add'))
       <script>
@@ -362,23 +363,6 @@
           })
       </script>
     @endif
-<!-- END SweetAlert2 -->
-
-
-
-    <!-- START ALERT บันทึกข้อมูลสำเร็จ  -->
-    <script type="text/javascript">
-      $(document).ready(function () {
-        window.setTimeout(function() {
-          $(".alert").fadeTo(1000, 0).slideUp(1000, function(){
-              $(this).remove();
-          });
-        }, 3000);
-      });
-    </script>
-    <!-- END ALERT บันทึกข้อมูลสำเร็จ  -->
-
-
 
 
 <!-- FILE INPUT -->

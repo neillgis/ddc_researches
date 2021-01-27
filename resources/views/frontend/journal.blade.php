@@ -79,26 +79,28 @@
     <!-- START SUMMARY Total Box -->
       <div class="row">
         <div class="col-md-6 mx-auto">
-          <div class="small-box" style="background-color: #8B88FF;">
+          <div class="small-box bg-info mx-auto">
             <div class="inner">
-              <h3> {{ empty($Total_journal)?'0': $Total_journal }} </h3>
-              <p> บทความตีพิมพ์ทั้งหมด </p>
+              <h4> บทความที่เป็นผู้นิพนธ์หลัก </h4>
+              <br>
+              <h3> {{ empty($Total_master_jour)?'0': $Total_master_jour }} โครงการ </h3>
             </div>
             <div class="icon">
-              <i class="ion ion-bookmark"></i>
+              <i class="ion ion-person"></i>
             </div>
             <!-- <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
           </div>
         </div>
 
         <div class="col-md-6 mx-auto">
-          <div class="small-box" style="background-color: #FF9C00;">
+          <div class="small-box bg-danger mx-auto">
             <div class="inner">
-              <h3> {{ empty($Total_master_jour)?'0': $Total_master_jour }} </h3>
-              <p> บทความที่เป็นผู้นิพนธ์หลัก </p>
+              <h4> บทความตีพิมพ์ทั้งหมด </h4>
+              <br>
+              <h3> {{ empty($Total_journal)?'0': $Total_journal }} โครงการ </h3>
             </div>
             <div class="icon">
-              <i class="ion ion-person"></i>
+              <i class="ion ion-bookmark"></i>
             </div>
             <!-- <a class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
           </div>
@@ -115,7 +117,7 @@
     <div class="row">
       <div class="col-md-12">
         <div class="card">
-          <div class="card shadow" style="background-color: #7BB31A;">
+          <div class="card shadow" style="background-color: #ff851b;">
             <div class="card-header">
               <h5><b> เพิ่มข้อมูลการตีพิมพ์วารสาร </b></h5>
             </div>
@@ -300,12 +302,12 @@
               <table class="table table-hover" id="example44">
                 <thead>
                     <tr>
-                      <th> Project ID </th>
-                      <th> ชื่อบทความ </th>
-                      <th> ชื่อวารสาร </th>
-                      <th> ตีพิมพ์ </th>
-                      <th> ผู้รับผิดชอบบทความ </th>
-                      <th> การตรวจสอบ </th>
+                      <th class="text-center"> Project ID </th>
+                      <th class="text-center"> ชื่อบทความ (ENG) </th>
+                      <th class="text-center"> ชื่อวารสาร (ENG) </th>
+                      <th class="text-center"> ตีพิมพ์ </th>
+                      <th class="text-center"> ผู้รับผิดชอบบทความ </th>
+                      <th class="text-center"> การตรวจสอบ </th>
                       <th class="text-right"> ACTIONS </th>
                     </tr>
                 </thead>
@@ -313,13 +315,13 @@
                 <tbody>
                   @foreach ($journals as $value)
                   <tr>
-                    <td> {{ $value->pro_id }} </td>
+                    <td class="text-center"> {{ $value->pro_id }} </td>
                     <td> {{ $value->article_name_en }} </td>
                     <td> {{ $value->journal_name_en }} </td>
-                    <td> {{ $value->publish_years }} </td>
-                    <td> {{ $corres [ $value->corres ] }} </td>
+                    <td class="text-center"> {{ $value->publish_years }} </td>
+                    <td class="text-center"> {{ $corres [ $value->corres ] }} </td>
 
-                    <td>
+                    <td class="text-center">
                       @if($value->verified == "ตรวจสอบแล้ว")
                         <span class="badge bg-secondary badge-pill"> {{ $value->verified }} </span> <!-- null = รอการอนุมัติ -->
                       @else
@@ -328,7 +330,6 @@
                     </td>
 
                     <td class="td-actions text-right text-nowrap" href="#">
-
                     @if(Auth::hasRole('manager') || Auth::hasRole('user'))
                       <a href=" {{ route('DownloadFile.journal', ['id' => $value->id, 'files' => $value->files]) }} ">
                         <button type="button" class="btn btn-danger btn-md" data-toggle="tooltip" title="Download">

@@ -50,7 +50,7 @@
       <div class="row mb-2">
         <div class="col-sm-12">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item active"> แก้ไขข้อมูลโครงการวิจัย </li>
+            <li class="breadcrumb-item active"> แก้ไขข้อมูลการตีพิมพ์วารสาร </li>
           </ol>
         </div>
       </div>
@@ -65,7 +65,7 @@
       <div class="row">
         <div class="col-md-12">
           <div class="card">
-            <div class="card shadow" style="background-color: #7BB31A;">
+            <div class="card shadow" style="background-color: #ff851b;">
               <div class="card-header">
                 <h5><b> แก้ไขข้อมูลการตีพิมพ์วารสาร </b></h5>
               </div>

@@ -75,7 +75,7 @@
                     <h3> {{ empty($Total_util)?'0': $Total_util }} โครงการ </h3>
                   </div>
                   <div class="icon">
-                    <i class="fas fa-chart-line" style="font-size:100px"> </i>
+                    <i class="fas fa-chart-line"> </i>
                   </div>
                 </div>
               </div>
@@ -143,11 +143,12 @@
         @if(Auth::hasRole('user'))
           <div class="row">
             <div class="col-md-12">
-              <div class="card card-gray">
+              <div class="card">
+               <div class="card shadow" style="background-color: #ff851b;">
                 <div class="card-header">
-                  <h3 class="card-title"> แบบฟอร์มการนำไปใช้ประโยชน์ </h3>
+                  <h5 class="card-title"><b> เพิ่มข้อมูลการนำไปใช้ประโยชน์ </b></h5>
                 </div>
-
+              </div>
 
                 <form method="POST" action="{{ route('util.insert') }}" enctype="multipart/form-data">
                   @csrf
@@ -156,7 +157,7 @@
               <div class="row">
                   <div class="col-md-5">
                     <div class="form-group">
-                      <b><lebel for="exampleSelect1"> ชื่อโครงการ (TH-EN) </lebel></b>
+                      <b><lebel for="exampleSelect1"> ชื่อโครงการ (TH-ENG) </lebel></b>
                       <!-- SELECT ดึงข้อมูลชื่อโครงการมาจาก -> db_research_project Table -->
                       <select class="form-control" name="pro_id" required>
                           <option value="" disabled="true" selected="true"> กรุณาเลือก </option>
@@ -211,7 +212,7 @@
             <div class="card">
               <div class="card card-gray">
                 <div class="card-header">
-                  <h3 class="card-title"> โครงการที่นำไปใช้ประโยชน์ </h3>
+                  <h5 class="card-title"><b> โครงการที่นำไปใช้ประโยชน์ </b></h5>
                 </div>
               </div>
 
@@ -223,7 +224,7 @@
                             <th class="text-center">ลำดับที่</th>
                             <th class="text-center">ชื่อโครงการ</th>
                             <th class="text-center">การนำไปใช้ประโยชน์</th>
-                            <th class="text-center">สถานะการตรวจสอบ</th>
+                            <th class="text-center">การตรวจสอบ</th>
                             <th class="text-right"> จัดการข้อมูล </th>
                         </tr>
                     </thead>
@@ -236,8 +237,8 @@
                           <td class="text-center"> {{ $value->util_type }} </td>
 
                           <td class="text-center">
-                            @if($value->verified == "อนุมัติแล้ว")
-                              <span class="badge bg-secondary badge-pill"> {{ $value->verified }} </span> <!-- null = รอการอนุมัติ -->
+                            @if($value->verified == "ตรวจสอบแล้ว")
+                              <span class="badge bg-secondary badge-pill"> {{ $value->verified }} </span> <!-- null = รอการตรวจสอบ -->
                             @else
                               <span class="badge bg-danger badge-pill"> {{ $value->verified }} </span> <!--  2 = ไม่อนุมัติ -->
                             @endif

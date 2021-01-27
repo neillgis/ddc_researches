@@ -49,7 +49,7 @@
       <div class="row mb-2">
         <div class="col-sm-12">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item active"> แก้ไข (การนำไปใช้ประโยชน์) </li>
+            <li class="breadcrumb-item active"> แก้ไขการนำไปใช้ประโยชน์ </li>
           </ol>
         </div>
       </div>
@@ -64,7 +64,7 @@
       <div class="row">
         <div class="col-md-12">
           <div class="card">
-            <div class="card shadow" style="background-color: #FFCC99;">
+            <div class="card shadow" style="background-color: #ff851b;">
               <div class="card-header">
                 <h5><b> แก้ไข (การนำไปใช้ประโยชน์) </b></h5>
               </div>

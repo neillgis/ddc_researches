@@ -154,10 +154,10 @@ class UtilizationController extends Controller
   }
 
 
-    $query_util_type = ['เชิงวิชาการ'    => 'เชิงวิชาการ',
-               'เชิงสังคม/ชุมชน'         => 'เชิงสังคม/ชุมชน',
-               'เชิงนโยบาย'             => 'เชิงนโยบาย',
-               'เชิงพาณิชย์'             => 'เชิงพาณิชย์'
+    $query_util_type = ['เชิงวิชาการ'      => 'เชิงวิชาการ',
+                       'เชิงสังคม/ชุมชน'   => 'เชิงสังคม/ชุมชน',
+                       'เชิงนโยบาย'      => 'เชิงนโยบาย',
+                       'เชิงพาณิชย์'      => 'เชิงพาณิชย์'
                ];
 
 
@@ -169,8 +169,8 @@ class UtilizationController extends Controller
                                'db_utilization.verified',
                                'db_research_project.pro_name_th','db_research_project.pro_name_en',
                                \DB::raw('(CASE
-                                             WHEN db_utilization.verified = "1" THEN "อนุมัติแล้ว"
-                                             ELSE "ยังไม่ได้อนุมัติ"
+                                             WHEN db_utilization.verified = "1" THEN "ตรวจสอบแล้ว"
+                                             ELSE "รอการตรวจสอบ"
                                              END) AS verified'
                                ))
                     ->get();
@@ -182,8 +182,8 @@ class UtilizationController extends Controller
                                 'db_utilization.verified',
                                 'db_research_project.pro_name_th','db_research_project.pro_name_en',
                                \DB::raw('(CASE
-                                             WHEN db_utilization.verified = "1" THEN "อนุมัติแล้ว"
-                                             ELSE "ยังไม่ได้อนุมัติ"
+                                             WHEN db_utilization.verified = "1" THEN "ตรวจสอบแล้ว"
+                                             ELSE "รอการตรวจสอบ"
                                              END) AS verified'
                                ))
                     ->get();
@@ -195,8 +195,8 @@ class UtilizationController extends Controller
                                 'db_utilization.verified',
                                 'db_research_project.pro_name_th','db_research_project.pro_name_en',
                                \DB::raw('(CASE
-                                             WHEN db_utilization.verified = "1" THEN "อนุมัติแล้ว"
-                                             ELSE "ยังไม่ได้อนุมัติ"
+                                             WHEN db_utilization.verified = "1" THEN "ตรวจสอบแล้ว"
+                                             ELSE "รอการตรวจสอบ"
                                              END) AS verified'
                                ))
                     -> where ('db_utilization.users_id', Auth::user()->preferred_username)
