@@ -75,11 +75,11 @@
               @csrf
 
               <div class="card-body">
-                <div class="row">
+                <!-- <div class="row">
                   <div class="col-md-4">
                     <div class="form-group">
-                      <label for="exampleSelect1"> ลำดับ </label>
-                      <input type="text" class="form-control" name="id" value="{{ $edit_util->id }}" readonly>
+                      <label for="exampleSelect1"> เลขบัตรประชาชน </label>
+                      <input type="text" class="form-control" name="id" value="{{ $edit_util->users_id }}" readonly>
                     </div>
                   </div>
                   <div class="col-md-8">
@@ -88,7 +88,7 @@
                       <input type="text" class="form-control" name="users_fullname" value=" # " readonly>
                     </div>
                   </div>
-                </div>
+                </div> -->
 
                 <div class="row">
                   <div class="col-md-6">

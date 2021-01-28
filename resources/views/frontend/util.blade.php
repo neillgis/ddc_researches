@@ -75,7 +75,7 @@
                     <h3> {{ empty($Total_util)?'0': $Total_util }} โครงการ </h3>
                   </div>
                   <div class="icon">
-                    <i class="fas fa-chart-line"> </i>
+                    <i class="fas fa-share-square"> </i>
                   </div>
                 </div>
               </div>
@@ -89,7 +89,7 @@
                     <h3> {{ empty($Total_academic_util)?'0': $Total_academic_util }} โครงการ </h3>
                   </div>
                   <div class="icon">
-                    <i class="ion fas fa-brain"></i>
+                    <i class="fa fa-university"></i>
                   </div>
                 </div>
               </div>

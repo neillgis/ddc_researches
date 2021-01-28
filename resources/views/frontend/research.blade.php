@@ -81,7 +81,7 @@
               <h3> {{ empty($Total_research)?'0': $Total_research }} โครงการ </h3>
             </div>
             <div class="icon">
-              <i class="ion ion-pie-graph"></i>
+              <i class="fas fa-microscope"></i>
             </div>
             <!-- <a class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
           </div>
@@ -95,7 +95,7 @@
               <h3> {{ empty($Total_master_pro)?'0': $Total_master_pro }} โครงการ </h3>
             </div>
             <div class="icon">
-              <i class="ion ion-person"></i>
+              <i class="fas fa-user-graduate"></i>
             </div>
             <!-- <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
           </div>
@@ -109,7 +109,7 @@
               <h3> {{ empty($Total_publish_pro)?'0': $Total_publish_pro }} โครงการ </h3>
             </div>
             <div class="icon">
-              <i class="ion ion-bookmark"></i>
+              <i class="fas fa-dice-d20"></i>
             </div>
             <!-- <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
           </div>

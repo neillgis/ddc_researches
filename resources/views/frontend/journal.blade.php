@@ -86,7 +86,7 @@
               <h3> {{ empty($Total_master_jour)?'0': $Total_master_jour }} โครงการ </h3>
             </div>
             <div class="icon">
-              <i class="ion ion-person"></i>
+              <i class="fas fa-user-graduate"></i>
             </div>
             <!-- <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
           </div>
@@ -100,7 +100,7 @@
               <h3> {{ empty($Total_journal)?'0': $Total_journal }} โครงการ </h3>
             </div>
             <div class="icon">
-              <i class="ion ion-bookmark"></i>
+              <i class="fas fa-cubes"></i>
             </div>
             <!-- <a class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
           </div>
