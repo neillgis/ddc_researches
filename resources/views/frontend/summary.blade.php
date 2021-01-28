@@ -1,5 +1,10 @@
 @extends('layout.main')
 
+<?php
+  use App\CmsHelper as CmsHelper;
+?>
+
+
 @section('css-custom')
 <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
 <link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="http://www.datatables.net/rss.xml">
@@ -9,37 +14,17 @@
 <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+
 <!-- Fonts Style : Kanit -->
   <style>
-  body {
-    font-family: 'Kanit', sans-serif;
-  }
-  h1 {
-    font-family: 'Kanit', sans-serif;
-  }
+    body {
+      font-family: 'Kanit', sans-serif;
+    }
+    h1 {
+      font-family: 'Kanit', sans-serif;
+    }
   </style>
 <!-- END Fonts Style : Kanit -->
-
-<style>
-     button {
-      display: inline-block;
-      position: relative;
-      color: #1D9AF2;
-      background-color: #292D3E;
-      border: 1px solid #1D9AF2;
-      border-radius: 4px;
-      padding: 0 15px;
-      cursor: pointer;
-      height: 38px;
-      font-size: 14px;
-
-    }
-    button:active {
-      box-shadow: 0 3px 0 #1D9AF2;
-      top: 3px;
-    }
-</style>
-
 
 @stop('css-custom')
 
@@ -140,81 +125,52 @@
 <!-- END SUM  BOX --------------------------------------------------------->
 
 
+
 <!-- START TABLE LIST --------------------------------------------------------->
-<!-- {{-- @if(Auth::user()->roles_type != '1') --}} -->
           <section class="content">
             <div class="card">
-                <div class="card card-gray">
-                  <div class="card-header">
-                      <h3 class="card-title"><b> สรุปข้อมูลนักวิจัย </b></h3>
-                  </div>
+              <div class="card card-gray">
+                <div class="card-header">
+                    <h3 class="card-title"><b> สรุปข้อมูลนักวิจัย </b></h3>
                 </div>
+              </div>
 
-
-                <div class="card-body">
+              <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-hover" style="width:100%" id="example1" >
-                    <thead>
-                        <tr>
-                            <th class="text-center"> ลำดับ </th>
-                            <th class="text-center"> ชื่อ-นามสกุล </th>
-                            <th class="text-center"> หน่วยงาน </th>
+                  <table class="table table-hover" style="width:100%" id="example1" >
+                  <thead>
+                    <tr>
+                      <th> ชื่อ - นามสกุล </th>
+                      <th> โครงการวิจัยทั้งหมด </th>
+                      <th> โครงการวิจัยที่เป็นผู้วิจัยหลักทั้งหมด </th>
+                      <th> บทความที่ตีพิมพ์ทั้งหมด </th>
+                      <!-- <th> บทความที่นำไปใช้ประโยชน์เชิงวิชาการ </th>
+                      <th class="text-right"> Actions </th> -->
+                    </tr>
+                  </thead>
 
-                            <th class="text-center"> โครงการวิจัยทั้งหมด </th>
-                            <th class="text-center"> โครงการวิจัยที่เป็นผู้วิจัยหลักทั้งหมด </th>
-                            <th class="text-center"> บทความที่ตีพิมพ์ทั้งหมด </th>
-                            <th class="text-center"> บทความที่นำไปใช้ประโยชน์เชิงวิชาการ </th>
-
-                            <th class="text-center"> ระดับนักวิจัย </th>
-
-                            <th class="text-center"> ผู้ตรวจสอบข้อมูล </th>
-
-                            <th class="text-right"> จัดการข้อมูล </th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        @foreach( $user_list as $value )
-
-                        <tr>
-                            <td class="text-center"> {{ $value->uid }} </td>
-                            <td class="text-left">  </td>
-                            <td class="text-left"> {{ $value->depart_name }} </td>
-
-                            <!-- จำนวน -->
-                            <td class="text-center"> {{ empty($research_count_2)?'0': $research_count_2 }} </td>
-                            <td class="text-center"> {{ empty($total_research_count)?'0': $total_research_count }} </td>
-                            <td class="text-center"> {{ empty($total_research_count)?'0': $total_research_count }} </td>
-                            <td class="text-center"> {{ empty($total_research_count)?'0': $total_research_count }} </td>
-
-                            <!-- researcher_level -->
-                            <td class="text-center"> {{ $value->researcher_level }} </td>
-
-                            <!-- data_auditor -->
-                            <td class="text-center"> {{ $value->data_auditor }} </td>
-
-                            <!-- จัดการข้อมูล -->
-                            <td class="td-actions text-right text-nowrap" href="#">
-                              <!-- <a href=" # ">
-                                <button type="button" class="btn btn-danger btn-md" data-toggle="tooltip" title="Download">
-                                  <i class="fas fa-arrow-alt-circle-down"></i>
-                                </button>
-                              </a> -->
-
-                              <a href=" {{ route('summary.edit', $value->uid) }} ">
-                                <button type="button" class="btn btn-warning btn-md" data-toggle="tooltip" title="Edit">
-                                  <i class="fas fa-edit"></i>
-                                </button>
-                              </a>
-                            </td>
-
-
-                        </tr>
-                        @endforeach
-                    </tbody>
-                    </table>
+                  <tbody>
+                      @foreach($user_list as $value)
+                      <tr>
+                        <td> {{ $value->users_name }} </td>
+                        <td> {{ $value->totals }} </td>
+                        <td> {{ $value->position }} </td>
+                        <td> {{ $value->public }} </td>
+                        <!-- <td> {{-- $arr[$value->users_id] --}} </td> -->
+                          <!-- จัดการข้อมูล -->
+                        <!-- <td class="td-actions text-right text-nowrap" href="#">
+                          <a href="#">
+                            <button type="button" class="btn btn-warning btn-md" data-toggle="tooltip" title="Edit">
+                              <i class="fas fa-edit"></i>
+                            </button>
+                          </a>
+                        </td> -->
+                      </tr>
+                  @endforeach
+                  </tbody>
+                  </table>
                 </div>
-                </div>
+              </div>
 
                 </form>
 
@@ -224,7 +180,6 @@
           </div>
       </section>
 <!-- END TABLE LIST ----------------------------------------------------------->
-
 
 @stop('contents')
 

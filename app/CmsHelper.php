@@ -281,9 +281,10 @@ use App\User;
           // Get user profile [Individual] from SSO hr.ddc.moph.go.th
           public static function GetProfile($cid){
             $client = new \GuzzleHttp\Client();
-            $response = $client->get('https://hr.ddc.moph.go.th/api/v2/employee/'.$cid, [
+            $response = $client->get('https://hr.ddc.moph.go.th/api/v2/employee/'.$cid,
+            [
              'headers' => [
-                 'Authorization' => 'Bearer '.env('TOKEN_GET')
+               'Authorization' => 'Bearer'.env('TOKEN_GET')
              ],
              'verify' => false
             ]);
@@ -292,16 +293,28 @@ use App\User;
           }
 
 
+
+          // public function getGuzzleRequest(){
+          //     $client = new \GuzzleHttp\Client();
+          //     $request = $client->get('https://hr.ddc.moph.go.th/api/v2/employee/');
+          //     // ([ 'verify' => false, ]);
+          //     $response = $request->getBody();
+          //
+          //     return $response;
+          // }
+
+
+
           // Get user profile [ALL] from SSO hr.ddc.moph.go.th
-          public static function GetProfileAll(){
-            $client = new \GuzzleHttp\Client();
-            $response = $client->get('https://hr.ddc.moph.go.th/api/v2/employee/', [
-             'headers' => [
-                 'Authorization' => 'Bearer '.env('TOKEN_GET')
-             ],
-             'verify' => false
-            ]);
-            return json_decode($response->getBody(), true);
-          }
+          // public static function GetProfileAll(){
+          //   $client = new \GuzzleHttp\Client();
+          //   $response = $client->get('https://hr.ddc.moph.go.th/api/v2/employee/', [
+          //    'headers' => [
+          //        'Authorization' => 'Bearer '.env('TOKEN_GET')
+          //    ],
+          //    'verify' => false
+          //   ]);
+          //   return json_decode($response->getBody(), true);
+          // }
 
 }

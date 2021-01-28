@@ -12,10 +12,9 @@ use Storage;
 use File;
 use Auth;
 // use app\Exceptions\Handler;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Routing\Controller;
-use App\KeycloakUser;
-
+// use Illuminate\Support\Facades\Route;
+// use Illuminate\Routing\Controller;
+// use App\KeycloakUser;
 
 class ResearchController extends Controller
 {
@@ -222,6 +221,7 @@ class ResearchController extends Controller
 
     $data_post = [
       "users_id"          => Auth::user()->preferred_username,
+      "users_name"        => Auth::user()->name,
       "pro_name_th"       => $request->pro_name_th,
       "pro_name_en"       => $request->pro_name_en,
       "pro_position"      => $request->pro_position,

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+// use Illuminate\Contracts\Auth\Guard;
 use App\CmsHelper;
 use App\summary;
 use App\member;
@@ -13,6 +14,12 @@ use App\journal;
 use Storage;
 use File;
 use Auth;
+// use Illuminate\Support\Facades\Route;
+// use Illuminate\Routing\Controller;
+// use App\KeycloakUser;
+// use GuzzleHttp\Client;
+// use GuzzleHttp\Exception\RequestException;
+
 
 class SummaryController extends Controller
 {
@@ -24,16 +31,23 @@ class SummaryController extends Controller
 
 
     public function table_summary(){
-
-// SUM BOX ------------------------------------------------------------------------>
-
+    // SUM BOX --
       // โครงการวิจัยที่ทำเสร็จ db_research_project -> โดย count id (All Record)--------->
-      $Total_research = DB::table('db_research_project')
-                      -> select('db_research_project.id','pro_name_th','pro_name_en','pro_position',
-                                'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
-                      ->get()->count();
-// dd($Total_research);
+      if(Auth::hasRole('user')) {
+        $Total_research = DB::table('db_research_project')
+                        -> select('db_research_project.id','pro_name_th','pro_name_en','pro_position',
+                                  'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
+                        ->where('users_id', Auth::user()->preferred_username)
+                        ->get()
+                        ->count();
 
+      }else {
+        $Total_research = DB::table('db_research_project')
+                        -> select('db_research_project.id','pro_name_th','pro_name_en','pro_position',
+                                  'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
+                        ->get()
+                        ->count();
+      }
 
       // โครงการวิจัยที่เป็นผู้วิจัยหลัก db_research_project -> โดย count id -> pro_position = 1 (เป็นผู้วิจัยหลัก)--------->
       $Total_master_pro = DB::table('db_research_project')
@@ -41,8 +55,6 @@ class SummaryController extends Controller
                                   'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
                         -> whereIn ('pro_position', ['1'])
                         ->get()->count();
-// dd($Total_master_pro);
-
 
       // โครงการวิจัยที่ตีพิมพ์ db_research_project -> โดย count id -> publish_status = 1 (ใช่ )--------->
       $Total_publish_pro = DB::table('db_research_project')
@@ -50,8 +62,6 @@ class SummaryController extends Controller
                                   'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
                         -> whereIn ('publish_status', ['1'])
                         ->get()->count();
-// dd($Total_publish_pro);
-
 
       // บทความผู้นิพนธ์หลัก db_published_journal -> โดย count id -> contribute = ผู้นิพนธ์หลัก (first-author) --------->
       $Total_master_journal = DB::table('db_published_journal')
@@ -60,8 +70,6 @@ class SummaryController extends Controller
                                       'contribute','corres')
                             -> where ('contribute', ['1'])
                             ->get()->count();
-// dd($Total_master_journal);
-
 
       // บทความตีพิมพ์ db_published_journal โดย count id (All Record) --------->
       $Total_publish_journal = DB::table('db_published_journal')
@@ -69,96 +77,68 @@ class SummaryController extends Controller
                                        'publish_years','publish_no','publish_volume','publish_page','doi_number',
                                        'contribute','corres')
                              ->get()->count();
-// dd($Total_publish_journal);
+      // END SUM BOX --
 
 
-// END SUM BOX -------------------------------------------------------------------------->
 
 
-// TABLE LIST ---------------------------------------------------------------------------->
+    // TABLE LIST --
 
-      // ชื่อ-นามสกุล, หน่วยงาน - ระดับนักวิจัย researcher_level, ผู้ตรวจสอบข้อมูล data_auditor
-      $data_table_1 = DB::table ('users')
-               	 -> join ('depart', 'depart.id', '=', 'users.depart_id')
-                 // -> join ('db_research_project', 'db_research_project.users_id', '=', 'users.card_id')
-               	 -> select ('depart.id as dept_id',
-                            'depart.depart_name',
-                            'users.id as uid','users.card_id',
-                            'users.orcid_id','users.prefix',
-                            'users.fname_th','users.lname_th',
-                            'users.researcher_level','users.data_auditor')
-                            -> ORDERBY('uid','ASC')
-                            ->get();
+      $data_table_1 = DB::table('db_research_project')
+          ->leftjoin('db_published_journal', 'db_research_project.id', '=', 'db_published_journal.pro_id')
+          // ->leftjoin('db_utilization', 'db_utilization.pro_id', '=', 'db_research_project.id')
+          ->select("db_research_project.users_name")
+          ->selectRaw("count(db_research_project.id) as totals")
+          ->selectRaw("count(case when db_research_project.pro_position = '1' then 1 end) as position")
+          ->selectRaw("count(db_published_journal.id) as public")
+          // ->selectRaw("count(case when db_utilization.util_type = 'เชิงวิชาการ' then 1 end) as util")
+          ->GROUPBY ('db_research_project.users_name')
+          ->get();
 
-// dd($data_table_1);
+        // dd($query);
 
-      // จำนวน โครงการวิจัยทั้งหมด ------------------------------------------------------------>
-      $data_table_2 = DB::table ('users')
-                 -> join ('db_research_project', 'db_research_project.users_id', '=', 'users.card_id')
-                 -> selectRaw ('users.id as uid, count(DISTINCT db_research_project.id) AS total_research_count')
-                 -> GROUPBY ('uid')
-                 -> ORDERBY('uid','ASC')
-                 ->get();
-// dd($data_table_2);
 
-      // จำนวน โครงการวิจัยที่เป็นผู้วิจัยหลักทั้งหมด ------------------------------------------------>
-      $data_table_2_1 = DB::table ('users')
-                 -> join ('db_research_project', 'db_research_project.users_id', '=', 'users.card_id')
-                 -> selectRaw ('users.id as uid, count(DISTINCT db_research_project.id) AS master_research_count')
-                 -> whereIn ('pro_position', ['1'])
-                 -> GROUPBY ('uid')
-                 -> ORDERBY('uid','ASC')
-                 ->get();
-// dd($data_table_2_1);
+        //Query ค่าบทความที่นำไปใช้ แยกออกมา เพื่อนำไปหยอดใน foreach ข้างล่าง
+        // $abc
+        // ->count();
+        //
+        // //ใส่ในนี้
+        // $arr = [];
+        // foreach ($variable as $value) {
+        //
+        //   $arr[$value->users_id] = $value->countNO;
+        // }
 
-      // จำนวน บทความที่ตีพิมพ์ทั้งหมด --------------------------------------------------------->
-      $data_table_3 = DB::table ('users')
-                  -> join ('db_published_journal', 'db_published_journal.users_id', '=', 'users.card_id')
-                  -> selectRaw ('users.id as uid, count(DISTINCT db_published_journal.id) AS total_journal_count')
-                  -> GROUPBY ('uid')
-                  -> ORDERBY('uid','ASC')
-                  ->get();
-// dd($data_table_3);
-
-      // จำนวน บทความที่นำไปใช้ประโยชน์เชิงวิชาการ ---------------------------------------------->
-      $data_table_3_1 = DB::table ('users')
-                  -> join ('db_utilization', 'db_utilization.users_id', '=', 'users.card_id')
-                  -> selectRaw ('users.id as uid, count(DISTINCT db_utilization.id) AS total_util_count')
-                  -> where ('util_type', '=', 'เชิงวิชาการ')
-                  -> GROUPBY ('uid')
-                  -> ORDERBY('uid','ASC')
-                  ->get();
-// dd($data_table_3_1);
-      //dd(CmsHelper::GetProfile('1160100373591'));
 
       return view('frontend.summary',
       [
-        // Sum Box
-        'Total_research'        => $Total_research,
-        'Total_master_pro'      => $Total_master_pro,
-        'Total_publish_pro'     => $Total_publish_pro,
-        'Total_master_journal'  => $Total_master_journal,
-        'Total_publish_journal' => $Total_publish_journal,
-
-        //  ชื่อ-สกุล users, ระดับนักวิจัย researcher_level, ผู้ตรวจสอบข้อมูล data_auditor
+        'Total_research'          => $Total_research,
+        'Total_master_pro'        => $Total_master_pro,
+        'Total_publish_pro'       => $Total_publish_pro,
+        'Total_master_journal'    => $Total_master_journal,
+        'Total_publish_journal'   => $Total_publish_journal,
         'user_list'               => $data_table_1,
-
-        // จำนวน โครงการวิจัยทั้งหมด
-        'research_count'          => $data_table_2,
-
-        // จำนวน โครงการวิจัยที่เป็นผู้วิจัยหลักทั้งหมด
-        'master_pro_count'        => $data_table_2_1,
-
-        // จำนวน บทความที่ตีพิมพ์ทั้งหมด
-        'publish_journal_count'   => $data_table_3,
-
-        // จำนวน บทความที่นำไปใช้ประโยชน์เชิงวิชาการ
-        'journal_academic_count'  => $data_table_3_1,
-
-
       ]);
-}
+    }
 // END TABLE LIST ----------------------------------------------------------------->
+
+
+
+    // public static function GetProfile(){
+    //     $client = new \GuzzleHttp\Client();
+    //     $response = $client->get('https://hr.ddc.moph.go.th/api/v2/employee/',
+    //     [
+    //      'headers' => [
+    //          'Authorization' => 'Bearer '.env('TOKEN_GET')
+    //      ],
+    //      'verify' => false
+    //     ]);
+    //     $decoded = json_decode($response->getBody(), true);
+    //     return $decoded;
+    //
+    //     dd($decoded);
+    // }
+
 
 
     // EDIT ----------------------------------------------------------------->
