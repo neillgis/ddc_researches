@@ -182,7 +182,7 @@
                 <div class="row">
                   <div class="col-md-4">
                     <div class="form-group">
-                      <label for="exampleDatepicker1"> ปี พ.ศ. ที่เริ่มโครงการ : <font color="red"> กรณีไม่ทราบวันเดือน *กรุณาใส่ ปีพ.ศ.ที่เริ่มทำ /01/01 </font></label>
+                      <label for="exampleDatepicker1"> ปี พ.ศ. ที่เริ่มโครงการ : <font color="red"> กรณีไม่ทราบ *กรุณาใส่ ปีที่เริ่มทำ/01/01 </font></label>
                       <input type="text" class="form-control" id="datepicker1" placeholder="กรุณาเลือก ปี/เดือน/วัน"
                              name="pro_start_date" autocomplete="off" >
                     </div>
@@ -190,7 +190,7 @@
 
                   <div class="col-md-4">
                     <div class="form-group">
-                      <label for="exampleDatepicker1"> ปี พ.ศ. ที่เสร็จสิ้นโครงการ : <font color="red"> กรณีไม่ทราบวันเดือน *กรุณาใส่ ปีพ.ศ.ที่เสร็จสิ้น /12/31 </font></label>
+                      <label for="exampleDatepicker1"> ปี พ.ศ. ที่เสร็จสิ้นโครงการ : <font color="red"> กรณีไม่ทราบ *กรุณาใส่ ปีที่เสร็จสิ้น /12/31 </font></label>
                       <input type="text" class="form-control" id="datepicker2" placeholder="กรุณาเลือก ปี/เดือน/วัน"
                              name="pro_end_date" autocomplete="off" >
                     </div>
