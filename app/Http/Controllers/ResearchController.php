@@ -11,9 +11,8 @@ use App\journal;
 use Storage;
 use File;
 use Auth;
-// use app\Exceptions\Handler;
-// use Illuminate\Support\Facades\Route;
-// use Illuminate\Routing\Controller;
+use app\Exceptions\Handler;
+use Illuminate\Support\Facades\Route;
 // use App\KeycloakUser;
 
 class ResearchController extends Controller

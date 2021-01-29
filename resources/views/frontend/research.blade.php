@@ -291,24 +291,33 @@
                           <i class="fas fa-arrow-alt-circle-down"></i>
                         </button>
                       </a>
-                    @endif
 
                       <a href=" {{ route('research.edit', $value->id) }} ">
                         <button type="button" class="btn btn-warning btn-md" data-toggle="tooltip" title="Edit">
                           <i class="fas fa-edit"></i>
                         </button>
                       </a>
+                    @endif
 
-                  @if(Auth::hasRole('manager'))
+                    <!-- FOR Admin ONLY -->
+                    @if(Auth::hasRole('admin'))
+                    <a href=" {{ route('research.edit', $value->id) }} ">
+                      <button type="button" class="btn btn-warning btn-md" data-toggle="tooltip" title="Views">
+                        <i class="fas fa-eye"></i>
+                      </button>
+                    </a>
+                    @endif
+
+                    @if(Auth::hasRole('manager'))
                       <a href=" {{ route('research.verified', $value->id) }} ">
                         <button type="button" class="btn btn-md"
                                 data-toggle="tooltip" title="Verfied" style="background-color: #336699;">
                           <i class="fas fa-user-check"></i>
                         </button>
                       </a>
-                  @endif
+                    @endif
                     </td>
-
+                    
                   </tr>
                   @endforeach
                 </tbody>

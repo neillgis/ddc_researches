@@ -8,8 +8,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport'>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- SSO for DDC -->
+  <meta name="description" content="ระบบบันทึกข้อมูลนักวิจัย กรมควบคุมโรค">
+  <meta property="og:title" content="ระบบบันทึกข้อมูลนักวิจัย กรมควบคุมโรค">
+  <meta property="og:description" content="ระบบบันทึกข้อมูลนักวิจัย กรมควบคุมโรค">
   <title> ระบบบันทึกข้อมูลนักวิจัย กรมควบคุมโรค </title>
-
 
   <!-- START Custom CSS+fonts this template -->
     @include('layout.css')

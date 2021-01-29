@@ -11,6 +11,9 @@ use App\journal;
 use Storage;
 use File;
 use Auth;
+use app\Exceptions\Handler;
+use Illuminate\Support\Facades\Route;
+
 
 class JournalController extends Controller
 {

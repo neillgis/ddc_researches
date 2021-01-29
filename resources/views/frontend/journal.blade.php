@@ -169,21 +169,21 @@
                   <div class="col-md-3">
                     <div class="form-group">
                       <label for="exampleInput1"> ฉบับที่ (issue) </label>
-                      <input type="text" class="form-control" name="publish_no" maxlength="5"
+                      <input type="text" class="form-control" name="publish_no" maxlength="2"
                              onKeyUp="if(isNaN(this.value)){ alert('กรุณากรอกตัวเลขเท่านั้น !'); this.value='';}" required>
                     </div>
                   </div>
                   <div class="col-md-3">
                     <div class="form-group">
                       <label for="exampleInput1"> เล่มที่ (volume)  </label>
-                      <input type="text" class="form-control" name="publish_volume" maxlength="4"
+                      <input type="text" class="form-control" name="publish_volume" maxlength="2"
                              onKeyUp="if(isNaN(this.value)){ alert('กรุณากรอกตัวเลขเท่านั้น !'); this.value='';}" required>
                     </div>
                   </div>
                   <div class="col-md-3">
                     <div class="form-group">
                       <label for="exampleInput1"> หน้า (no) </label>
-                      <input type="text" class="form-control" placeholder="xxxx" name="publish_page" maxlength="5"
+                      <input type="text" class="form-control" placeholder="xxxx" name="publish_page" maxlength="3"
                              onKeyUp="if(isNaN(this.value)){ alert('กรุณากรอกตัวเลขเท่านั้น !'); this.value='';}">
                     </div>
                   </div>
@@ -193,7 +193,7 @@
                   <div class="col-md-3">
                     <div class="form-group">
                       <label for="exampleInput1"> เลข DOI </label>
-                      <input type="text" class="form-control" name="doi_number" maxlength="10" required>
+                      <input type="text" class="form-control" name="doi_number" required>
                     </div>
                   </div>
                   <div class="col-md-3">
@@ -336,22 +336,30 @@
                           <i class="fas fa-arrow-alt-circle-down"></i>
                         </button>
                       </a>
-                    @endif
-
 
                       <a href=" {{ route('journal.edit', ['id' => $value->id, 'pro_id' => $value->pro_id]) }} ">
                         <button type="button" class="btn btn-warning btn-md" data-toggle="tooltip" title="Edit">
                           <i class="fas fa-edit"></i>
                         </button>
                       </a>
+                    @endif
 
-                  @if(Auth::hasRole('manager'))
+                    @if(Auth::hasRole('admin'))
+                      <a href=" {{ route('journal.edit', ['id' => $value->id, 'pro_id' => $value->pro_id]) }} ">
+                        <button type="button" class="btn btn-warning btn-md" data-toggle="tooltip" title="Views">
+                          <i class="fas fa-eye"></i>
+                        </button>
+                      </a>
+                    @endif
+
+
+                    @if(Auth::hasRole('manager'))
                       <a href=" {{ route('journal.verified', $value->id) }} ">
                         <button type="button" class="btn btn-md" data-toggle="tooltip" title="Verfied" style="background-color: #336699;">
                           <i class="fas fa-user-check"></i>
                         </button>
                       </a>
-                  @endif
+                    @endif
                     </td>
 
                   </tr>
