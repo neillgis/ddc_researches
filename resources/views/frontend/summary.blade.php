@@ -93,13 +93,27 @@
                 </div>
               </div>
 
-              <div class="col-md-3">
+              <!-- <div class="col-md-3">
                 <div class="small-box bg-info">
                   <div class="inner">
                     <h4> บทความผู้นิพนธ์หลัก </h4>
-                    <br>
+                    <br> -->
                     <!-- เรียกจาก db_published_journal -> โดย count id -> contribute = ผู้นิพนธ์หลัก (first-author)---------->
-                    <h3> {{ empty($Total_master_journal)?'0': $Total_master_journal }} โครงการ </h3>
+                    <!-- <h3> {{ empty($Total_master_journal)?'0': $Total_master_journal }} โครงการ </h3>
+                  </div>
+                  <div class="icon">
+                    <i class="fas fa-book-reader"></i>
+                  </div>
+                </div>
+              </div> -->
+
+              <div class="col-md-3">
+                <div class="small-box bg-info">
+                  <div class="inner">
+                    <h4> บทความตีพิมพ์ </h4>
+                    <br>
+                    <!-- เรียกจาก db_published_journal โดย count id (All Record) ------------>
+                    <h3> {{ empty($Total_publish_journal)?'0': $Total_publish_journal }} โครงการ </h3>
                   </div>
                   <div class="icon">
                     <i class="fas fa-book-reader"></i>
@@ -110,10 +124,10 @@
               <div class="col-md-3">
                 <div class="small-box bg-green">
                   <div class="inner">
-                    <h4> บทความตีพิมพ์ </h4>
+                    <h4> บทความที่นำไปใช้ประโยชน์เชิงวิชาการ </h4>
                     <br>
-                    <!-- เรียกจาก db_published_journal โดย count id (All Record) ------------>
-                    <h3> {{ empty($Total_publish_journal)?'0': $Total_publish_journal }} โครงการ </h3>
+                    <!-- เรียกจาก db_utilization -> โดย count id -> util_type = เชิงวิชาการ ------------>
+                    <h3> {{ empty($Total_academic_util)?'0': $Total_academic_util }} โครงการ </h3>
                   </div>
                   <div class="icon">
                     <i class="fas fa-cubes"></i>
@@ -144,8 +158,8 @@
                       <th class="text-center"> โครงการวิจัยทั้งหมด </th>
                       <th class="text-center"> โครงการวิจัยที่เป็นผู้วิจัยหลักทั้งหมด </th>
                       <th class="text-center"> บทความที่ตีพิมพ์ทั้งหมด </th>
-                      <!-- <th> บทความที่นำไปใช้ประโยชน์เชิงวิชาการ </th>
-                      <th class="text-right"> Actions </th> -->
+                      <!-- <th class="text-center"> บทความที่นำไปใช้ประโยชน์เชิงวิชาการ </th> -->
+                      <!-- <th class="text-right"> Actions </th> -->
                     </tr>
                   </thead>
 
@@ -156,10 +170,11 @@
                         <td class="text-center"> {{ $value->totals }} </td>
                         <td class="text-center"> {{ $value->position }} </td>
                         <td class="text-center"> {{ $value->public }} </td>
-                        <!-- <td> {{-- $arr[$value->users_id] --}} </td> -->
+
+
                           <!-- จัดการข้อมูล -->
                         <!-- <td class="td-actions text-right text-nowrap" href="#">
-                          <a href="#">
+                          <a href="-- {{ route('summary.edit', $value->users_name) }} --">
                             <button type="button" class="btn btn-warning btn-md" data-toggle="tooltip" title="Edit">
                               <i class="fas fa-edit"></i>
                             </button>

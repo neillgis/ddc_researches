@@ -78,8 +78,8 @@
                 <div class="row">
                   <div class="col-md-4">
                     <div class="form-group">
-                      <label for="exampleSelect1"> ลำดับนักวิจัย </label>
-                      <input type="text" class="form-control" name="id" value="{{ $edit_users->id }}" readonly>
+                      <label for="exampleSelect1"> เลขบัตรประชาชน </label>
+                      <input type="text" class="form-control" name="id" value="{{ $edit_users->users_id }}" readonly>
                     </div>
                   </div>
                   <div class="col-md-4">
@@ -96,14 +96,14 @@
                   </div>
                 </div>
 
-                <div class="row">
+                <!-- <div class="row">
                   <div class="col-md-12">
                     <div class="form-group">
                       <label for="exampleSelect1"> หน่วยงาน </label>
                       <input type="text" class="form-control" name="depart_name" value="{{ $edit_depart->depart_name }}" readonly>
                     </div>
                   </div>
-                </div>
+                </div> -->
 
                 <div class="row">
                   <div class="col-md-6">

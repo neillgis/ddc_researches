@@ -64,12 +64,12 @@ class SummaryController extends Controller
                         ->get()->count();
 
       // บทความผู้นิพนธ์หลัก db_published_journal -> โดย count id -> contribute = ผู้นิพนธ์หลัก (first-author) --------->
-      $Total_master_journal = DB::table('db_published_journal')
-                            -> select('db_published_journal.id','article_name_th','article_name_en','journal_name_th','journal_name_en',
-                                      'publish_years','publish_no','publish_volume','publish_page','doi_number',
-                                      'contribute','corres')
-                            -> where ('contribute', ['1'])
-                            ->get()->count();
+      // $Total_master_journal = DB::table('db_published_journal')
+      //                       -> select('db_published_journal.id','article_name_th','article_name_en','journal_name_th','journal_name_en',
+      //                                 'publish_years','publish_no','publish_volume','publish_page','doi_number',
+      //                                 'contribute','corres')
+      //                       -> where ('contribute', ['1'])
+      //                       ->get()->count();
 
       // บทความตีพิมพ์ db_published_journal โดย count id (All Record) --------->
       $Total_publish_journal = DB::table('db_published_journal')
@@ -77,6 +77,12 @@ class SummaryController extends Controller
                                        'publish_years','publish_no','publish_volume','publish_page','doi_number',
                                        'contribute','corres')
                              ->get()->count();
+
+      // บทความที่นำไปใช้ประโยชน์เชิงวิชาการ db_utilization -> โดย count id -> util_type = เชิงวิชาการ --------->
+      $Total_academic_util = DB::table('db_utilization')
+                            -> select('pro_id','util_type')
+                            -> where ('util_type', '=', 'เชิงวิชาการ')
+                            ->get()->count();
       // END SUM BOX --
 
 
@@ -86,16 +92,21 @@ class SummaryController extends Controller
 
       $data_table_1 = DB::table('db_research_project')
           ->leftjoin('db_published_journal', 'db_research_project.id', '=', 'db_published_journal.pro_id')
-          // ->leftjoin('db_utilization', 'db_utilization.pro_id', '=', 'db_research_project.id')
-          ->select("db_research_project.users_name")
+          // ->leftjoin('db_utilization', 'db_research_project.id', '=', 'db_utilization.pro_id')
+
+          ->select('db_research_project.users_name')
           ->selectRaw("count(db_research_project.id) as totals")
           ->selectRaw("count(case when db_research_project.pro_position = '1' then 1 end) as position")
           ->selectRaw("count(db_published_journal.id) as public")
           // ->selectRaw("count(case when db_utilization.util_type = 'เชิงวิชาการ' then 1 end) as util")
+
           ->GROUPBY ('db_research_project.users_name')
           ->get();
 
-        // dd($query);
+// dd($data_table_1);
+
+
+
 
 
         //Query ค่าบทความที่นำไปใช้ แยกออกมา เพื่อนำไปหยอดใน foreach ข้างล่าง
@@ -115,8 +126,11 @@ class SummaryController extends Controller
         'Total_research'          => $Total_research,
         'Total_master_pro'        => $Total_master_pro,
         'Total_publish_pro'       => $Total_publish_pro,
-        'Total_master_journal'    => $Total_master_journal,
+        // 'Total_master_journal'    => $Total_master_journal,
         'Total_publish_journal'   => $Total_publish_journal,
+        'Total_academic_util'     => $Total_academic_util,
+
+
         'user_list'               => $data_table_1,
       ]);
     }
@@ -145,7 +159,7 @@ class SummaryController extends Controller
     public function edit_summary(Request $request){
 
       // // users
-      $edit_0 = member::where ('id', $request->id)
+      $edit_0 = research::where ('id', $request->id)
                       ->first();
       //
       // depart
