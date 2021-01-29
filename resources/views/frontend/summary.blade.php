@@ -140,10 +140,10 @@
                   <table class="table table-hover" style="width:100%" id="example1" >
                   <thead>
                     <tr>
-                      <th> ชื่อ - นามสกุล </th>
-                      <th> โครงการวิจัยทั้งหมด </th>
-                      <th> โครงการวิจัยที่เป็นผู้วิจัยหลักทั้งหมด </th>
-                      <th> บทความที่ตีพิมพ์ทั้งหมด </th>
+                      <th class="text-center"> ชื่อ - นามสกุล </th>
+                      <th class="text-center"> โครงการวิจัยทั้งหมด </th>
+                      <th class="text-center"> โครงการวิจัยที่เป็นผู้วิจัยหลักทั้งหมด </th>
+                      <th class="text-center"> บทความที่ตีพิมพ์ทั้งหมด </th>
                       <!-- <th> บทความที่นำไปใช้ประโยชน์เชิงวิชาการ </th>
                       <th class="text-right"> Actions </th> -->
                     </tr>
@@ -152,10 +152,10 @@
                   <tbody>
                       @foreach($user_list as $value)
                       <tr>
-                        <td> {{ $value->users_name }} </td>
-                        <td> {{ $value->totals }} </td>
-                        <td> {{ $value->position }} </td>
-                        <td> {{ $value->public }} </td>
+                        <td class="text-center"> {{ $value->users_name }} </td>
+                        <td class="text-center"> {{ $value->totals }} </td>
+                        <td class="text-center"> {{ $value->position }} </td>
+                        <td class="text-center"> {{ $value->public }} </td>
                         <!-- <td> {{-- $arr[$value->users_id] --}} </td> -->
                           <!-- จัดการข้อมูล -->
                         <!-- <td class="td-actions text-right text-nowrap" href="#">
