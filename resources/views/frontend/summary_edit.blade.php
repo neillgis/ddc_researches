@@ -76,66 +76,42 @@
 
               <div class="card-body">
                 <div class="row">
-                  <div class="col-md-4">
+                  <div class="col-md-3">
                     <div class="form-group">
                       <label for="exampleSelect1"> เลขบัตรประชาชน </label>
-                      <input type="text" class="form-control" name="id" value="{{ $edit_users->users_id }}" readonly>
+                      <input type="text" class="form-control" name="users_id" value="{{ $edit_users->users_id }}" readonly>
                     </div>
                   </div>
-                  <div class="col-md-4">
-                    <div class="form-group">
-                      <label for="exampleSelect1"> ชื่อ </label>
-                      <input type="text" class="form-control" name="fname_th" value="{{ $edit_users->fname_th }}" readonly>
-                    </div>
-                  </div>
-                  <div class="col-md-4">
-                    <div class="form-group">
-                      <label for="exampleSelect1"> นามสกุล </label>
-                      <input type="text" class="form-control" name="lname_th" value="{{ $edit_users->lname_th }}" readonly>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- <div class="row">
-                  <div class="col-md-12">
-                    <div class="form-group">
-                      <label for="exampleSelect1"> หน่วยงาน </label>
-                      <input type="text" class="form-control" name="depart_name" value="{{ $edit_depart->depart_name }}" readonly>
-                    </div>
-                  </div>
-                </div> -->
-
-                <div class="row">
                   <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="exampleSelect1"> ชื่อ-นามสกุล </label>
+                      <input type="text" class="form-control" name="users_name" value="{{ $edit_users->users_name }}" readonly>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
                     <div class="form-group">
                       <label for="exampleSelect1"> ระดับนักวิจัย </label>
 
                       <!-- Query Array เพื่อมา UPDATE users -->
                       <select class="form-control" name="researcher_level">
-                        @foreach ($edit_researchlev as $key => $value)
+                        @foreach ($edit_lev as $key => $value)
                           <option value="{{ $key }}"
-                          {{ $edit_users->researcher_level == $key ? 'selected' : '' }}> {{ $value }}
-                          </option>
-                        @endforeach
-                      </select>
-                    </div>
-                  </div>
-
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="exampleSelect1"> ผู้ตรวจสอบข้อมูล </label>
-
-                      <!-- AUTH เพื่อมา UPDATE user / print -->
-                      <select class="form-control" name="data_auditor">
-                        @foreach ($edit_auditorchk as $key => $value)
-                          <option value="{{ $key }}"
-                          {{ $edit_users->data_auditor == $key ? 'selected' : '' }}> {{ $value }}
+                          {{$edit_users->researcher_level == $key ? 'selected' : '' }}> {{ $value }}
                           </option>
                         @endforeach
                       </select>
                     </div>
                   </div>
                 </div>
+
+                <!-- <div class="row">
+                  <div class="col-md-3">
+                    <div class="form-group">
+                      <label for="exampleSelect1"> หน่วยงาน </label>
+                      <input type="text" class="form-control" name="depart_name" value="{{-- $edit_depart->depart_name --}}" readonly>
+                    </div>
+                  </div>
+                </div> -->
 
               </div>
 
@@ -145,12 +121,14 @@
                     ย้อนกลับ
                 </a>
 
-                <button type="submit" class="btn btn-success float-right" value="บันทึกข้อมูล">
-                  <i class="fas fa-save"></i>
-                    &nbsp;บันทึกข้อมูล
-                </button>
-              </div>
+                @if (Gate::allows('keycloak-web', ['manager']))
+                  <button type="submit" class="btn btn-success float-right" value="บันทึกข้อมูล">
+                    <i class="fas fa-save"></i>
+                      &nbsp;บันทึกข้อมูล
+                  </button>
+                @endif
 
+              </div>
             </form>
 
           </div>
@@ -166,6 +144,7 @@
 
 @section('js-custom-script')
 
+
 <!-- START ALERT บันทึกข้อมูลสำเร็จ  -->
 <script type="text/javascript">
   $(document).ready(function () {
@@ -177,6 +156,7 @@
   });
 </script>
 <!-- END ALERT บันทึกข้อมูลสำเร็จ  -->
+
 
 
 @stop('js-custom-script')

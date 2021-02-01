@@ -75,30 +75,35 @@
               @csrf
 
               <div class="card-body">
-                <!-- <div class="row">
-                  <div class="col-md-4">
+                <div class="row">
+                  <div class="col-md-6 mx-auto">
                     <div class="form-group">
                       <label for="exampleSelect1"> เลขบัตรประชาชน </label>
-                      <input type="text" class="form-control" name="id" value="{{ $edit_util->users_id }}" readonly>
+                      <input type="text" class="form-control" name="users_id" value="{{ $edit_data->users_id }}" readonly>
                     </div>
                   </div>
-                  <div class="col-md-8">
-                    <div class="form-group">
-                      <label for="exampleSelect1"> ชื่อ-สกุล (นักวิจัย) </label>
-                      <input type="text" class="form-control" name="users_fullname" value=" # " readonly>
-                    </div>
-                  </div>
-                </div> -->
+                </div>
 
                 <div class="row">
-                  <div class="col-md-6">
+                  <div class="col-md-6 mx-auto">
+                    <div class="form-group">
+                      <label for="exampleSelect1"> ชื่อ-สกุล (นักวิจัย) </label>
+                      <input type="text" class="form-control" name="users_name" value="{{ $edit_data->users_name }}" readonly>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6 mx-auto">
                     <div class="form-group">
                       <label for="exampleSelect1"> ชื่อโครงการ (TH-ENG) </label>
                       <input type="text" class="form-control" name="project_fullname" value="{{ $edit_data->pro_name_th." ".$edit_data->pro_name_en }}" readonly>
                     </div>
                   </div>
+                </div>
 
-                  <div class="col-md-6">
+                <div class="row">
+                  <div class="col-md-6 mx-auto">
                     <div class="form-group">
                       <label for="exampleSelect1"> ประเภทการนำไปใช้ประโยชน์ </label>
 
@@ -121,10 +126,13 @@
                     ย้อนกลับ
                 </a>
 
-                <button type="submit" class="btn btn-success float-right" value="บันทึกข้อมูล">
-                  <i class="fas fa-save"></i>
-                    &nbsp;บันทึกข้อมูล
-                </button>
+                @if (Gate::allows('keycloak-web', ['user']))
+                  <button type="submit" class="btn btn-success float-right" value="บันทึกข้อมูล">
+                    <i class="fas fa-save"></i>
+                      &nbsp;บันทึกข้อมูล
+                  </button>
+                @endif
+
               </div>
 
             </form>
@@ -142,6 +150,7 @@
 
 @section('js-custom-script')
 
+
 <!-- START ALERT บันทึกข้อมูลสำเร็จ  -->
 <script type="text/javascript">
   $(document).ready(function () {
@@ -154,10 +163,6 @@
 </script>
 <!-- END ALERT บันทึกข้อมูลสำเร็จ  -->
 
-<script>
-  $(document).ready(function() {
-    $('[data-toggle="tooltip"]').tooltip();
-  });
-</script>
+
 
 @stop('js-custom-script')

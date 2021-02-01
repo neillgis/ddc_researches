@@ -15,6 +15,11 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
 
+
+<!-- SweetAlert2 -->
+<link rel="stylesheet" href="{{ asset('bower_components/admin-lte/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
+
+
 <!-- Fonts Style : Kanit -->
   <style>
     body {
@@ -25,6 +30,28 @@
     }
   </style>
 <!-- END Fonts Style : Kanit -->
+
+
+  <style>
+       button {
+        display: inline-block;
+        position: relative;
+        color: #1D9AF2;
+        background-color: #292D3E;
+        border: 1px solid #1D9AF2;
+        border-radius: 4px;
+        padding: 0 15px;
+        cursor: pointer;
+        height: 38px;
+        font-size: 14px;
+
+      }
+      button:active {
+        box-shadow: 0 3px 0 #1D9AF2;
+        top: 3px;
+      }
+  </style>
+
 
 @stop('css-custom')
 
@@ -99,7 +126,7 @@
                     <h4> บทความผู้นิพนธ์หลัก </h4>
                     <br> -->
                     <!-- เรียกจาก db_published_journal -> โดย count id -> contribute = ผู้นิพนธ์หลัก (first-author)---------->
-                    <!-- <h3> {{ empty($Total_master_journal)?'0': $Total_master_journal }} โครงการ </h3>
+                    <!-- < <h3> {{ empty($Total_master_journal)?'0': $Total_master_journal }} โครงการ </h3>
                   </div>
                   <div class="icon">
                     <i class="fas fa-book-reader"></i>
@@ -107,7 +134,7 @@
                 </div>
               </div> -->
 
-              <div class="col-md-3">
+              <div class="col-md-3 mx-auto">
                 <div class="small-box bg-info">
                   <div class="inner">
                     <h4> บทความตีพิมพ์ </h4>
@@ -121,10 +148,10 @@
                 </div>
               </div>
 
-              <div class="col-md-3">
+              <div class="col-md-3 mx-auto">
                 <div class="small-box bg-green">
                   <div class="inner">
-                    <h4> บทความที่นำไปใช้ประโยชน์เชิงวิชาการ </h4>
+                    <h4> บทความเชิงวิชาการ </h4>
                     <br>
                     <!-- เรียกจาก db_utilization -> โดย count id -> util_type = เชิงวิชาการ ------------>
                     <h3> {{ empty($Total_academic_util)?'0': $Total_academic_util }} โครงการ </h3>
@@ -155,11 +182,12 @@
                   <thead>
                     <tr>
                       <th class="text-center"> ชื่อ - นามสกุล </th>
-                      <th class="text-center"> โครงการวิจัยทั้งหมด </th>
-                      <th class="text-center"> โครงการวิจัยที่เป็นผู้วิจัยหลักทั้งหมด </th>
-                      <th class="text-center"> บทความที่ตีพิมพ์ทั้งหมด </th>
-                      <!-- <th class="text-center"> บทความที่นำไปใช้ประโยชน์เชิงวิชาการ </th> -->
-                      <!-- <th class="text-right"> Actions </th> -->
+                      <th class="text-center"> โครงการวิจัย </th>
+                      <th class="text-center"> โครงการวิจัยที่เป็นผู้วิจัยหลัก </th>
+                      <th class="text-center"> โครงการวิจัยที่ตีพิมพ์ </th>
+                      <th class="text-center"> บทความที่ตีพิมพ์ </th>
+                      <th class="text-center"> บทความเชิงวิชาการ </th>
+                      <th class="text-right"> Actions </th>
                     </tr>
                   </thead>
 
@@ -167,19 +195,20 @@
                       @foreach($user_list as $value)
                       <tr>
                         <td class="text-center"> {{ $value->users_name }} </td>
-                        <td class="text-center"> {{ $value->totals }} </td>
-                        <td class="text-center"> {{ $value->position }} </td>
-                        <td class="text-center"> {{ $value->public }} </td>
+                        <td class="text-center"> {{ $value->count_pro }} </td>
+                        <td class="text-center"> {{ $value->count_master_pro }} </td>
+                        <td class="text-center"> {{ $value->count_publish_pro }} </td>
+                        <td class="text-center"> {{ $value->count_journal_pro }} </td>
+                        <td class="text-center"> {{ $value->count_acdemic_util }} </td>
 
-
-                          <!-- จัดการข้อมูล -->
-                        <!-- <td class="td-actions text-right text-nowrap" href="#">
-                          <a href="-- {{ route('summary.edit', $value->users_name) }} --">
+                        <!-- จัดการข้อมูล -->
+                        <td class="td-actions text-right text-nowrap" href="#">
+                          <a href=" {{ route('summary.edit', $value->users_name) }} ">
                             <button type="button" class="btn btn-warning btn-md" data-toggle="tooltip" title="Edit">
                               <i class="fas fa-edit"></i>
                             </button>
                           </a>
-                        </td> -->
+                        </td>
                       </tr>
                   @endforeach
                   </tbody>
@@ -203,15 +232,26 @@
 
 
 <!-- START ALERT บันทึกข้อมูลสำเร็จ  -->
-<script type="text/javascript">
-  $(document).ready(function () {
-    window.setTimeout(function() {
-      $(".alert").fadeTo(1000, 0).slideUp(1000, function(){
-          $(this).remove();
-      });
-    }, 2000);
-  });
-</script>
+    @if(session()->has('swl_add'))
+      <script>
+          Swal.fire({
+              icon: 'success',
+              title: 'บันทึกข้อมูลเรียบร้อยแล้ว',
+              showConfirmButton: false,
+              timer: 2800
+          })
+      </script>
+
+    @elseif(session()->has('swl_del'))
+      <script>
+          Swal.fire({
+              icon: 'error',
+              title: 'บันทึกข้อมูลไม่สำเร็จ !!!',
+              showConfirmButton: false,
+              timer: 2800
+          })
+      </script>
+    @endif
 <!-- END ALERT บันทึกข้อมูลสำเร็จ  -->
 
 
@@ -228,21 +268,6 @@
 </script>
 <!-- END REPORT FILE -->
 
-
-<script>
-  $(document).ready(function() {
-    $('[data-toggle="tooltip"]').tooltip();
-  });
-</script>
-
-
-<!-- FILE INPUT -->
-<script type="text/javascript">
-$(document).ready(function () {
-  bsCustomFileInput.init();
-});
-</script>
-<!-- END FILE INPUT -->
 
 @stop('js-custom-script')
 

@@ -6,10 +6,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\util;
 use App\research;
-use App\member;
 use Storage;
 use File;
 use Auth;
+use app\Exceptions\Handler;
+use Illuminate\Support\Facades\Route;
 
 
 class UtilizationController extends Controller
@@ -140,15 +141,15 @@ class UtilizationController extends Controller
 
   // SELECT FORM --------------------------------------------------------------------->
   if(Auth::hasRole('manager')) {
-    $query_research   = research::select ('id','pro_name_th','pro_name_en')
+    $query_research   = research::select ('id','pro_name_th','pro_name_en','users_id','users_name')
                                 ->get();
 
   }elseif(Auth::hasRole('admin')) {
-    $query_research   = research::select ('id','pro_name_th','pro_name_en')
+    $query_research   = research::select ('id','pro_name_th','pro_name_en','users_id','users_name')
                                 ->get();
 
   }else {
-    $query_research   = research::select ('id','pro_name_th','pro_name_en')
+    $query_research   = research::select ('id','pro_name_th','pro_name_en','users_id','users_name')
                                 -> where ('users_id', Auth::user()->preferred_username)
                                 ->get();
   }
@@ -234,13 +235,14 @@ class UtilizationController extends Controller
                 -> join ('db_research_project', 'db_utilization.pro_id', '=', 'db_research_project.id')
                 -> select ('db_utilization.id','db_utilization.util_type','db_utilization.files',
                            'db_utilization.verified',
-                           'db_research_project.pro_name_th','db_research_project.pro_name_en')
+                           'db_research_project.pro_name_th','db_research_project.pro_name_en',
+                           'db_research_project.users_id','db_research_project.users_name')
                 ->first();
 
-    $edit_2 = ['เชิงวิชาการ'      => 'เชิงวิชาการ',
-               'เชิงสังคม/ชุมชน'  => 'เชิงสังคม/ชุมชน',
-               'เชิงนโยบาย'      => 'เชิงนโยบาย',
-               'เชิงพาณิชย์'      => 'เชิงพาณิชย์'
+    $edit_2 = ['เชิงวิชาการ'        => 'เชิงวิชาการ',
+               'เชิงสังคม/ชุมชน'    => 'เชิงสังคม/ชุมชน',
+               'เชิงนโยบาย'        => 'เชิงนโยบาย',
+               'เชิงพาณิชย์'        => 'เชิงพาณิชย์'
                ];
 
      return view('frontend.util_edit',
@@ -258,6 +260,7 @@ class UtilizationController extends Controller
 
         $data_post = [
           "users_id"          => Auth::user()->preferred_username,
+          "users_name"        => Auth::user()->name,
           "pro_id"            => $request->pro_id,
           "util_type"         => $request->util_type,
           "files"             => $request->files,
@@ -280,16 +283,11 @@ class UtilizationController extends Controller
 
         if($insert){
           //return Sweet Alert
-          if(Auth::hasRole('user'))
-            {
-              return redirect()->back()->with('swl_add', 'เพิ่มข้อมูลสำเร็จแล้ว');
-            }
+          return redirect()->route('page.util')->with('swl_add', 'เพิ่มข้อมูลสำเร็จแล้ว');
+      }else{
+          return redirect()->back()->with('swl_err', 'บันทึกแล้ว');
+      }
 
-            return redirect()->route('page.util')->with('swl_add', 'เพิ่มข้อมูลสำเร็จแล้ว');
-          }else {
-            return abort(404);
-            // return redirect()->back()->with('swl_err', 'บันทึกแล้ว');
-        }
       }
     // END INSERT ----------------------------------------------------------->
 
@@ -297,15 +295,17 @@ class UtilizationController extends Controller
     // SAVE ----------------------------------------------------------------->
   public function save_util(Request $request){
     // dd($request);
-    $update = util::where('id',$request->id)
-                  ->update([
-                            "util_type"       => $request->util_type
-                            ]);
+    $update = DB::table('db_utilization')
+                ->where('id', $request->id)
+                ->update([
+                        "util_type"       => $request->util_type
+                        ]);
+
 
     if($update){
-       return redirect()->route('page.util')->with('swl_add','แก้ไขข้อมูลสำเร็จ');
+       return redirect()->route('page.util')->with('swl_update','แก้ไขข้อมูลสำเร็จ');
     } else {
-       return redirect()->back()->with('swl_del','แก้ไขข้อมูลไม่สำเร็จ !!');
+       return redirect()->back()->with('swl_errs','แก้ไขข้อมูลไม่สำเร็จ');
     }
   }
     // END SAVE ------------------------------------------------------------>
@@ -345,16 +345,11 @@ class UtilizationController extends Controller
         if($verified) {
             return redirect()->back()->with('swl_verified', 'ลบข้อมูลเรียบร้อยแล้ว');
         }else {
-            return redirect()->back()->with('swl_del', 'ไม่สามารถลบข้อมูลได้ !!');
+            return redirect()->back()->with('swl_del', 'ไม่สามารถลบข้อมูลได้');
         }
 
       }
-        // else {
-        //     return redirect()->back()->with('swl_verified', 'ลบข้อมูลเรียบร้อยแล้ว');
-        // }
-
-    // }
-    //  -- END VERIFIED --
+      //  -- END VERIFIED --
 
 
 // END TABLE LIST------------------------------------------------------------------>

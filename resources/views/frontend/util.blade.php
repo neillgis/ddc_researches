@@ -10,36 +10,41 @@
 <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
 
 
+<!-- SweetAlert2 -->
+<link rel="stylesheet" href="{{ asset('bower_components/admin-lte/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
+
+
 <!-- Fonts Style : Kanit -->
   <style>
-  body {
-    font-family: 'Kanit', sans-serif;
-  }
-  h1 {
-    font-family: 'Kanit', sans-serif;
-  }
+    body {
+      font-family: 'Kanit', sans-serif;
+    }
+    h1 {
+      font-family: 'Kanit', sans-serif;
+    }
   </style>
 <!-- END Fonts Style : Kanit -->
 
-<style>
-     button {
-      display: inline-block;
-      position: relative;
-      color: #1D9AF2;
-      background-color: #292D3E;
-      border: 1px solid #1D9AF2;
-      border-radius: 4px;
-      padding: 0 15px;
-      cursor: pointer;
-      height: 38px;
-      font-size: 14px;
 
-    }
-    button:active {
-      box-shadow: 0 3px 0 #1D9AF2;
-      top: 3px;
-    }
-</style>
+  <style>
+       button {
+        display: inline-block;
+        position: relative;
+        color: #1D9AF2;
+        background-color: #292D3E;
+        border: 1px solid #1D9AF2;
+        border-radius: 4px;
+        padding: 0 15px;
+        cursor: pointer;
+        height: 38px;
+        font-size: 14px;
+
+      }
+      button:active {
+        box-shadow: 0 3px 0 #1D9AF2;
+        top: 3px;
+      }
+  </style>
 
 
 @stop('css-custom')
@@ -260,15 +265,24 @@
                               </button>
                             </a>
 
-                        @if(Auth::hasRole('manager'))
-                            <a href=" {{ route('util.verified', $value->id) }} ">
-                              <button type="button" class="btn btn-md"
-                                      data-toggle="tooltip" title="Verfied" style="background-color: #336699;">
-                                <i class="fas fa-user-check"></i>
+                            <!-- FOR Admin ONLY -->
+                            @if(Auth::hasRole('admin'))
+                            <a href=" {{ route('util.edit', $value->id) }} ">
+                              <button type="button" class="btn btn-warning btn-md" data-toggle="tooltip" title="Views">
+                                <i class="fas fa-eye"></i>
                               </button>
                             </a>
-                        @endif
-                          </td>
+                            @endif
+
+                            @if(Auth::hasRole('manager'))
+                                <a href=" {{ route('util.verified', $value->id) }} ">
+                                  <button type="button" class="btn btn-md"
+                                          data-toggle="tooltip" title="Verfied" style="background-color: #336699;">
+                                    <i class="fas fa-user-check"></i>
+                                  </button>
+                                </a>
+                            @endif
+                              </td>
 
                         </tr>
                         @endforeach
@@ -288,26 +302,35 @@
 @section('js-custom-script')
 
 
-
-
 <!-- START ALERT บันทึกข้อมูลสำเร็จ  -->
-<script type="text/javascript">
-  $(document).ready(function () {
-    window.setTimeout(function() {
-      $(".alert").fadeTo(1000, 0).slideUp(1000, function(){
-          $(this).remove();
-      });
-    }, 2000);
-  });
-</script>
+    @if(session()->has('swl_add'))
+      <script>
+          Swal.fire({
+              icon: 'success',
+              title: 'บันทึกข้อมูลเรียบร้อยแล้ว',
+              showConfirmButton: false,
+              timer: 2800
+          })
+      </script>
+
+    @elseif(session()->has('swl_del'))
+      <script>
+          Swal.fire({
+              icon: 'error',
+              title: 'บันทึกข้อมูลไม่สำเร็จ !!!',
+              showConfirmButton: false,
+              timer: 2800
+          })
+      </script>
+    @endif
 <!-- END ALERT บันทึกข้อมูลสำเร็จ  -->
 
 
 <!-- FILE INPUT -->
 <script type="text/javascript">
-$(document).ready(function () {
-  bsCustomFileInput.init();
-});
+  $(document).ready(function () {
+    bsCustomFileInput.init();
+  });
 </script>
 <!-- END FILE INPUT -->
 
@@ -324,12 +347,6 @@ $(document).ready(function () {
   });
 </script>
 <!-- END REPORT FILE -->
-
-<script>
-  $(document).ready(function() {
-    $('[data-toggle="tooltip"]').tooltip();
-  });
-</script>
 
 
 @stop('js-custom-script')
