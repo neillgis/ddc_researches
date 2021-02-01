@@ -7,7 +7,8 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
-	<title>404 HTML Template by Colorlib</title>
+	<title>404 Error | ระบบบันทึกข้อมูลนักวิจัย </title>
+
 
 	<!-- Google font -->
 	<link href="https://fonts.googleapis.com/css?family=Montserrat:300,700" rel="stylesheet">
@@ -54,7 +55,9 @@
 			</div>
 			<h2>Oops! Page Not Be Found</h2>
 			<p>Sorry but the page you are looking for does not exist, have been removed. name changed or is temporarily unavailable</p>
-			<a href=" {{ route('keycloak.login') }} "> Back to homepage </a>
+			<!-- <a href=" {{ route('keycloak.login') }} "> Back to homepage </a> -->
+			<br>
+			<a href="#" onclick="history.back(-1)" class="link-button link-back-button"> Back to previous </a>
 		</div>
 	</div>
 

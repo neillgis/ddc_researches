@@ -121,7 +121,7 @@
 
 
     <!-- START From Input RESEARCH PROJECT -------------------------------------------------->
-    @if(Auth::hasRole('user'))
+    {{-- @if(Auth::hasRole('user')) --}}
       <div class="row">
         <div class="col-md-12">
           <div class="card">
@@ -182,7 +182,7 @@
                 <div class="row">
                   <div class="col-md-4">
                     <div class="form-group">
-                      <label for="exampleDatepicker1"> ปี พ.ศ. ที่เริ่มโครงการ : <font color="red"> กรณีไม่ทราบ *กรุณาใส่ ปีที่เริ่มทำ/01/01 </font></label>
+                      <label for="exampleDatepicker1"> * ปี ค.ศ. ที่เริ่มโครงการ </label>
                       <input type="text" class="form-control" id="datepicker1" placeholder="กรุณาเลือก ปี/เดือน/วัน"
                              name="pro_start_date" autocomplete="off" >
                     </div>
@@ -190,7 +190,7 @@
 
                   <div class="col-md-4">
                     <div class="form-group">
-                      <label for="exampleDatepicker1"> ปี พ.ศ. ที่เสร็จสิ้นโครงการ : <font color="red"> กรณีไม่ทราบ *กรุณาใส่ ปีที่เสร็จสิ้น/12/31 </font></label>
+                      <label for="exampleDatepicker1"> ** ปี ค.ศ. ที่เสร็จสิ้นโครงการ </label>
                       <input type="text" class="form-control" id="datepicker2" placeholder="กรุณาเลือก ปี/เดือน/วัน"
                              name="pro_end_date" autocomplete="off" >
                     </div>
@@ -224,6 +224,14 @@
                     </div>
                   </div>
                 </div>
+                <!-- <br> -->
+
+                <div class="label">
+                  <h4><b>หมายเหตุ : </b></h4>
+                  <label> * ปี ค.ศ. ที่เริ่มโครงการ : &nbsp;&nbsp;<font color="red"> กรณีไม่ทราบ *กรุณาใส่ ปีที่เริ่มทำ/01/01</font></label>
+                  <br>
+                  <label> ** ปี ค.ศ. ที่เสร็จสิ้นโครงการ : &nbsp;&nbsp;<font color="red"> กรณีไม่ทราบ *กรุณาใส่ ปีที่เสร็จสิ้น/12/31</font></label>
+                </div>
               </div>
 
               <div class="card-footer">
@@ -237,7 +245,7 @@
         </div>
       </div>
     <br>
-  @endif
+  {{-- @endif --}}
 
     <!-- END From Input RESEARCH PROJECT -------------------------------------------------->
 
@@ -300,13 +308,13 @@
                     @endif
 
                     <!-- FOR Admin ONLY -->
-                    @if(Auth::hasRole('admin'))
-                    <a href=" {{ route('research.edit', $value->id) }} ">
-                      <button type="button" class="btn btn-warning btn-md" data-toggle="tooltip" title="Views">
+                    <!-- {{-- @if(Auth::hasRole('admin')) --}} -->
+                    <!-- <a href=" {{-- route('research.edit', $value->id) --}} ">
+                      <button type="button" class="btn btn-info btn-md" data-toggle="tooltip" title="Views">
                         <i class="fas fa-eye"></i>
                       </button>
-                    </a>
-                    @endif
+                    </a> -->
+                    <!-- {{-- @endif --}} -->
 
                     @if(Auth::hasRole('manager'))
                       <a href=" {{ route('research.verified', $value->id) }} ">
@@ -317,7 +325,7 @@
                       </a>
                     @endif
                     </td>
-                    
+
                   </tr>
                   @endforeach
                 </tbody>

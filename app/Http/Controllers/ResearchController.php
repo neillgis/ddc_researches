@@ -293,11 +293,20 @@ class ResearchController extends Controller
                   ->where('id', $request->id)
                   ->first();
 
-    if(!$query) return abort(404);
+    if(!$query){
+      return view('error-page.error404');
+    }
 
     $path = $query->files;
 
-    return Storage::disk('research')->download($path);
+    // return Storage::disk('research')->download($path);
+
+    if($path){
+      return Storage::disk('research')->download($path);
+    }else {
+      return view('error-page.error404');
+    }
+
   }
   //  -- END DOWNLOAD --
 
