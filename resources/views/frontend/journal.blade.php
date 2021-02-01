@@ -113,7 +113,7 @@
 
 
     <!-- START From Input JOURNAL PROJECT -------------------------------------------------->
-    @if(Auth::hasRole('user'))
+    {{-- @if(Auth::hasRole('user')) --}}
     <div class="row">
       <div class="col-md-12">
         <div class="card">
@@ -282,7 +282,7 @@
         </div>
       </div>
       <br>
-  @endif
+    {{-- @endif --}}
     <!-- END From Input JOURNAL PROJECT -------------------------------------------------->
 
 
@@ -344,13 +344,14 @@
                       </a>
                     @endif
 
-                    @if(Auth::hasRole('admin'))
-                      <a href=" {{ route('journal.edit', ['id' => $value->id, 'pro_id' => $value->pro_id]) }} ">
-                        <button type="button" class="btn btn-warning btn-md" data-toggle="tooltip" title="Views">
+
+                    <!-- {{-- @if(Auth::hasRole('admin')) --}}
+                      <a href=" {{-- route('journal.edit', ['id' => $value->id, 'pro_id' => $value->pro_id]) --}} ">
+                        <button type="button" class="btn btn-info btn-md" data-toggle="tooltip" title="Views">
                           <i class="fas fa-eye"></i>
                         </button>
                       </a>
-                    @endif
+                      {{-- @endif --}} -->
 
 
                     @if(Auth::hasRole('manager'))
