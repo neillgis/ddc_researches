@@ -260,7 +260,7 @@ class UtilizationController extends Controller
 
         $data_post = [
           "users_id"          => Auth::user()->preferred_username,
-          "users_name"        => Auth::user()->name,
+          // "users_name"        => Auth::user()->name,
           "pro_id"            => $request->pro_id,
           "util_type"         => $request->util_type,
           "files"             => $request->files,
