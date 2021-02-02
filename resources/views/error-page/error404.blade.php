@@ -53,8 +53,8 @@
 			<div class="notfound-404">
 				<h1>4<span></span>4</h1>
 			</div>
-			<h2>Oops! Page Not Be Found</h2>
-			<p>Sorry but the page you are looking for does not exist, have been removed. name changed or is temporarily unavailable</p>
+			<h2>Oops!! Page Not Found</h2>
+			<p>Sorry the page you are looking for does not exist, have been removed.</p>
 			<!-- <a href=" {{ route('keycloak.login') }} "> Back to homepage </a> -->
 			<br>
 			<a href="#" onclick="history.back(-1)" class="link-button link-back-button"> Back to previous </a>

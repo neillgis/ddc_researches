@@ -296,7 +296,13 @@ class JournalController extends Controller
 
     $path = $query2->files;
 
-    return Storage::disk('journal')->download($path);
+    // return Storage::disk('journal')->download($path);
+
+    if(Storage::disk('journal')->exists($path)){
+      return Storage::disk('journal')->download($path);
+    }else {
+      return view('error-page.error405');
+    }
   }
   //  -- END DOWNLOAD --
 

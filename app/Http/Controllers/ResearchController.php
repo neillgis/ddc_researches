@@ -301,10 +301,10 @@ class ResearchController extends Controller
 
     // return Storage::disk('research')->download($path);
 
-    if($path){
+    if(Storage::disk('research')->exists($path)) {
       return Storage::disk('research')->download($path);
     }else {
-      return view('error-page.error404');
+      return view('error-page.error405');
     }
 
   }
