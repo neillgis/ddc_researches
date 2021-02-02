@@ -181,7 +181,7 @@
                   <table class="table table-hover" style="width:100%" id="example1" >
                   <thead>
                     <tr>
-                      <th class="text-center"> ชื่อ - นามสกุล </th>
+                      <th class="text-center"> ชื่อ-นามสกุล </th>
                       <th class="text-center"> โครงการวิจัย </th>
                       <th class="text-center"> โครงการวิจัยที่เป็นผู้วิจัยหลัก </th>
                       <th class="text-center"> โครงการวิจัยที่ตีพิมพ์ </th>

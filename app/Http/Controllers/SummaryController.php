@@ -181,7 +181,7 @@ class SummaryController extends Controller
 
 
       $update = DB::table('db_research_project')
-                      ->where('users_id', $request->users_id)
+                      ->where('users_name', $request->users_name)
                       ->update([
                               'researcher_level'  => $request->researcher_level,
                               // 'data_auditor'      => $request->data_auditor

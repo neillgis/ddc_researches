@@ -76,19 +76,17 @@
 
               <div class="card-body">
                 <div class="row">
-                  <div class="col-md-3">
-                    <div class="form-group">
-                      <label for="exampleSelect1"> เลขบัตรประชาชน </label>
-                      <input type="text" class="form-control" name="users_id" value="{{ $edit_users->users_id }}" readonly>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
+                  <div class="col-md-6 mx-auto">
                     <div class="form-group">
                       <label for="exampleSelect1"> ชื่อ-นามสกุล </label>
+
                       <input type="text" class="form-control" name="users_name" value="{{ $edit_users->users_name }}" readonly>
                     </div>
                   </div>
-                  <div class="col-md-3">
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6 mx-auto">
                     <div class="form-group">
                       <label for="exampleSelect1"> ระดับนักวิจัย </label>
 
@@ -105,14 +103,13 @@
                 </div>
 
                 <!-- <div class="row">
-                  <div class="col-md-3">
+                  <div class="col-md-6 mx-auto">
                     <div class="form-group">
                       <label for="exampleSelect1"> หน่วยงาน </label>
                       <input type="text" class="form-control" name="depart_name" value="{{-- $edit_depart->depart_name --}}" readonly>
                     </div>
                   </div>
                 </div> -->
-
               </div>
 
               <div class="card-footer">
