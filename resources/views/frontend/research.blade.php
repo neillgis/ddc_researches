@@ -293,19 +293,18 @@
                     </td>
 
                     <td class="td-actions text-right text-nowrap" href="#">
-                    @if(Auth::hasRole('manager') || Auth::hasRole('user'))
+                    {{-- @if(Auth::hasRole('manager') || Auth::hasRole('user')) --}}
                       <a href=" {{ route('DownloadFile.research', ['id' => $value->id, 'files' => $value->files]) }} ">
                         <button type="button" class="btn btn-danger btn-md" data-toggle="tooltip" title="Download">
                           <i class="fas fa-arrow-alt-circle-down"></i>
                         </button>
                       </a>
-
                       <a href=" {{ route('research.edit', $value->id) }} ">
                         <button type="button" class="btn btn-warning btn-md" data-toggle="tooltip" title="Edit">
                           <i class="fas fa-edit"></i>
                         </button>
                       </a>
-                    @endif
+                    {{-- @endif --}}
 
                     <!-- FOR Admin ONLY -->
                     <!-- {{-- @if(Auth::hasRole('admin')) --}} -->

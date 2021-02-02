@@ -166,12 +166,12 @@
                     ย้อนกลับ
                 </a>
 
-              @if (Gate::allows('keycloak-web', ['user']))
+              {{-- @if(Auth::hasRole('manager') || Auth::hasRole('user')) --}}
                 <button type="submit" class="btn btn-success float-right" value="บันทึกข้อมูล">
                   <i class="fas fa-save"></i>
                     &nbsp;บันทึกข้อมูล
                 </button>
-              @endif
+              {{-- @endif --}}
 
               </div>
             </form>
