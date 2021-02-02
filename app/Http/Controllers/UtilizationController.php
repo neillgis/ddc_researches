@@ -237,6 +237,7 @@ class UtilizationController extends Controller
                            'db_utilization.verified',
                            'db_research_project.pro_name_th','db_research_project.pro_name_en',
                            'db_research_project.users_id','db_research_project.users_name')
+                -> where ('db_utilization.id' , $request->id)
                 ->first();
 
     $edit_2 = ['เชิงวิชาการ'        => 'เชิงวิชาการ',
@@ -260,7 +261,6 @@ class UtilizationController extends Controller
 
         $data_post = [
           "users_id"          => Auth::user()->preferred_username,
-          // "users_name"        => Auth::user()->name,
           "pro_id"            => $request->pro_id,
           "util_type"         => $request->util_type,
           "files"             => $request->files,
@@ -283,12 +283,12 @@ class UtilizationController extends Controller
 
         if($insert){
           //return Sweet Alert
-          return redirect()->route('page.util')->with('swl_add', 'เพิ่มข้อมูลสำเร็จแล้ว');
+          return redirect()->route('page.util')->with('swl_add', 'บันทึกแล้ว');
       }else{
           return redirect()->back()->with('swl_err', 'บันทึกแล้ว');
       }
+    }
 
-      }
     // END INSERT ----------------------------------------------------------->
 
 
@@ -296,10 +296,10 @@ class UtilizationController extends Controller
   public function save_util(Request $request){
     // dd($request);
     $update = DB::table('db_utilization')
-                ->where('id', $request->id)
-                ->update([
-                        "util_type"       => $request->util_type
-                        ]);
+                  -> where ('id',$request->id)
+                  -> update ([
+                            'util_type'       => $request->util_type
+                            ]);
 
 
     if($update){
@@ -322,7 +322,12 @@ class UtilizationController extends Controller
 
       $path = $query->files;
 
-      return Storage::disk('util')->download($path);
+      if($path){
+        return Storage::disk('util')->download($path);
+      }else {
+        return view('error-page.error404');
+      }
+
     }
     //  -- END DOWNLOAD --
 
