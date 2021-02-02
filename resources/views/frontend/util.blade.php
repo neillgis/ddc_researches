@@ -145,7 +145,7 @@
 <!-- END CONTENT  BOX --------------------------------------------------------->
 
 <!-- START FORM  INSERT ------------------------------------------------------->
-        @if(Auth::hasRole('user'))
+      {{-- @if(Auth::hasRole('user')) --}}
           <div class="row">
             <div class="col-md-12">
               <div class="card">
@@ -209,7 +209,7 @@
             </div>
           </div>
           <br>
-      @endif
+      {{-- @endif --}}
 <!-- END FORM  INSERT --------------------------------------------------------->
 
 <!-- START TABLE LIST --------------------------------------------------------->
@@ -251,19 +251,19 @@
 
                           <!-- จัดการข้อมูล -->
                           <td class="td-actions text-right text-nowrap" href="#">
-                          @if(Auth::hasRole('manager') || Auth::hasRole('user'))
+                            {{-- @if(Auth::hasRole('manager') || Auth::hasRole('user')) --}}
                             <a href=" {{ route('DownloadFile.util', ['id' => $value->id, 'files' => $value->files]) }} ">
                               <button type="button" class="btn btn-danger btn-md" data-toggle="tooltip" title="Download">
                                 <i class="fas fa-arrow-alt-circle-down"></i>
                               </button>
                             </a>
-                          @endif
 
                             <a href=" {{ route('util.edit', $value->id) }} ">
                               <button type="button" class="btn btn-warning btn-md" data-toggle="tooltip" title="Edit">
                                 <i class="fas fa-edit"></i>
                               </button>
                             </a>
+                            {{-- @endif --}}
 
                             <!-- FOR Admin ONLY -->
                             @if(Auth::hasRole('admin'))
@@ -282,7 +282,7 @@
                                   </button>
                                 </a>
                             @endif
-                              </td>
+                          </td>
 
                         </tr>
                         @endforeach

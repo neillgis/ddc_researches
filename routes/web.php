@@ -59,7 +59,7 @@ Route::group(['middleware' => 'keycloak-web'], function () {
 
 
     // FORM  ULTILIZATION
-    Route::get('/util_form','UtilizationController@util') -> name('page.util');
+    // Route::get('/util_form','UtilizationController@util') -> name('page.util');
     Route::get('/util_form','UtilizationController@table_util') -> name('page.util');
     //  -- INSERT --
     Route::post('/util_insert','UtilizationController@insert') -> name('util.insert');
