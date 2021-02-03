@@ -9,6 +9,7 @@ use App\research;
 use Storage;
 use File;
 use Auth;
+use Session;
 use app\Exceptions\Handler;
 use Illuminate\Support\Facades\Route;
 
@@ -283,9 +284,10 @@ class UtilizationController extends Controller
 
         if($insert){
           //return Sweet Alert
-          return redirect()->route('page.util')->with('swl_add', 'บันทึกแล้ว');
+          session()->put('message', 'บันทึกแล้ว');
+          return redirect()->route('page.util');
       }else{
-          return redirect()->back()->with('swl_err', 'บันทึกแล้ว');
+          return redirect()->back()->with('swl_err', 'บันทึกไม่สำเร็จ');
       }
     }
 
@@ -303,9 +305,9 @@ class UtilizationController extends Controller
 
 
     if($update){
-       return redirect()->route('page.util')->with('swl_update','แก้ไขข้อมูลสำเร็จ');
+       return redirect()->route('page.util')->with('swl_update','แก้ไขข้อมูลสำเร็จแล้ว');
     } else {
-       return redirect()->back()->with('swl_errs','แก้ไขข้อมูลไม่สำเร็จ');
+       return redirect()->back()->with('swl_errs','ไม่สามารถแก้ไขได้');
     }
   }
     // END SAVE ------------------------------------------------------------>
@@ -318,14 +320,16 @@ class UtilizationController extends Controller
                     ->where('id', $request->id)
                     ->first();
 
-      if(!$query) return abort(404);
-
+      if(!$query){
+        return view('error-page.error404');
+      }
+      
       $path = $query->files;
 
-      if($path){
+      if(Storage::disk('util')->exists($path)) {
         return Storage::disk('util')->download($path);
       }else {
-        return view('error-page.error404');
+        return view('error-page.error405');
       }
 
     }
@@ -338,7 +342,9 @@ class UtilizationController extends Controller
         //UPDATE db_research_project
         $verified = DB::table('db_utilization')
                   ->where('id', $request->id)
-                  ->update(['verified' => "1"]);
+                  ->update(['verified' => "1",
+                            'updated_at'  => date('Y-m-d H:i:s')
+                          ]);
                   // ->get();
 
          // dd($verified);

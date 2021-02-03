@@ -145,7 +145,7 @@
 <!-- END CONTENT  BOX --------------------------------------------------------->
 
 <!-- START FORM  INSERT ------------------------------------------------------->
-      {{-- @if(Auth::hasRole('user')) --}}
+      <!-- {{-- @if(Auth::hasRole('user')) --}} -->
           <div class="row">
             <div class="col-md-12">
               <div class="card">
@@ -209,7 +209,7 @@
             </div>
           </div>
           <br>
-      {{-- @endif --}}
+      <!-- {{-- @endif --}} -->
 <!-- END FORM  INSERT --------------------------------------------------------->
 
 <!-- START TABLE LIST --------------------------------------------------------->
@@ -251,30 +251,49 @@
 
                           <!-- จัดการข้อมูล -->
                           <td class="td-actions text-right text-nowrap" href="#">
-                            {{-- @if(Auth::hasRole('manager') || Auth::hasRole('user')) --}}
+                            <!-- {{-- @if(Auth::hasRole('manager') || Auth::hasRole('user')) --}} -->
+                            @if($value->verified == "ตรวจสอบแล้ว")
+                              <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Download" disabled>
+                                <i class="fas fa-arrow-alt-circle-down"></i>
+                              </button>
+                            @else
                             <a href=" {{ route('DownloadFile.util', ['id' => $value->id, 'files' => $value->files]) }} ">
                               <button type="button" class="btn btn-danger btn-md" data-toggle="tooltip" title="Download">
                                 <i class="fas fa-arrow-alt-circle-down"></i>
                               </button>
                             </a>
+                            @endif
 
+
+                            @if($value->verified == "ตรวจสอบแล้ว")
+                              <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Edit" disabled>
+                                <i class="fas fa-edit"></i>
+                              </button>
+                            @else
                             <a href=" {{ route('util.edit', $value->id) }} ">
                               <button type="button" class="btn btn-warning btn-md" data-toggle="tooltip" title="Edit">
                                 <i class="fas fa-edit"></i>
                               </button>
                             </a>
-                            {{-- @endif --}}
+                            @endif
+
+                            <!-- {{-- @endif --}} -->
 
                             <!-- FOR Admin ONLY -->
-                            @if(Auth::hasRole('admin'))
+                            <!-- {{-- @if(Auth::hasRole('admin')) --}}
                             <a href=" {{ route('util.edit', $value->id) }} ">
                               <button type="button" class="btn btn-warning btn-md" data-toggle="tooltip" title="Views">
                                 <i class="fas fa-eye"></i>
                               </button>
                             </a>
-                            @endif
+                            {{-- @endif --}} -->
 
                             @if(Auth::hasRole('manager'))
+                                @if($value->verified == "ตรวจสอบแล้ว")
+                                <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Verfied" disabled>
+                                  <i class="fas fa-user-check"></i>
+                                </button>
+                                @else
                                 <a href=" {{ route('util.verified', $value->id) }} ">
                                   <button type="button" class="btn btn-md"
                                           data-toggle="tooltip" title="Verfied" style="background-color: #336699;">
@@ -282,6 +301,7 @@
                                   </button>
                                 </a>
                             @endif
+                          @endif
                           </td>
 
                         </tr>
@@ -303,26 +323,26 @@
 
 
 <!-- START ALERT บันทึกข้อมูลสำเร็จ  -->
-    @if(session()->has('swl_add'))
-      <script>
-          Swal.fire({
-              icon: 'success',
-              title: 'บันทึกข้อมูลเรียบร้อยแล้ว',
-              showConfirmButton: false,
-              timer: 2800
-          })
-      </script>
+<!-- <script>
+    Swal.fire({
+        icon: 'success',
+        title: 'บันทึกข้อมูลเรียบร้อยแล้ว',
+        showConfirmButton: false,
+        timer: 2200
+    })
+</script> -->
 
-    @elseif(session()->has('swl_del'))
-      <script>
-          Swal.fire({
-              icon: 'error',
-              title: 'บันทึกข้อมูลไม่สำเร็จ !!!',
-              showConfirmButton: false,
-              timer: 2800
-          })
-      </script>
-    @endif
+@if(Session::get('message'))
+ <?php Session::forget('message'); ?>
+  <script>
+    Swal.fire({
+        icon: 'success',
+        title: 'บันทึกข้อมูลเรียบร้อยแล้ว',
+        showConfirmButton: false,
+        timer: 2500
+    })
+  </script>
+@endif
 <!-- END ALERT บันทึกข้อมูลสำเร็จ  -->
 
 
