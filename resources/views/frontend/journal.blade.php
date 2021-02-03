@@ -10,14 +10,7 @@
 <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
 <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
 
-<!-- DatePicker Style -->
-<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-<link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" /> -->
-
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.css" rel="stylesheet"/>
-
-<!-- <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/> -->
-
 
 <!-- SweetAlert2 -->
 <link rel="stylesheet" href="{{ asset('bower_components/admin-lte/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
@@ -113,7 +106,7 @@
 
 
     <!-- START From Input JOURNAL PROJECT -------------------------------------------------->
-    {{-- @if(Auth::hasRole('user')) --}}
+    <!-- {{-- @if(Auth::hasRole('user')) --}} -->
     <div class="row">
       <div class="col-md-12">
         <div class="card">
@@ -282,7 +275,7 @@
         </div>
       </div>
       <br>
-    {{-- @endif --}}
+    <!-- {{-- @endif --}} -->
     <!-- END From Input JOURNAL PROJECT -------------------------------------------------->
 
 
@@ -331,17 +324,29 @@
 
                     <td class="td-actions text-right text-nowrap" href="#">
                     <!-- {{-- @if(Auth::hasRole('manager') || Auth::hasRole('user')) --}} -->
-                      <a href=" {{ route('DownloadFile.journal', ['id' => $value->id, 'files' => $value->files]) }} ">
-                        <button type="button" class="btn btn-danger btn-md" data-toggle="tooltip" title="Download">
-                          <i class="fas fa-arrow-alt-circle-down"></i>
-                        </button>
-                      </a>
+                        @if($value->verified == "ตรวจสอบแล้ว")
+                          <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Edit" disabled>
+                            <i class="fas fa-arrow-alt-circle-down"></i>
+                          </button>
+                        @else
+                          <a href=" {{ route('DownloadFile.journal', ['id' => $value->id, 'files' => $value->files]) }} ">
+                            <button type="button" class="btn btn-danger btn-md" data-toggle="tooltip" title="Download">
+                              <i class="fas fa-arrow-alt-circle-down"></i>
+                            </button>
+                          </a>
+                        @endif
 
-                      <a href=" {{ route('journal.edit', ['id' => $value->id, 'pro_id' => $value->pro_id]) }} ">
-                        <button type="button" class="btn btn-warning btn-md" data-toggle="tooltip" title="Edit">
-                          <i class="fas fa-edit"></i>
-                        </button>
-                      </a>
+                        @if($value->verified == "ตรวจสอบแล้ว")
+                          <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Edit" disabled>
+                            <i class="fas fa-edit"></i>
+                          </button>
+                        @else
+                          <a href=" {{ route('journal.edit', ['id' => $value->id, 'pro_id' => $value->pro_id]) }} ">
+                            <button type="button" class="btn btn-warning btn-md" data-toggle="tooltip" title="Edit">
+                              <i class="fas fa-edit"></i>
+                            </button>
+                          </a>
+                        @endif
                     <!-- {{-- @endif --}} -->
 
 
@@ -373,8 +378,6 @@
                   @endforeach
                 </tbody>
 
-
-
               </table>
             </div>
           </div>
@@ -392,29 +395,22 @@
 @section('js-custom-script')
 
 <!-- SweetAlert2 -->
-<script src="{{ asset('bower_components/admin-lte/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<!-- <script src="{{-- asset('bower_components/admin-lte/plugins/sweetalert2/sweetalert2.min.js') --}}"></script> -->
 
   <!-- INSERT -->
-    @if(session()->has('swl_add'))
-      <script>
-          Swal.fire({
-              icon: 'success',
-              title: 'บันทึกข้อมูลเรียบร้อยแล้ว',
-              showConfirmButton: false,
-              timer: 2800
-          })
-      </script>
+  @if(Session::get('message'))
+   <?php Session::forget('message'); ?>
+    <script>
+      Swal.fire({
+          icon: 'success',
+          title: 'บันทึกข้อมูลเรียบร้อยแล้ว',
+          showConfirmButton: false,
+          timer: 2500
+      })
+    </script>
+  @endif
 
-    @elseif(session()->has('swl_del'))
-      <script>
-          Swal.fire({
-              icon: 'error',
-              title: 'บันทึกข้อมูลไม่สำเร็จ !!!',
-              showConfirmButton: false,
-              timer: 2800
-          })
-      </script>
-    @endif
 
     <!-- UPDATE -->
     @if(session()->has('swl_update'))

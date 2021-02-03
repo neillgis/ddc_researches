@@ -121,7 +121,7 @@
 
 
     <!-- START From Input RESEARCH PROJECT -------------------------------------------------->
-    {{-- @if(Auth::hasRole('user')) --}}
+    <!-- {{-- @if(Auth::hasRole('user')) --}} -->
       <div class="row">
         <div class="col-md-12">
           <div class="card">
@@ -245,7 +245,7 @@
         </div>
       </div>
     <br>
-  {{-- @endif --}}
+  <!-- {{-- @endif --}} -->
 
     <!-- END From Input RESEARCH PROJECT -------------------------------------------------->
 
@@ -294,17 +294,30 @@
 
                     <td class="td-actions text-right text-nowrap" href="#">
                     <!-- {{-- @if(Auth::hasRole('manager') || Auth::hasRole('user')) --}} -->
-                      <a href=" {{ route('DownloadFile.research', ['id' => $value->id, 'files' => $value->files]) }} ">
-                        <button type="button" class="btn btn-danger btn-md" data-toggle="tooltip" title="Download">
-                          <i class="fas fa-arrow-alt-circle-down"></i>
-                        </button>
-                      </a>
+                        @if($value->verified == "ตรวจสอบแล้ว")
+                          <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Download" disabled>
+                            <i class="fas fa-arrow-alt-circle-down"></i>
+                          </button>
+                        @else
+                          <a href=" {{ route('DownloadFile.research', ['id' => $value->id, 'files' => $value->files]) }} ">
+                            <button type="button" class="btn btn-danger btn-md" data-toggle="tooltip" title="Download">
+                              <i class="fas fa-arrow-alt-circle-down"></i>
+                            </button>
+                          </a>
+                        @endif
 
-                      <a href=" {{ route('research.edit', $value->id) }} ">
-                        <button type="button" class="btn btn-warning btn-md" data-toggle="tooltip" title="Edit">
-                          <i class="fas fa-edit"></i>
-                        </button>
-                      </a>
+
+                        @if($value->verified == "ตรวจสอบแล้ว")
+                          <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Edit" disabled>
+                            <i class="fas fa-edit"></i>
+                          </button>
+                        @else
+                          <a href=" {{ route('research.edit', $value->id) }} ">
+                            <button type="button" class="btn btn-warning btn-md" data-toggle="tooltip" title="Edit">
+                              <i class="fas fa-edit"></i>
+                            </button>
+                          </a>
+                        @endif
                     <!-- {{-- @endif --}} -->
 
 
@@ -346,7 +359,6 @@
 
       </div>
   </section>
-
 @stop('contents')
 
 
@@ -366,14 +378,14 @@
         })
     </script> -->
 
-
-    @if(session()->has('swl_add'))
+    @if(Session::get('message'))
+     <?php Session::forget('message'); ?>
       <script>
         Swal.fire({
             icon: 'success',
             title: 'บันทึกข้อมูลเรียบร้อยแล้ว',
             showConfirmButton: false,
-            timer: 2200
+            timer: 2500
         })
       </script>
     @endif

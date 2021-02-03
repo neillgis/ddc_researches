@@ -4,13 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-// use Illuminate\Support\Facades\Storage;
 use App\CmsHelper;
 use App\research;
 use App\journal;
 use Storage;
 use File;
 use Auth;
+use Session;
 use app\Exceptions\Handler;
 use Illuminate\Support\Facades\Route;
 // use App\KeycloakUser;
@@ -86,11 +86,11 @@ class ResearchController extends Controller
 // --- COUNT 3 BOX on TOP ---
       // COUNT = All Record
       if(Auth::hasRole('manager')){
-            $Total_research = DB::table('db_research_project')
-                            -> select('id','pro_name_th','pro_name_en','pro_position',
-                                      'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
-                            ->get()
-                            ->count();
+        $Total_research = DB::table('db_research_project')
+                        -> select('id','pro_name_th','pro_name_en','pro_position',
+                                  'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
+                        ->get()
+                        ->count();
 
       }elseif(Auth::hasRole('admin')) {
         $Total_research = DB::table('db_research_project')
@@ -247,9 +247,8 @@ class ResearchController extends Controller
     $output = research::insert($data_post);
 
     if($output){
-          // return redirect("/research_form")->with(["swl_add"=>"Success!"]);
-          // return redirect('research_form')->with('swl_add', 'Profile updated!');
-        return redirect()->route('page.research')->with('swl_add', 'บันทึกแล้ว');
+        session()->put('message', 'okkkkkayyyyy');
+        return redirect()->route('page.research');
     }else{
         return redirect()->back()->with('swl_err', 'บันทึกไม่สำเร็จ');
     }

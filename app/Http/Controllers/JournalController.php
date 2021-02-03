@@ -4,13 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-// use Illuminate\Support\Facades\Storage;
 use App\CmsHelper;
 use App\research;
 use App\journal;
 use Storage;
 use File;
 use Auth;
+use Session;
 use app\Exceptions\Handler;
 use Illuminate\Support\Facades\Route;
 
@@ -110,30 +110,44 @@ class JournalController extends Controller
 
 // --- COUNT 2 BOX on TOP ---
       // COUNT = All Record
-      if(Auth::hasRole('admin')){
-            $Total_journal = journal::select('id', 'users_id')
-                                      ->get()
-                                      ->count();
+      if(Auth::hasRole('manager')){
+        $Total_journal = journal::select('id', 'users_id')
+                                  ->get()
+                                  ->count();
+
+      }elseif(Auth::hasRole('admin')) {
+        $Total_journal = journal::select('id', 'users_id')
+                                  ->where('users_id', Auth::user()->preferred_username)
+                                  ->get()
+                                  ->count();
+                                  
       }else {
-            $Total_journal = journal::select('id', 'users_id')
-                                      ->where('users_id', Auth::user()->preferred_username)
-                                      ->get()
-                                      ->count();
+        $Total_journal = journal::select('id', 'users_id')
+                                  ->where('users_id', Auth::user()->preferred_username)
+                                  ->get()
+                                  ->count();
       }
 
-        // COUNT = contribute = 1
-        if(Auth::hasRole('admin')){
-            $Total_master_jour = journal::select('id', 'contribute')
-                                        ->whereIn ('contribute', ['1'])
-                                        ->get()
-                                        ->count();
-        }else {
-            $Total_master_jour = journal::select('id', 'contribute')
-                                        ->whereIn ('contribute', ['1'])
-                                        ->where('users_id', Auth::user()->preferred_username)
-                                        ->get()
-                                        ->count();
-        }
+      // COUNT = contribute = 1
+      if(Auth::hasRole('manager')){
+        $Total_master_jour = journal::select('id', 'contribute')
+                                    ->whereIn ('contribute', ['1'])
+                                    ->get()
+                                    ->count();
+
+      }elseif(Auth::hasRole('admin')) {
+        $Total_master_jour = journal::select('id', 'contribute')
+                                    ->whereIn ('contribute', ['1'])
+                                    ->get()
+                                    ->count();
+
+      }else {
+        $Total_master_jour = journal::select('id', 'contribute')
+                                    ->whereIn ('contribute', ['1'])
+                                    ->where('users_id', Auth::user()->preferred_username)
+                                    ->get()
+                                    ->count();
+      }
 // --- END COUNT 2 BOX on TOP ---
 
     return view('frontend.journal',
@@ -240,11 +254,11 @@ class JournalController extends Controller
         $data_post['files'] = $file_name;
     }
 
-    $insert = journal::insert($data_post);
+    $output = journal::insert($data_post);
 
-    if($insert){
-      //return Sweet Alert
-        return redirect()->route('page.journal')->with('swl_add', 'เพิ่มข้อมูลสำเร็จแล้ว');
+    if($output){
+        session()->put('message', 'okkkkkayyyyy');
+        return redirect()->route('page.journal');
     }else {
         return redirect()->back()->with('swl_err', 'บันทึกแล้ว');
     }
