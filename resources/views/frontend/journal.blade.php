@@ -330,7 +330,7 @@
                     </td>
 
                     <td class="td-actions text-right text-nowrap" href="#">
-                    {{-- @if(Auth::hasRole('manager') || Auth::hasRole('user')) --}}
+                    <!-- {{-- @if(Auth::hasRole('manager') || Auth::hasRole('user')) --}} -->
                       <a href=" {{ route('DownloadFile.journal', ['id' => $value->id, 'files' => $value->files]) }} ">
                         <button type="button" class="btn btn-danger btn-md" data-toggle="tooltip" title="Download">
                           <i class="fas fa-arrow-alt-circle-down"></i>
@@ -342,7 +342,7 @@
                           <i class="fas fa-edit"></i>
                         </button>
                       </a>
-                    {{-- @endif --}}
+                    <!-- {{-- @endif --}} -->
 
 
                     <!-- {{-- @if(Auth::hasRole('admin')) --}}
@@ -355,11 +355,17 @@
 
 
                     @if(Auth::hasRole('manager'))
-                      <a href=" {{ route('journal.verified', $value->id) }} ">
-                        <button type="button" class="btn btn-md" data-toggle="tooltip" title="Verfied" style="background-color: #336699;">
-                          <i class="fas fa-user-check"></i>
-                        </button>
-                      </a>
+                        @if($value->verified == "ตรวจสอบแล้ว")
+                          <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Verfied" disabled>
+                            <i class="fas fa-user-check"></i>
+                          </button>
+                        @else
+                          <a href=" {{ route('journal.verified', $value->id) }} ">
+                            <button type="button" class="btn btn-md" data-toggle="tooltip" title="Verfied" style="background-color: #567fa8;">
+                              <i class="fas fa-user-check"></i>
+                            </button>
+                          </a>
+                        @endif
                     @endif
                     </td>
 

@@ -314,7 +314,9 @@ class JournalController extends Controller
       //UPDATE db_published_journal
       $verified = DB::table('db_published_journal')
                 ->where('id', $request->id)
-                ->update(['verified' => "1"]);
+                ->update(['verified'    => "1",
+                          'updated_at'  => date('Y-m-d H:i:s')
+                        ]);
                 // ->get();
 
        // dd($verified);

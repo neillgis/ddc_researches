@@ -53,11 +53,17 @@
                </a>
              </li>
 
-
              <li class="nav-item ">
                <a class="nav-link {{ Active::check('util_form') }} " href="{{ route('page.util') }}" >
                  <i class="nav-icon fas fa-tree"></i>
                  <p> การนำไปใช้ประโยชน์ </p>
+               </a>
+             </li>
+
+             <li class="nav-item ">
+               <a class="nav-link" href="{{ asset('Manual_DIR/manual.pdf') }}" target="_blank">
+                 <i class="nav-icon fas fa-folder-open"></i>
+                 <p> คู่มือการใช้งาน </p>
                </a>
              </li>
 

@@ -244,7 +244,6 @@ class ResearchController extends Controller
         $data_post['files'] = $file_name;
     }
 
-
     $output = research::insert($data_post);
 
     if($output){
@@ -252,7 +251,7 @@ class ResearchController extends Controller
           // return redirect('research_form')->with('swl_add', 'Profile updated!');
         return redirect()->route('page.research')->with('swl_add', 'บันทึกแล้ว');
     }else{
-        return redirect()->back()->with('swl_err', 'บันทึกแล้ว');
+        return redirect()->back()->with('swl_err', 'บันทึกไม่สำเร็จ');
     }
   }
   //  -- END INSERT --
@@ -318,7 +317,9 @@ class ResearchController extends Controller
       //UPDATE db_research_project
       $verified = DB::table('db_research_project')
                 ->where('id', $request->id)
-                ->update(['verified' => "1"]);
+                ->update(['verified'    => "1",
+                          'updated_at'  => date('Y-m-d H:i:s')
+                        ]);
                 // ->get();
 
        // dd($verified);

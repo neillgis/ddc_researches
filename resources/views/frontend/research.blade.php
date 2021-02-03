@@ -293,18 +293,20 @@
                     </td>
 
                     <td class="td-actions text-right text-nowrap" href="#">
-                    {{-- @if(Auth::hasRole('manager') || Auth::hasRole('user')) --}}
+                    <!-- {{-- @if(Auth::hasRole('manager') || Auth::hasRole('user')) --}} -->
                       <a href=" {{ route('DownloadFile.research', ['id' => $value->id, 'files' => $value->files]) }} ">
                         <button type="button" class="btn btn-danger btn-md" data-toggle="tooltip" title="Download">
                           <i class="fas fa-arrow-alt-circle-down"></i>
                         </button>
                       </a>
+
                       <a href=" {{ route('research.edit', $value->id) }} ">
                         <button type="button" class="btn btn-warning btn-md" data-toggle="tooltip" title="Edit">
                           <i class="fas fa-edit"></i>
                         </button>
                       </a>
-                    {{-- @endif --}}
+                    <!-- {{-- @endif --}} -->
+
 
                     <!-- FOR Admin ONLY -->
                     <!-- {{-- @if(Auth::hasRole('admin')) --}} -->
@@ -315,13 +317,19 @@
                     </a> -->
                     <!-- {{-- @endif --}} -->
 
+
                     @if(Auth::hasRole('manager'))
-                      <a href=" {{ route('research.verified', $value->id) }} ">
-                        <button type="button" class="btn btn-md"
-                                data-toggle="tooltip" title="Verfied" style="background-color: #336699;">
-                          <i class="fas fa-user-check"></i>
-                        </button>
-                      </a>
+                        @if($value->verified == "ตรวจสอบแล้ว")
+                          <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Verfied" disabled>
+                            <i class="fas fa-user-check"></i>
+                          </button>
+                        @else
+                          <a href=" {{ route('research.verified', $value->id) }} ">
+                            <button type="button" class="btn btn-md" data-toggle="tooltip" title="Verfied" style="background-color: #567fa8;">
+                              <i class="fas fa-user-check"></i>
+                            </button>
+                          </a>
+                        @endif
                     @endif
                     </td>
 
@@ -354,31 +362,22 @@
             icon: 'success',
             title: 'บันทึกข้อมูลเรียบร้อยแล้ว',
             showConfirmButton: false,
-            timer: 2800
+            timer: 2200
         })
     </script> -->
 
 
     @if(session()->has('swl_add'))
       <script>
-          Swal.fire({
-              icon: 'success',
-              title: 'บันทึกข้อมูลเรียบร้อยแล้ว',
-              showConfirmButton: false,
-              timer: 2800
-          })
-      </script>
-
-    @elseif(session()->has('swl_del'))
-      <script>
-          Swal.fire({
-              icon: 'error',
-              title: 'บันทึกข้อมูลไม่สำเร็จ !!!',
-              showConfirmButton: false,
-              timer: 2800
-          })
+        Swal.fire({
+            icon: 'success',
+            title: 'บันทึกข้อมูลเรียบร้อยแล้ว',
+            showConfirmButton: false,
+            timer: 2200
+        })
       </script>
     @endif
+
 
 
 <!-- FILE INPUT -->

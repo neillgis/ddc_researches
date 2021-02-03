@@ -9,4 +9,4 @@
     <b>Version</b> 1.0(Beta)
   </div>
 </footer>
-<!-- End of Footer -->
+<!-- Developers by ITC Team -->
