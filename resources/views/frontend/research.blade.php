@@ -74,11 +74,11 @@
     <!-- START SUMMARY Total Box -->
       <div class="row">
         <div class="col-md-4 mx-auto">
-          <div class="small-box bg-success">
+          <div class="small-box bg-success mx-auto">
             <div class="inner">
-              <h4> โครงการวิจัยทั้งหมด </h4>
+              <h5> โครงการวิจัยทั้งหมด </h5>
               <br>
-              <h3> {{ empty($Total_research)?'0': $Total_research }} โครงการ </h3>
+              <h4> {{ empty($Total_research)?'0': $Total_research }} โครงการ </h4>
             </div>
             <div class="icon">
               <i class="fas fa-microscope"></i>
@@ -90,9 +90,9 @@
         <div class="col-md-4 mx-auto">
           <div class="small-box bg-info mx-auto">
             <div class="inner">
-              <h4> โครงการวิจัยที่เป็นผู้วิจัยหลัก </h4>
+              <h5> โครงการวิจัยที่เป็นผู้วิจัยหลัก </h5>
               <br>
-              <h3> {{ empty($Total_master_pro)?'0': $Total_master_pro }} โครงการ </h3>
+              <h4> {{ empty($Total_master_pro)?'0': $Total_master_pro }} โครงการ </h4>
             </div>
             <div class="icon">
               <i class="fas fa-user-graduate"></i>
@@ -104,9 +104,9 @@
         <div class="col-md-4 mx-auto">
           <div class="small-box bg-danger mx-auto">
             <div class="inner">
-              <h4> โครงการวิจัยที่ตีพิมพ์ทั้งหมด </h4>
+              <h5> โครงการวิจัยที่ตีพิมพ์ทั้งหมด </h5>
               <br>
-              <h3> {{ empty($Total_publish_pro)?'0': $Total_publish_pro }} โครงการ </h3>
+              <h4> {{ empty($Total_publish_pro)?'0': $Total_publish_pro }} โครงการ </h4>
             </div>
             <div class="icon">
               <i class="fas fa-dice-d20"></i>
@@ -138,23 +138,25 @@
               <div class="card-body">
                 <div class="row">
                   <div class="col-md-6">
+                    <div class="col-md-6">
+                      <div class="form-group">
+                        <label for="exampleInput1"> ชื่อโครงการ (TH) </label>
+                        <input type="text" class="form-control" name="pro_name_th">
+                      </div>
+                    </div>
+
                     <div class="form-group">
                       <label for="exampleInput1"> ชื่อโครงการ (ENG) </label>
-                      <input type="text" class="form-control" name="pro_name_en" required>
+                      <input type="text" class="form-control" name="pro_name_en">
                     </div>
                   </div>
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="exampleInput1"> ชื่อโครงการ (TH) </label>
-                      <input type="text" class="form-control" name="pro_name_th">
-                    </div>
-                  </div>
+
                 </div>
 
                 <div class="row">
                   <div class="col-md-6">
                     <div class="form-group">
-                      <label for="exampleSelect1"> ตำแหน่งในโครงการวิจัย </label>
+                      <label for="exampleSelect1"> ตำแหน่งในโครงการวิจัย <font color="red"> * </font></label>
                       <!-- SELECT option ดึงมาจากฐานข้อมูล db_research_project -->
                       <select class="form-control" name="pro_position" required>
                         <option value="" disabled="true" selected="true" >กรุณาเลือก</option>
@@ -182,7 +184,7 @@
                 <div class="row">
                   <div class="col-md-4">
                     <div class="form-group">
-                      <label for="exampleDatepicker1"> * ปี ค.ศ. ที่เริ่มโครงการ </label>
+                      <label for="exampleDatepicker1"> ปีที่เริ่มโครงการ </label>
                       <input type="text" class="form-control" id="datepicker1" placeholder="กรุณาเลือก ปี/เดือน/วัน"
                              name="pro_start_date" autocomplete="off" >
                     </div>
@@ -190,7 +192,7 @@
 
                   <div class="col-md-4">
                     <div class="form-group">
-                      <label for="exampleDatepicker1"> ** ปี ค.ศ. ที่เสร็จสิ้นโครงการ </label>
+                      <label for="exampleDatepicker1"> ปีที่เสร็จสิ้นโครงการ </label>
                       <input type="text" class="form-control" id="datepicker2" placeholder="กรุณาเลือก ปี/เดือน/วัน"
                              name="pro_end_date" autocomplete="off" >
                     </div>
@@ -198,7 +200,7 @@
 
                   <div class="col-md-4">
                     <div class="form-group">
-                      <label for="exampleSelect1"> โครงการได้ตีพิมพ์ </label>
+                      <label for="exampleSelect1"> โครงการได้ตีพิมพ์ <font color="red"> * </font></label>
                       <!-- SELECT option ดึงมาจากฐานข้อมูล db_research_project -->
                       <select class="form-control" name="publish_status" required>
                         <option value="" disabled="true" selected="true" >กรุณาเลือก</option>
@@ -213,7 +215,7 @@
                 <div class="row" >
                   <div class="col-md-12">
                     <div class="form-group">
-                      <label for="expInputFile"> อัพโหลดไฟล์ : <font color="red"> โครงการวิจัย </font></label>
+                      <label for="expInputFile"> อัพโหลดไฟล์ : <font color="red"> รายงานวิจัยฉบับสมบูรณ์.pdf * </font></label>
 
                       <div class="input-group">
                         <div class="custom-file">
@@ -265,13 +267,13 @@
               <table class="table table-hover" id="example55">
                 <thead>
                     <tr>
-                      <th class="text-center"> ลำดับ </th>
-                      <th class="text-center"> ชื่อโครงการ (ENG) </th>
+                      <th class="text-center"> Project ID </th>
+                      <th class="text-center"> ชื่อโครงการวิจัยที่เสร็จสิ้นแล้ว </th>
                       <th class="text-center"> เริ่มโครงการ </th>
                       <th class="text-center"> เสร็จสิ้นโครงการ </th>
                       <th class="text-center"> ตีพิมพ์ </th>
                       <th class="text-center"> การตรวจสอบ </th>
-                      <th class="text-right"> ACTIONS </th>
+                      <th class="text-right"> Actions </th>
                     </tr>
                 </thead>
 
@@ -279,7 +281,7 @@
                   @foreach ($research as $value)
                   <tr>
                     <td class="text-center"> {{ $value->id }} </td>
-                    <td class="text-left"> {{ $value->pro_name_en }} </td>
+                    <td class="text-left"> {{ $value->pro_name_th." ".$value->pro_name_en}} </td>
                     <td class="text-center"> {{ CmsHelper::DateThai($value->pro_start_date) }} </td>
                     <td class="text-center"> {{ CmsHelper::DateThai($value->pro_end_date) }} </td>
                     <td class="text-center"> {{ $publish_status [ $value->publish_status ] }} </td>
