@@ -49,7 +49,7 @@ return [
      *
      * @see Vizir\KeycloakWebGuard\Controllers\AuthController::callback()
      */
-    'redirect_url' => '/research_form',
+    'redirect_url' => '/profile',
     // 'redirect_url' => '/keycloak/demo',
 
     /**

@@ -76,9 +76,9 @@
         <div class="col-md-4 mx-auto">
           <div class="small-box bg-success mx-auto">
             <div class="inner">
-              <h5> โครงการวิจัยทั้งหมด </h5>
+              <h3> {{ empty($Total_research)?'0': $Total_research }} </h3>
               <br>
-              <h4> {{ empty($Total_research)?'0': $Total_research }} โครงการ </h4>
+              <p> โครงการวิจัยทั้งหมด </p>
             </div>
             <div class="icon">
               <i class="fas fa-microscope"></i>
@@ -90,9 +90,9 @@
         <div class="col-md-4 mx-auto">
           <div class="small-box bg-info mx-auto">
             <div class="inner">
-              <h5> โครงการวิจัยที่เป็นผู้วิจัยหลัก </h5>
+              <h3> {{ empty($Total_master_pro)?'0': $Total_master_pro }} </h3>
               <br>
-              <h4> {{ empty($Total_master_pro)?'0': $Total_master_pro }} โครงการ </h4>
+              <p> โครงการวิจัยที่เป็นผู้วิจัยหลัก</p>
             </div>
             <div class="icon">
               <i class="fas fa-user-graduate"></i>
@@ -104,9 +104,9 @@
         <div class="col-md-4 mx-auto">
           <div class="small-box bg-danger mx-auto">
             <div class="inner">
-              <h5> โครงการวิจัยที่ตีพิมพ์ทั้งหมด </h5>
+              <h3> {{ empty($Total_publish_pro)?'0': $Total_publish_pro }} </h3>
               <br>
-              <h4> {{ empty($Total_publish_pro)?'0': $Total_publish_pro }} โครงการ </h4>
+              <p> โครงการวิจัยที่ตีพิมพ์ทั้งหมด </p>
             </div>
             <div class="icon">
               <i class="fas fa-dice-d20"></i>
@@ -138,19 +138,18 @@
               <div class="card-body">
                 <div class="row">
                   <div class="col-md-6">
-                    <div class="col-md-6">
-                      <div class="form-group">
-                        <label for="exampleInput1"> ชื่อโครงการ (TH) </label>
-                        <input type="text" class="form-control" name="pro_name_th">
-                      </div>
-                    </div>
-
                     <div class="form-group">
-                      <label for="exampleInput1"> ชื่อโครงการ (ENG) </label>
-                      <input type="text" class="form-control" name="pro_name_en">
+                      <label for="exampleInput1"> ชื่อโครงการ (TH) </label>
+                      <input type="text" class="form-control" name="pro_name_th">
                     </div>
                   </div>
 
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="exampleInput1"> ชื่อโครงการ (ENG) </label>
+                      <input type="text" class="form-control" name="pro_name_en" required>
+                    </div>
+                  </div>
                 </div>
 
                 <div class="row">
@@ -169,7 +168,7 @@
 
                   <div class="col-md-6">
                     <div class="form-group">
-                      <label for="exampleSelect1"> จำนวนผู้ร่วมวิจัย </label>
+                      <label for="exampleSelect1"> จำนวนผู้ร่วมวิจัย <font color="red"> * </font></label>
                       <!-- SELECT option ดึงมาจากฐานข้อมูล db_research_project -->
                       <select class="form-control" name="pro_co_researcher" required>
                         <option value="" disabled="true" selected="true" >กรุณาเลือก</option>
@@ -184,17 +183,17 @@
                 <div class="row">
                   <div class="col-md-4">
                     <div class="form-group">
-                      <label for="exampleDatepicker1"> ปีที่เริ่มโครงการ </label>
+                      <label for="exampleDatepicker1"> ปีที่เริ่มโครงการ <font color="red"> * </font></label>
                       <input type="text" class="form-control" id="datepicker1" placeholder="กรุณาเลือก ปี/เดือน/วัน"
-                             name="pro_start_date" autocomplete="off" >
+                             name="pro_start_date" autocomplete="off" required>
                     </div>
                   </div>
 
                   <div class="col-md-4">
                     <div class="form-group">
-                      <label for="exampleDatepicker1"> ปีที่เสร็จสิ้นโครงการ </label>
+                      <label for="exampleDatepicker1"> ปีที่เสร็จสิ้นโครงการ <font color="red"> * </font></label>
                       <input type="text" class="form-control" id="datepicker2" placeholder="กรุณาเลือก ปี/เดือน/วัน"
-                             name="pro_end_date" autocomplete="off" >
+                             name="pro_end_date" autocomplete="off" required>
                     </div>
                   </div>
 
@@ -215,7 +214,7 @@
                 <div class="row" >
                   <div class="col-md-12">
                     <div class="form-group">
-                      <label for="expInputFile"> อัพโหลดไฟล์ : <font color="red"> รายงานวิจัยฉบับสมบูรณ์.pdf * </font></label>
+                      <label for="expInputFile"> อัพโหลดไฟล์ : รายงานวิจัยฉบับสมบูรณ์.pdf <font color="red"> * </font></label>
 
                       <div class="input-group">
                         <div class="custom-file">
@@ -230,9 +229,9 @@
 
                 <div class="label">
                   <h4><b>หมายเหตุ : </b></h4>
-                  <label> * ปี ค.ศ. ที่เริ่มโครงการ : &nbsp;&nbsp;<font color="red"> กรณีไม่ทราบ *กรุณาใส่ ปีที่เริ่มทำ/01/01</font></label>
+                  <label> * ปีที่เริ่มโครงการ : &nbsp;&nbsp;<font color="red"> กรณีไม่ทราบ *กรุณาใส่ ปีที่เริ่มทำ/01/01</font></label>
                   <br>
-                  <label> ** ปี ค.ศ. ที่เสร็จสิ้นโครงการ : &nbsp;&nbsp;<font color="red"> กรณีไม่ทราบ *กรุณาใส่ ปีที่เสร็จสิ้น/12/31</font></label>
+                  <label> ** ปีที่เสร็จสิ้นโครงการ : &nbsp;&nbsp;<font color="red"> กรณีไม่ทราบ *กรุณาใส่ ปีที่เสร็จสิ้น/12/31</font></label>
                 </div>
               </div>
 
