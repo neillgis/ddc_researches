@@ -1,21 +1,6 @@
 @extends('layout.main')
 
-<?php
-  use App\CmsHelper as CmsHelper;
-?>
-
 @section('css-custom')
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css">
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.6.4/css/buttons.dataTables.min.css">
-<link rel="stylesheet" href="{{ asset('bower_components/admin-lte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
-<link rel="stylesheet" href="{{ asset('bower_components/admin-lte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
-
-<!-- DatePicker Style -->
-<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
-<link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css">
-
-<!-- SweetAlert2 -->
-<link rel="stylesheet" href="{{ asset('bower_components/admin-lte/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
 
   <!-- Fonts Style : Kanit -->
     <style>
@@ -57,7 +42,6 @@
 @stop('css-custom')
 
 
-
 @section('contents')
 <!-- Content Header (Page header) -->
   <div class="content-header">
@@ -76,108 +60,167 @@
 
 <!-- Main content -->
 <section class="content">
-  <div class="container-fluid">
+  <div class="container">
 
     <div class="row">
-      <div class="col-md-6">
+      <div class="col-md-5">
         <div class="card shadow" id="rcorners3">
-          <div class="card-header">
-            <h4><i class="fas fa-user-circle"></i> ข้อมูลบุคคล / นักวิจัย </h4>
+          <div class="card-header" style="background-color: #FFD800;">
+            <h4><i class="fas fa-user-circle"></i>&nbsp; <b>ข้อมูลส่วนบุคคล</b> </h4>
           </div>
 
-          <form>
+          <!-- <form method="POST" action="{{-- route('research.insert') --}}"> -->
+            @csrf
+
             <div class="card-body">
-              <div class="form-group">
-                <i class="far fa-user-circle"></i>
-                <label for="exampleInputEmail1">Email address</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-              </div>
-              <div class="form-group">
-                <label for="exampleInputPassword1">Password</label>
-                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-              </div>
-              <div class="form-group">
-                <label for="exampleInputFile">File input</label>
-                <div class="input-group">
-                  <div class="custom-file">
-                    <input type="file" class="custom-file-input" id="exampleInputFile">
-                    <label class="custom-file-label" for="exampleInputFile">Choose file</label>
-                  </div>
-                  <div class="input-group-append">
-                    <span class="input-group-text">Upload</span>
-                  </div>
+              <h5 class="profile text-right" id="prefix"></h5>
+
+              <ul class="list-group list-group-unbordered mb-3">
+                  <li class="list-group-item">
+                    <h4> ชื่อ <b><a class="float-right" id="fname_th"></b></a></h4>
+                  </li>
+
+                  <li class="list-group-item">
+                    <h4> นามสกุล <b><a class="float-right" id="lname_th"></b></a></h4>
+                  </li>
+
+                  <li class="list-group-item">
+                    <h4> เลขบัตรประชาชน <b><a class="float-right" id="cid"></b></a></h4>
+                  </li>
+                </ul>
+
+              <div class="row">
+                <div class="col-md-12">
+                  <label> เพศ </label>
+                  <div class="border p-2" id="gender" style="background-color: #e9ecef;opacity: 1; font-size: 20px;"></div>
                 </div>
               </div>
-              <div class="form-check">
-                <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                <label class="form-check-label" for="exampleCheck1">Check me out</label>
+              <br>
+
+              <div class="row">
+                <div class="col-md-12">
+                  <label> E - Mail </label>
+                  <div class="border p-2" id="email" style="background-color: #e9ecef;opacity: 1; font-size: 20px;"></div>
+                </div>
+              </div>
+              <br>
+
+              <div class="row">
+                <div class="col-md-12">
+                  <label> ระดับการศึกษา </label>
+                  <div class="border p-2" id="edu_class" style="background-color: #e9ecef;opacity: 1; font-size: 20px;"></div>
+                </div>
               </div>
             </div>
-            <!-- /.card-body -->
-
-            <div class="card-footer">
-              <button type="submit" class="btn btn-primary">Submit</button>
-            </div>
-          </form>
+          </div>
         </div>
 
 
-      </div>
-      <!--/.col (left) -->
-      <!-- right column -->
-      <div class="col-md-6">
-        <!-- Form Element sizes -->
+        <div class="col-md-7">
           <div class="card shadow card-success" id="rcorners3">
-          <div class="card-header">
-            <h3 class="card-title">Different Height</h3>
+            <div class="card-header" style="background-color: #587498;">
+              <h4><i class="fas fa-user-circle"></i>&nbsp; <b>หน่วยงาน / สังกัด</b> </h4>
           </div>
+
           <div class="card-body">
-            <input class="form-control form-control-lg" type="text" placeholder=".form-control-lg">
+              <div class="col-md-12">
+                <label for="exampleInput1"> หน่วยงาน </label>
+                <div class="border p-2" id="dept_id" style="background-color: #e9ecef;opacity: 1; font-size: 20px;"></div>
+              </div>
+              <br>
+
+            <div class="col-md-12">
+              <label for="exampleInput1"> ตำแหน่ง </label>
+              <div class="border p-2" id="position" style="background-color: #e9ecef;opacity: 1; font-size: 20px;"></div>
+            </div>
             <br>
-            <input class="form-control" type="text" placeholder="Default input">
-            <br>
-            <input class="form-control form-control-sm" type="text" placeholder=".form-control-sm">
           </div>
-          <!-- /.card-body -->
         </div>
         <br>
-        <!-- /.card -->
+
 
         <div class="card shadow card-danger" id="rcorners3">
-          <div class="card-header">
-            <h3 class="card-title">Different Width</h3>
+          <div class="card-header" style="background-color: #E86850;">
+            <h4><i class="fas fa-user-circle"></i>&nbsp; <b>ข้อมูลนักวิจัย</b> </h4>
+
           </div>
           <div class="card-body">
             <div class="row">
-              <div class="col-3">
-                <input type="text" class="form-control" placeholder=".col-3">
+              <div class="col-md-12">
+                <input type="text" class="form-control" placeholder="กรุณากรอก รหัสนักวิจัย (NRMS ID) ถ้ามี"
+                value="">
               </div>
-              <div class="col-4">
-                <input type="text" class="form-control" placeholder=".col-4">
-              </div>
-              <div class="col-5">
-                <input type="text" class="form-control" placeholder=".col-5">
+            </div>
+            <br>
+            <div class="row">
+              <div class="col-md-12">
+                <input type="text" class="form-control" placeholder="กรุณากรอก บัตรประจำตัวนักวิจัย (ORCID ID) ถ้ามี"
+                  value="">
               </div>
             </div>
           </div>
+
+          <div class="card-footer">
+            <button type="submit" class="btn btn-danger float-right" value="บันทึกข้อมูล">
+              <i class="fas fa-save"></i> &nbsp;บันทึกข้อมูล </button>
+          </div>
+
+        </form>
         </div>
       </div>
     </div>
   </div>
 </section>
-
-
-
-
 @stop('contents')
 
 
-@section('js-custom-script')
-
-@stop('js-custom-script')
-
-
-
 @section('js-custom')
+    <script>
+        $(document).ready(function() {
+            $.ajax({
+                url: "https://hr.ddc.moph.go.th/api/v2/employee/{{ Auth::user()->preferred_username }}",
+                type: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "bearer {{ KeycloakWeb::retrieveToken()['access_token'] }}"
+                },
+                success: function(result) {
+                    //console.log(result)
 
+                    $("#employee_id").text(result.employeeId);
+                    $("#cid").text(result.idCard);
+                    $("#dept_id").text(result.deptName);
+                    $("#edu_class").text(result.educationLevel);
+                    $("#prefix").text(result.title);
+                    $("#fname_th").text(result.fname);
+                    $("#lname_th").text(result.lname);
+                    $("#fname_en").text(result.efname);
+                    $("#lname_en").text(result.elname);
+                    $("#gender").text(result.sex);
+                    $("#birthdate").text(result.birthday);
+                    $("#position").text(result.position);
+                    $("#tel").text(result.telephone);
+                    $("#email").text(result.email);
+                }
+            });
+
+
+            $.ajax({
+                url: "https://hr.ddc.moph.go.th/api/v2/employee/pic/{{ Auth::user()->preferred_username }}",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "bearer {{ KeycloakWeb::retrieveToken()['access_token'] }}"
+                },
+                xhrFields: {
+                    responseType: 'blob'
+                },
+                success (data) {
+                    const url = window.URL || window.webkitURL;
+                    const src = url.createObjectURL(data);
+                    $('#image').attr('src', src);
+                }
+            });
+        });
+
+    </script>
 @stop('js-custom')
