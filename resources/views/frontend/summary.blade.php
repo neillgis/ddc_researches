@@ -7,13 +7,13 @@
 
 @section('css-custom')
 <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="http://www.datatables.net/rss.xml">
+<!-- <link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="http://www.datatables.net/rss.xml"> -->
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css">
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.6.4/css/buttons.dataTables.min.css">
 <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
 <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-<link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" /> -->
 
 
 <!-- SweetAlert2 -->
@@ -79,9 +79,9 @@
               <div class="col-md-12 mx-auto">
                 <div class="small-box bg-red">
                   <div class="inner">
-                    <h4> โครงการวิจัยที่ทำเสร็จสิ้น </h4>
-                    <br>
                     <h3> {{ empty($Total_research)?'0': $Total_research }} โครงการ </h3>
+                    <br>
+                    <p> โครงการวิจัยที่ทำเสร็จสิ้น </p>
                   </div>
                   <div class="icon">
                     <i class="fas fa-chart-line"></i>
@@ -89,16 +89,14 @@
                   <!-- <a class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
                 </div>
               </div>
-            </div>
 
-            <div class="row">
               <div class="col-md-3 mx-auto">
                 <div class="small-box bg-info">
                   <div class="inner">
-                    <h4> โครงการวิจัยที่เป็นผู้วิจัยหลัก </h4>
-                    <br>
                     <!-- เรียกจาก db_research_project -> โดย count id -> pro_position = 1 ( เป็นผู้วิจัยหลัก ) ------------>
                     <h3> {{ empty($Total_master_pro)?'0': $Total_master_pro }} โครงการ </h3>
+                    <br>
+                    <p> โครงการวิจัยที่เป็นผู้วิจัยหลัก </p>
                   </div>
                   <div class="icon">
                     <i class="fas fa-chalkboard-teacher"></i>
@@ -109,10 +107,10 @@
               <div class="col-md-3 mx-auto">
                 <div class="small-box bg-green">
                   <div class="inner">
-                    <h4> โครงการวิจัยตีพิมพ์ </h4>
-                    <br>
                     <!-- เรียกจาก db_research_project -> โดย count id -> publish_status = 1 (ใช่ ) ------------>
                     <h3> {{ empty($Total_publish_pro)?'0': $Total_publish_pro }} โครงการ </h3>
+                    <br>
+                    <p> โครงการวิจัยตีพิมพ์ </p>
                   </div>
                   <div class="icon">
                     <i class="fas fa-dice-d20"></i>
@@ -120,27 +118,13 @@
                 </div>
               </div>
 
-              <!-- <div class="col-md-3">
-                <div class="small-box bg-info">
-                  <div class="inner">
-                    <h4> บทความผู้นิพนธ์หลัก </h4>
-                    <br> -->
-                    <!-- เรียกจาก db_published_journal -> โดย count id -> contribute = ผู้นิพนธ์หลัก (first-author)---------->
-                    <!-- < <h3> {{ empty($Total_master_journal)?'0': $Total_master_journal }} โครงการ </h3>
-                  </div>
-                  <div class="icon">
-                    <i class="fas fa-book-reader"></i>
-                  </div>
-                </div>
-              </div> -->
-
               <div class="col-md-3 mx-auto">
                 <div class="small-box bg-info">
                   <div class="inner">
-                    <h4> บทความตีพิมพ์ </h4>
-                    <br>
                     <!-- เรียกจาก db_published_journal โดย count id (All Record) ------------>
                     <h3> {{ empty($Total_publish_journal)?'0': $Total_publish_journal }} โครงการ </h3>
+                    <br>
+                    <p> บทความตีพิมพ์ </p>
                   </div>
                   <div class="icon">
                     <i class="fas fa-book-reader"></i>
@@ -151,10 +135,10 @@
               <div class="col-md-3 mx-auto">
                 <div class="small-box bg-green">
                   <div class="inner">
-                    <h4> บทความเชิงวิชาการ </h4>
+                    <!-- เรียกจาก db_utilization -> โดย count id -> util_type = เชิงนโยบาย ------------>
+                    <h3> {{ empty($Total_policy_util)?'0': $Total_policy_util }} โครงการ </h3>
                     <br>
-                    <!-- เรียกจาก db_utilization -> โดย count id -> util_type = เชิงวิชาการ ------------>
-                    <h3> {{ empty($Total_academic_util)?'0': $Total_academic_util }} โครงการ </h3>
+                    <p> บทความเชิงนโยบาย </p>
                   </div>
                   <div class="icon">
                     <i class="fas fa-cubes"></i>
@@ -186,7 +170,8 @@
                       <th class="text-center"> โครงการวิจัยที่เป็นผู้วิจัยหลัก </th>
                       <th class="text-center"> โครงการวิจัยที่ตีพิมพ์ </th>
                       <th class="text-center"> บทความที่ตีพิมพ์ </th>
-                      <th class="text-center"> บทความเชิงวิชาการ </th>
+                      <th class="text-center"> บทความเชิงนโยบาย </th>
+                      <th class="text-center"> ระดับนักวิจัย </th>
                       <th class="text-right"> Actions </th>
                     </tr>
                   </thead>
@@ -199,7 +184,8 @@
                         <td class="text-center"> {{ $value->count_master_pro }} </td>
                         <td class="text-center"> {{ $value->count_publish_pro }} </td>
                         <td class="text-center"> {{ $value->count_journal_pro }} </td>
-                        <td class="text-center"> {{ $value->count_acdemic_util }} </td>
+                        <td class="text-center"> {{ $value->count_policy_util }} </td>
+                        <td class="text-center"> # </td>
 
                         <!-- จัดการข้อมูล -->
                         <td class="td-actions text-right text-nowrap" href="#">
@@ -215,13 +201,10 @@
                   </table>
                 </div>
               </div>
-
-                </form>
-
             </div>
           </section>
+        </div>
 
-          </div>
       </section>
 <!-- END TABLE LIST ----------------------------------------------------------->
 
