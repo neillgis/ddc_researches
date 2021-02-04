@@ -74,9 +74,9 @@
         <div class="col-md-6 mx-auto">
           <div class="small-box bg-info mx-auto">
             <div class="inner">
-              <h5> บทความที่เป็นผู้นิพนธ์หลัก </h5>
+              <h3> {{ empty($Total_master_jour)?'0': $Total_master_jour }} โครงการ </h3>
               <br>
-              <h4> {{ empty($Total_master_jour)?'0': $Total_master_jour }} โครงการ </h4>
+              <p> บทความที่เป็นผู้นิพนธ์หลัก </p>
             </div>
             <div class="icon">
               <i class="fas fa-user-graduate"></i>
@@ -88,9 +88,9 @@
         <div class="col-md-6 mx-auto">
           <div class="small-box bg-danger mx-auto">
             <div class="inner">
-              <h5> บทความตีพิมพ์ทั้งหมด </h5>
+              <h3> {{ empty($Total_journal)?'0': $Total_journal }} โครงการ </h3>
               <br>
-              <h4> {{ empty($Total_journal)?'0': $Total_journal }} โครงการ </h4>
+              <p> บทความตีพิมพ์ทั้งหมด </p>
             </div>
             <div class="icon">
               <i class="fas fa-cubes"></i>
@@ -154,35 +154,38 @@
                 </div>
 
                 <div class="row">
-                  <div class="col-md-4">
+                  <div class="col-md-6">
                     <div class="form-group">
                       <label for="exampleInput1"> ปีที่พิมพ์ (Year) <font color="red"> * </font></label>
                       <input type="text" class="form-control" placeholder="ปี ค.ศ." name="publish_years"
                              id="datepicker4" autocomplete="off" required>
                     </div>
                   </div>
-                  <div class="col-md-2">
+                  <div class="col-md-6">
                     <div class="form-group">
                       <label for="exampleInput1"> ฉบับที่ (Issue) <font color="red"> * </font></label>
                       <input type="text" class="form-control" name="publish_no" maxlength="2"
                              onKeyUp="if(isNaN(this.value)){ alert('กรุณากรอกตัวเลขเท่านั้น !'); this.value='';}" required>
                     </div>
                   </div>
-                  <div class="col-md-2">
+                </div>
+
+                <div class="row">
+                  <div class="col-md-4">
                     <div class="form-group">
                       <label for="exampleInput1"> เล่มที่ (Volume) <font color="red"> * </font></label>
                       <input type="text" class="form-control" name="publish_volume" maxlength="2"
                              onKeyUp="if(isNaN(this.value)){ alert('กรุณากรอกตัวเลขเท่านั้น !'); this.value='';}" required>
                     </div>
                   </div>
-                  <div class="col-md-2">
+                  <div class="col-md-4">
                     <div class="form-group">
                       <label for="exampleInput1"> หน้าแรก (First Page) <font color="red"> * </font></label>
                       <input type="text" class="form-control" placeholder="xxxx" name="publish_firstpage" maxlength="3"
                              onKeyUp="if(isNaN(this.value)){ alert('กรุณากรอกตัวเลขเท่านั้น !'); this.value='';}" required>
                     </div>
                   </div>
-                  <div class="col-md-2">
+                  <div class="col-md-4">
                     <div class="form-group">
                       <label for="exampleInput1"> หน้าสุดท้าย (Last Page) <font color="red"> * </font></label>
                       <input type="text" class="form-control" placeholder="xxxx" name="publish_lastpage" maxlength="3"
@@ -192,13 +195,13 @@
                 </div>
 
                 <div class="row">
-                  <div class="col-md-3">
+                  <div class="col-md-6">
                     <div class="form-group">
                       <label for="exampleInput1"> เลข DOI (ถ้ามี) </label>
                       <input type="text" class="form-control" name="doi_number">
                     </div>
                   </div>
-                  <div class="col-md-3">
+                  <div class="col-md-6">
                     <div class="form-group">
                       <label for="exampleSelect1"> การมีส่วนร่วมในบทความ <font color="red"> * </font></label>
                       <!-- SELECT option ดึงมาจาก ARRAY->contribute -->
@@ -210,7 +213,10 @@
                       </select>
                     </div>
                   </div>
-                  <div class="col-md-3">
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6">
                     <div class="form-group">
                       <label for="exampleSelect1"> ท่านเป็นผู้รับผิดชอบบทความ (Correspondence) <font color="red"> * </font></label>
                       <!-- SELECT option ดึงมาจาก ARRAY->corres -->
@@ -222,7 +228,7 @@
                       </select>
                     </div>
                   </div>
-                  <div class="col-md-3">
+                  <div class="col-md-6">
                     <div class="form-group">
                       <label for="exampleSelect1"> บทความนี้เป็นผลจากโครงการวิจัย <font color="red"> * </font></label>
 
@@ -233,7 +239,6 @@
                           <option value = "{{ $value->id }}"> {{ $value->pro_name_en }} </option>
                         @endforeach
                       </select>
-
                     </div>
                   </div>
                 </div>
@@ -251,7 +256,7 @@
                 <div class="row" >
                   <div class="col-md-12">
                     <div class="form-group">
-                      <label for="expInputFile"> อัพโหลดไฟล์ :<font color="red"> บทคัดย่อ (Abstracts) * </font></label>
+                      <label for="expInputFile"> อัพโหลดไฟล์ : บทคัดย่อ (Abstracts).pdf <font color="red"> * </font></label>
                       <div class="input-group">
                         <div class="custom-file">
                           <input type="file" class="custom-file-input" name="files" required>
@@ -320,7 +325,7 @@
                       <th class="text-center"> ตีพิมพ์ </th>
                       <th class="text-center"> ผู้รับผิดชอบบทความ </th>
                       <th class="text-center"> การตรวจสอบ </th>
-                      <th class="text-right"> ACTIONS </th>
+                      <th class="text-right"> Actions </th>
                     </tr>
                 </thead>
 

@@ -124,7 +124,7 @@
                   <div class="col-md-6 mx-auto">
                     <div class="form-group">
                       <label for="exampleInput1"> คำอธิบายการนำไปใช้ประโยชน์ </label>
-                      <textarea class="form-control" name="util_descrip" rows="4" cols="30">{{ $edit_util->util_descrip }}</textarea>
+                      <textarea class="form-control" name="util_descrip" rows="3" cols="30">{{ $edit_util->util_descrip }}</textarea>
                     </div>
                   </div>
                 </div>

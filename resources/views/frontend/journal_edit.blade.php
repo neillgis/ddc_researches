@@ -112,63 +112,62 @@
                 </div>
 
                 <div class="row">
-                  <div class="col-md-4">
+                  <div class="col-md-6">
                     <div class="form-group">
                       <label for="exampleDatepicker1"> ปีที่พิมพ์ (Year) </label>
                       <input type="text" class="form-control" name="publish_years" value="{{ $data->publish_years }}">
                     </div>
                   </div>
-                  <div class="col-md-2">
+                  <div class="col-md-6">
                     <div class="form-group">
                       <label for="exampleDatepicker1"> ฉบับที่ (Issue) </label>
                       <input type="text" class="form-control" name="publish_no" value="{{ $data->publish_no }}">
                     </div>
                   </div>
-                  <div class="col-md-2">
+                </div>
+
+                <div class="row">
+                  <div class="col-md-4">
                     <div class="form-group">
                       <label for="exampleDatepicker1"> เล่มที่ (Volume) </label>
                       <input type="text" class="form-control" name="publish_volume" value="{{ $data->publish_volume }}">
                     </div>
                   </div>
-
-                  <div class="col-md-2">
+                  <div class="col-md-4">
                     <div class="form-group">
                       <label for="exampleInput1"> หน้าแรก (First Page) </label>
                       <input type="text" class="form-control" name="publish_firstpage" value="{{ $data->publish_firstpage }}" maxlength="3">
                     </div>
                   </div>
-
-                  <div class="col-md-2">
+                  <div class="col-md-4">
                     <div class="form-group">
                       <label for="exampleInput1"> หน้าสุดท้าย (Last Page) </label>
                       <input type="text" class="form-control" name="publish_firstpage" value="{{ $data->publish_lastpage }}" maxlength="3">
                     </div>
                   </div>
-
                 </div>
 
-
                 <div class="row">
-                  <div class="col-md-4">
+                  <div class="col-md-6">
                     <div class="form-group">
                       <label for="exampleInput1"> เลข DOI (ถ้ามี) </label>
                       <input type="text" class="form-control" name="doi_number" value="{{ $data->doi_number }}">
                     </div>
                   </div>
-                  <div class="col-md-4">
+                  <div class="col-md-6">
                     <div class="form-group">
                       <label for="exampleSelect1"> การมีส่วนร่วมในบทความ </label>
-                      <!-- <input type="text" class="form-control" name="contribute" value="{{-- $data->contribute --}}"> -->
-
                       <select class="form-control" name="contribute">
                         @foreach ($datay as $key => $value)
                           <option value="{{ $key }}" {{ $data->contribute == $key ? 'selected' : '' }}> {{ $value }} </option>
                         @endforeach
                       </select>
-
                     </div>
                   </div>
-                  <div class="col-md-4">
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6">
                     <div class="form-group">
                       <label for="exampleSelect1"> ท่านเป็นผู้รับผิดชอบบทความ (Correspondence) </label>
                       <select class="form-control" name="corres">
@@ -178,15 +177,12 @@
                       </select>
                     </div>
                   </div>
-                </div>
-
-                  <div class="row">
-                    <div class="col-md-12">
-                      <div class="form-group">
-                        <label for="exampleSelect1"> บทความนี้เป็นผลจากโครงการวิจัย </label>
-                        <input type="text" class="form-control" name="pro_id" value="{{ $data->pro_name_en }}" disabled>
-                      </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="exampleSelect1"> บทความนี้เป็นผลจากโครงการวิจัย </label>
+                      <input type="text" class="form-control" name="pro_id" value="{{ $data->pro_name_en }}" disabled>
                     </div>
+                  </div>
                 </div>
 
                 <div class="row" >

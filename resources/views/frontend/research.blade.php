@@ -76,7 +76,7 @@
         <div class="col-md-4 mx-auto">
           <div class="small-box bg-success mx-auto">
             <div class="inner">
-              <h3> {{ empty($Total_research)?'0': $Total_research }} </h3>
+              <h3> {{ empty($Total_research)?'0': $Total_research }} โครงการ</h3>
               <br>
               <p> โครงการวิจัยทั้งหมด </p>
             </div>
@@ -90,7 +90,7 @@
         <div class="col-md-4 mx-auto">
           <div class="small-box bg-info mx-auto">
             <div class="inner">
-              <h3> {{ empty($Total_master_pro)?'0': $Total_master_pro }} </h3>
+              <h3> {{ empty($Total_master_pro)?'0': $Total_master_pro }} โครงการ</h3>
               <br>
               <p> โครงการวิจัยที่เป็นผู้วิจัยหลัก</p>
             </div>
@@ -104,7 +104,7 @@
         <div class="col-md-4 mx-auto">
           <div class="small-box bg-danger mx-auto">
             <div class="inner">
-              <h3> {{ empty($Total_publish_pro)?'0': $Total_publish_pro }} </h3>
+              <h3> {{ empty($Total_publish_pro)?'0': $Total_publish_pro }} โครงการ</h3>
               <br>
               <p> โครงการวิจัยที่ตีพิมพ์ทั้งหมด </p>
             </div>

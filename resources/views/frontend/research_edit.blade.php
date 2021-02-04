@@ -67,7 +67,7 @@
           <div class="card">
             <div class="card shadow" style="background-color: #ff851b;">
               <div class="card-header">
-                <h5><b> แก้ไขข้อมูลโครงการวิจัย </b></h5>
+                <h5><b> แก้ไข (ข้อมูลโครงการวิจัย) </b></h5>
               </div>
             </div>
 

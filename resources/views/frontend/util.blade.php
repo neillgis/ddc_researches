@@ -75,9 +75,9 @@
                 <div class="small-box bg-red">
                   <div class="inner">
                     <!-- เรียกจาก db_utilization -> โดย count id (All Record) --------->
-                    <h5> โครงการที่นำไปใช้ประโยชน์ทั้งหมด </h5>
+                    <h3> {{ empty($Total_util)?'0': $Total_util }} โครงการ </h3>
                     <br>
-                    <h4> {{ empty($Total_util)?'0': $Total_util }} โครงการ </h4>
+                    <p> โครงการที่นำไปใช้ประโยชน์ทั้งหมด </p>
                   </div>
                   <div class="icon">
                     <i class="fas fa-share-square"> </i>
@@ -89,9 +89,9 @@
                 <div class="small-box bg-green">
                   <div class="inner">
                     <!-- เรียกจาก db_utilization -> โดย count id -> util_type = เชิงนโยบาย --------->
-                    <h5> เชิงนโยบาย </h5>
+                    <h3> {{ empty($Total_policy_util)?'0': $Total_policy_util }} โครงการ </h3>
                     <br>
-                    <h4> {{ empty($Total_policy_util)?'0': $Total_policy_util }} โครงการ </h4>
+                    <p> เชิงนโยบาย </p>
                   </div>
                   <div class="icon">
                     <i class="ion fas fa-chalkboard-teacher"></i>
@@ -103,9 +103,9 @@
                 <div class="small-box bg-green">
                   <div class="inner">
                     <!-- เรียกจาก db_utilization -> โดย count id -> util_type = เชิงวิชาการ --------->
-                    <h5> เชิงวิชาการ </h5>
+                    <h3> {{ empty($Total_academic_util)?'0': $Total_academic_util }} โครงการ </h3>
                     <br>
-                    <h4> {{ empty($Total_academic_util)?'0': $Total_academic_util }} โครงการ </h4>
+                    <p> เชิงวิชาการ </p>
                   </div>
                   <div class="icon">
                     <i class="fa fa-university"></i>
@@ -117,9 +117,9 @@
                 <div class="small-box bg-green">
                   <div class="inner">
                     <!-- เรียกจาก db_utilization -> โดย count id -> util_type = เชิงสังคม/ชุมชน --------->
-                    <h5> เชิงสังคม/ชุมชน </h5>
+                    <h3> {{ empty($Total_social_util)?'0': $Total_social_util }} โครงการ </h3>
                     <br>
-                    <h4> {{ empty($Total_social_util)?'0': $Total_social_util }} โครงการ </h4>
+                    <p> เชิงสังคม/ชุมชน </p>
                   </div>
                   <div class="icon">
                     <i class="ion fas fa-users"></i>
@@ -131,9 +131,9 @@
                 <div class="small-box bg-green">
                   <div class="inner">
                     <!-- เรียกจาก db_utilization -> โดย count id -> util_type = เชิงพาณิชย์ --------->
-                    <h5> เชิงพาณิชย์ </h5>
+                    <h3> {{ empty($Total_commercial_util)?'0': $Total_commercial_util }} โครงการ </h3>
                     <br>
-                    <h4> {{ empty($Total_commercial_util)?'0': $Total_commercial_util }} โครงการ </h4>
+                    <p> เชิงพาณิชย์ </p>
                   </div>
                   <div class="icon">
                     <i class="ion fas fa-donate"></i>
@@ -159,8 +159,8 @@
                   @csrf
 
               <div class="card-body">
-              <div class="row">
-                  <div class="col-md-6 mx-auto">
+                <div class="row">
+                  <div class="col-md-6">
                     <div class="form-group">
                       <b><lebel for="exampleSelect1"> ชื่อโครงการ (TH-ENG) <font color="red"> * </font></lebel></b>
                       <!-- SELECT ดึงข้อมูลชื่อโครงการมาจาก -> db_research_project Table -->
@@ -172,8 +172,7 @@
                       </select>
                     </div>
                   </div>
-
-                  <div class="col-md-6 mx-auto">
+                  <div class="col-md-6">
                     <div class="form-group">
                       <b><lebel for="util_type"> ประเภทการนำไปใช้ประโยชน์ <font color="red"> * </font></lebel></b>
                       <select class="form-control" name="util_type" required>
@@ -184,17 +183,20 @@
                       </select>
                     </div>
                   </div>
-              </div>
+                </div>
 
-              <div class="row" >
-                  <div class="col-md-6 mx-auto">
+                <div class="row">
+                  <div class="col-md-12">
                     <div class="form-group">
                       <label for="exampleInput1"> คำอธิบายการนำไปใช้ประโยชน์ </label>
-                      <textarea class="form-control" name="util_descrip" rows="4" cols="30" placeholder="ข้อความไม่เกิน 200 ตัวอักษร"></textarea>
+                      <textarea class="form-control" name="util_descrip" rows="3" cols="30" placeholder="ข้อความไม่เกิน 200 ตัวอักษร"></textarea>
                     </div>
                   </div>
-                  <div class="col-md-6 mx-auto">
-                    <b><lebel for="expInputFile"> อัพโหลดไฟล์ : <font color="red"> การนำไปใช้ประโยชน์ *</font></lebel></b>
+                </div>
+
+                <div class="row" >
+                  <div class="col-md-12">
+                    <b><lebel for="expInputFile"> อัพโหลดไฟล์ : การนำไปใช้ประโยชน์.pdf <font color="red"> * </font></lebel></b>
                     <div class="input-group">
                       <div class="custom-file">
                         <input type="file" class="custom-file-input" name="files" required>
@@ -202,7 +204,7 @@
                       </div>
                     </div>
                   </div>
-              </div>
+                </div>
               </div>
 
               <div class="card-footer">
