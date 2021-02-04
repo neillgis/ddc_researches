@@ -30,6 +30,7 @@
       <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
         <!-- Add icons to the links using the .nav-icon class
              with font-awesome or any other icon font library -->
+
           @if(Auth::hasRole('manager') || Auth::hasRole('admin'))
             <li class="nav-item">
              <a class="nav-link {{ Active::check('summary_form') }}" href="{{ route('page.summary') }}" >
@@ -38,6 +39,13 @@
              </a>
             </li>
           @endif
+
+            <li class="nav-item ">
+              <a class="nav-link {{ Active::check('profile') }} " href="{{ route('page.profile') }}" >
+                <i class="nav-icon fas fa-user-alt"></i>
+                <p> ข้อมูลบุคคล / นักวิจัย </p>
+              </a>
+            </li>
 
              <li class="nav-item ">
                <a class="nav-link {{ Active::check('research_form') }} " href="{{ route('page.research') }}" >
