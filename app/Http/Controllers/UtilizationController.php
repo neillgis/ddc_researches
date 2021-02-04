@@ -235,7 +235,7 @@ class UtilizationController extends Controller
     $edit_1 = DB::table('db_utilization')
                 -> join ('db_research_project', 'db_utilization.pro_id', '=', 'db_research_project.id')
                 -> select ('db_utilization.id','db_utilization.util_type','db_utilization.files',
-                           'db_utilization.verified',
+                           'db_utilization.verified','db_utilization.util_descrip',
                            'db_research_project.pro_name_th','db_research_project.pro_name_en',
                            'db_research_project.users_id','db_research_project.users_name')
                 -> where ('db_utilization.id' , $request->id)
@@ -264,6 +264,7 @@ class UtilizationController extends Controller
           "users_id"          => Auth::user()->preferred_username,
           "pro_id"            => $request->pro_id,
           "util_type"         => $request->util_type,
+          "util_descrip"      => $request->util_descrip,
           "files"             => $request->files,
           "created_at"        => date('Y-m-d H:i:s')
         ];
@@ -300,7 +301,9 @@ class UtilizationController extends Controller
     $update = DB::table('db_utilization')
                   -> where ('id',$request->id)
                   -> update ([
-                            'util_type'       => $request->util_type
+                            'util_type'       => $request->util_type,
+                            "util_descrip"      => $request->util_descrip
+
                             ]);
 
 
@@ -323,7 +326,7 @@ class UtilizationController extends Controller
       if(!$query){
         return view('error-page.error404');
       }
-      
+
       $path = $query->files;
 
       if(Storage::disk('util')->exists($path)) {

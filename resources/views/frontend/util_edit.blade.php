@@ -98,7 +98,6 @@
                     <div class="form-group">
                       <label for="exampleSelect1"> ชื่อโครงการ (TH-ENG) </label>
                       <input type="hidden" class="form-control" name="id" value="{{ $edit_data->id }}">
-
                       <input type="text" class="form-control" name="project_fullname" value="{{ $edit_data->pro_name_th." ".$edit_data->pro_name_en }}" readonly>
                     </div>
                   </div>
@@ -117,6 +116,15 @@
                           </option>
                         @endforeach
                       </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6 mx-auto">
+                    <div class="form-group">
+                      <label for="exampleInput1"> คำอธิบายการนำไปใช้ประโยชน์ </label>
+                      <textarea class="form-control" name="util_descrip" rows="4" cols="30">{{ $edit_util->util_descrip }}</textarea>
                     </div>
                   </div>
                 </div>
