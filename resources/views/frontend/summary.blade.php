@@ -185,7 +185,7 @@
                         <td class="text-center"> {{ $value->count_publish_pro }} </td>
                         <td class="text-center"> {{ $value->count_journal_pro }} </td>
                         <td class="text-center"> {{ $value->count_policy_util }} </td>
-                        <td class="text-center"> # </td>
+                        <td class="text-center">  </td>
 
                         <!-- จัดการข้อมูล -->
                         <td class="td-actions text-right text-nowrap" href="#">

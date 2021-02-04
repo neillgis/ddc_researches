@@ -168,7 +168,7 @@
 
                   <div class="col-md-6">
                     <div class="form-group">
-                      <label for="exampleSelect1"> จำนวนผู้ร่วมวิจัย <font color="red"> * </font></label>
+                      <label for="exampleSelect1"> จำนวนผู้ร่วมวิจัย : ไม่รวมผู้วิจัยหลักและที่ปรึกษาโครงการ <font color="red"> * </font></label>
                       <!-- SELECT option ดึงมาจากฐานข้อมูล db_research_project -->
                       <select class="form-control" name="pro_co_researcher" required>
                         <option value="" disabled="true" selected="true" >กรุณาเลือก</option>
@@ -181,23 +181,28 @@
                 </div>
 
                 <div class="row">
-                  <div class="col-md-4">
+                  <div class="col-md-6">
                     <div class="form-group">
-                      <label for="exampleDatepicker1"> ปีที่เริ่มโครงการ <font color="red"> * </font></label>
+                      <label for="exampleDatepicker1"> ปีที่เริ่มโครงการ : วันที่ทำสัญญากับแหล่งทุนหรือวันที่ได้รับอนุมัติจากผู้บริหารของหน่วยงาน
+                                                                      <br> กรณีจำวัน เดือน ไมได้ ให้แทนที่ด้วย 01/01 <font color="red"> * </font></label>
                       <input type="text" class="form-control" id="datepicker1" placeholder="กรุณาเลือก ปี/เดือน/วัน"
                              name="pro_start_date" autocomplete="off" required>
                     </div>
                   </div>
 
-                  <div class="col-md-4">
+                  <div class="col-md-6">
                     <div class="form-group">
-                      <label for="exampleDatepicker1"> ปีที่เสร็จสิ้นโครงการ <font color="red"> * </font></label>
+                      <label for="exampleDatepicker1"> ปีที่เสร็จสิ้นโครงการ : วันที่ส่งรายงานฉบับสมบูรณ์
+                                                                         <br> กรณีจำวัน เดือน ไมได้ ให้แทนที่ด้วย 31/12 <font color="red"> * </font></label>
                       <input type="text" class="form-control" id="datepicker2" placeholder="กรุณาเลือก ปี/เดือน/วัน"
                              name="pro_end_date" autocomplete="off" required>
                     </div>
                   </div>
+                </div>
 
-                  <div class="col-md-4">
+
+                <div class="row">
+                  <div class="col-md-6">
                     <div class="form-group">
                       <label for="exampleSelect1"> โครงการได้ตีพิมพ์ <font color="red"> * </font></label>
                       <!-- SELECT option ดึงมาจากฐานข้อมูล db_research_project -->
@@ -209,10 +214,8 @@
                       </select>
                     </div>
                   </div>
-                </div>
 
-                <div class="row" >
-                  <div class="col-md-12">
+                  <div class="col-md-6">
                     <div class="form-group">
                       <label for="expInputFile"> อัพโหลดไฟล์ : รายงานวิจัยฉบับสมบูรณ์.pdf <font color="red"> * </font></label>
 
@@ -227,12 +230,12 @@
                 </div>
                 <!-- <br> -->
 
-                <div class="label">
+                <!-- <div class="label">
                   <h4><b>หมายเหตุ : </b></h4>
-                  <label> * ปีที่เริ่มโครงการ : &nbsp;&nbsp;<font color="red"> กรณีไม่ทราบ *กรุณาใส่ ปีที่เริ่มทำ/01/01</font></label>
+                  <label> * ปีที่เริ่มโครงการ : &nbsp;&nbsp; วันที่ทำสัญญากับแหล่งทุนหรือวันที่ได้รับอนุมัติจากผู้บริหารของหน่วยงาน <font color="red">กรณีจำวัน เดือน ไมได้ ให้แทนที่ด้วย 01/01</font></label>
                   <br>
-                  <label> ** ปีที่เสร็จสิ้นโครงการ : &nbsp;&nbsp;<font color="red"> กรณีไม่ทราบ *กรุณาใส่ ปีที่เสร็จสิ้น/12/31</font></label>
-                </div>
+                  <label> ** ปีที่เสร็จสิ้นโครงการ : &nbsp;&nbsp; วันที่ส่งรายงานฉบับสมบูรณ์กรณีไม่ทราบ <font color="red">กรณีจำวัน เดือน ไมได้ ให้แทนที่ด้วย 31/12</font></label>
+                </div> -->
               </div>
 
               <div class="card-footer">
