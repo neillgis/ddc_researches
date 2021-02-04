@@ -66,7 +66,7 @@
       <div class="col-md-5">
         <div class="card shadow" id="rcorners3">
           <div class="card-header" style="background-color: #FFD800;">
-            <h4><i class="fas fa-user-circle"></i>&nbsp; <b>ข้อมูลส่วนบุคคล</b> </h4>
+            <h4><i class="fas fa-user-alt"></i>&nbsp; <b>ข้อมูลส่วนบุคคล</b> </h4>
           </div>
 
           <!-- <form method="POST" action="{{-- route('research.insert') --}}"> -->
@@ -119,7 +119,7 @@
         <div class="col-md-7">
           <div class="card shadow card-success" id="rcorners3">
             <div class="card-header" style="background-color: #587498;">
-              <h4><i class="fas fa-user-circle"></i>&nbsp; <b>หน่วยงาน / สังกัด</b> </h4>
+              <h4><i class="fas fa-hotel"></i>&nbsp; <b>หน่วยงาน / สังกัด</b> </h4>
           </div>
 
           <div class="card-body">
@@ -141,7 +141,7 @@
 
         <div class="card shadow card-danger" id="rcorners3">
           <div class="card-header" style="background-color: #E86850;">
-            <h4><i class="fas fa-user-circle"></i>&nbsp; <b>ข้อมูลนักวิจัย</b> </h4>
+            <h4><i class="fas fa-id-card-alt"></i>&nbsp; <b>ข้อมูลนักวิจัย</b> </h4>
 
           </div>
           <div class="card-body">
