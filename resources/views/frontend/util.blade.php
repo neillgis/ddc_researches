@@ -96,8 +96,13 @@
                   <div class="icon">
                     <i class="ion fas fa-chalkboard-teacher"></i>
                   </div>
+                    <a class="one small-box-footer" href="#" id="modal">
+                      คำอธิบายรายละเอียด
+                      <i class="fas fa-arrow-circle-right"></i>
+                    </a>
                 </div>
               </div>
+
 
               <div class="col-md-3 mx-auto">
                 <div class="small-box bg-green">
@@ -110,6 +115,10 @@
                   <div class="icon">
                     <i class="fa fa-university"></i>
                   </div>
+                    <a class="two small-box-footer" href="#" id="modal">
+                      คำอธิบายรายละเอียด
+                      <i class="fas fa-arrow-circle-right"></i>
+                    </a>
                 </div>
               </div>
 
@@ -124,6 +133,10 @@
                   <div class="icon">
                     <i class="ion fas fa-users"></i>
                   </div>
+                    <a class="three small-box-footer" href="#" id="modal">
+                      คำอธิบายรายละเอียด
+                      <i class="fas fa-arrow-circle-right"></i>
+                    </a>
                 </div>
               </div>
 
@@ -138,6 +151,10 @@
                   <div class="icon">
                     <i class="ion fas fa-donate"></i>
                   </div>
+                    <a class="four small-box-footer" href="#" id="modal">
+                      คำอธิบายรายละเอียด
+                      <i class="fas fa-arrow-circle-right"></i>
+                    </a>
                 </div>
               </div>
             </div>
@@ -330,16 +347,41 @@
 <!-- SCRIPT ------------------------------------------------------------------->
 @section('js-custom-script')
 
+<!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script> -->
+<script src="{{ asset('bower_components/admin-lte/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
 
-<!-- START ALERT บันทึกข้อมูลสำเร็จ  -->
-<!-- <script>
-    Swal.fire({
-        icon: 'success',
-        title: 'บันทึกข้อมูลเรียบร้อยแล้ว',
-        showConfirmButton: false,
-        timer: 2200
-    })
-</script> -->
+<script type="text/javascript">
+  document.querySelector(".one").addEventListener('click', function(){
+    Swal.fire("การนำไปใช้ประโยชน์เชิงนโยบาย",
+    "มิตินโยบาย หมายถึง การนำข้อมูลผลงานวิจัย มาใช้ประกอบการตัดสินใจเชิงนโยบาย หรือ เป็นแนวทางในการแก้ไขประเด็นพัฒนาสำคัญและปัญหาเร่งด่วน ในเชิงนโยบายระดับประเทศ ระดับภูมิภาค ระดับจังหวัดระดับท้องถิ่นหรือระดับหน่วยงาน"
+    );
+  });
+</script>
+
+<script type="text/javascript">
+  document.querySelector(".two").addEventListener('click', function(){
+    Swal.fire("มิติเชิงวิชาการ",
+    "มิติวิชาการ หมายถึง การถูกอ้างอิง (citation) บทความวิจัยซึ่งได้รับการตีพิมพ์ในวารสารวิชาการระดับนานาชาติ ซึ่งมี peer review"
+    );
+  });
+</script>
+
+<script type="text/javascript">
+  document.querySelector(".three").addEventListener('click', function(){
+    Swal.fire("มิติเชิงสังคม/ชุมชน",
+    "มิติเชิงสังคม/ชุมชน หมายถึง การถ่ายทอดความรู้ให้ชุมชน ท้องถิ่น องค์กร (ซึ่งมิใช่หน่วยงานต้นสังกัดของนักวิจัย/หน่วยงานให้ทุน) หรือการจัดกิจกรรม ที่แสดงให้เห็นถึงการใช้ประโยชน์และสามารถแสดงผลการเปลี่ยนแปลงที่เกิดขึ้นต่อชุมชน ท้องถิ่นหรือองค์กร"
+    );
+  });
+</script>
+
+<script type="text/javascript">
+  document.querySelector(".four").addEventListener('click', function(){
+    Swal.fire("มิติเชิงพาณิชย์",
+    "มิติเชิงพาณิชย์ หมายถึง การนำผลงานวิจัยไปพัฒนาหรือปรับปรุงกระบวนการ หรือผลิตและจำหน่าย ในภาคการผลิตและอุตสาหกรรม"
+    );
+  });
+</script>
+
 
 @if(Session::get('message'))
  <?php Session::forget('message'); ?>

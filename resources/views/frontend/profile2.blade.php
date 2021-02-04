@@ -65,7 +65,7 @@
       <div class="row mb-2">
         <div class="col-sm-12">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item active"> ข้อมูลบุคคล / นักวิจัย </li>
+            <li class="breadcrumb-item active"> ข้อมูลโครงการวิจัย </li>
           </ol>
         </div>
       </div>
@@ -76,17 +76,59 @@
 
 <!-- Main content -->
 <section class="content">
-  <div class="container-fluid">
+  <div class="container">
+
+    <form>
 
     <div class="row">
       <div class="col-md-6">
-        <div class="card shadow" id="rcorners3">
-          <div class="card-header">
-            <h4><i class="fas fa-user-circle"></i> ข้อมูลบุคคล / นักวิจัย </h4>
-          </div>
+        <div class="card shadow card-pink" id="rcorners3">
+          <!-- <div class="card-header">
+            <h4>Quick Example</h4>
+          </div> -->
 
-          <form>
             <div class="card-body">
+              <div class="card card-widget widget-user" id="rcorners3">
+
+              <div class="widget-user-header" id="rcorners3" style="background-color: #FEF6EB;">
+                <!-- <h3 class="widget-user-username">Alexander Pierce</h3>
+                <h5 class="widget-user-desc">Founder &amp; CEO</h5> -->
+              </div>
+
+              <div class="widget-user-image">
+                <img class="img-circle elevation-4" src="../dist/img/user1-128x128.jpg" alt="User Avatar" style="width:150px">
+              </div>
+
+              <div class="card-footer">
+                <!-- <div class="row">
+                  <div class="col-sm-4 border-right">
+                    <div class="description-block">
+                      <h5 class="description-header">3,200</h5>
+                      <span class="description-text">SALES</span>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-4 border-right">
+                    <div class="description-block">
+                      <h5 class="description-header">13,000</h5>
+                      <span class="description-text">FOLLOWERS</span>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-4">
+                    <div class="description-block">
+                      <h5 class="description-header">35</h5>
+                      <span class="description-text">PRODUCTS</span>
+                    </div>
+                  </div>
+                </div> -->
+
+              </div>
+
+            </div>
+            <br>
+
+
               <div class="form-group">
                 <i class="far fa-user-circle"></i>
                 <label for="exampleInputEmail1">Email address</label>
@@ -113,21 +155,15 @@
                 <label class="form-check-label" for="exampleCheck1">Check me out</label>
               </div>
             </div>
-            <!-- /.card-body -->
 
             <div class="card-footer">
               <button type="submit" class="btn btn-primary">Submit</button>
             </div>
-          </form>
         </div>
-
-
       </div>
-      <!--/.col (left) -->
-      <!-- right column -->
+
       <div class="col-md-6">
-        <!-- Form Element sizes -->
-          <div class="card shadow card-success" id="rcorners3">
+        <div class="card card-success">
           <div class="card-header">
             <h3 class="card-title">Different Height</h3>
           </div>
@@ -138,32 +174,17 @@
             <br>
             <input class="form-control form-control-sm" type="text" placeholder=".form-control-sm">
           </div>
-          <!-- /.card-body -->
-        </div>
-        <br>
-        <!-- /.card -->
-
-        <div class="card shadow card-danger" id="rcorners3">
-          <div class="card-header">
-            <h3 class="card-title">Different Width</h3>
-          </div>
-          <div class="card-body">
-            <div class="row">
-              <div class="col-3">
-                <input type="text" class="form-control" placeholder=".col-3">
-              </div>
-              <div class="col-4">
-                <input type="text" class="form-control" placeholder=".col-4">
-              </div>
-              <div class="col-5">
-                <input type="text" class="form-control" placeholder=".col-5">
-              </div>
-            </div>
-          </div>
         </div>
       </div>
+      </div>
+
+
+      
+
+
+    </form>
+
     </div>
-  </div>
 </section>
 
 
@@ -171,13 +192,53 @@
 
 @stop('contents')
 
-
-@section('js-custom-script')
-
-@stop('js-custom-script')
-
-
-
 @section('js-custom')
+    <script>
+        $(document).ready(function() {
+            $.ajax({
+                url: "https://hr.ddc.moph.go.th/api/v2/employee/{{ Auth::user()->preferred_username }}",
+                type: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "bearer {{ KeycloakWeb::retrieveToken()['access_token'] }}"
+                },
+                success: function(result) {
+                    //console.log(result)
 
-@stop('js-custom')
+                    $("#employee_id").text(result.employeeId);
+                    $("#cid").text(result.idCard);
+                    $("#dept_id").text(result.deptId + '|'+result.deptName);
+                    $("#edu_class").text(result.educationLevel);
+                    $("#prefix").text(result.title);
+                    $("#fname_th").text(result.fname);
+                    $("#lname_th").text(result.lname);
+                    $("#fname_en").text(result.efname);
+                    $("#lname_en").text(result.elname);
+                    $("#gender").text(result.sex);
+                    $("#birthdate").text(result.birthday);
+                    $("#position").text(result.position);
+                    $("#tel").text(result.telephone);
+                    $("#email").text(result.email);
+                }
+            });
+
+
+            $.ajax({
+                url: "https://hr.ddc.moph.go.th/api/v2/employee/pic/{{ Auth::user()->preferred_username }}",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": "bearer {{ KeycloakWeb::retrieveToken()['access_token'] }}"
+                },
+                xhrFields: {
+                    responseType: 'blob'
+                },
+                success (data) {
+                    const url = window.URL || window.webkitURL;
+                    const src = url.createObjectURL(data);
+                    $('#image').attr('src', src);
+                }
+            });
+        });
+
+    </script>
+@endsection
