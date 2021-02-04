@@ -74,9 +74,9 @@
         <div class="col-md-6 mx-auto">
           <div class="small-box bg-info mx-auto">
             <div class="inner">
-              <h4> บทความที่เป็นผู้นิพนธ์หลัก </h4>
+              <h5> บทความที่เป็นผู้นิพนธ์หลัก </h5>
               <br>
-              <h3> {{ empty($Total_master_jour)?'0': $Total_master_jour }} โครงการ </h3>
+              <h4> {{ empty($Total_master_jour)?'0': $Total_master_jour }} โครงการ </h4>
             </div>
             <div class="icon">
               <i class="fas fa-user-graduate"></i>
@@ -88,9 +88,9 @@
         <div class="col-md-6 mx-auto">
           <div class="small-box bg-danger mx-auto">
             <div class="inner">
-              <h4> บทความตีพิมพ์ทั้งหมด </h4>
+              <h5> บทความตีพิมพ์ทั้งหมด </h5>
               <br>
-              <h3> {{ empty($Total_journal)?'0': $Total_journal }} โครงการ </h3>
+              <h4> {{ empty($Total_journal)?'0': $Total_journal }} โครงการ </h4>
             </div>
             <div class="icon">
               <i class="fas fa-cubes"></i>
@@ -124,60 +124,69 @@
                 <div class="row">
                   <div class="col-md-6">
                     <div class="form-group">
-                      <label for="exampleInput1"> ชื่อบทความ (ENG) </label>
-                      <input type="text" class="form-control" name="article_name_en" required>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="form-group">
                       <label for="exampleInput1"> ชื่อบทความ (TH) </label>
                       <input type="text" class="form-control" name="article_name_th" >
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="exampleInput1"> ชื่อบทความ (ENG) </label>
+                      <input type="text" class="form-control" name="article_name_en">
                     </div>
                   </div>
                 </div>
 
                 <div class="row">
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="exampleInput1"> ชื่อวารสาร (ENG) </label>
-                      <input type="text" class="form-control" name="journal_name_en" required>
-                    </div>
-                  </div>
                   <div class="col-md-6">
                     <div class="form-group">
                       <label for="exampleInput1"> ชื่อวารสาร (TH) </label>
                       <input type="text" class="form-control" name="journal_name_th" >
                     </div>
                   </div>
+
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="exampleInput1"> ชื่อวารสาร (ENG) </label>
+                      <input type="text" class="form-control" name="journal_name_en">
+                    </div>
+                  </div>
                 </div>
 
                 <div class="row">
-                  <div class="col-md-3">
+                  <div class="col-md-4">
                     <div class="form-group">
-                      <label for="exampleInput1"> ปีที่พิมพ์ (year) </label>
+                      <label for="exampleInput1"> ปีที่พิมพ์ (Year) <font color="red"> * </font></label>
                       <input type="text" class="form-control" placeholder="ปี ค.ศ." name="publish_years"
                              id="datepicker4" autocomplete="off" required>
                     </div>
                   </div>
-                  <div class="col-md-3">
+                  <div class="col-md-2">
                     <div class="form-group">
-                      <label for="exampleInput1"> ฉบับที่ (issue) </label>
+                      <label for="exampleInput1"> ฉบับที่ (Issue) <font color="red"> * </font></label>
                       <input type="text" class="form-control" name="publish_no" maxlength="2"
                              onKeyUp="if(isNaN(this.value)){ alert('กรุณากรอกตัวเลขเท่านั้น !'); this.value='';}" required>
                     </div>
                   </div>
-                  <div class="col-md-3">
+                  <div class="col-md-2">
                     <div class="form-group">
-                      <label for="exampleInput1"> เล่มที่ (volume)  </label>
+                      <label for="exampleInput1"> เล่มที่ (Volume) <font color="red"> * </font></label>
                       <input type="text" class="form-control" name="publish_volume" maxlength="2"
                              onKeyUp="if(isNaN(this.value)){ alert('กรุณากรอกตัวเลขเท่านั้น !'); this.value='';}" required>
                     </div>
                   </div>
-                  <div class="col-md-3">
+                  <div class="col-md-2">
                     <div class="form-group">
-                      <label for="exampleInput1"> หน้า (no) </label>
-                      <input type="text" class="form-control" placeholder="xxxx" name="publish_page" maxlength="3"
-                             onKeyUp="if(isNaN(this.value)){ alert('กรุณากรอกตัวเลขเท่านั้น !'); this.value='';}">
+                      <label for="exampleInput1"> หน้าแรก (First Page) <font color="red"> * </font></label>
+                      <input type="text" class="form-control" placeholder="xxxx" name="publish_firstpage" maxlength="3"
+                             onKeyUp="if(isNaN(this.value)){ alert('กรุณากรอกตัวเลขเท่านั้น !'); this.value='';}" required>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="form-group">
+                      <label for="exampleInput1"> หน้าสุดท้าย (Last Page) <font color="red"> * </font></label>
+                      <input type="text" class="form-control" placeholder="xxxx" name="publish_lastpage" maxlength="3"
+                             onKeyUp="if(isNaN(this.value)){ alert('กรุณากรอกตัวเลขเท่านั้น !'); this.value='';}" required>
                     </div>
                   </div>
                 </div>
@@ -185,13 +194,13 @@
                 <div class="row">
                   <div class="col-md-3">
                     <div class="form-group">
-                      <label for="exampleInput1"> เลข DOI </label>
-                      <input type="text" class="form-control" name="doi_number" required>
+                      <label for="exampleInput1"> เลข DOI (ถ้ามี) </label>
+                      <input type="text" class="form-control" name="doi_number">
                     </div>
                   </div>
                   <div class="col-md-3">
                     <div class="form-group">
-                      <label for="exampleSelect1"> การมีส่วนร่วมในบทความ </label>
+                      <label for="exampleSelect1"> การมีส่วนร่วมในบทความ <font color="red"> * </font></label>
                       <!-- SELECT option ดึงมาจาก ARRAY->contribute -->
                       <select class="form-control" name="contribute" required>
                         <option value="" disabled="true" selected="true" >กรุณาเลือก</option>
@@ -203,7 +212,7 @@
                   </div>
                   <div class="col-md-3">
                     <div class="form-group">
-                      <label for="exampleSelect1"> ท่านเป็นผู้รับผิดชอบบทความ </label>
+                      <label for="exampleSelect1"> ท่านเป็นผู้รับผิดชอบบทความ (Correspondence) <font color="red"> * </font></label>
                       <!-- SELECT option ดึงมาจาก ARRAY->corres -->
                       <select class="form-control" name="corres" required>
                         <option value="" disabled="true" selected="true" >กรุณาเลือก</option>
@@ -215,10 +224,10 @@
                   </div>
                   <div class="col-md-3">
                     <div class="form-group">
-                      <label for="exampleSelect1"> บทความที่เป็นผลจากโครงการวิจัย </label>
+                      <label for="exampleSelect1"> บทความนี้เป็นผลจากโครงการวิจัย <font color="red"> * </font></label>
 
                       <!-- SELECT Table -> db_research_project -->
-                      <select class="form-control" name="pro_id">
+                      <select class="form-control" name="pro_id" required>
                           <option value="" disabled="true" selected="true"> -- กรุณาเลือก -- </option>
                         @foreach ($journal_res as $value)
                           <option value = "{{ $value->id }}"> {{ $value->pro_name_en }} </option>
@@ -229,10 +238,20 @@
                   </div>
                 </div>
 
+                <!-- URL ที่อยู่ออนไลน์ของบทความ -->
                 <div class="row" >
                   <div class="col-md-12">
                     <div class="form-group">
-                      <label for="expInputFile"> อัพโหลดไฟล์ :<font color="red"> การตีพิมพ์วารสาร </font></label>
+                      <label for="exampleInput1"> URL ที่อยู่ออนไลน์ของบทความ (ถ้ามี) </label>
+                      <input type="text" class="form-control" name="url_journal">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row" >
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <label for="expInputFile"> อัพโหลดไฟล์ :<font color="red"> บทคัดย่อ (Abstracts) * </font></label>
                       <div class="input-group">
                         <div class="custom-file">
                           <input type="file" class="custom-file-input" name="files" required>

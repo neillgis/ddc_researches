@@ -120,7 +120,7 @@ class JournalController extends Controller
                                   ->where('users_id', Auth::user()->preferred_username)
                                   ->get()
                                   ->count();
-                                  
+
       }else {
         $Total_journal = journal::select('id', 'users_id')
                                   ->where('users_id', Auth::user()->preferred_username)
@@ -181,7 +181,10 @@ class JournalController extends Controller
                         'publish_years',
                         'publish_no',
                         'publish_volume',
-                        'publish_page',
+                        // 'publish_page',
+                        'publish_firstpage',
+                        'publish_lastpage',
+                        'url_journal',
                         'doi_number',
                         'contribute',
                         'corres'
@@ -234,7 +237,10 @@ class JournalController extends Controller
       "publish_years"     => $request->publish_years,
       "publish_no"        => $request->publish_no,
       "publish_volume"    => $request->publish_volume,
-      "publish_page"      => $request->publish_page,
+      // "publish_page"      => $request->publish_page,
+      "publish_firstpage" => $request->publish_firstpage,
+      "publish_lastpage"  => $request->publish_lastpage,
+      "url_journal"       => $request->url_journal,
       "doi_number"        => $request->doi_number,
       "contribute"        => $request->contribute,
       "corres"            => $request->corres,
@@ -282,6 +288,9 @@ class JournalController extends Controller
                             "publish_no"        => $request->publish_no,
                             "publish_volume"    => $request->publish_volume,
                             "publish_page"      => $request->publish_page,
+                            "publish_firstpage" => $request->publish_firstpage,
+                            "publish_lastpage"  => $request->publish_lastpage,
+                            "url_journal"       => $request->url_journal,
                             "doi_number"        => $request->doi_number,
                             "contribute"        => $request->contribute,
                             "corres"            => $request->corres,
