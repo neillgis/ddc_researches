@@ -79,6 +79,7 @@
               <div class="col-md-12 mx-auto">
                 <div class="small-box bg-red">
                   <div class="inner">
+                    <!-- เรียกจาก db_research_project -> โดย count id -> verified = 1 ( ตรวจสอบแล้ว ) ------------>
                     <h3> {{ empty($Total_research)?'0': $Total_research }} โครงการ </h3>
                     <br>
                     <p> โครงการวิจัยที่ทำเสร็จสิ้น </p>
@@ -121,7 +122,7 @@
               <div class="col-md-3 mx-auto">
                 <div class="small-box bg-info">
                   <div class="inner">
-                    <!-- เรียกจาก db_published_journal โดย count id (All Record) ------------>
+                    <!-- เรียกจาก db_published_journal โดย count id -> verified = 1 ( ตรวจสอบแล้ว ) ------------>
                     <h3> {{ empty($Total_publish_journal)?'0': $Total_publish_journal }} โครงการ </h3>
                     <br>
                     <p> บทความตีพิมพ์ </p>
@@ -180,12 +181,12 @@
                       @foreach($user_list as $value)
                       <tr>
                         <td class="text-center"> {{ $value->users_name }} </td>
-                        <td class="text-center"> {{ $value->count_pro }} </td>
+                        <td class="text-center"> {{ $value->count_verified_pro }} </td>
                         <td class="text-center"> {{ $value->count_master_pro }} </td>
                         <td class="text-center"> {{ $value->count_publish_pro }} </td>
-                        <td class="text-center"> {{ $value->count_journal_pro }} </td>
+                        <td class="text-center"> {{ $value->count_verified_journal }} </td>
                         <td class="text-center"> {{ $value->count_policy_util }} </td>
-                        <td class="text-center">  </td>
+                        <td class="text-center"> {{ $value->researcher_level }} </td>
 
                         <!-- จัดการข้อมูล -->
                         <td class="td-actions text-right text-nowrap" href="#">
