@@ -27,7 +27,7 @@ class SummaryController extends Controller
 
 
     public function table_summary(){
-    // SUM BOX --
+    // SUM BOX ------------------------------------------------------------------------>
       // โครงการวิจัยที่ทำเสร็จ db_research_project -> โดย count id -> verified = '1' (ตรวจสอบแล้ว)--------->
       if(Auth::hasRole('manager')){
         $Total_research = DB::table('db_research_project')
@@ -175,10 +175,10 @@ class SummaryController extends Controller
                             ->get()
                             ->count();
     }
-      // END SUM BOX --
+    // END SUM BOX ------------------------------------------------------------------------>
 
 
-    // TABLE LIST --
+    // TABLE LIST ------------------------------------------------------------------------>
 
       $data_table_count = DB::table('db_research_project')
           ->leftjoin ('db_published_journal', 'db_research_project.id', '=', 'db_published_journal.pro_id')
@@ -198,6 +198,12 @@ class SummaryController extends Controller
 
 // dd($data_table_count);
 
+        $select_lev = [1      => 'นักวิจัยฝึกหัด',
+                       2      => 'นักวิจัยรุ่นใหม่',
+                       3     => 'นักวิจัยรุ่นกลาง',
+                       4      => 'นักวิจัยอาวุโส'
+                       ];
+
 
       return view('frontend.summary',
       [
@@ -209,6 +215,7 @@ class SummaryController extends Controller
         'Total_policy_util'       => $Total_policy_util,
 
         'user_list'               => $data_table_count,
+        'user_lev'               => $select_lev,
 
       ]);
     }
@@ -219,20 +226,21 @@ class SummaryController extends Controller
     public function edit_summary(Request $request){
 
       // // users
-      // $edit_0 = research::where('users_id' , $request->users_id)->first();
+      // $edit_0 = research::where('id' , $request->id)->first();
 
       $edit_0 = DB::table('db_research_project')
                   -> select ('db_research_project.id','db_research_project.users_id',
                              'db_research_project.users_name','db_research_project.researcher_level')
+                  -> where ('users_name', $request->id)
                   ->first();
 
       // ระดับนักวิจัย researcher_level
-      $edit_2 = ['นักวิจัยฝึกหัด'     => 'นักวิจัยฝึกหัด',
-                 'นักวิจัยฝึกหัด'     => 'นักวิจัยรุ่นใหม่',
-                 'นักวิจัยฝึกหัด'     => 'นักวิจัยรุ่นกลาง',
-                 'นักวิจัยฝึกหัด'     => 'นักวิจัยอาวุโส'
+      $edit_2 = [1      => 'นักวิจัยฝึกหัด',
+                 2      => 'นักวิจัยรุ่นใหม่',
+                 3     => 'นักวิจัยรุ่นกลาง',
+                 4      => 'นักวิจัยอาวุโส'
                  ];
-
+// dd($edit_2);
 
 
       return view('frontend.summary_edit',

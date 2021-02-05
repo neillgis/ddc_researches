@@ -179,6 +179,9 @@
 
                   <tbody>
                       @foreach($user_list as $value)
+
+            <?php //dd($user_list); ?>
+
                       <tr>
                         <td class="text-center"> {{ $value->users_name }} </td>
                         <td class="text-center"> {{ $value->count_verified_pro }} </td>
@@ -186,7 +189,9 @@
                         <td class="text-center"> {{ $value->count_publish_pro }} </td>
                         <td class="text-center"> {{ $value->count_verified_journal }} </td>
                         <td class="text-center"> {{ $value->count_policy_util }} </td>
-                        <td class="text-center"> {{ $value->researcher_level }} </td>
+                        <td class="text-center"> @if( !empty($value->researcher_level))
+                                                  {{$user_lev[$value->researcher_level]}}
+                                                 @endif </td>
 
                         <!-- จัดการข้อมูล -->
                         <td class="td-actions text-right text-nowrap" href="#">
