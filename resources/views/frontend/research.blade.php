@@ -147,7 +147,7 @@
                   <div class="col-md-6">
                     <div class="form-group">
                       <label for="exampleInput1"> ชื่อโครงการ (ENG) </label>
-                      <input type="text" class="form-control" name="pro_name_en" required>
+                      <input type="text" class="form-control" name="pro_name_en">
                     </div>
                   </div>
                 </div>
