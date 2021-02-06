@@ -169,9 +169,8 @@
                       <th class="text-center"> ชื่อ-นามสกุล </th>
                       <th class="text-center"> โครงการวิจัย </th>
                       <th class="text-center"> โครงการวิจัยที่เป็นผู้วิจัยหลัก </th>
-                      <th class="text-center"> โครงการวิจัยที่ตีพิมพ์ </th>
                       <th class="text-center"> บทความที่ตีพิมพ์ </th>
-                      <th class="text-center"> บทความเชิงนโยบาย </th>
+                      <th class="text-center"> บทความใช้ประโยชน์เชิงนโยบาย </th>
                       <th class="text-center"> ระดับนักวิจัย </th>
                       <th class="text-right"> Actions </th>
                     </tr>
@@ -186,7 +185,6 @@
                         <td class="text-center"> {{ $value->users_name }} </td>
                         <td class="text-center"> {{ $value->count_verified_pro }} </td>
                         <td class="text-center"> {{ $value->count_master_pro }} </td>
-                        <td class="text-center"> {{ $value->count_publish_pro }} </td>
                         <td class="text-center"> {{ $value->count_verified_journal }} </td>
                         <td class="text-center"> {{ $value->count_policy_util }} </td>
                         <td class="text-center"> @if( !empty($value->researcher_level))

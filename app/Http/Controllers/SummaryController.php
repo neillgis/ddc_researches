@@ -185,11 +185,8 @@ class SummaryController extends Controller
           ->leftjoin ('db_utilization', 'db_research_project.id', '=', 'db_utilization.pro_id')
 
           ->select('db_research_project.users_name','db_research_project.researcher_level')
-          // ->selectRaw("count(DISTINCT(db_research_project.id)) as count_pro") // จำนวน count all
           ->selectRaw("count(DISTINCT(case when db_research_project.verified = '1' then db_research_project.id end)) as count_verified_pro") // จำนวน count -> verified = '1'
-          ->selectRaw("count(DISTINCT(case when db_research_project.pro_position = '1' then db_research_project.id end)) as count_master_pro")
-          ->selectRaw("count(DISTINCT(case when db_research_project.publish_status = '1' then db_research_project.id end)) as count_publish_pro")
-          // ->selectRaw("count(DISTINCT(db_published_journal.id)) as count_journal") // จำนวน count all
+          ->selectRaw("count(DISTINCT(case when db_research_project.pro_position = '1' and db_research_project.verified = '1'  then db_research_project.id end)) as count_master_pro")
           ->selectRaw("count(DISTINCT(case when db_published_journal.verified = '1' then db_published_journal.id end)) as count_verified_journal") // จำนวน count -> verified = '1'
           ->selectRaw("count(DISTINCT(case when db_utilization.util_type = 'เชิงนโยบาย' then db_utilization.pro_id end)) as count_policy_util")
 
