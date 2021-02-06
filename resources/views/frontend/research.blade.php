@@ -11,7 +11,6 @@
 <link rel="stylesheet" href="{{ asset('bower_components/admin-lte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
 
 <!-- DatePicker Style -->
-<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
 <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css">
 
 <!-- SweetAlert2 -->
@@ -183,17 +182,17 @@
                 <div class="row">
                   <div class="col-md-6">
                     <div class="form-group">
-                      <label for="exampleDatepicker1"> ปีที่เริ่มโครงการ : วันที่ทำสัญญากับแหล่งทุนหรือวันที่ได้รับอนุมัติจากผู้บริหารของหน่วยงาน
-                                                                      <br> กรณีจำวัน เดือน ไมได้ ให้แทนที่ด้วย 01/01 <font color="red"> * </font></label>
-                      <input type="text" class="form-control" id="datepicker1" placeholder="กรุณาเลือก ปี/เดือน/วัน"
-                             name="pro_start_date" autocomplete="off" required>
+                      <label for="exampleDatepicker1"> ปีที่เริ่มโครงการ <font color="red"> * </font></label>
+                        <a class="one form-group" href="#" id="modal"> <b> (คำอธิบายเพิ่มเติม) </b></a>
+                        <input type="text" class="form-control" id="datepicker1" placeholder="กรุณาเลือก ปี/เดือน/วัน"
+                               name="pro_start_date" autocomplete="off" data-date-language="th-th" required>
                     </div>
                   </div>
 
                   <div class="col-md-6">
                     <div class="form-group">
-                      <label for="exampleDatepicker1"> ปีที่เสร็จสิ้นโครงการ : วันที่ส่งรายงานฉบับสมบูรณ์
-                                                                         <br> กรณีจำวัน เดือน ไมได้ ให้แทนที่ด้วย 31/12 <font color="red"> * </font></label>
+                      <label for="exampleDatepicker1"> ปีที่เสร็จสิ้นโครงการ <font color="red"> * </font></label>
+                      <a class="two form-group" href="#" id="modal"> <b> (คำอธิบายเพิ่มเติม) </b></a>
                       <input type="text" class="form-control" id="datepicker2" placeholder="กรุณาเลือก ปี/เดือน/วัน"
                              name="pro_end_date" autocomplete="off" required>
                     </div>
@@ -373,15 +372,29 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <!-- <script src="{{-- asset('bower_components/admin-lte/plugins/sweetalert2/sweetalert2.min.js') --}}"></script> -->
 
-    <!-- <script>
-        Swal.fire({
-            icon: 'success',
-            title: 'บันทึกข้อมูลเรียบร้อยแล้ว',
-            showConfirmButton: false,
-            timer: 2200
-        })
-    </script> -->
+  <!-- Alert คำอธิคำอธิบายเพิ่มเติม -->
+  <script>
+    document.querySelector(".one").addEventListener('click', function(){
+      Swal.fire(
+      "ปีที่เริ่มโครงการ",
+      "วันที่ทำสัญญากับแหล่งทุนหรือวันที่ได้รับอนุมัติจากผู้บริหารของหน่วยงาน ในกรณีจำวัน เดือน ไมได้ ให้แทนที่ด้วย 01/01",
+      "warning"
+      );
+    });
+  </script>
+  <script>
+    document.querySelector(".two").addEventListener('click', function(){
+      Swal.fire(
+      "ปีที่เสร็จสิ้นโครงการ",
+      "วันที่ส่งรายงานฉบับสมบูรณ์ ในกรณีจำวัน เดือน ไมได้ ให้แทนที่ด้วย 31/12",
+      "warning"
+      );
+    });
+  </script>
+<!-- END Alert คำอธิคำอธิบายเพิ่มเติม -->
 
+
+  <!-- INSERT success -->
     @if(Session::get('message'))
      <?php Session::forget('message'); ?>
       <script>
@@ -393,15 +406,15 @@
         })
       </script>
     @endif
-
+    <!-- END INSERT success -->
 
 
 <!-- FILE INPUT -->
-<script type="text/javascript">
-  $(document).ready(function () {
-    bsCustomFileInput.init();
-  });
-</script>
+  <script type="text/javascript">
+    $(document).ready(function () {
+      bsCustomFileInput.init();
+    });
+  </script>
 <!-- END FILE INPUT -->
 
 
@@ -411,10 +424,13 @@
 <script>
     $('#datepicker1').datepicker({
         uiLibrary: 'bootstrap4',
+        language:'th',
         format: 'yyyy/mm/dd',
+        // enddate: '0',
         autoclose: true,
-        todayHighlight: true
-    });
+        todayHighlight: true,
+        // thaiyear: true
+    }).datepicker("setDate", "0");
 </script>
 <script>
     $('#datepicker2').datepicker({

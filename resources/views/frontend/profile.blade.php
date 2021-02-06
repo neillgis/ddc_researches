@@ -147,7 +147,7 @@
           <div class="card-body">
             <div class="row">
               <div class="col-md-12">
-                <input type="text" class="form-control" placeholder="กรุณากรอก รหัสนักวิจัย (NRMS ID) ถ้ามี"
+                <input type="text" class="form-control" placeholder="กรุณากรอก รหัสนักวิจัย (NRIIS ID) ถ้ามี"
                 value="">
               </div>
             </div>
