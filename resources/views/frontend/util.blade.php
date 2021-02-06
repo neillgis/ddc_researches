@@ -213,12 +213,18 @@
 
                 <div class="row" >
                   <div class="col-md-12">
+                    <div class="form-group">
                     <b><lebel for="expInputFile"> อัพโหลดไฟล์ : การนำไปใช้ประโยชน์.pdf <font color="red"> * </font></lebel></b>
+                      <a class="five small-box-footer" href="#" id="modal">
+                        &nbsp; คำอธิบายการแนบหลักฐาน
+                        <i class="fas fa-info-circle"></i>
+                      </a>
                     <div class="input-group">
                       <div class="custom-file">
                         <input type="file" class="custom-file-input" name="files" required>
                         <label class="custom-file-label" for="expInputFile"> Upload File ขนาดไม่เกิน 20 MB </label>
                       </div>
+                    </div>
                     </div>
                   </div>
                 </div>
@@ -252,7 +258,7 @@
                   <table class="table table-hover" style="width:100%" id="example1">
                     <thead>
                         <tr>
-                            <th class="text-center">ลำดับที่</th>
+                            <th class="text-center">Util ID</th>
                             <th class="text-center">ชื่อโครงการ</th>
                             <th class="text-center">การนำไปใช้ประโยชน์</th>
                             <th class="text-center">การตรวจสอบ</th>
@@ -378,6 +384,14 @@
   document.querySelector(".four").addEventListener('click', function(){
     Swal.fire("การนำไปใช้ประโยชน์เชิงพาณิชย์",
     "มิติเชิงพาณิชย์ หมายถึง การนำผลงานวิจัยไปพัฒนาหรือปรับปรุงกระบวนการ หรือผลิตและจำหน่าย ในภาคการผลิตและอุตสาหกรรม"
+    );
+  });
+</script>
+
+<script type="text/javascript">
+  document.querySelector(".five").addEventListener('click', function(){
+    Swal.fire("คำอธิบาย การแนบหลักฐานการนำไปใช้ประโยชน์",
+    "• เชิงนโยบาย หมายถึง หลักฐานการนำข้อมูลไปประกอบการตัดสินใจในการบริหาร/กำหนดนโยบาย <br> <br> • เชิงวิชาการ หมายถึง การอ้างอิงผลงานวิจัยที่มีการตีพิมพ์ในวารสารวิชาการ โดยไม่นับการตีพิมพ์วารสารวิชาการ ได้รับหนังสือเรียนเชิญเป็นวิทยากรเพื่อให้ความรู้ในกรอบของผลงานวิจัยจากหน่วยงานต่างๆ โดยการอ้างอิงผลงานวิจัย หมายถึง ผลงานที่มีคุณค่าหรือเป็นที่ยอมรับในวงวิชาการ ย่อมต้องมีบุคคลหรือนักวิชาการอื่นนำผลงานไปอ้างอิง ซึ่งสามารถตรวจสอบได้ในเชิงปริมาณด้วยจำนวนและความถี่ในการอ้างอิง <br> <br> • เชิงชุมชน/สังคม หมายถึง การถ่ายทอดเทคโนโลยีที่ได้จากงานวิจัยในชุมชน/ท้องถิ่น เช่น หนังสือเรียนเชิญให้ความรู้จากชุมชน/องค์กร/ หน่วยงานในพื้นที่ต่าง ๆ <br> <br> • เชิงพาณิชย์ หมายถึง หลักฐานการเจรจาทางธุรกิจ ไม่นับการยื่น/จดทะเบียนคุ้มครองทรัพย์สินทางปัญญา"
     );
   });
 </script>
