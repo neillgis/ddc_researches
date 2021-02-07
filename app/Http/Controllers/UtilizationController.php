@@ -169,7 +169,7 @@ class UtilizationController extends Controller
                     -> join ('db_research_project', 'db_utilization.pro_id', '=', 'db_research_project.id')
                     -> select ('db_utilization.id','db_utilization.util_type','db_utilization.files',
                                'db_utilization.verified',
-                               'db_research_project.pro_name_th','db_research_project.pro_name_en',
+                               'db_research_project.pro_name_th','db_research_project.pro_name_en','db_research_project.users_name',
                                \DB::raw('(CASE
                                              WHEN db_utilization.verified = "1" THEN "ตรวจสอบแล้ว"
                                              ELSE "รอการตรวจสอบ"
@@ -182,7 +182,7 @@ class UtilizationController extends Controller
                     -> join ('db_research_project', 'db_utilization.pro_id', '=', 'db_research_project.id')
                     -> select ('db_utilization.id','db_utilization.util_type','db_utilization.files',
                                 'db_utilization.verified',
-                                'db_research_project.pro_name_th','db_research_project.pro_name_en',
+                                'db_research_project.pro_name_th','db_research_project.pro_name_en','db_research_project.users_name',
                                \DB::raw('(CASE
                                              WHEN db_utilization.verified = "1" THEN "ตรวจสอบแล้ว"
                                              ELSE "รอการตรวจสอบ"
@@ -195,7 +195,7 @@ class UtilizationController extends Controller
                     -> join ('db_research_project', 'db_utilization.pro_id', '=', 'db_research_project.id')
                     -> select ('db_utilization.id','db_utilization.util_type','db_utilization.files',
                                 'db_utilization.verified',
-                                'db_research_project.pro_name_th','db_research_project.pro_name_en',
+                                'db_research_project.pro_name_th','db_research_project.pro_name_en','db_research_project.users_name',
                                \DB::raw('(CASE
                                              WHEN db_utilization.verified = "1" THEN "ตรวจสอบแล้ว"
                                              ELSE "รอการตรวจสอบ"
