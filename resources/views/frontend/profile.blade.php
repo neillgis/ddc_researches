@@ -123,20 +123,24 @@
           </div>
 
           <div class="card-body">
-              <div class="col-md-12">
-                <label for="exampleInput1"> หน่วยงาน </label>
-                <div class="border p-2" id="dept_id" style="background-color: #e9ecef;opacity: 1; font-size: 20px;"></div>
-              </div>
-              <br>
+            <div class="col-md-12">
+              <label for="exampleInput1"> หน่วยงาน </label>
+              <div class="border p-2" id="dept_id" style="background-color: #e9ecef;opacity: 1; font-size: 20px;"></div>
+            </div>
+            <br>
 
             <div class="col-md-12">
               <label for="exampleInput1"> ตำแหน่ง </label>
               <div class="border p-2" id="position" style="background-color: #e9ecef;opacity: 1; font-size: 20px;"></div>
             </div>
             <br>
+
+            <div class="col-md-12">
+              <label for="exampleInput1"> ระดับตำแหน่ง </label>
+              <div class="border p-2" id="birthdate" style="background-color: #e9ecef;opacity: 1; font-size: 20px;"></div>
+            </div>
           </div>
         </div>
-        <br>
 
 
         <div class="card shadow card-danger" id="rcorners3">

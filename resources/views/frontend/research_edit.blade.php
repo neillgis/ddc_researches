@@ -79,17 +79,18 @@
                 <div class="row">
                   <div class="col-md-6">
                     <div class="form-group">
+                      <label for="exampleInput1"> ชื่อโครงการ (TH) </label>
+                      <input type="text" class="form-control" name="pro_name_th" value="{{ $data->pro_name_th }}">
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="form-group">
                       <label for="exampleInput1"> ชื่อโครงการ (ENG) </label>
                       <!-- hidden = id -->
                       <input type="hidden" class="form-control" name="id" value="{{ $data->id }}">
 
                       <input type="text" class="form-control" name="pro_name_en" value="{{ $data->pro_name_en }}">
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="exampleInput1"> ชื่อโครงการ (TH) </label>
-                      <input type="text" class="form-control" name="pro_name_th" value="{{ $data->pro_name_th }}">
                     </div>
                   </div>
                 </div>

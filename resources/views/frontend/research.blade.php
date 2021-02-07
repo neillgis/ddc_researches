@@ -12,6 +12,8 @@
 
 <!-- DatePicker Style -->
 <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css">
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
+<!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous"> -->
 
 <!-- SweetAlert2 -->
 <link rel="stylesheet" href="{{ asset('bower_components/admin-lte/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
@@ -270,6 +272,7 @@
                     <tr>
                       <th class="text-center"> Project ID </th>
                       <th class="text-center"> ชื่อโครงการวิจัยที่เสร็จสิ้นแล้ว </th>
+                      <th class="text-center"> ผู้รับผิดชอบ </th>
                       <th class="text-center"> เริ่มโครงการ </th>
                       <th class="text-center"> เสร็จสิ้นโครงการ </th>
                       <th class="text-center"> ตีพิมพ์ </th>
@@ -283,15 +286,16 @@
                   <tr>
                     <td class="text-center"> {{ $value->id }} </td>
                     <td class="text-left"> {{ $value->pro_name_th." ".$value->pro_name_en}} </td>
-                    <td class="text-center"> {{ CmsHelper::DateThai($value->pro_start_date) }} </td>
-                    <td class="text-center"> {{ CmsHelper::DateThai($value->pro_end_date) }} </td>
+                    <td class="text-center"> {{ $value->users_name }} </td>
+                    <td class="text-center"> {{ CmsHelper::DateEnglish($value->pro_start_date) }} </td>
+                    <td class="text-center"> {{ CmsHelper::DateEnglish($value->pro_end_date) }} </td>
                     <td class="text-center"> {{ $publish_status [ $value->publish_status ] }} </td>
 
                     <td class="text-center">
                       @if($value->verified == "ตรวจสอบแล้ว")
-                        <span class="badge bg-secondary badge-pill"> {{ $value->verified }} </span> <!-- null = รอการตรวจสอบ -->
+                        <span class="badge bg-secondary badge-pill"> {{ $value->verified }} </span> <!-- null = ตรวจสอบแล้ว -->
                       @else
-                        <span class="badge bg-danger badge-pill"> {{ $value->verified }} </span> <!--  2 = ไม่อนุมัติ -->
+                        <span class="badge bg-danger badge-pill"> {{ $value->verified }} </span> <!--  1 = รอตรวจสอบ -->
                       @endif
                     </td>
 
@@ -321,32 +325,21 @@
                             </button>
                           </a>
                         @endif
-                    <!-- {{-- @endif --}} -->
 
 
-                    <!-- FOR Admin ONLY -->
-                    <!-- {{-- @if(Auth::hasRole('admin')) --}} -->
-                    <!-- <a href=" {{-- route('research.edit', $value->id) --}} ">
-                      <button type="button" class="btn btn-info btn-md" data-toggle="tooltip" title="Views">
-                        <i class="fas fa-eye"></i>
-                      </button>
-                    </a> -->
-                    <!-- {{-- @endif --}} -->
-
-
-                    @if(Auth::hasRole('manager'))
-                        @if($value->verified == "ตรวจสอบแล้ว")
-                          <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Verfied" disabled>
-                            <i class="fas fa-user-check"></i>
-                          </button>
-                        @else
-                          <a href=" {{ route('research.verified', $value->id) }} ">
-                            <button type="button" class="btn btn-md" data-toggle="tooltip" title="Verfied" style="background-color: #567fa8;">
+                      @if(Auth::hasRole('manager'))
+                          @if($value->verified == "ตรวจสอบแล้ว")
+                            <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Verfied" disabled>
                               <i class="fas fa-user-check"></i>
                             </button>
-                          </a>
-                        @endif
-                    @endif
+                          @else
+                            <a href=" {{ route('research.verified', $value->id) }} ">
+                              <button type="button" class="btn btn-md" data-toggle="tooltip" title="Verfied" style="background-color: #567fa8;">
+                                <i class="fas fa-user-check"></i>
+                              </button>
+                            </a>
+                          @endif
+                      @endif
                     </td>
 
                   </tr>
@@ -377,7 +370,7 @@
     document.querySelector(".one").addEventListener('click', function(){
       Swal.fire(
       "ปีที่เริ่มโครงการ",
-      "วันที่ทำสัญญากับแหล่งทุนหรือวันที่ได้รับอนุมัติจากผู้บริหารของหน่วยงาน <br> กรณีจำวัน เดือน ไมได้ ให้แทนที่ด้วย 01/01",
+      "วันที่ทำสัญญากับแหล่งทุนหรือวันที่ได้รับอนุมัติจากผู้บริหารของหน่วยงาน <br> กรณีจำวัน เดือน ไม่ได้ ให้แทนที่ด้วย 01/01",
       "warning"
       );
     });
@@ -386,7 +379,7 @@
     document.querySelector(".two").addEventListener('click', function(){
       Swal.fire(
       "ปีที่เสร็จสิ้นโครงการ",
-      "วันที่ส่งรายงานฉบับสมบูรณ์ <br> กรณีจำวัน เดือน ไมได้ ให้แทนที่ด้วย 31/12",
+      "วันที่ส่งรายงานฉบับสมบูรณ์ <br> กรณีจำวัน เดือน ไม่ได้ ให้แทนที่ด้วย 31/12",
       "warning"
       );
     });
@@ -421,21 +414,23 @@
 <!-- DatePicker Style -->
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
+
 <script>
+  var today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
     $('#datepicker1').datepicker({
         uiLibrary: 'bootstrap4',
-        language:'th',
+        // iconsLibrary: 'fontawesome',
         format: 'yyyy/mm/dd',
-        // enddate: '0',
+        maxDate: today,
         autoclose: true,
         todayHighlight: true,
         // thaiyear: true
-    }).datepicker("setDate", "0");
-</script>
-<script>
+    })
     $('#datepicker2').datepicker({
         uiLibrary: 'bootstrap4',
+        // iconsLibrary: 'fontawesome',
         format: 'yyyy/mm/dd',
+        maxDate: today,
         autoclose: true,
         todayHighlight: true
     });

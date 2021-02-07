@@ -79,6 +79,13 @@
                 <div class="row">
                   <div class="col-md-6">
                     <div class="form-group">
+                      <label for="exampleInput1"> ชื่อบทความ (TH) </label>
+                      <input type="text" class="form-control" name="article_name_th" value="{{ $data->article_name_th }}">
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="form-group">
                       <label for="exampleInput1"> ชื่อบทความ (ENG) </label>
                       <input type="text" class="form-control" name="article_name_en" value="{{ $data->article_name_en }}">
                       <!-- hidden = id -->
@@ -87,26 +94,21 @@
                       <input type="hidden" class="form-control" name="pro_id" value="{{ $data->pro_id }}">
                     </div>
                   </div>
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label for="exampleInput1"> ชื่อบทความ (TH) </label>
-                      <input type="text" class="form-control" name="article_name_th" value="{{ $data->article_name_th }}">
-                    </div>
-                  </div>
                 </div>
 
 
                 <div class="row">
                   <div class="col-md-6">
                     <div class="form-group">
-                      <label for="exampleInput1"> ชื่อวารสาร (ENG) </label>
-                      <input type="text" class="form-control" name="journal_name_en" value="{{ $data->journal_name_en }}">
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="form-group">
                       <label for="exampleInput1"> ชื่อวารสาร (TH) </label>
                       <input type="text" class="form-control" name="journal_name_th" value="{{ $data->journal_name_th }}">
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="exampleInput1"> ชื่อวารสาร (ENG) </label>
+                      <input type="text" class="form-control" name="journal_name_en" value="{{ $data->journal_name_en }}">
                     </div>
                   </div>
                 </div>
@@ -167,7 +169,7 @@
                 </div>
 
                 <div class="row">
-                  <div class="col-md-6">
+                  <div class="col-md-4">
                     <div class="form-group">
                       <label for="exampleSelect1"> ท่านเป็นผู้รับผิดชอบบทความ (Correspondence) </label>
                       <select class="form-control" name="corres">
@@ -177,7 +179,7 @@
                       </select>
                     </div>
                   </div>
-                  <div class="col-md-6">
+                  <div class="col-md-8">
                     <div class="form-group">
                       <label for="exampleSelect1"> บทความนี้เป็นผลจากโครงการวิจัย </label>
                       <input type="text" class="form-control" name="pro_id" value="{{ $data->pro_name_en }}" disabled>

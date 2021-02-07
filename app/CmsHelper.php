@@ -27,6 +27,21 @@ use App\User;
           return "$strDay $strMonthThai $strYear";
         }
 
+
+        public static function DateEnglish($strDate){
+          if($strDate=='0000-00-00' || $strDate=='' || $strDate==null) return '-';
+              $strYear = date("Y",strtotime($strDate));
+              $strMonth= date("n",strtotime($strDate));
+              $strDay= date("j",strtotime($strDate));
+              $strHour= date("H",strtotime($strDate));
+              $strMinute= date("i",strtotime($strDate));
+              $strSeconds= date("s",strtotime($strDate));
+              $strMonthCut = Array("","Jan","Feb","Mar","Apr","May","Jun","July","Aug","Sep","Oct","Nov","Dec");
+              $strMonthThai=$strMonthCut[$strMonth];
+          return "$strDay $strMonthThai $strYear";
+        }
+
+
         public static function DateThaiFull($strDate){
           if($strDate=='0000-00-00' || $strDate=='' || $strDate==null) return '-';
               $strYear = date("Y",strtotime($strDate))+543;

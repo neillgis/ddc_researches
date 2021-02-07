@@ -319,7 +319,7 @@
               <table class="table table-hover" id="example44">
                 <thead>
                     <tr>
-                      <th class="text-center"> Project ID </th>
+                      <th class="text-center"> Journal ID </th>
                       <th class="text-center"> ชื่อบทความ (ENG) </th>
                       <th class="text-center"> ชื่อวารสาร (ENG) </th>
                       <th class="text-center"> ตีพิมพ์ </th>
@@ -340,9 +340,9 @@
 
                     <td class="text-center">
                       @if($value->verified == "ตรวจสอบแล้ว")
-                        <span class="badge bg-secondary badge-pill"> {{ $value->verified }} </span> <!-- null = รอการอนุมัติ -->
+                        <span class="badge bg-secondary badge-pill"> {{ $value->verified }} </span> <!-- null = ตรวจสอบแล้ว -->
                       @else
-                        <span class="badge bg-danger badge-pill"> {{ $value->verified }} </span> <!--  2 = ไม่อนุมัติ -->
+                        <span class="badge bg-danger badge-pill"> {{ $value->verified }} </span> <!--  1 = รอตรวจสอบ -->
                       @endif
                     </td>
 
@@ -371,31 +371,21 @@
                             </button>
                           </a>
                         @endif
-                    <!-- {{-- @endif --}} -->
 
 
-                    <!-- {{-- @if(Auth::hasRole('admin')) --}}
-                      <a href=" {{-- route('journal.edit', ['id' => $value->id, 'pro_id' => $value->pro_id]) --}} ">
-                        <button type="button" class="btn btn-info btn-md" data-toggle="tooltip" title="Views">
-                          <i class="fas fa-eye"></i>
-                        </button>
-                      </a>
-                      {{-- @endif --}} -->
-
-
-                    @if(Auth::hasRole('manager'))
-                        @if($value->verified == "ตรวจสอบแล้ว")
-                          <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Verfied" disabled>
-                            <i class="fas fa-user-check"></i>
-                          </button>
-                        @else
-                          <a href=" {{ route('journal.verified', $value->id) }} ">
-                            <button type="button" class="btn btn-md" data-toggle="tooltip" title="Verfied" style="background-color: #567fa8;">
+                      @if(Auth::hasRole('manager'))
+                          @if($value->verified == "ตรวจสอบแล้ว")
+                            <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Verfied" disabled>
                               <i class="fas fa-user-check"></i>
                             </button>
-                          </a>
-                        @endif
-                    @endif
+                          @else
+                            <a href=" {{ route('journal.verified', $value->id) }} ">
+                              <button type="button" class="btn btn-md" data-toggle="tooltip" title="Verfied" style="background-color: #567fa8;">
+                                <i class="fas fa-user-check"></i>
+                              </button>
+                            </a>
+                          @endif
+                      @endif
                     </td>
 
                   </tr>
