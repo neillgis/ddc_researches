@@ -278,7 +278,7 @@
                           <td class="text-left"> {{ $value->pro_name_th." ".$value->pro_name_en }} </td>
                           <td class="text-center"> {{ $value->util_type }} </td>
                         @if(Auth::hasRole('manager'))
-                          <td> {{ $value->users_name }} </td>
+                          <td class="text-center"> {{ $value->users_name }} </td>
                         @endif
                           <td class="text-center">
                             @if($value->verified == "ตรวจสอบแล้ว")

@@ -346,7 +346,7 @@
                     <td class="text-center"> {{ $value->publish_years }} </td>
 
                   @if(Auth::hasRole('manager'))
-                    <td> {{ $value->users_name }} </td>
+                    <td class="text-center"> {{ $value->users_name }} </td>
                   @endif
 
                     <td class="text-center"> {{ $corres [ $value->corres ] }} </td>
