@@ -183,6 +183,7 @@ class SummaryController extends Controller
       $data_table_count = DB::table('db_research_project')
           ->leftjoin ('db_published_journal', 'db_research_project.id', '=', 'db_published_journal.pro_id')
           ->leftjoin ('db_utilization', 'db_research_project.id', '=', 'db_utilization.pro_id')
+          ->leftjoin ('db_summary', 'db_research_project.users_id', '=', 'db_summary.users_id')
 
           ->select('db_research_project.users_name','db_research_project.researcher_level')
           ->selectRaw("count(DISTINCT(case when db_research_project.verified = '1' then db_research_project.id end)) as count_verified_pro") // จำนวน count -> verified = '1'
@@ -226,15 +227,17 @@ class SummaryController extends Controller
       // $edit_0 = research::where('id' , $request->id)->first();
 
       $edit_0 = DB::table('db_research_project')
+                  -> leftjoin ('db_summary', 'db_research_project.users_id', '=', 'db_summary.users_id')
                   -> select ('db_research_project.id','db_research_project.users_id',
-                             'db_research_project.users_name','db_research_project.researcher_level')
-                  -> where ('users_name', $request->id)
+                             'db_research_project.users_name','db_summary.researcher_level','db_summary.data_auditor')
+                  -> where ('db_research_project.users_name', $request->id)
                   ->first();
+
 
       // ระดับนักวิจัย researcher_level
       $edit_2 = [1      => 'นักวิจัยฝึกหัด',
                  2      => 'นักวิจัยรุ่นใหม่',
-                 3     => 'นักวิจัยรุ่นกลาง',
+                 3      => 'นักวิจัยรุ่นกลาง',
                  4      => 'นักวิจัยอาวุโส'
                  ];
 // dd($edit_2);
@@ -250,41 +253,47 @@ class SummaryController extends Controller
 
 
       // INSERT ------------------------------------------------------------->
-          public function insert(Request $request){
-            $data_post = [
-              "users_id"              => Auth::user()->preferred_username,
-              "users_name"            => Auth::user()->name,
-              "researcher_level"      => $request->researcher_level,
-              // "data_auditor"          => $request->data_auditor,
-            ];
-            $insert = research::insert($data_post);
-
-            if($insert){
-              return redirect()->route('page.summary')->with('swl_add', 'เพิ่มข้อมูลสำเร็จแล้ว');
-          }else {
-              return redirect()->back()->with('swl_err', 'บันทึกแล้ว');
-            }
-          }
+          // public function insert(Request $request){
+          //   $data_post = [
+          //     "users_id"              => Auth::user()->preferred_username,
+          //     "users_name"            => Auth::user()->name,
+          //     "researcher_level"      => $request->researcher_level,
+          //     "data_auditor"          => $request->data_auditor,
+          //     "created_at"            => date('Y-m-d H:i:s')
+          //
+          //   ];
+          //   $insert = summary::insert($data_post);
+          //
+          //   if($insert){
+          //     return redirect()->route('page.summary')->with('swl_add', 'เพิ่มข้อมูลสำเร็จแล้ว');
+          // }else {
+          //     return redirect()->back()->with('swl_err', 'บันทึกแล้ว');
+          //   }
+          // }
       // END INSERT ----------------------------------------------------------->
 
 
       // SAVE ----------------------------------------------------------------->
       public function save_summary(Request $request){
-      // dd($request);
+
       // $update = DB::table('db_summary')
-      //               ->where('users_id', $request->users_id)
-      //               ->update([
-      //                       'users_name'        => Auth::user()->name,
-      //                       'researcher_level'  => $request->researcher_level,
-      //                       // 'data_auditor'      => $request->data_auditor
-      //                       ]);
+      //                 -> where ('users_name', $request->users_name)
+      //                 ->where('id', $request->id)
+      //
+      //                 ->update([
+      //                         'users_id'              => Auth::user()->preferred_username,
+      //                         'users_name'            => Auth::user()->name,
+      //                         'researcher_level'      => $request->researcher_level,
+      //                         'data_auditor'          => $request->data_auditor
+      //                         ]);
 
 
       $update = DB::table('db_research_project')
                       ->where('users_name', $request->users_name)
                       ->update([
-                              'researcher_level'  => $request->researcher_level,
-                              // 'data_auditor'      => $request->data_auditor
+                              'researcher_level'      => $request->researcher_level,
+                              'updated_at'            => date('Y-m-d H:i:s')
+
                               ]);
 
 

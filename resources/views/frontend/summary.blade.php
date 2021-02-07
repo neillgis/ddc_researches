@@ -172,6 +172,8 @@
                       <th class="text-center"> บทความที่ตีพิมพ์ </th>
                       <th class="text-center"> บทความใช้ประโยชน์เชิงนโยบาย </th>
                       <th class="text-center"> ระดับนักวิจัย </th>
+                      <th class="text-center"> ผู้ตรวจสอบ </th>
+                      <th class="text-center"> วันที่ตรวจสอบ </th>
                       <th class="text-right"> Actions </th>
                     </tr>
                   </thead>
@@ -190,6 +192,8 @@
                         <td class="text-center"> @if( !empty($value->researcher_level))
                                                   {{$user_lev[$value->researcher_level]}}
                                                  @endif </td>
+                        <td class="text-center">    </td>
+                        <td class="text-center">    </td>
 
                         <!-- จัดการข้อมูล -->
                         <td class="td-actions text-right text-nowrap" href="#">

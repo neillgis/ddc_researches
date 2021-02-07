@@ -85,6 +85,15 @@
                   </div>
                 </div>
 
+                <!-- <div class="row">
+                  <div class="col-md-6 mx-auto">
+                    <div class="form-group">
+                      <label for="exampleSelect1"> หน่วยงาน </label>
+                      <input type="text" class="form-control" name="depart_name" value="{{-- $edit_depart->depart_name --}}" readonly>
+                    </div>
+                  </div>
+                </div> -->
+
                 <div class="row">
                   <div class="col-md-6 mx-auto">
                     <div class="form-group">
@@ -92,6 +101,7 @@
 
                       <!-- Query Array เพื่อมา UPDATE users -->
                       <select class="form-control" name="researcher_level">
+                        <option value="" disabled="true" selected="true" >กรุณาเลือก</option>
                         @foreach ($edit_lev as $key => $value)
                           <option value="{{ $key }}"
                           {{$edit_users->researcher_level == $key ? 'selected' : '' }}> {{ $value }}
@@ -102,14 +112,25 @@
                   </div>
                 </div>
 
-                <!-- <div class="row">
+                <div class="row">
                   <div class="col-md-6 mx-auto">
                     <div class="form-group">
-                      <label for="exampleSelect1"> หน่วยงาน </label>
-                      <input type="text" class="form-control" name="depart_name" value="{{-- $edit_depart->depart_name --}}" readonly>
+                      <!-- แสดงชื่อผู้ตรวจสอบ (ให้ระดับนักวิจัย) -->
+                      <label for="exampleSelect1"> ผู้ตรวจสอบ (ให้ระดับนักวิจัย) </label>
+
+                      <!-- Query Array เพื่อมา UPDATE users -->
+                      <!-- <select class="form-control" name="">
+                        @foreach ($edit_lev as $key => $value)
+                          <option value="{{ $key }}"
+                          {{$edit_users->researcher_level == $key ? 'selected' : '' }}> {{ $value }}
+                          </option>
+                        @endforeach
+                      </select> -->
                     </div>
                   </div>
-                </div> -->
+                </div>
+
+
               </div>
 
               <div class="card-footer">
