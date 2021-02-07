@@ -319,6 +319,7 @@
               <table class="table table-hover" id="example44">
                 <thead>
                     <tr>
+                      <th class="text-center"> ลำดับ </th>
                       <th class="text-center"> Project ID </th>
                       <th class="text-center"> ชื่อบทความ (ENG) </th>
                       <th class="text-center"> ชื่อวารสาร (ENG) </th>
@@ -333,8 +334,12 @@
                 </thead>
 
                 <tbody>
+                  @php
+                      $i = 1;
+                  @endphp
                   @foreach ($journals as $value)
                   <tr>
+                    <td class="text-center"> {{ $i }} </td>
                     <td class="text-center"> {{ $value->pro_id }} </td>
                     <td> {{ $value->article_name_en }} </td>
                     <td> {{ $value->journal_name_en }} </td>
@@ -397,6 +402,9 @@
                     </td>
 
                   </tr>
+                  @php
+                      $i++;
+                  @endphp
                   @endforeach
                 </tbody>
 

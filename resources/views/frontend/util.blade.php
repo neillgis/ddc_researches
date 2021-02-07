@@ -255,20 +255,25 @@
                   <table class="table table-hover" style="width:100%" id="example1">
                     <thead>
                         <tr>
-                            <th class="text-center">Util ID</th>
-                            <th class="text-center">ชื่อโครงการ</th>
-                            <th class="text-center">การนำไปใช้ประโยชน์</th>
+                          <th class="text-center"> ลำดับ </th>
+                            <th class="text-center"> Util ID </th>
+                            <th class="text-center"> ชื่อโครงการ </th>
+                            <th class="text-center"> การนำไปใช้ประโยชน์ </th>
                           @if(Auth::hasRole('manager'))
                             <th class="text-center"> ชื่อ/สกุล </th>
                           @endif
-                            <th class="text-center">การตรวจสอบ</th>
+                            <th class="text-center"> การตรวจสอบ </th>
                             <th class="text-right"> จัดการข้อมูล </th>
                         </tr>
                     </thead>
 
                     <tbody>
+                        @php
+                            $i = 1;
+                        @endphp
                         @foreach ($table_util as $value)
                         <tr>
+                          <td class="text-center"> {{ $i }} </td>
                           <td class="text-center"> {{ $value->id }} </td>
                           <td class="text-left"> {{ $value->pro_name_th." ".$value->pro_name_en }} </td>
                           <td class="text-center"> {{ $value->util_type }} </td>
@@ -339,6 +344,9 @@
                           </td>
 
                         </tr>
+                        @php
+                            $i++;
+                        @endphp
                         @endforeach
                     </tbody>
                   </table>

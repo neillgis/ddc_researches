@@ -270,6 +270,7 @@
               <table class="table table-hover" id="example55">
                 <thead>
                     <tr>
+                      <th class="text-center"> ลำดับ </th>
                       <th class="text-center"> Project ID </th>
                       <th class="text-center"> ชื่อโครงการวิจัยที่เสร็จสิ้นแล้ว </th>
                     @if(Auth::hasRole('manager'))
@@ -284,8 +285,12 @@
                 </thead>
 
                 <tbody>
+                  @php
+                      $i = 1;
+                  @endphp
                   @foreach ($research as $value)
                   <tr>
+                    <td class="text-center"> {{ $i }} </td>
                     <td class="text-center"> {{ $value->id }} </td>
                     <td class="text-left"> {{ $value->pro_name_th." ".$value->pro_name_en}} </td>
                   @if(Auth::hasRole('manager'))
@@ -347,6 +352,9 @@
                     </td>
 
                   </tr>
+                  @php
+                      $i++;
+                  @endphp
                   @endforeach
                 </tbody>
 
