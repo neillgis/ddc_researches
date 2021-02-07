@@ -59,18 +59,43 @@ class JournalController extends Controller
 
 
     if(Auth::hasRole('manager')){
-      $query2 = journal::select('id', 'pro_id', 'article_name_th', 'article_name_en',
-                                'journal_name_th', 'journal_name_en', 'publish_years',
-                                'corres', 'files', 'verified',
-                                \DB::raw('(CASE
-                                              WHEN verified = "1" THEN "ตรวจสอบแล้ว"
-                                              ELSE "รอตรวจสอบ"
-                                              END) AS verified'
-                                ))
-                      ->ORDERBY('id','DESC')
-                      ->get();
 
-    }elseif(Auth::hasRole('admin')){
+      $query2 = DB::table('db_published_journal')
+                ->join('db_research_project', 'db_research_project.id', '=', 'db_published_journal.pro_id')
+                ->select('db_research_project.users_name',
+                         'db_published_journal.id',
+                         'db_published_journal.pro_id',
+                         'db_published_journal.article_name_th',
+                         'db_published_journal.article_name_en',
+                         'db_published_journal.journal_name_th',
+                         'db_published_journal.journal_name_en',
+                         'db_published_journal.publish_years',
+                         'db_published_journal.files',
+                         'db_published_journal.corres',
+                         'db_published_journal.verified',
+                         \DB::raw('(CASE
+                                       WHEN db_published_journal.verified = "1" THEN "ตรวจสอบแล้ว"
+                                       ELSE "รอตรวจสอบ"
+                                       END) AS verified'
+                         ))
+                // ->where('db_published_journal.id', $request->id)
+                ->orderby('id', 'DESC')
+                ->get();
+
+
+      // $query2 = journal::select('id', 'pro_id', 'article_name_th', 'article_name_en',
+      //                           'journal_name_th', 'journal_name_en', 'publish_years',
+      //                           'corres', 'files', 'verified',
+      //                           \DB::raw('(CASE
+      //                                         WHEN verified = "1" THEN "ตรวจสอบแล้ว"
+      //                                         ELSE "รอตรวจสอบ"
+      //                                         END) AS verified'
+      //                           ))
+      //                 ->ORDERBY('id','DESC')
+      //                 ->get();
+
+    }
+    elseif(Auth::hasRole('admin')){
       $query2 = journal::select('id', 'pro_id', 'article_name_th', 'article_name_en',
                                 'journal_name_th', 'journal_name_en', 'publish_years',
                                 'corres', 'files', 'verified',

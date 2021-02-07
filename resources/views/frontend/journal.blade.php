@@ -319,10 +319,13 @@
               <table class="table table-hover" id="example44">
                 <thead>
                     <tr>
-                      <th class="text-center"> Journal ID </th>
+                      <th class="text-center"> Project ID </th>
                       <th class="text-center"> ชื่อบทความ (ENG) </th>
                       <th class="text-center"> ชื่อวารสาร (ENG) </th>
                       <th class="text-center"> ตีพิมพ์ </th>
+                    @if(Auth::hasRole('manager'))
+                      <th class="text-center"> ชื่อ/สกุล </th>
+                    @endif
                       <th class="text-center"> ผู้รับผิดชอบบทความ </th>
                       <th class="text-center"> การตรวจสอบ </th>
                       <th class="text-right"> Actions </th>
@@ -336,6 +339,11 @@
                     <td> {{ $value->article_name_en }} </td>
                     <td> {{ $value->journal_name_en }} </td>
                     <td class="text-center"> {{ $value->publish_years }} </td>
+
+                  @if(Auth::hasRole('manager'))
+                    <td> {{ $value->users_name }} </td>
+                  @endif
+
                     <td class="text-center"> {{ $corres [ $value->corres ] }} </td>
 
                     <td class="text-center">
