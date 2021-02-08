@@ -25,7 +25,9 @@ Route::get('/', function () {
 Route::group(['middleware' => 'keycloak-web'], function () {
     Route::get('/keycloak/demo','KeycloakDemoController@index') -> name('page.keycloak.demo');
 
-    Route::get('/profile','ProfileController@index') -> name('page.profile');
+    Route::get('/profile','ProfileController@index')->name('page.profile');
+    //  -- INSERT --
+    Route::get('/profile_insert','ProfileController@insert')->name('profile.insert');
 
     // FORM  RESEARCH  PROJECT
     // Route::get('/research_form','ResearchController@research')->name('page.research');
