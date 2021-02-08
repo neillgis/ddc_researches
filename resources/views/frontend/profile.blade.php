@@ -165,13 +165,13 @@
           <div class="card-body">
             <div class="row">
               <div class="col-md-12">
-                <input type="text" class="form-control" name="nriis_id" placeholder="กรุณากรอก รหัสนักวิจัย (NRIIS ID) ถ้ามี" value="{{ $value->nriis_id }}">
+                <input type="text" class="form-control" name="nriis_id" placeholder="กรุณากรอก รหัสนักวิจัย (NRIIS ID) ถ้ามี">
               </div>
             </div>
             <br>
             <div class="row">
               <div class="col-md-12">
-                <input type="text" class="form-control" name="orcid_id" placeholder="กรุณากรอก บัตรประจำตัวนักวิจัย (ORCID ID) ถ้ามี" value="{{ $value->orcid_id }}">
+                <input type="text" class="form-control" name="orcid_id" placeholder="กรุณากรอก บัตรประจำตัวนักวิจัย (ORCID ID) ถ้ามี">
               </div>
             </div>
           </div>
