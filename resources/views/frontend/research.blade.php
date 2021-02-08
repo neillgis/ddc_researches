@@ -422,7 +422,7 @@
       <script>
         Swal.fire({
             icon: 'success',
-            title: 'Verfied Successfully',
+            title: 'Verified Successfully',
             showConfirmButton: true,
             confirmButtonColor: '#2C6700',
             timer: 3800
