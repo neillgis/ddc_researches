@@ -388,9 +388,11 @@
 
                       @if(Auth::hasRole('manager'))
                           @if($value->verified == "ตรวจสอบแล้ว")
-                            <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Verfied" disabled>
+                          <a href=" {{ route('journal.unverified', $value->id) }} ">
+                            <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Verfied">
                               <i class="fas fa-user-check"></i>
                             </button>
+                          </a>
                           @else
                             <a href=" {{ route('journal.verified', $value->id) }} ">
                               <button type="button" class="btn btn-md" data-toggle="tooltip" title="Verfied" style="background-color: #567fa8;">
@@ -441,28 +443,34 @@
     </script>
   @endif
 
+  <!-- VERIFIED -->
+  @if(Session::get('verify'))
+   <?php Session::forget('verify'); ?>
+    <script>
+      Swal.fire({
+          icon: 'success',
+          title: 'Verfied Successfully',
+          showConfirmButton: true,
+          confirmButtonColor: '#2C6700',
+          timer: 3800
+      })
+    </script>
+  @endif
 
-    <!-- UPDATE -->
-    @if(session()->has('swl_update'))
-      <script>
-          Swal.fire({
-              icon: 'success',
-              title: 'บันทึกข้อมูลเรียบร้อยแล้ว',
-              showConfirmButton: false,
-              timer: 2800
-          })
-      </script>
-
-    @elseif(session()->has('swl_errx'))
-      <script>
-          Swal.fire({
-              icon: 'error',
-              title: 'บันทึกข้อมูลไม่สำเร็จ !!!',
-              showConfirmButton: false,
-              timer: 2800
-          })
-      </script>
-    @endif
+  <!-- Un VERIFIED -->
+  @if(Session::get('Noverify'))
+   <?php Session::forget('Noverify'); ?>
+    <script>
+      Swal.fire({
+          icon: 'warning',
+          title: 'Unverified Successfully',
+          text: 'รายการนี้ยังไม่ได้รับการตรวจสอบอีกครั้ง',
+          showConfirmButton: false,
+          confirmButtonColor: '#d33',
+          timer: 6000
+      })
+    </script>
+  @endif
 
 <!-- END SweetAlert2 -->
 

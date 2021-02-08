@@ -270,7 +270,6 @@
               <table class="table table-hover" id="example55">
                 <thead>
                     <tr>
-                      <th class="text-center"> ลำดับ </th>
                       <th class="text-center"> Project ID </th>
                       <th class="text-center"> ชื่อโครงการวิจัยที่เสร็จสิ้นแล้ว </th>
                     @if(Auth::hasRole('manager'))
@@ -285,12 +284,8 @@
                 </thead>
 
                 <tbody>
-                  @php
-                      $i = 1;
-                  @endphp
                   @foreach ($research as $value)
                   <tr>
-                    <td class="text-center"> {{ $i }} </td>
                     <td class="text-center"> {{ $value->id }} </td>
                     <td class="text-left"> {{ $value->pro_name_th." ".$value->pro_name_en}} </td>
                   @if(Auth::hasRole('manager'))
@@ -338,14 +333,12 @@
 
                       @if(Auth::hasRole('manager'))
                           @if($value->verified == "ตรวจสอบแล้ว")
-                          <a href=" {{ route('research.unverified', $value->id) }} ">
-                            <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Verfied">
+                            <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Verfied" disabled>
                               <i class="fas fa-user-check"></i>
                             </button>
-                          </a>
                           @else
                             <a href=" {{ route('research.verified', $value->id) }} ">
-                              <button type="button" class="verify btn btn-md" data-toggle="tooltip" title="Verfied" style="background-color: #567fa8;">
+                              <button type="button" class="btn btn-md" data-toggle="tooltip" title="Verfied" style="background-color: #567fa8;">
                                 <i class="fas fa-user-check"></i>
                               </button>
                             </a>
@@ -354,9 +347,6 @@
                     </td>
 
                   </tr>
-                  @php
-                      $i++;
-                  @endphp
                   @endforeach
                 </tbody>
 
@@ -408,8 +398,7 @@
         Swal.fire({
             icon: 'success',
             title: 'บันทึกข้อมูลเรียบร้อยแล้ว',
-            showConfirmButton: true,
-            confirmButtonColor: '#2C6700',
+            showConfirmButton: false,
             timer: 2500
         })
       </script>
@@ -417,34 +406,29 @@
     <!-- END INSERT success -->
 
 
+  <!-- Verfied -->
     @if(Session::get('verify'))
-     <?php Session::forget('verify'); ?>
-      <script>
-        Swal.fire({
-            icon: 'success',
-            title: 'Verfied Successfully',
-            showConfirmButton: true,
-            confirmButtonColor: '#2C6700',
-            timer: 3800
-        })
-      </script>
-    @endif
-
-
-    @if(Session::get('Noverify'))
-     <?php Session::forget('Noverify'); ?>
-      <script>
-        Swal.fire({
+      <?php Session::forget('message'); ?>
+        <script>
+          Swal.fire({
+            title: 'Do you want to save the changes?',
             icon: 'warning',
-            title: 'Unverified Successfully',
-            text: 'รายการนี้ยังไม่ได้รับการตรวจสอบอีกครั้ง',
-            showConfirmButton: false,
-            confirmButtonColor: '#d33',
-            timer: 6000
-        })
-      </script>
-    @endif
-
+            showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonText: `Comfirm`,
+            confirmButtonColor: '#2C6700',
+            denyButtonText: `Don't save`,
+          }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+              Swal.fire('Verified Success', '', 'success')
+            } else if (result.isDenied) {
+              Swal.fire('Changes are not saved', '', 'info')
+            }
+          })
+        </script>
+      @endif
+    <!-- Verfied -->
 
 
 <!-- FILE INPUT -->

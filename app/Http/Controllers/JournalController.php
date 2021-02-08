@@ -358,7 +358,6 @@ class JournalController extends Controller
 
   //  -- VERIFIED --
   public function action_verified(Request $request){
-
       //UPDATE db_published_journal
       $verified = DB::table('db_published_journal')
                 ->where('id', $request->id)
@@ -368,25 +367,36 @@ class JournalController extends Controller
                 // ->get();
 
        // dd($verified);
-
-      if(!$verified = '1'){
-        return abort(404);
-      }
-
-      if($verified) {
-          return redirect()->back()->with('swl_verified', '555ลบข้อมูลเรียบร้อยแล้ว');
-      }else {
-          return redirect()->back()->with('swl_del', 'ไม่สามารถลบข้อมูลได้');
-      }
-
-    }
-      // else {
-      //     return redirect()->back()->with('swl_verified', 'ลบข้อมูลเรียบร้อยแล้ว');
-      // }
-
-  // }
+       if($verified){
+           session()->put('verify', 'okkkkkayyyyy');
+           return redirect()->route('page.journal');
+       }else{
+           return redirect()->back()->with('swl_err', 'บันทึกไม่สำเร็จ');
+       }
+     }
   //  -- END VERIFIED --
 
+
+
+  //  -- No VERIFIED --
+  public function No_verified(Request $request){
+      //UPDATE db_published_journal
+      $verified = DB::table('db_published_journal')
+                ->where('id', $request->id)
+                ->update(['verified'    => NULL,
+                          'updated_at'  => date('Y-m-d H:i:s')
+                        ]);
+                // ->get();
+
+       // dd($verified);
+       if($verified){
+           session()->put('Noverify', 'okkkkkayyyyy');
+           return redirect()->route('page.journal');
+       }else{
+           return redirect()->back()->with('swl_err', 'บันทึกไม่สำเร็จ');
+       }
+     }
+  //  -- END No VERIFIED --
 
 
 }
