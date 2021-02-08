@@ -488,12 +488,7 @@
 <!-- END ALERT บันทึกข้อมูลสำเร็จ  -->
 
 
-
-<!-- DatePicker Style -->
-<!-- <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-<script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script> -->
-
-
+<!-- DatePicker YEAR -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -506,19 +501,7 @@
       autoclose: true,
   });
 </script>
-
-
-<!-- <script>
-    $('#datepicker4').datepicker({
-        uiLibrary: 'bootstrap4',
-        format: 'yyyy',
-        changeYear: true,
-        changeMonth: false,
-        autoclose: true,
-        todayHighlight: true
-    });
-</script> -->
-<!-- END DatePicker Style -->
+<!-- END DatePicker YEAR -->
 
 
 

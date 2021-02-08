@@ -40,7 +40,7 @@ Route::group(['middleware' => 'keycloak-web'], function () {
     Route::get('/Download-Files/research/{id}/{files}','ResearchController@DownloadFile')->name('DownloadFile.research');
     //  -- VERIFIED --
     Route::get('/research/verified/{id}', 'ResearchController@action_verified')->name('research.verified');
-    //  -- VERIFIED --
+    //  -- NO VERIFIED --
     Route::get('/research/unverified/{id}', 'ResearchController@No_verified')->name('research.unverified');
 
 
@@ -58,7 +58,7 @@ Route::group(['middleware' => 'keycloak-web'], function () {
     Route::get('/Download-Files/journal/{id}/{files}','JournalController@DownloadFile')->name('DownloadFile.journal');
     //  -- VERIFIED --
     Route::get('/journal/verified/{id}', 'JournalController@action_verified')->name('journal.verified');
-    //  -- VERIFIED --
+    //  -- NO VERIFIED --
     Route::get('/journal/unverified/{id}', 'JournalController@No_verified')->name('journal.unverified');
 
 
