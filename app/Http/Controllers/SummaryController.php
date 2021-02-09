@@ -60,6 +60,7 @@ class SummaryController extends Controller
       $Total_master_pro = DB::table('db_research_project')
                         -> select('db_research_project.id','pro_name_th','pro_name_en','pro_position',
                                   'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
+                        -> whereIn ('verified', ['1'])
                         -> whereIn ('pro_position', ['1'])
                         ->get()
                         ->count();
@@ -68,6 +69,7 @@ class SummaryController extends Controller
       $Total_master_pro = DB::table('db_research_project')
                         -> select('db_research_project.id','pro_name_th','pro_name_en','pro_position',
                                   'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
+                        -> whereIn ('verified', ['1'])
                         -> whereIn ('pro_position', ['1'])
                         ->get()
                         ->count();
@@ -76,6 +78,7 @@ class SummaryController extends Controller
       $Total_master_pro = DB::table('db_research_project')
                         -> select('db_research_project.id','pro_name_th','pro_name_en','pro_position',
                                   'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
+                        -> whereIn ('verified', ['1'])
                         -> whereIn ('pro_position', ['1'])
                         -> where ('users_id', Auth::user()->preferred_username)
                         ->get()->count();
@@ -86,6 +89,7 @@ class SummaryController extends Controller
       $Total_publish_pro = DB::table('db_research_project')
                         -> select('db_research_project.users_id','pro_name_th','pro_name_en','pro_position',
                                   'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
+                        -> whereIn ('verified', ['1'])
                         -> whereIn ('publish_status', ['1'])
                         ->get()
                         ->count();
@@ -94,6 +98,7 @@ class SummaryController extends Controller
       $Total_publish_pro = DB::table('db_research_project')
                         -> select('db_research_project.users_id','pro_name_th','pro_name_en','pro_position',
                                   'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
+                        -> whereIn ('verified', ['1'])
                         -> whereIn ('publish_status', ['1'])
                         ->get()
                         ->count();
@@ -102,6 +107,7 @@ class SummaryController extends Controller
       $Total_publish_pro = DB::table('db_research_project')
                         -> select('db_research_project.users_id','pro_name_th','pro_name_en','pro_position',
                                   'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
+                        -> whereIn ('verified', ['1'])
                         -> whereIn ('publish_status', ['1'])
                         -> where ('users_id', Auth::user()->preferred_username)
                         ->get()
@@ -113,6 +119,7 @@ class SummaryController extends Controller
       //                       -> select('db_published_journal.id','article_name_th','article_name_en','journal_name_th','journal_name_en',
       //                                 'publish_years','publish_no','publish_volume','publish_page','doi_number',
       //                                 'contribute','corres')
+      //                       -> whereIn ('verified', ['1'])
       //                       -> where ('contribute', ['1'])
       //                       ->get()->count();
 
@@ -157,6 +164,7 @@ class SummaryController extends Controller
       $Total_policy_util = DB::table('db_utilization')
                             -> select('pro_id','util_type')
                             -> where ('util_type', '=', 'เชิงนโยบาย')
+                            -> whereIn ('verified', ['1'])
                             ->get()
                             ->count();
 
@@ -164,6 +172,7 @@ class SummaryController extends Controller
       $Total_policy_util = DB::table('db_utilization')
                             -> select('pro_id','util_type')
                             -> where ('util_type', '=', 'เชิงนโยบาย')
+                            -> whereIn ('verified', ['1'])
                             ->get()
                             ->count();
 
@@ -171,6 +180,7 @@ class SummaryController extends Controller
       $Total_policy_util = DB::table('db_utilization')
                             -> select('pro_id','util_type')
                             -> where ('util_type', '=', 'เชิงนโยบาย')
+                            -> whereIn ('verified', ['1'])
                             -> where ('users_id', Auth::user()->preferred_username)
                             ->get()
                             ->count();
@@ -186,10 +196,14 @@ class SummaryController extends Controller
           ->leftjoin ('db_summary', 'db_research_project.users_id', '=', 'db_summary.users_id')
 
           ->select('db_research_project.users_name','db_research_project.researcher_level')
-          ->selectRaw("count(DISTINCT(case when db_research_project.verified = '1' then db_research_project.id end)) as count_verified_pro") // จำนวน count -> verified = '1'
-          ->selectRaw("count(DISTINCT(case when db_research_project.pro_position = '1' and db_research_project.verified = '1'  then db_research_project.id end)) as count_master_pro")
-          ->selectRaw("count(DISTINCT(case when db_published_journal.verified = '1' then db_published_journal.id end)) as count_verified_journal") // จำนวน count -> verified = '1'
-          ->selectRaw("count(DISTINCT(case when db_utilization.util_type = 'เชิงนโยบาย' then db_utilization.pro_id end)) as count_policy_util")
+          // โครงการวิจัยทั้งหมด ที่ผ่านการตรวจสอบแล้ว  // จำนวน count -> verified = '1'
+          ->selectRaw("count(DISTINCT(case when db_research_project.verified = '1' then db_research_project.id end)) as count_verified_pro")
+          // โครงการวิจัยที่เป็นผู้วิจัยหลัก ที่ผ่านการตรวจสอบแล้ว  // จำนวน count -> pro_position = '1' -> verified = '1'
+          ->selectRaw("count(DISTINCT(case when db_research_project.pro_position = '1' and db_research_project.verified = '1' then db_research_project.id end)) as count_master_pro")
+          // บทความตีพิมพ์ ที่ผ่านการตรวจสอบแล้ว  // จำนวน count -> verified = '1'
+          ->selectRaw("count(DISTINCT(case when db_published_journal.verified = '1' then db_published_journal.id end)) as count_verified_journal")
+          // โครงการที่นำไปใช้ประโยชน์ เชิงนโยบาย ที่ผ่านการตรวจสอบแล้ว  // จำนวน count -> util_type = 'เชิงนโยบาย' -> verified = '1'
+          ->selectRaw("count(DISTINCT(case when db_utilization.util_type = 'เชิงนโยบาย' and db_research_project.verified = '1' then db_utilization.pro_id end)) as count_policy_util")
 
           ->GROUPBY ('db_research_project.users_name','db_research_project.researcher_level')
           ->get();
@@ -198,7 +212,7 @@ class SummaryController extends Controller
 
         $select_lev = [1      => 'นักวิจัยฝึกหัด',
                        2      => 'นักวิจัยรุ่นใหม่',
-                       3     => 'นักวิจัยรุ่นกลาง',
+                       3      => 'นักวิจัยรุ่นกลาง',
                        4      => 'นักวิจัยอาวุโส'
                        ];
 
