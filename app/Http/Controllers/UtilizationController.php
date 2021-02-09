@@ -44,23 +44,48 @@ class UtilizationController extends Controller
 // dd($Total_util);
 
 
+if(Auth::hasRole('manager')){
+  // โครงการที่นำไปใช้ประโยชน์ทั้งหมด ที่ผ่านการตรวจสอบแล้ว db_utilization -> โดย count id (All Record) -> 'verified', ['1'] --------->
+  $Total_util_verify = DB::table('db_utilization')
+                        -> select('pro_id','util_type')
+                        -> whereIn ('verified', ['1'])
+                        ->get()->count();
+
+}elseif(Auth::hasRole('admin')) {
+  $Total_util_verify = DB::table('db_utilization')
+                        -> select('pro_id','util_type')
+                        -> whereIn ('verified', ['1'])
+                        ->get()->count();
+}else {
+  $Total_util_verify = DB::table('db_utilization')
+                        -> select('pro_id','util_type')
+                        -> whereIn ('verified', ['1'])
+                        -> where ('users_id', Auth::user()->preferred_username)
+                        ->get()->count();
+}
+// dd($Total_util);
+
+
   if(Auth::hasRole('manager')){
     // โครงการที่นำไปใช้ประโยชน์เชิงวิชาการ db_utilization -> โดย count id -> util_type = เชิงวิชาการ --------->
     $Total_academic_util = DB::table('db_utilization')
                           -> select('pro_id','util_type')
                           -> where ('util_type', '=', 'เชิงวิชาการ')
+                          -> whereIn ('verified', ['1'])
                           ->get()->count();
 
   }elseif(Auth::hasRole('admin')) {
     $Total_academic_util = DB::table('db_utilization')
                           -> select('pro_id','util_type')
                           -> where ('util_type', '=', 'เชิงวิชาการ')
+                          -> whereIn ('verified', ['1'])
                           ->get()->count();
 
   }else {
     $Total_academic_util = DB::table('db_utilization')
                           -> select('pro_id','util_type')
                           -> where ('util_type', '=', 'เชิงวิชาการ')
+                          -> whereIn ('verified', ['1'])
                           -> where ('users_id', Auth::user()->preferred_username)
                           ->get()->count();
   }
@@ -72,18 +97,21 @@ class UtilizationController extends Controller
     $Total_social_util = DB::table('db_utilization')
                           -> select('pro_id','util_type')
                           -> where ('util_type', '=', 'เชิงสังคม/ชุมชน')
+                          -> whereIn ('verified', ['1'])
                           ->get()->count();
 
   }elseif(Auth::hasRole('admin')) {
     $Total_social_util = DB::table('db_utilization')
                           -> select('pro_id','util_type')
                           -> where ('util_type', '=', 'เชิงสังคม/ชุมชน')
+                          -> whereIn ('verified', ['1'])
                           ->get()->count();
 
   }else {
     $Total_social_util = DB::table('db_utilization')
                           -> select('pro_id','util_type')
                           -> where ('util_type', '=', 'เชิงสังคม/ชุมชน')
+                          -> whereIn ('verified', ['1'])
                           -> where ('users_id', Auth::user()->preferred_username)
                           ->get()->count();
   }
@@ -95,18 +123,21 @@ class UtilizationController extends Controller
     $Total_policy_util = DB::table('db_utilization')
                           -> select('pro_id','util_type')
                           -> where ('util_type', '=', 'เชิงนโยบาย')
+                          -> whereIn ('verified', ['1'])
                           ->get()->count();
 
   }elseif(Auth::hasRole('admin')) {
     $Total_policy_util = DB::table('db_utilization')
                           -> select('pro_id','util_type')
                           -> where ('util_type', '=', 'เชิงนโยบาย')
+                          -> whereIn ('verified', ['1'])
                           ->get()->count();
 
   }else {
     $Total_policy_util = DB::table('db_utilization')
                           -> select('pro_id','util_type')
                           -> where ('util_type', '=', 'เชิงนโยบาย')
+                          -> whereIn ('verified', ['1'])
                           -> where ('users_id', Auth::user()->preferred_username)
                           ->get()->count();
   }
@@ -118,18 +149,21 @@ class UtilizationController extends Controller
     $Total_commercial_util = DB::table('db_utilization')
                           -> select('pro_id','util_type')
                           -> where ('util_type', '=', 'เชิงพาณิชย์')
+                          -> whereIn ('verified', ['1'])
                           ->get()->count();
 
   }elseif(Auth::hasRole('admin')) {
     $Total_commercial_util = DB::table('db_utilization')
                           -> select('pro_id','util_type')
                           -> where ('util_type', '=', 'เชิงพาณิชย์')
+                          -> whereIn ('verified', ['1'])
                           ->get()->count();
 
   }else {
     $Total_commercial_util = DB::table('db_utilization')
                           -> select('pro_id','util_type')
                           -> where ('util_type', '=', 'เชิงพาณิชย์')
+                          -> whereIn ('verified', ['1'])
                           -> where ('users_id', Auth::user()->preferred_username)
                           ->get()->count();
   }
@@ -211,6 +245,7 @@ class UtilizationController extends Controller
     return view('frontend.util',
     [
       'Total_util'             => $Total_util,
+      'Total_util_verify'      => $Total_util_verify,
       'Total_academic_util'    => $Total_academic_util,
       'Total_social_util'      => $Total_social_util,
       'Total_policy_util'      => $Total_policy_util,
@@ -352,18 +387,35 @@ class UtilizationController extends Controller
 
          // dd($verified);
 
-        if(!$verified = '1'){
-          return abort(404);
-        }
+         if($verified){
+             session()->put('verify', 'okkkkkayyyyy');
+             return redirect()->route('page.util');
+         }else{
+             return redirect()->back()->with('swl_err', 'บันทึกไม่สำเร็จ');
+         }
+       }
+    //  -- END VERIFIED --
 
-        if($verified) {
-            return redirect()->back()->with('swl_verified', 'ลบข้อมูลเรียบร้อยแล้ว');
-        }else {
-            return redirect()->back()->with('swl_del', 'ไม่สามารถลบข้อมูลได้');
-        }
 
-      }
-      //  -- END VERIFIED --
+    //  -- No VERIFIED --
+    public function No_verified(Request $request){
+        //UPDATE db_research_project
+        $verified = DB::table('db_utilization')
+                  ->where('id', $request->id)
+                  ->update(['verified'    => NULL,
+                            'updated_at'  => date('Y-m-d H:i:s')
+                          ]);
+                  // ->get();
+
+         // dd($verified);
+         if($verified){
+             session()->put('Noverify', 'okkkkkayyyyy');
+             return redirect()->route('page.util');
+         }else{
+             return redirect()->back()->with('swl_err', 'บันทึกไม่สำเร็จ');
+         }
+       }
+    //  -- END No VERIFIED --
 
 
 // END TABLE LIST------------------------------------------------------------------>

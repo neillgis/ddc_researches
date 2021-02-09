@@ -28,12 +28,11 @@ class SummaryController extends Controller
 
     public function table_summary(){
     // SUM BOX ------------------------------------------------------------------------>
-      // โครงการวิจัยที่ทำเสร็จ db_research_project -> โดย count id -> verified = '1' (ตรวจสอบแล้ว)--------->
+      // โครงการวิจัยที่ทำเสร็จสิ้นทั้งหมด db_research_project -> โดย count id --------->
       if(Auth::hasRole('manager')){
         $Total_research = DB::table('db_research_project')
                         -> select('db_research_project.id','pro_name_th','pro_name_en','pro_position',
                                   'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
-                        -> whereIn ('verified', ['1'])
                         ->get()
                         ->count();
 
@@ -41,7 +40,6 @@ class SummaryController extends Controller
         $Total_research = DB::table('db_research_project')
                         -> select('db_research_project.id','pro_name_th','pro_name_en','pro_position',
                                   'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
-                        -> whereIn ('verified', ['1'])
                         ->get()
                         ->count();
 
@@ -49,13 +47,12 @@ class SummaryController extends Controller
         $Total_research = DB::table('db_research_project')
                         -> select('db_research_project.id','pro_name_th','pro_name_en','pro_position',
                                   'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
-                        -> whereIn ('verified', ['1'])
                         -> where ('users_id', Auth::user()->preferred_username)
                         ->get()
                         ->count();
       }
 
-      // โครงการวิจัยที่เป็นผู้วิจัยหลัก db_research_project -> โดย count id -> pro_position = 1 (เป็นผู้วิจัยหลัก)--------->
+      // โครงการวิจัยที่เป็นผู้วิจัยหลัก ที่ตรวจสอบแล้ว db_research_project -> โดย count id -> pro_position = 1 (เป็นผู้วิจัยหลัก)--------->
     if(Auth::hasRole('manager')){
       $Total_master_pro = DB::table('db_research_project')
                         -> select('db_research_project.id','pro_name_th','pro_name_en','pro_position',
@@ -84,7 +81,7 @@ class SummaryController extends Controller
                         ->get()->count();
     }
 
-      // โครงการวิจัยที่ตีพิมพ์ db_research_project -> โดย count id -> publish_status = 1 (ใช่ )--------->
+      // โครงการวิจัยที่ตีพิมพ์ ที่ตรวจสอบแล้ว db_research_project -> โดย count id -> publish_status = 1 (ใช่ )--------->
     if(Auth::hasRole('manager')){
       $Total_publish_pro = DB::table('db_research_project')
                         -> select('db_research_project.users_id','pro_name_th','pro_name_en','pro_position',
@@ -123,7 +120,7 @@ class SummaryController extends Controller
       //                       -> where ('contribute', ['1'])
       //                       ->get()->count();
 
-      // บทความตีพิมพ์ db_published_journal โดย count id -> verified = '1' (ตรวจสอบแล้ว) --------->
+      // บทความตีพิมพ์ ที่ตรวจสอบแล้ว db_published_journal โดย count id -> verified = '1' (ตรวจสอบแล้ว) --------->
     if(Auth::hasRole('manager')){
       $Total_publish_journal = DB::table('db_published_journal')
                              -> select ('id','article_name_th','article_name_en','journal_name_th','journal_name_en',
@@ -196,13 +193,13 @@ class SummaryController extends Controller
           ->leftjoin ('db_summary', 'db_research_project.users_id', '=', 'db_summary.users_id')
 
           ->select('db_research_project.users_name','db_research_project.researcher_level')
-          // โครงการวิจัยทั้งหมด ที่ผ่านการตรวจสอบแล้ว  // จำนวน count -> verified = '1'
+          // โครงการวิจัยที่เสร็จสิ้นทั้งหมด ที่ตรวจสอบแล้ว  // จำนวน count -> verified = '1'
           ->selectRaw("count(DISTINCT(case when db_research_project.verified = '1' then db_research_project.id end)) as count_verified_pro")
-          // โครงการวิจัยที่เป็นผู้วิจัยหลัก ที่ผ่านการตรวจสอบแล้ว  // จำนวน count -> pro_position = '1' -> verified = '1'
+          // โครงการวิจัยที่เป็นผู้วิจัยหลัก ที่ตรวจสอบแล้ว  // จำนวน count -> pro_position = '1' -> verified = '1'
           ->selectRaw("count(DISTINCT(case when db_research_project.pro_position = '1' and db_research_project.verified = '1' then db_research_project.id end)) as count_master_pro")
-          // บทความตีพิมพ์ ที่ผ่านการตรวจสอบแล้ว  // จำนวน count -> verified = '1'
+          // บทความตีพิมพ์ ที่ตรวจสอบแล้ว  // จำนวน count -> verified = '1'
           ->selectRaw("count(DISTINCT(case when db_published_journal.verified = '1' then db_published_journal.id end)) as count_verified_journal")
-          // โครงการที่นำไปใช้ประโยชน์ เชิงนโยบาย ที่ผ่านการตรวจสอบแล้ว  // จำนวน count -> util_type = 'เชิงนโยบาย' -> verified = '1'
+          // โครงการที่นำไปใช้ประโยชน์ เชิงนโยบาย ที่ตรวจสอบแล้ว  // จำนวน count -> util_type = 'เชิงนโยบาย' -> verified = '1'
           ->selectRaw("count(DISTINCT(case when db_utilization.util_type = 'เชิงนโยบาย' and db_research_project.verified = '1' then db_utilization.pro_id end)) as count_policy_util")
 
           ->GROUPBY ('db_research_project.users_name','db_research_project.researcher_level')

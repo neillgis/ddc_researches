@@ -82,7 +82,7 @@
                     <!-- เรียกจาก db_research_project -> โดย count id -> verified = 1 ( ตรวจสอบแล้ว ) ------------>
                     <h3> {{ empty($Total_research)?'0': $Total_research }} โครงการ </h3>
                     <br>
-                    <p> โครงการวิจัยที่ทำเสร็จสิ้น </p>
+                    <p> โครงการวิจัยที่ทำเสร็จสิ้นทั้งหมด </p>
                   </div>
                   <div class="icon">
                     <i class="fas fa-chart-line"></i>
@@ -106,7 +106,7 @@
               </div>
 
               <div class="col-md-3 mx-auto">
-                <div class="small-box bg-green">
+                <div class="small-box bg-info">
                   <div class="inner">
                     <!-- เรียกจาก db_research_project -> โดย count id -> publish_status = 1 (ใช่ ) ------------>
                     <h3> {{ empty($Total_publish_pro)?'0': $Total_publish_pro }} โครงการ </h3>
@@ -134,7 +134,7 @@
               </div>
 
               <div class="col-md-3 mx-auto">
-                <div class="small-box bg-green">
+                <div class="small-box bg-info">
                   <div class="inner">
                     <!-- เรียกจาก db_utilization -> โดย count id -> util_type = เชิงนโยบาย ------------>
                     <h3> {{ empty($Total_policy_util)?'0': $Total_policy_util }} โครงการ </h3>

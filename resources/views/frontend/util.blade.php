@@ -3,7 +3,6 @@
 
 @section('css-custom')
 <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-<!-- <link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="http://www.datatables.net/rss.xml"> -->
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css">
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.6.4/css/buttons.dataTables.min.css">
 <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
@@ -71,7 +70,7 @@
         <section class="content">
           <div class="container-fluid">
             <div class="row">
-              <div class="col-md-12 mx-auto">
+              <div class="col-md-6 mx-auto">
                 <div class="small-box bg-red">
                   <div class="inner">
                     <!-- เรียกจาก db_utilization -> โดย count id (All Record) --------->
@@ -85,8 +84,22 @@
                 </div>
               </div>
 
-              <div class="col-md-3 mx-auto">
+              <div class="col-md-6 mx-auto">
                 <div class="small-box bg-green">
+                  <div class="inner">
+                    <!-- เรียกจาก db_utilization -> โดย count id (All Record) --------->
+                    <h3> {{ empty($Total_util_verify)?'0': $Total_util_verify }} โครงการ </h3>
+                    <br>
+                    <p> โครงการที่นำไปใช้ประโยชน์ที่ตรวจสอบแล้ว </p>
+                  </div>
+                  <div class="icon">
+                    <i class="fas fa-tasks"> </i>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-3 mx-auto">
+                <div class="small-box bg-info">
                   <div class="inner">
                     <!-- เรียกจาก db_utilization -> โดย count id -> util_type = เชิงนโยบาย --------->
                     <h3> {{ empty($Total_policy_util)?'0': $Total_policy_util }} โครงการ </h3>
@@ -105,7 +118,7 @@
 
 
               <div class="col-md-3 mx-auto">
-                <div class="small-box bg-green">
+                <div class="small-box bg-info">
                   <div class="inner">
                     <!-- เรียกจาก db_utilization -> โดย count id -> util_type = เชิงวิชาการ --------->
                     <h3> {{ empty($Total_academic_util)?'0': $Total_academic_util }} โครงการ </h3>
@@ -123,7 +136,7 @@
               </div>
 
               <div class="col-md-3 mx-auto">
-                <div class="small-box bg-green">
+                <div class="small-box bg-info">
                   <div class="inner">
                     <!-- เรียกจาก db_utilization -> โดย count id -> util_type = เชิงสังคม/ชุมชน --------->
                     <h3> {{ empty($Total_social_util)?'0': $Total_social_util }} โครงการ </h3>
@@ -141,7 +154,7 @@
               </div>
 
               <div class="col-md-3 mx-auto">
-                <div class="small-box bg-green">
+                <div class="small-box bg-info">
                   <div class="inner">
                     <!-- เรียกจาก db_utilization -> โดย count id -> util_type = เชิงพาณิชย์ --------->
                     <h3> {{ empty($Total_commercial_util)?'0': $Total_commercial_util }} โครงการ </h3>
@@ -263,7 +276,7 @@
                             <th class="text-center"> ชื่อ/สกุล </th>
                           @endif
                             <th class="text-center"> การตรวจสอบ </th>
-                            <th class="text-right"> จัดการข้อมูล </th>
+                            <th class="text-right"> Actions </th>
                         </tr>
                     </thead>
 
@@ -288,7 +301,7 @@
                             @endif
                           </td>
 
-                          <!-- จัดการข้อมูล -->
+                          <!-- Actions -->
                           <td class="td-actions text-right text-nowrap" href="#">
                             <!-- {{-- @if(Auth::hasRole('manager') || Auth::hasRole('user')) --}} -->
                             @if($value->verified == "ตรวจสอบแล้ว")
@@ -316,31 +329,22 @@
                             </a>
                             @endif
 
-                            <!-- {{-- @endif --}} -->
-
-                            <!-- FOR Admin ONLY -->
-                            <!-- {{-- @if(Auth::hasRole('admin')) --}}
-                            <a href=" {{ route('util.edit', $value->id) }} ">
-                              <button type="button" class="btn btn-warning btn-md" data-toggle="tooltip" title="Views">
-                                <i class="fas fa-eye"></i>
-                              </button>
-                            </a>
-                            {{-- @endif --}} -->
 
                             @if(Auth::hasRole('manager'))
                                 @if($value->verified == "ตรวจสอบแล้ว")
-                                <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Verfied" disabled>
-                                  <i class="fas fa-user-check"></i>
-                                </button>
-                                @else
-                                <a href=" {{ route('util.verified', $value->id) }} ">
-                                  <button type="button" class="btn btn-md"
-                                          data-toggle="tooltip" title="Verfied" style="background-color: #336699;">
+                                <a href=" {{ route('util.unverified', $value->id) }} ">
+                                  <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Verfied">
                                     <i class="fas fa-user-check"></i>
                                   </button>
                                 </a>
+                                @else
+                                  <a href=" {{ route('util.verified', $value->id) }} ">
+                                    <button type="button" class="verify btn btn-md" data-toggle="tooltip" title="Verfied" style="background-color: #567fa8;">
+                                      <i class="fas fa-user-check"></i>
+                                    </button>
+                                  </a>
+                                @endif
                             @endif
-                          @endif
                           </td>
 
                         </tr>
@@ -422,6 +426,35 @@
   </script>
 @endif
 <!-- END ALERT บันทึกข้อมูลสำเร็จ  -->
+
+
+@if(Session::get('verify'))
+ <?php Session::forget('verify'); ?>
+  <script>
+    Swal.fire({
+        icon: 'success',
+        title: 'Verified Successfully',
+        showConfirmButton: true,
+        confirmButtonColor: '#2C6700',
+        timer: 3800
+    })
+  </script>
+@endif
+
+
+@if(Session::get('Noverify'))
+ <?php Session::forget('Noverify'); ?>
+  <script>
+    Swal.fire({
+        icon: 'warning',
+        title: 'Unverified Successfully',
+        text: 'รายการนี้ยังไม่ได้รับการตรวจสอบอีกครั้ง',
+        showConfirmButton: false,
+        confirmButtonColor: '#d33',
+        timer: 6000
+    })
+  </script>
+@endif
 
 
 <!-- FILE INPUT -->
