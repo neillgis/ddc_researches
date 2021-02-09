@@ -164,14 +164,14 @@
 
           <div class="card-body">
             <div class="row">
-              <div class="col-md-6">
-                <input type="text" class="form-control" name="nriis_id" placeholder="รหัสนักวิจัย (NRIIS ID) ถ้ามี">
+              <div class="col-md-12">
+                <input type="text" class="form-control" name="nriis_id" placeholder="กรุณากรอก รหัสนักวิจัย (NRIIS ID) ถ้ามี">
               </div>
-            <!-- </div> -->
-            <!-- <br> -->
-            <!-- <div class="row"> -->
-              <div class="col-md-6">
-                <input type="text" class="form-control" name="orcid_id" maxlength="16" placeholder="บัตรประจำตัวนักวิจัย (ORCID ID) ถ้ามี">
+            </div>
+            <br>
+            <div class="row">
+              <div class="col-md-12">
+                <input type="text" class="form-control" name="orcid_id" placeholder="กรุณากรอก บัตรประจำตัวนักวิจัย (ORCID ID) ถ้ามี">
               </div>
             </div>
           </div>
