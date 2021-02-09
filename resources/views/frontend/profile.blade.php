@@ -168,25 +168,77 @@
           </div>
 
           <div class="card-body">
+            <!-- <div class="card-footer"> -->
+            <div class="row">
+              <div class="col-md-12">
+                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal-default">
+                  <i class="fas fa-plus-circle"></i>
+                  &nbsp;เพิ่มข้อมูลนักวิจัย
+                </button>
+              </div>
+            </div>
+            <br>
+
             <div class="row">
               <div class="col-md-6">
                 <label for="exampleInput1"> รหัสนักวิจัย </label>
-                <input type="text" class="form-control" name="nriis_id" placeholder="รหัสนักวิจัย (NRIIS ID) ถ้ามี" readonly>
+                  @foreach ($data as $value)
+                    <div class="border p-2" style="background-color: #e9ecef;opacity: 1; font-size: 20px;">
+                      {{ $value->nriis_id }}
+                    </div>
+                  @endforeach
               </div>
 
               <div class="col-md-6">
                 <label for="exampleInput1"> บัตรประจำตัวนักวิจัย </label>
-                <input type="text" class="form-control" name="orcid_id" placeholder="บัตรประจำตัวนักวิจัย (ORCID ID) ถ้ามี" readonly>
+                  @foreach ($data as $value)
+                    <div class="border p-2" style="background-color: #e9ecef;opacity: 1; font-size: 20px;">
+                      {{ $value->orcid_id }}
+                    </div>
+                  @endforeach
               </div>
             </div>
           </div>
-
-          <div class="card-footer">
-            <button type="submit" class="btn btn-danger float-right" value="บันทึกข้อมูล">
-              <i class="fas fa-save"></i> &nbsp;บันทึกข้อมูล </button>
-          </div>
-
         </div>
+
+
+      <!-- MODAL INSERT -->
+        <div class="modal fade" id="modal-default">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header shadow" style="background-color: #fcb8ac;">
+                <h4 class="modal-title"><b> เพิ่มข้อมูลนักวิจัย </b></h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="row">
+                  <div class="col-md-12">
+                    <label for="exampleInput1"> รหัสนักวิจัย </label>
+                    <input type="text" class="form-control" name="nriis_id" placeholder="รหัสนักวิจัย (NRIIS ID) *ถ้ามี" maxlength="10" required>
+                  </div>
+                </div>
+                <br>
+                <div class="row">
+                  <div class="col-md-12">
+                    <label for="exampleInput1"> บัตรประจำตัวนักวิจัย </label>
+                    <input type="text" class="form-control" name="orcid_id" placeholder="เลขประจำตัวนักวิจัย (ORCID ID) *ถ้ามี" maxlength="16" required>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal"> Close </button>
+                <button type="submit" class="btn btn-danger float-right" value="บันทึกข้อมูล">
+                  <i class="fas fa-save"></i> &nbsp;บันทึกข้อมูล
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      <!-- END MODAL -->
+
+
         <br>
       </div>
     </div>

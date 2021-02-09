@@ -15,13 +15,7 @@ class ProfileController extends Controller
     public function index(){
 
       $data = DB::table('users')
-            ->select('id', 'idCard', 'nriis_id', 'orcid_id',
-                    // \DB::raw('(CASE
-                    //               WHEN verified = "1" THEN "ตรวจสอบแล้ว"
-                    //               ELSE "รอตรวจสอบ"
-                    //               END) AS verified'
-                    // )
-                    )
+            ->select('id', 'idCard', 'nriis_id', 'orcid_id')
             ->where('idCard', Auth::user()->preferred_username)
             ->get();
 // dd($data);
@@ -32,20 +26,6 @@ class ProfileController extends Controller
         ]);
     }
 
-
-  //   //  -- SELECT --
-  //   public function profiles(Request $request){
-  //     $data = member::select('id', 'nriis_id', 'orcid_id')
-  //           // ->where('id', Auth::user()->preferred_username)
-  //           ->get();
-  //
-  //   dd($data);
-  //
-  //   return view('frontend.profile',
-  //     [
-  //      'data'          => $data,
-  //     ]);
-  // }
 
 
     //  -- INSERT  --
