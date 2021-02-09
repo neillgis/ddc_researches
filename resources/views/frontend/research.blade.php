@@ -437,8 +437,8 @@
         Swal.fire({
             icon: 'warning',
             title: 'Unverified Successfully',
-            text: 'รายการนี้ยังไม่ได้รับการตรวจสอบอีกครั้ง',
-            showConfirmButton: false,
+            text: 'รายการนี้ยังไม่ได้ตรวจสอบ',
+            showConfirmButton: true,
             confirmButtonColor: '#d33',
             timer: 6000
         })
