@@ -71,7 +71,35 @@
 
     <!-- START SUMMARY Total Box -->
       <div class="row">
-        <div class="col-md-6 mx-auto">
+        <div class="col-md-4 mx-auto">
+          <div class="small-box bg-danger mx-auto">
+            <div class="inner">
+              <h3> {{ empty($Total_journal)?'0': $Total_journal }} โครงการ </h3>
+              <br>
+              <p> บทความตีพิมพ์ทั้งหมด </p>
+            </div>
+            <div class="icon">
+              <i class="fas fa-book-reader"></i>
+            </div>
+            <!-- <a class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
+          </div>
+        </div>
+
+        <div class="col-md-4 mx-auto">
+          <div class="small-box bg-green mx-auto">
+            <div class="inner">
+              <h3> {{ empty($Total_journal_verify)?'0': $Total_journal_verify }} โครงการ </h3>
+              <br>
+              <p> บทความตีพิมพ์ที่ตรวจสอบแล้ว </p>
+            </div>
+            <div class="icon">
+              <i class="fas fa-microscope"></i>
+            </div>
+            <!-- <a class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
+          </div>
+        </div>
+
+        <div class="col-md-4 mx-auto">
           <div class="small-box bg-info mx-auto">
             <div class="inner">
               <h3> {{ empty($Total_master_jour)?'0': $Total_master_jour }} โครงการ </h3>
@@ -82,20 +110,6 @@
               <i class="fas fa-user-graduate"></i>
             </div>
             <!-- <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
-          </div>
-        </div>
-
-        <div class="col-md-6 mx-auto">
-          <div class="small-box bg-danger mx-auto">
-            <div class="inner">
-              <h3> {{ empty($Total_journal)?'0': $Total_journal }} โครงการ </h3>
-              <br>
-              <p> บทความตีพิมพ์ทั้งหมด </p>
-            </div>
-            <div class="icon">
-              <i class="fas fa-cubes"></i>
-            </div>
-            <!-- <a class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
           </div>
         </div>
 
@@ -112,7 +126,7 @@
         <div class="card">
           <div class="card shadow" style="background-color: #ff851b;">
             <div class="card-header">
-              <h5><b> เพิ่มข้อมูลการตีพิมพ์วารสาร </b></h5>
+              <h5 class="card-title"><b> เพิ่มข้อมูลการตีพิมพ์วารสาร </b></h5>
             </div>
           </div>
 
@@ -310,7 +324,7 @@
         <div class="card">
           <div class="card card-secondary shadow">
             <div class="card-header">
-              <h3 class="card-title"> ข้อมูลบทความที่ตีพิมพ์แล้ว </h3>
+              <h3 class="card-title"> บทความที่ตีพิมพ์แล้ว </h3>
             </div>
           </div>
 

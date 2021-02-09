@@ -134,7 +134,8 @@ class JournalController extends Controller
 
 
 // --- COUNT 2 BOX on TOP ---
-      // COUNT = All Record
+
+      // บทความตีพิมพ์ทั้งหมด COUNT = All Record
       if(Auth::hasRole('manager')){
         $Total_journal = journal::select('id', 'users_id')
                                   ->get()
@@ -142,7 +143,6 @@ class JournalController extends Controller
 
       }elseif(Auth::hasRole('admin')) {
         $Total_journal = journal::select('id', 'users_id')
-                                  ->where('users_id', Auth::user()->preferred_username)
                                   ->get()
                                   ->count();
 
@@ -153,22 +153,48 @@ class JournalController extends Controller
                                   ->count();
       }
 
-      // COUNT = contribute = 1
+
+      // บทความตีพิมพ์ ที่ตรวจสอบแล้ว COUNT = All Record -> 'verified', ['1']
+      if(Auth::hasRole('manager')){
+        $Total_journal_verify = journal::select('id', 'users_id')
+                                      -> whereIn ('verified', ['1'])
+                                      ->get()
+                                      ->count();
+
+      }elseif(Auth::hasRole('admin')) {
+        $Total_journal_verify = journal::select('id', 'users_id')
+                                      -> whereIn ('verified', ['1'])
+                                      ->get()
+                                      ->count();
+
+      }else {
+        $Total_journal_verify = journal::select('id', 'users_id')
+                                      -> whereIn ('verified', ['1'])
+                                      ->where('users_id', Auth::user()->preferred_username)
+                                      ->get()
+                                      ->count();
+      }
+
+
+      // บทความที่เป็นผู้นิพนธ์หลัก ที่ตรวจสอบแล้ว COUNT = contribute = 1 -> 'verified', ['1']
       if(Auth::hasRole('manager')){
         $Total_master_jour = journal::select('id', 'contribute')
                                     ->whereIn ('contribute', ['1'])
+                                    -> whereIn ('verified', ['1'])
                                     ->get()
                                     ->count();
 
       }elseif(Auth::hasRole('admin')) {
         $Total_master_jour = journal::select('id', 'contribute')
                                     ->whereIn ('contribute', ['1'])
+                                    -> whereIn ('verified', ['1'])
                                     ->get()
                                     ->count();
 
       }else {
         $Total_master_jour = journal::select('id', 'contribute')
                                     ->whereIn ('contribute', ['1'])
+                                    -> whereIn ('verified', ['1'])
                                     ->where('users_id', Auth::user()->preferred_username)
                                     ->get()
                                     ->count();
@@ -177,12 +203,13 @@ class JournalController extends Controller
 
     return view('frontend.journal',
       [
-        'journal_res'     => $query,
-        'journals'        => $query2,
-        'contribute'      => $query3,
-        'corres'          => $query4,
-        'Total_journal'   => $Total_journal,
-        'Total_master_jour'  => $Total_master_jour,
+        'journal_res'              => $query,
+        'journals'                 => $query2,
+        'contribute'               => $query3,
+        'corres'                   => $query4,
+        'Total_journal'            => $Total_journal,
+        'Total_journal_verify'   => $Total_journal_verify,
+        'Total_master_jour'        => $Total_master_jour,
 
      ]);
   }
