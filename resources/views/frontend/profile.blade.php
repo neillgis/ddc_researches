@@ -1,5 +1,9 @@
 @extends('layout.main')
 
+<?php
+  use App\CmsHelper as CmsHelper;
+?>
+
 @section('css-custom')
 
 <!-- SweetAlert2 -->
@@ -122,6 +126,7 @@
                   <input type="hidden" class="form-control" name="educationLevel" id="k_edu_class">
                 </div>
               </div>
+              <br>
             </div>
           </div>
         </div>
@@ -164,14 +169,14 @@
 
           <div class="card-body">
             <div class="row">
-              <div class="col-md-12">
-                <input type="text" class="form-control" name="nriis_id" placeholder="กรุณากรอก รหัสนักวิจัย (NRIIS ID) ถ้ามี">
+              <div class="col-md-6">
+                <label for="exampleInput1"> รหัสนักวิจัย </label>
+                <input type="text" class="form-control" name="nriis_id" placeholder="รหัสนักวิจัย (NRIIS ID) ถ้ามี" readonly>
               </div>
-            </div>
-            <br>
-            <div class="row">
-              <div class="col-md-12">
-                <input type="text" class="form-control" name="orcid_id" placeholder="กรุณากรอก บัตรประจำตัวนักวิจัย (ORCID ID) ถ้ามี">
+
+              <div class="col-md-6">
+                <label for="exampleInput1"> บัตรประจำตัวนักวิจัย </label>
+                <input type="text" class="form-control" name="orcid_id" placeholder="บัตรประจำตัวนักวิจัย (ORCID ID) ถ้ามี" readonly>
               </div>
             </div>
           </div>
@@ -182,12 +187,12 @@
           </div>
 
         </div>
+        <br>
       </div>
     </div>
 
-
     </form>
-    </div>
+  </div>
 </section>
 @stop('contents')
 

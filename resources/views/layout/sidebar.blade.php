@@ -70,7 +70,9 @@
              <li class="nav-item ">
                <a class="nav-link" href="{{ asset('Manual_DIR/manual.pdf') }}" target="_blank">
                  <i class="nav-icon fas fa-folder-open"></i>
-                 <p> คู่มือการใช้งาน </p>
+                 <p> คู่มือการใช้งาน
+                   <span class="right badge badge-danger">Update</span>
+                 </p>
                </a>
              </li>
 
