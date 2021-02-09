@@ -78,6 +78,8 @@ Route::group(['middleware' => 'keycloak-web'], function () {
     Route::get('/Download-Files/util/{id}/{files}','UtilizationController@DownloadFile')->name('DownloadFile.util');
     //  -- VERIFIED --
     Route::get('/util/verified/{id}', 'UtilizationController@action_verified')->name('util.verified');
+    //  -- NO VERIFIED --
+    Route::get('/util/unverified/{id}', 'UtilizationController@No_verified')->name('util.unverified');
 
 
 
