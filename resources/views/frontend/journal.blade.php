@@ -74,7 +74,7 @@
         <div class="col-md-4 mx-auto">
           <div class="small-box bg-danger mx-auto">
             <div class="inner">
-              <h3> {{ empty($Total_journal)?'0': $Total_journal }} โครงการ </h3>
+              <h3> {{ empty($Total_journal)?'0': $Total_journal }} บทความ </h3>
               <br>
               <p> บทความตีพิมพ์ทั้งหมด </p>
             </div>
@@ -88,7 +88,7 @@
         <div class="col-md-4 mx-auto">
           <div class="small-box bg-green mx-auto">
             <div class="inner">
-              <h3> {{ empty($Total_journal_verify)?'0': $Total_journal_verify }} โครงการ </h3>
+              <h3> {{ empty($Total_journal_verify)?'0': $Total_journal_verify }} บทความ </h3>
               <br>
               <p> บทความตีพิมพ์ที่ตรวจสอบแล้ว </p>
             </div>
@@ -102,7 +102,7 @@
         <div class="col-md-4 mx-auto">
           <div class="small-box bg-info mx-auto">
             <div class="inner">
-              <h3> {{ empty($Total_master_jour)?'0': $Total_master_jour }} โครงการ </h3>
+              <h3> {{ empty($Total_master_jour)?'0': $Total_master_jour }} บทความ </h3>
               <br>
               <p> บทความที่เป็นผู้นิพนธ์หลัก </p>
             </div>

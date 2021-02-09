@@ -123,7 +123,7 @@
                 <div class="small-box bg-info">
                   <div class="inner">
                     <!-- เรียกจาก db_published_journal โดย count id -> verified = 1 ( ตรวจสอบแล้ว ) ------------>
-                    <h3> {{ empty($Total_publish_journal)?'0': $Total_publish_journal }} โครงการ </h3>
+                    <h3> {{ empty($Total_publish_journal)?'0': $Total_publish_journal }} บทความ </h3>
                     <br>
                     <p> บทความตีพิมพ์ </p>
                   </div>
@@ -137,7 +137,7 @@
                 <div class="small-box bg-info">
                   <div class="inner">
                     <!-- เรียกจาก db_utilization -> โดย count id -> util_type = เชิงนโยบาย ------------>
-                    <h3> {{ empty($Total_policy_util)?'0': $Total_policy_util }} โครงการ </h3>
+                    <h3> {{ empty($Total_policy_util)?'0': $Total_policy_util }} บทความ </h3>
                     <br>
                     <p> บทความเชิงนโยบาย </p>
                   </div>
