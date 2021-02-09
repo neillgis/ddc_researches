@@ -90,22 +90,25 @@ class ResearchController extends Controller
       if(Auth::hasRole('manager')){
         $Total_research = DB::table('db_research_project')
                         -> select('id','pro_name_th','pro_name_en','pro_position',
-                                  'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
+                                  'pro_start_date','pro_end_date','pro_co_researcher','publish_status', 'verified')
+                        ->where('verified', 1)
                         ->get()
                         ->count();
 
       }elseif(Auth::hasRole('admin')) {
         $Total_research = DB::table('db_research_project')
                         -> select('id','pro_name_th','pro_name_en','pro_position',
-                                  'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
+                                  'pro_start_date','pro_end_date','pro_co_researcher','publish_status', 'verified')
+                        ->where('verified', 1)
                         ->get()
                         ->count();
 
       }else {
         $Total_research = DB::table('db_research_project')
                         -> select('id','pro_name_th','pro_name_en','pro_position',
-                                  'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
+                                  'pro_start_date','pro_end_date','pro_co_researcher','publish_status', 'verified')
                         ->where('users_id', Auth::user()->preferred_username)
+                        ->where('verified', 1)
                         ->get()
                         ->count();
       }

@@ -75,11 +75,26 @@
     <!-- START SUMMARY Total Box -->
       <div class="row">
         <div class="col-md-4 mx-auto">
+          <div class="small-box bg-danger mx-auto">
+            <div class="inner">
+              <h3> {{ empty($Total_publish_pro)?'0': $Total_publish_pro }} โครงการ</h3>
+              <br>
+              <p> โครงการวิจัยที่ตีพิมพ์ทั้งหมด </p>
+            </div>
+            <div class="icon">
+              <i class="fas fa-dice-d20"></i>
+            </div>
+            <!-- <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
+          </div>
+        </div>
+
+        <div class="col-md-4 mx-auto">
           <div class="small-box bg-success mx-auto">
             <div class="inner">
               <h3> {{ empty($Total_research)?'0': $Total_research }} โครงการ</h3>
               <br>
-              <p> โครงการวิจัยทั้งหมด </p>
+              <p> โครงการวิจัยที่ตรวจสอบแล้ว </p>
+              <!-- <p class="title"> (ผ่านการตรวจสอบแล้ว) </p> -->
             </div>
             <div class="icon">
               <i class="fas fa-microscope"></i>
@@ -97,20 +112,6 @@
             </div>
             <div class="icon">
               <i class="fas fa-user-graduate"></i>
-            </div>
-            <!-- <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
-          </div>
-        </div>
-
-        <div class="col-md-4 mx-auto">
-          <div class="small-box bg-danger mx-auto">
-            <div class="inner">
-              <h3> {{ empty($Total_publish_pro)?'0': $Total_publish_pro }} โครงการ</h3>
-              <br>
-              <p> โครงการวิจัยที่ตีพิมพ์ทั้งหมด </p>
-            </div>
-            <div class="icon">
-              <i class="fas fa-dice-d20"></i>
             </div>
             <!-- <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
           </div>
@@ -437,8 +438,8 @@
         Swal.fire({
             icon: 'warning',
             title: 'Unverified Successfully',
-            text: 'รายการนี้ยังไม่ได้รับการตรวจสอบอีกครั้ง',
-            showConfirmButton: false,
+            text: 'รายการนี้ยังไม่ได้ตรวจสอบ',
+            showConfirmButton: true,
             confirmButtonColor: '#d33',
             timer: 6000
         })
