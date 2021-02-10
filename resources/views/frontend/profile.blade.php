@@ -171,9 +171,16 @@
             <!-- <div class="card-footer"> -->
             <div class="row">
               <div class="col-md-12">
-                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal-default">
+                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-default"
+                  <?=(count($data)>0)?'disabled':''?>> <!-- Check Value in เพิ่มข้อมูลนักวิจัย if>0 = disabled  -->
                   <i class="fas fa-plus-circle"></i>
                   &nbsp;เพิ่มข้อมูลนักวิจัย
+                </button>
+
+                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal-Nodata"
+                  <?=(count($data)>0)?'disabled':''?>> <!-- Check Value in เพิ่มข้อมูลนักวิจัย if>0 = disabled  -->
+                  <i class="fas fa-minus-circle"></i>
+                  &nbsp;ไม่มีข้อมูลนักวิจัย
                 </button>
               </div>
             </div>
@@ -190,7 +197,7 @@
               </div>
 
               <div class="col-md-6">
-                <label for="exampleInput1"> บัตรประจำตัวนักวิจัย </label>
+                <label for="exampleInput1"> เลขประจำตัวนักวิจัย </label>
                   @foreach ($data as $value)
                     <div class="border p-2" style="background-color: #e9ecef;opacity: 1; font-size: 20px;">
                       {{ $value->orcid_id }}
@@ -202,7 +209,7 @@
         </div>
 
 
-      <!-- MODAL INSERT -->
+      <!-- MODAL INSERT [modal-default] -->
         <div class="modal fade" id="modal-default">
           <div class="modal-dialog">
             <div class="modal-content">
@@ -222,8 +229,41 @@
                 <br>
                 <div class="row">
                   <div class="col-md-12">
-                    <label for="exampleInput1"> บัตรประจำตัวนักวิจัย </label>
+                    <label for="exampleInput1"> เลขประจำตัวนักวิจัย </label>
                     <input type="text" class="form-control" name="orcid_id" placeholder="เลขประจำตัวนักวิจัย (ORCID ID) *ถ้ามี" maxlength="16" required>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal"> Close </button>
+                <button type="submit" class="btn btn-danger float-right" value="บันทึกข้อมูล">
+                  <i class="fas fa-save"></i> &nbsp;บันทึกข้อมูล
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      <!-- END MODAL [modal-default] -->
+
+
+
+      <!-- MODAL modal-Nodata -->
+        <div class="modal fade" id="modal-Nodata">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header shadow" style="background-color: #fcb8ac;">
+                <h4 class="modal-title"><b> ไม่มีข้อมูลนักวิจัย </b></h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="row">
+                  <div class="col-md-12">
+                    <br>
+                    <!-- <label for="exampleInput1"> ถถถถถถ </label> -->
+                    <h3 class="text-center"> กรุณากดปุ่ม <b>"บันทึกข้อมูล"</b> <br>เพื่อยืนยันตัวตน </h3>
+                    <br>
                   </div>
                 </div>
               </div>
@@ -267,6 +307,7 @@
         })
       </script>
     @endif
+
 
 @stop('js-custom-script')
 

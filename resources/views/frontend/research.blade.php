@@ -295,7 +295,7 @@
                     <td class="text-center"> {{ $value->id }} </td>
                     <td class="text-left"> {{ $value->pro_name_th." ".$value->pro_name_en}} </td>
                   @if(Auth::hasRole('manager'))
-                    <td class="text-center"> {{ $value->users_name }} </td>
+                    <td class="text-center"> {{ $value->users_id }} </td>
                   @endif
                     <td class="text-center"> {{ CmsHelper::DateEnglish($value->pro_start_date) }} </td>
                     <td class="text-center"> {{ CmsHelper::DateEnglish($value->pro_end_date) }} </td>
