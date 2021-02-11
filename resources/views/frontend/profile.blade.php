@@ -179,8 +179,8 @@
 
                 <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal-Nodata"
                   <?=(count($data)>0)?'disabled':''?>> <!-- Check Value in เพิ่มข้อมูลนักวิจัย if>0 = disabled  -->
-                  <i class="fas fa-minus-circle"></i>
-                  &nbsp;ไม่มีข้อมูลนักวิจัย
+                  <i class="fas fa-check"></i>
+                  &nbsp;หากไม่มีข้อมูลเพิ่ม กรุณากดยืนยัน
                 </button>
               </div>
             </div>
@@ -252,7 +252,7 @@
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header shadow" style="background-color: #fcb8ac;">
-                <h4 class="modal-title"><b> ไม่มีข้อมูลนักวิจัย </b></h4>
+                <h4 class="modal-title"><b> ยืนยันตัวตน </b></h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
