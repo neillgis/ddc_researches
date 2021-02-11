@@ -223,14 +223,14 @@
                 <div class="row">
                   <div class="col-md-12">
                     <label for="exampleInput1"> รหัสนักวิจัย </label>
-                    <input type="text" class="form-control" name="nriis_id" placeholder="รหัสนักวิจัย (NRIIS ID) *ถ้ามี" maxlength="10" required>
+                    <input type="text" class="form-control" name="nriis_id" placeholder="รหัสนักวิจัย (NRIIS ID) *ถ้ามี" maxlength="10">
                   </div>
                 </div>
                 <br>
                 <div class="row">
                   <div class="col-md-12">
                     <label for="exampleInput1"> เลขประจำตัวนักวิจัย </label>
-                    <input type="text" class="form-control" name="orcid_id" placeholder="เลขประจำตัวนักวิจัย (ORCID ID) *ถ้ามี" maxlength="16" required>
+                    <input type="text" class="form-control" name="orcid_id" placeholder="เลขประจำตัวนักวิจัย (ORCID ID) *ถ้ามี" maxlength="16">
                   </div>
                 </div>
               </div>
@@ -261,7 +261,6 @@
                 <div class="row">
                   <div class="col-md-12">
                     <br>
-                    <!-- <label for="exampleInput1"> ถถถถถถ </label> -->
                     <h3 class="text-center"> กรุณากดปุ่ม <b>"บันทึกข้อมูล"</b> <br>เพื่อยืนยันตัวตน </h3>
                     <br>
                   </div>
