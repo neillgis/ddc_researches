@@ -236,7 +236,7 @@
                       <!-- SELECT option ดึงมาจาก ARRAY->corres -->
                       <select class="form-control" name="corres" required>
                         <option value="" disabled="true" selected="true" >กรุณาเลือก</option>
-                        @foreach ($corres as $key => $value)
+                        @foreach ($corres_sl as $key => $value)
                           <option value="{{ $key }}"> {{ $value }} </option>
                         @endforeach
                       </select>
@@ -363,7 +363,7 @@
                     <td class="text-center"> {{ $value->users_name }} </td>
                   @endif
 
-                    <td class="text-center"> {{ $corres [ $value->corres ] }} </td>
+                    <td class="text-center"> {{ $value->corres }} </td>
 
                     <td class="text-center">
                       @if($value->verified == "ตรวจสอบแล้ว")

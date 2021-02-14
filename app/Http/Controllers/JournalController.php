@@ -31,7 +31,6 @@ class JournalController extends Controller
                      ->select('db_research_project.id',
                               'db_research_project.pro_name_en',
                               )
-                     ->where('users_id', Auth::user()->preferred_username)
                      ->orderby('id', 'DESC')
                      ->get();
 
@@ -40,7 +39,6 @@ class JournalController extends Controller
                      ->select('db_research_project.id',
                               'db_research_project.pro_name_en',
                               )
-                     ->where('users_id', Auth::user()->preferred_username)
                      ->orderby('id', 'DESC')
                      ->get();
 
@@ -206,7 +204,7 @@ class JournalController extends Controller
         'journal_res'              => $query,
         'journals'                 => $query2,
         'contribute'               => $query3,
-        'corres'                   => $query4,
+        'corres_sl'                => $query4,
         'Total_journal'            => $Total_journal,
         'Total_journal_verify'   => $Total_journal_verify,
         'Total_master_jour'        => $Total_master_jour,
