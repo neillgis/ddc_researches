@@ -274,9 +274,6 @@
                       <th class="text-center"> ลำดับ </th>
                       <th class="text-center"> Project ID </th>
                       <th class="text-center"> ชื่อโครงการวิจัยที่เสร็จสิ้นแล้ว </th>
-                    @if(Auth::hasRole('manager'))
-                      <th class="text-center"> ชื่อ/สกุล </th>
-                    @endif
                       <th class="text-center"> เริ่มโครงการ </th>
                       <th class="text-center"> เสร็จสิ้นโครงการ </th>
                       <th class="text-center"> ตีพิมพ์ </th>
@@ -294,9 +291,6 @@
                     <td class="text-center"> {{ $i }} </td>
                     <td class="text-center"> {{ $value->id }} </td>
                     <td class="text-left"> {{ $value->pro_name_th." ".$value->pro_name_en}} </td>
-                  @if(Auth::hasRole('manager'))
-                    <td class="text-center"> {{ $value->users_id }} </td>
-                  @endif
                     <td class="text-center"> {{ CmsHelper::DateEnglish($value->pro_start_date) }} </td>
                     <td class="text-center"> {{ CmsHelper::DateEnglish($value->pro_end_date) }} </td>
                     <td class="text-center"> {{ $publish_status [ $value->publish_status ] }} </td>
