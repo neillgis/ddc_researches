@@ -138,13 +138,13 @@
                   <div class="col-md-4">
                     <div class="form-group">
                       <label for="exampleInput1"> หน้าแรก (First Page) </label>
-                      <input type="text" class="form-control" name="publish_firstpage" value="{{ $data->publish_firstpage }}" maxlength="3">
+                      <input type="text" class="form-control" name="publish_firstpage" value="{{ $data->publish_firstpage }}" maxlength="4">
                     </div>
                   </div>
                   <div class="col-md-4">
                     <div class="form-group">
                       <label for="exampleInput1"> หน้าสุดท้าย (Last Page) </label>
-                      <input type="text" class="form-control" name="publish_firstpage" value="{{ $data->publish_lastpage }}" maxlength="3">
+                      <input type="text" class="form-control" name="publish_firstpage" value="{{ $data->publish_lastpage }}" maxlength="4">
                     </div>
                   </div>
                 </div>
