@@ -195,14 +195,14 @@
                   <div class="col-md-4">
                     <div class="form-group">
                       <label for="exampleInput1"> หน้าแรก (First Page) <font color="red"> * </font></label>
-                      <input type="text" class="form-control" placeholder="xxxx" name="publish_firstpage" maxlength="3"
+                      <input type="text" class="form-control" placeholder="xxxx" name="publish_firstpage" maxlength="4"
                              onKeyUp="if(isNaN(this.value)){ alert('กรุณากรอกตัวเลขเท่านั้น !'); this.value='';}" required>
                     </div>
                   </div>
                   <div class="col-md-4">
                     <div class="form-group">
                       <label for="exampleInput1"> หน้าสุดท้าย (Last Page) <font color="red"> * </font></label>
-                      <input type="text" class="form-control" placeholder="xxxx" name="publish_lastpage" maxlength="3"
+                      <input type="text" class="form-control" placeholder="xxxx" name="publish_lastpage" maxlength="4"
                              onKeyUp="if(isNaN(this.value)){ alert('กรุณากรอกตัวเลขเท่านั้น !'); this.value='';}" required>
                     </div>
                   </div>
