@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class summary extends Model
 {
     //
-    protected $table = 'db_summary';
+    protected $table = 'summary_list';
     public $timestamps = false;
 }
 

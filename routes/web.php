@@ -97,6 +97,14 @@ Route::group(['middleware' => 'keycloak-web'], function () {
 
 
 
+    // EXPORT File CSV
+    Route::get('export_research', 'ExportController@export_research')->name('export_research');
+
+    Route::get('export_journal', 'ExportController@export_journal')->name('export_journal');
+
+    Route::get('export_totals', 'ExportController@export_totals')->name('export_totals');
+
+
 
     Route::get('dynamic_field', 'DynamicFieldUtilController@index');
     Route::post('dynamic_field/insert', 'DynamicFieldUtilController@insert')->name('dynamic-field.insert');

@@ -355,7 +355,7 @@
                     <td> {{ $value->article_name_en }} </td>
                     <td> {{ $value->journal_name_en }} </td>
                     <td class="text-center"> {{ $value->publish_years }} </td>
-                    <td class="text-center"> {{ $value->corres }} </td>
+                    <td class="text-center"> {{ $corres_sl [ $value->corres ] }} </td>
 
                     <td class="text-center">
                       @if($value->verified == "ตรวจสอบแล้ว")

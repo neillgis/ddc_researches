@@ -252,7 +252,7 @@
     $('#example1').DataTable({
       dom: 'Bfrtip',
       buttons: [
-        'excel', 'print'
+        // 'excel', 'print'
       ]
     });
   });

@@ -166,6 +166,10 @@ return [
          * ACTIVE State
          */
         Pyaesone17\ActiveState\ActiveStateServiceProvider::class,
+        /*
+         * Maatwebsite Package Export CSV
+         */
+        Maatwebsite\Excel\ExcelServiceProvider::class,
 
         /*
          * Package Service Providers...
@@ -235,6 +239,10 @@ return [
          * ACTIVE State
          */
         'Active' => Pyaesone17\ActiveState\ActiveFacade::class,
+        /*
+        * Maatwebsite Package Export CSV
+         */
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
 
     ],
 
