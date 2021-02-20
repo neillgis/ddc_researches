@@ -207,9 +207,11 @@
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
 <script>
+  var today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
     $('#datepicker1').datepicker({
         uiLibrary: 'bootstrap4',
         format: 'yyyy/mm/dd',
+        maxDate: today,
         autoclose: true,
         todayHighlight: true
     });
@@ -218,6 +220,7 @@
     $('#datepicker2').datepicker({
         uiLibrary: 'bootstrap4',
         format: 'yyyy/mm/dd',
+        maxDate: today,
         autoclose: true,
         todayHighlight: true
     });

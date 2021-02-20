@@ -209,13 +209,13 @@
                 </div>
 
                 <div class="row">
-                  <div class="col-md-6">
+                  <div class="col-md-4">
                     <div class="form-group">
                       <label for="exampleInput1"> เลข DOI (ถ้ามี) </label>
                       <input type="text" class="form-control" name="doi_number">
                     </div>
                   </div>
-                  <div class="col-md-6">
+                  <div class="col-md-4">
                     <div class="form-group">
                       <label for="exampleSelect1"> การมีส่วนร่วมในบทความ <font color="red"> * </font></label>
                       <!-- SELECT option ดึงมาจาก ARRAY->contribute -->
@@ -227,10 +227,7 @@
                       </select>
                     </div>
                   </div>
-                </div>
-
-                <div class="row">
-                  <div class="col-md-6">
+                  <div class="col-md-4">
                     <div class="form-group">
                       <label for="exampleSelect1"> ท่านเป็นผู้รับผิดชอบบทความ (Correspondence) <font color="red"> * </font></label>
                       <!-- SELECT option ดึงมาจาก ARRAY->corres -->
@@ -242,15 +239,17 @@
                       </select>
                     </div>
                   </div>
-                  <div class="col-md-6">
+                </div>
+
+                <div class="row">
+                  <div class="col-md-12">
                     <div class="form-group">
                       <label for="exampleSelect1"> บทความนี้เป็นผลจากโครงการวิจัย <font color="red"> * </font></label>
-
                       <!-- SELECT Table -> db_research_project -->
                       <select class="form-control" name="pro_id" required>
                           <option value="" disabled="true" selected="true"> -- กรุณาเลือก -- </option>
                         @foreach ($journal_res as $value)
-                          <option value = "{{ $value->id }}"> {{ $value->pro_name_en }} </option>
+                          <option value = "{{ $value->id }}"> {{ $value->pro_name_en }} {{ $value->pro_name_th }} </option>
                         @endforeach
                       </select>
                     </div>

@@ -150,13 +150,13 @@
                 </div>
 
                 <div class="row">
-                  <div class="col-md-6">
+                  <div class="col-md-4">
                     <div class="form-group">
                       <label for="exampleInput1"> เลข DOI (ถ้ามี) </label>
                       <input type="text" class="form-control" name="doi_number" value="{{ $data->doi_number }}">
                     </div>
                   </div>
-                  <div class="col-md-6">
+                  <div class="col-md-4">
                     <div class="form-group">
                       <label for="exampleSelect1"> การมีส่วนร่วมในบทความ </label>
                       <select class="form-control" name="contribute">
@@ -166,9 +166,6 @@
                       </select>
                     </div>
                   </div>
-                </div>
-
-                <div class="row">
                   <div class="col-md-4">
                     <div class="form-group">
                       <label for="exampleSelect1"> ท่านเป็นผู้รับผิดชอบบทความ (Correspondence) </label>
@@ -179,10 +176,16 @@
                       </select>
                     </div>
                   </div>
-                  <div class="col-md-8">
+                </div>
+
+                <div class="row">
+                  <div class="col-md-12">
                     <div class="form-group">
                       <label for="exampleSelect1"> บทความนี้เป็นผลจากโครงการวิจัย </label>
-                      <input type="text" class="form-control" name="pro_id" value="{{ $data->pro_name_en }}" disabled>
+                      <div class="border p-2" style="background-color: #e9ecef;opacity: 1; font-size: 18px;">
+                          {{ $data->pro_name_en." ".$data->pro_name_th }}
+                      </div>
+                      <!-- <input type="text" class="form-control" name="pro_id" value="{{-- $data->pro_name_en." ".$data->pro_name_th --}}" disabled> -->
                     </div>
                   </div>
                 </div>

@@ -29,31 +29,37 @@ class JournalController extends Controller
     if(Auth::hasRole('manager')){
       $query  = DB::table('db_research_project')
                      ->select('db_research_project.id',
+                              'db_research_project.pro_name_th',
                               'db_research_project.pro_name_en',
                               )
+                     ->where('users_id', Auth::user()->preferred_username)
+                     // ->whereNotNull('db_research_project.pro_name_en')
                      ->orderby('id', 'DESC')
                      ->get();
 
     }elseif(Auth::hasRole('admin')) {
       $query  = DB::table('db_research_project')
                      ->select('db_research_project.id',
+                              'db_research_project.pro_name_th',
                               'db_research_project.pro_name_en',
                               )
+                     ->where('users_id', Auth::user()->preferred_username)
+                     // ->whereNotNull('db_research_project.pro_name_en')
                      ->orderby('id', 'DESC')
                      ->get();
 
      }else {
        $query  = DB::table('db_research_project')
                       ->select('db_research_project.id',
+                               'db_research_project.pro_name_th',
                                'db_research_project.pro_name_en',
                                )
                       ->where('users_id', Auth::user()->preferred_username)
+                      // ->whereNotNull('db_research_project.pro_name_en')
                       ->orderby('id', 'DESC')
                       ->get();
      }
 
-     //   return response(redirect(url('/keycloak/login')), 404);
-     //   return abort(404);
 
 
     if(Auth::hasRole('manager')){
@@ -222,6 +228,7 @@ class JournalController extends Controller
      $edit = DB::table('db_published_journal')
                ->join('db_research_project', 'db_research_project.id', '=', 'db_published_journal.pro_id')
                ->select('db_research_project.pro_name_en',
+                        'db_research_project.pro_name_th',
                         'db_published_journal.id',
                         'db_published_journal.pro_id',
                         'article_name_th',
