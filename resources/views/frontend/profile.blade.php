@@ -247,12 +247,12 @@
 
 
 
-      <!-- MODAL modal-Nodata -->
+      <!-- MODAL [modal-NO data] -->
         <div class="modal fade" id="modal-Nodata">
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header shadow" style="background-color: #fcb8ac;">
-                <h4 class="modal-title"><b> ยืนยันตัวตน </b></h4>
+                <h4 class="modal-title"><b> ไม่มีข้อมูลนักวิจัย </b></h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
@@ -261,7 +261,8 @@
                 <div class="row">
                   <div class="col-md-12">
                     <br>
-                    <h3 class="text-center"> กรุณากดปุ่ม <b>"บันทึกข้อมูล"</b> <br>เพื่อยืนยันตัวตน </h3>
+                    <h3 class="text-center"> กรุณากดปุ่ม <b>"บันทึกข้อมูล"</b> <br></h3>
+                    <h4  class="text-center"> หากท่านไม่มีข้อมูลนักวิจัย </h4>
                     <br>
                   </div>
                 </div>
@@ -275,7 +276,7 @@
             </div>
           </div>
         </div>
-      <!-- END MODAL -->
+      <!-- END MODAL [modal-NO data] -->
 
 
         <br>
