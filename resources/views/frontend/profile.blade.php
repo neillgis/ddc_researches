@@ -230,7 +230,7 @@
                 <div class="row">
                   <div class="col-md-12">
                     <label for="exampleInput1"> เลขประจำตัวนักวิจัย </label>
-                    <input type="text" class="form-control" name="orcid_id" placeholder="เลขประจำตัวนักวิจัย (ORCID ID) *ถ้ามี" maxlength="16">
+                    <input type="text" class="form-control" name="orcid_id" placeholder="เลขประจำตัวนักวิจัย (ORCID ID) *ถ้ามี">
                   </div>
                 </div>
               </div>
