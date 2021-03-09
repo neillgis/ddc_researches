@@ -277,6 +277,9 @@
                       <th class="text-center"> เริ่มโครงการ </th>
                       <th class="text-center"> เสร็จสิ้นโครงการ </th>
                       <th class="text-center"> ตีพิมพ์ </th>
+                      @if(Auth::hasRole('manager'))
+                        <th class="text-center"> ชื่อ/สกุล </th>
+                      @endif
                       <th class="text-center"> การตรวจสอบ </th>
                       <th class="text-right"> Actions </th>
                     </tr>
@@ -294,6 +297,9 @@
                     <td class="text-center"> {{ CmsHelper::DateEnglish($value->pro_start_date) }} </td>
                     <td class="text-center"> {{ CmsHelper::DateEnglish($value->pro_end_date) }} </td>
                     <td class="text-center"> {{ $publish_status [ $value->publish_status ] }} </td>
+                  @if(Auth::hasRole('manager'))
+                    <td class="text-center"> {{ $value->users_name }} </td>
+                  @endif
 
                     <td class="text-center">
                       @if($value->verified == "ตรวจสอบแล้ว")

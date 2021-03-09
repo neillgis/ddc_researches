@@ -29,7 +29,7 @@ class ResearchController extends Controller
     if(Auth::hasRole('manager')) {
       $query = research::select('id','pro_name_th','pro_name_en','pro_position',
                                 'pro_start_date','pro_end_date','publish_status',
-                                'files', 'verified', 'users_id',
+                                'files', 'verified', 'users_id', 'users_name',
                                 \DB::raw('(CASE
                                               WHEN verified = "1" THEN "ตรวจสอบแล้ว"
                                               ELSE "รอตรวจสอบ"

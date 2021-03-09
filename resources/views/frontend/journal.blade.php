@@ -338,6 +338,9 @@
                       <th class="text-center"> ชื่อวารสาร (ENG) </th>
                       <th class="text-center"> ตีพิมพ์ </th>
                       <th class="text-center"> ผู้รับผิดชอบบทความ </th>
+                    @if(Auth::hasRole('manager'))
+                        <th class="text-center"> ชื่อ/สกุล </th>
+                    @endif
                       <th class="text-center"> การตรวจสอบ </th>
                       <th class="text-right"> Actions </th>
                     </tr>
@@ -355,6 +358,9 @@
                     <td> {{ $value->journal_name_en }} </td>
                     <td class="text-center"> {{ $value->publish_years }} </td>
                     <td class="text-center"> {{ $corres_sl [ $value->corres ] }} </td>
+                  @if(Auth::hasRole('manager'))
+                    <td class="text-center"> {{ $value->users_name }} </td>
+                  @endif
 
                     <td class="text-center">
                       @if($value->verified == "ตรวจสอบแล้ว")
