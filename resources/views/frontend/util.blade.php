@@ -273,7 +273,7 @@
                             <th class="text-center"> ชื่อโครงการ </th>
                             <th class="text-center"> การนำไปใช้ประโยชน์ </th>
                             @if(Auth::hasRole('manager'))
-                                <th class="text-center"> ชื่อ/สกุล </th>
+                                <th class="text-center"> หน่วยงาน </th>
                             @endif
                             <th class="text-center"> การตรวจสอบ </th>
                             <th class="text-right"> Actions </th>
@@ -291,7 +291,7 @@
                           <td class="text-left"> {{ $value->pro_name_th." ".$value->pro_name_en }} </td>
                           <td class="text-center"> {{ $value->util_type }} </td>
                         @if(Auth::hasRole('manager'))
-                            <td> {{ $value->users_name }} </td>
+                            <td class="text-center"> {{ $value->deptName }} </td>
                         @endif
 
                           <td class="text-center">

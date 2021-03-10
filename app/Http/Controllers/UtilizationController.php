@@ -200,16 +200,23 @@ if(Auth::hasRole('manager')){
   // SELECT TABLE ----------------------------------------------------------------------->
   if(Auth::hasRole('manager')){
     $query_util = DB::table('db_utilization')
-                    -> join ('db_research_project', 'db_utilization.pro_id', '=', 'db_research_project.id')
-                    -> select ('db_utilization.id','db_utilization.util_type','db_utilization.files',
+                    ->join ('db_research_project', 'db_utilization.pro_id', '=', 'db_research_project.id')
+                    ->join('users', 'db_utilization.users_id', '=', 'users.idCard')
+                    -> select ('db_utilization.id',
+                               'db_utilization.util_type',
+                               'db_utilization.files',
                                'db_utilization.verified',
-                               'db_research_project.pro_name_th','db_research_project.pro_name_en','db_research_project.users_name',
+                               'db_research_project.pro_name_th',
+                               'db_research_project.pro_name_en',
+                               'db_research_project.users_name',
+                               'users.deptName',
                                \DB::raw('(CASE
                                              WHEN db_utilization.verified = "1" THEN "ตรวจสอบแล้ว"
                                              ELSE "รอการตรวจสอบ"
                                              END) AS verified'
                                ))
                     ->get();
+
 // dd($query_util);
   }elseif(Auth::hasRole('admin')){
     $query_util = DB::table('db_utilization')

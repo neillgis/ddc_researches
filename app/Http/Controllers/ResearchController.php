@@ -27,14 +27,25 @@ class ResearchController extends Controller
 // -- SELECT DataTables RESEARCH --
   public function table_research(){
     if(Auth::hasRole('manager')) {
-      $query = research::select('id','pro_name_th','pro_name_en','pro_position',
-                                'pro_start_date','pro_end_date','publish_status',
-                                'files', 'verified', 'users_id', 'users_name',
-                                \DB::raw('(CASE
-                                              WHEN verified = "1" THEN "ตรวจสอบแล้ว"
-                                              ELSE "รอตรวจสอบ"
-                                              END) AS verified'
-                                ))
+      $query = DB::table('db_research_project')
+                 ->join('users', 'db_research_project.users_id', '=', 'users.idCard')
+                 ->select('db_research_project.id',
+                          'db_research_project.pro_name_th',
+                          'db_research_project.pro_name_en',
+                          'db_research_project.pro_position',
+                          'db_research_project.pro_start_date',
+                          'db_research_project.pro_end_date',
+                          'db_research_project.publish_status',
+                          'db_research_project.files',
+                          'db_research_project.verified',
+                          'db_research_project.users_id',
+                          // 'db_research_project.users_name',
+                          'users.deptName',
+                          \DB::raw('(CASE
+                                        WHEN verified = "1" THEN "ตรวจสอบแล้ว"
+                                        ELSE "รอตรวจสอบ"
+                                        END) AS verified'
+                          ))
                        ->ORDERBY('id','DESC')
                        ->get();
 
