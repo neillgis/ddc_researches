@@ -19,8 +19,20 @@ class export_research implements FromCollection, WithHeadings
         // return research::all();
 
         return DB::table('db_research_project')
-                ->select('id', 'users_id', 'users_name', 'pro_name_en', 'pro_name_th', 'pro_position',
-                         'pro_co_researcher', 'pro_start_date', 'pro_end_date', 'publish_status', 'verified')
+                ->join('users', 'db_research_project.users_id', '=', 'users.idCard')
+                ->select('db_research_project.id',
+                         'db_research_project.users_id',
+                         'db_research_project.users_name',
+                         'users.deptName',
+                         'db_research_project.pro_name_en',
+                         'db_research_project.pro_name_th',
+                         'db_research_project.pro_position',
+                         'db_research_project.pro_co_researcher',
+                         'db_research_project.pro_start_date',
+                         'db_research_project.pro_end_date',
+                         'db_research_project.publish_status',
+                         'db_research_project.verified'
+                        )
                 ->get();
     }
 
@@ -31,6 +43,7 @@ class export_research implements FromCollection, WithHeadings
             'Project_ID',
             'เลขบัตรปชช.',
             'ชื่อ-สกุล',
+            'หน่วยงาน',
             'ชื่อโครงการ (ENG)',
             'ชื่อโครงการ (TH)',
             'ตำแหน่งในโครงการวิจัย',

@@ -20,9 +20,11 @@ class export_journal implements FromCollection, WithHeadings
 
         return DB::table('db_research_project')
                 ->join('db_published_journal', 'db_research_project.id', '=', 'db_published_journal.pro_id')
+                ->join('users', 'db_research_project.users_id', '=', 'users.idCard')
                 ->select('db_published_journal.pro_id',
                          'db_published_journal.users_id',
                          'db_research_project.users_name',
+                         'users.deptName',
                          'article_name_en',
                          'article_name_th',
                          'journal_name_en',
@@ -48,6 +50,7 @@ class export_journal implements FromCollection, WithHeadings
             'Project_ID',
             'เลขบัตรปชช.',
             'ชื่อ-สกุล',
+            'หน่วยงาน',
             'ชื่อบทความ (ENG)',
             'ชื่อบทความ (TH)',
             'ชื่อวารสาร (ENG)',
