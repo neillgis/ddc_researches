@@ -278,6 +278,7 @@
                       <th class="text-center"> เสร็จสิ้นโครงการ </th>
                       <th class="text-center"> ตีพิมพ์ </th>
                       @if(Auth::hasRole('manager'))
+                        <th class="text-center"> ชื่อ/สกุล </th>
                         <th class="text-center"> หน่วยงาน </th>
                       @endif
                       <th class="text-center"> การตรวจสอบ </th>
@@ -298,6 +299,7 @@
                     <td class="text-center"> {{ CmsHelper::DateEnglish($value->pro_end_date) }} </td>
                     <td class="text-center"> {{ $publish_status [ $value->publish_status ] }} </td>
                   @if(Auth::hasRole('manager'))
+                    <td class="text-center"> {{ $value->users_name }} </td>
                     <td class="text-center"> {{ $value->deptName }} </td>
                   @endif
 

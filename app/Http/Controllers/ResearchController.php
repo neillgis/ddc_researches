@@ -39,7 +39,7 @@ class ResearchController extends Controller
                           'db_research_project.files',
                           'db_research_project.verified',
                           'db_research_project.users_id',
-                          // 'db_research_project.users_name',
+                          'db_research_project.users_name',
                           'users.deptName',
                           \DB::raw('(CASE
                                         WHEN verified = "1" THEN "ตรวจสอบแล้ว"

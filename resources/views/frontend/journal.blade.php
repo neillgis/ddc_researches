@@ -339,7 +339,8 @@
                       <th class="text-center"> ตีพิมพ์ </th>
                       <th class="text-center"> ผู้รับผิดชอบบทความ </th>
                     @if(Auth::hasRole('manager'))
-                        <th class="text-center"> หน่วยงาน </th>
+                      <th class="text-center"> ชื่อ/สกุล </th>
+                      <th class="text-center"> หน่วยงาน </th>
                     @endif
                       <th class="text-center"> การตรวจสอบ </th>
                       <th class="text-right"> Actions </th>
@@ -359,6 +360,7 @@
                     <td class="text-center"> {{ $value->publish_years }} </td>
                     <td class="text-center"> {{ $corres_sl [ $value->corres ] }} </td>
                   @if(Auth::hasRole('manager'))
+                    <td class="text-center"> {{ $value->users_name }} </td>
                     <td class="text-center"> {{ $value->deptName }} </td>
                   @endif
 
