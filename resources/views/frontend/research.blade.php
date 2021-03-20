@@ -206,7 +206,7 @@
                 <div class="row">
                   <div class="col-md-6">
                     <div class="form-group">
-                      <label for="exampleSelect1"> โครงการได้ตีพิมพ์ <font color="red"> * </font></label>
+                      <label for="exampleSelect1"> โครงการได้รับการตีพิมพ์ในวารสารวิชาการ <font color="red"> * </font></label>
                       <!-- SELECT option ดึงมาจากฐานข้อมูล db_research_project -->
                       <select class="form-control" name="publish_status" required>
                         <option value="" disabled="true" selected="true" >กรุณาเลือก</option>
