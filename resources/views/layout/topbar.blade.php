@@ -41,7 +41,10 @@
            </a>
 
            <div class="dropdown-divider"></div>
-           <a class="dropdown-item" href="{{ route('keycloak.logout') }}">{{ __('ออกจากระบบ') }}</a>
+              <a class="dropdown-item" href="https://hr.ddc.moph.go.th" target="_blank">แก้ไขข้อมูลส่วนตัว</a>
+
+           <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="{{ route('keycloak.logout') }}">{{ __('ออกจากระบบ') }}</a>
 
            <form id="logout-form" action="#" method="POST" style="display: none;">
                @csrf
