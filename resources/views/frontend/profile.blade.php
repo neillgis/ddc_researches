@@ -291,8 +291,20 @@
 
 @section('js-custom-script')
 <!-- SweetAlert2 -->
-<!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script> -->
-<script src="{{ asset('bower_components/admin-lte/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<!-- <script src="{{ asset('bower_components/admin-lte/plugins/sweetalert2/sweetalert2.min.js') }}"></script> -->
+
+  <script>
+    Swal.fire({
+        icon: 'warning',
+        title: 'กรุณา "เพิ่มข้อมูลนักวิจัย"',
+        text: "หากไม่มีให้กดยืนยันอีกครั้ง มิเช่นนั้น ระบบจะไม่สามารถเห็นข้อมูลและให้ระดับนักวิจัยแก่ท่านได้",
+        showConfirmButton: true,
+        confirmButtonColor: '#2C6700',
+        timer: 8000
+    })
+  </script>
+
 
   <!-- INSERT success -->
     @if(Session::get('messages'))
