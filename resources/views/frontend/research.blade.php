@@ -141,14 +141,14 @@
                 <div class="row">
                   <div class="col-md-6">
                     <div class="form-group">
-                      <label for="exampleInput1"> ชื่อโครงการ (TH) </label>
+                      <label for="exampleInput1"> ชื่อโครงการวิจัย (TH) </label>
                       <input type="text" class="form-control" name="pro_name_th">
                     </div>
                   </div>
 
                   <div class="col-md-6">
                     <div class="form-group">
-                      <label for="exampleInput1"> ชื่อโครงการ (ENG) </label>
+                      <label for="exampleInput1"> ชื่อโครงการวิจัย (ENG) </label>
                       <input type="text" class="form-control" name="pro_name_en">
                     </div>
                   </div>
@@ -185,7 +185,7 @@
                 <div class="row">
                   <div class="col-md-6">
                     <div class="form-group">
-                      <label for="exampleDatepicker1"> ปีที่เริ่มโครงการ <font color="red"> * </font></label>
+                      <label for="exampleDatepicker1"> ปีที่เริ่มโครงการวิจัย <font color="red"> * </font></label>
                         <a class="one form-group" href="#" id="modal"> <b> (คำอธิบายเพิ่มเติม) </b></a>
                         <input type="text" class="form-control" id="datepicker1" placeholder="กรุณาเลือก ปี/เดือน/วัน"
                                name="pro_start_date" autocomplete="off" data-date-language="th-th" required>
@@ -194,7 +194,7 @@
 
                   <div class="col-md-6">
                     <div class="form-group">
-                      <label for="exampleDatepicker1"> ปีที่เสร็จสิ้นโครงการ <font color="red"> * </font></label>
+                      <label for="exampleDatepicker1"> ปีที่เสร็จสิ้นโครงการวิจัย <font color="red"> * </font></label>
                       <a class="two form-group" href="#" id="modal"> <b> (คำอธิบายเพิ่มเติม) </b></a>
                       <input type="text" class="form-control" id="datepicker2" placeholder="กรุณาเลือก ปี/เดือน/วัน"
                              name="pro_end_date" autocomplete="off" required>
@@ -206,7 +206,7 @@
                 <div class="row">
                   <div class="col-md-6">
                     <div class="form-group">
-                      <label for="exampleSelect1"> โครงการได้รับการตีพิมพ์ในวารสารวิชาการ <font color="red"> * </font></label>
+                      <label for="exampleSelect1"> โครงการวิจัยได้รับการตีพิมพ์ในวารสารวิชาการ <font color="red"> * </font></label>
                       <!-- SELECT option ดึงมาจากฐานข้อมูล db_research_project -->
                       <select class="form-control" name="publish_status" required>
                         <option value="" disabled="true" selected="true" >กรุณาเลือก</option>
