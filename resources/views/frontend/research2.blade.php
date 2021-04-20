@@ -75,11 +75,25 @@
     <!-- START SUMMARY Total Box -->
       <div class="row">
         <div class="col-md-4 mx-auto">
+          <div class="small-box bg-danger mx-auto">
+            <div class="inner">
+              <h3> {{ empty($Total_publish_pro)?'0': $Total_publish_pro }} โครงการ</h3>
+              <br>
+              <p> โครงการวิจัยที่ตีพิมพ์ทั้งหมด </p>
+            </div>
+            <div class="icon">
+              <i class="fas fa-dice-d20"></i>
+            </div>
+            <!-- <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
+          </div>
+        </div>
+
+        <div class="col-md-4 mx-auto">
           <div class="small-box bg-success mx-auto">
             <div class="inner">
               <h3> {{ empty($Total_research)?'0': $Total_research }} โครงการ</h3>
               <br>
-              <p> โครงการวิจัยทั้งหมด </p>
+              <p> โครงการวิจัยที่ตรวจสอบแล้ว </p>
             </div>
             <div class="icon">
               <i class="fas fa-microscope"></i>
@@ -102,19 +116,6 @@
           </div>
         </div>
 
-        <div class="col-md-4 mx-auto">
-          <div class="small-box bg-danger mx-auto">
-            <div class="inner">
-              <h3> {{ empty($Total_publish_pro)?'0': $Total_publish_pro }} โครงการ</h3>
-              <br>
-              <p> โครงการวิจัยที่ตีพิมพ์ทั้งหมด </p>
-            </div>
-            <div class="icon">
-              <i class="fas fa-dice-d20"></i>
-            </div>
-            <!-- <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
-          </div>
-        </div>
       </div>
       <br>
     <!-- END SUMMARY Total Box -->
@@ -205,7 +206,7 @@
                 <div class="row">
                   <div class="col-md-6">
                     <div class="form-group">
-                      <label for="exampleSelect1"> โครงการได้ตีพิมพ์ <font color="red"> * </font></label>
+                      <label for="exampleSelect1"> โครงการได้รับการตีพิมพ์ในวารสารวิชาการ <font color="red"> * </font></label>
                       <!-- SELECT option ดึงมาจากฐานข้อมูล db_research_project -->
                       <select class="form-control" name="publish_status" required>
                         <option value="" disabled="true" selected="true" >กรุณาเลือก</option>
@@ -270,36 +271,47 @@
               <table class="table table-hover" id="example55">
                 <thead>
                     <tr>
+                      <th class="text-center"> ลำดับ </th>
                       <th class="text-center"> Project ID </th>
                       <th class="text-center"> ชื่อโครงการวิจัยที่เสร็จสิ้นแล้ว </th>
-                    @if(Auth::hasRole('manager'))
-                      <th class="text-center"> ชื่อ/สกุล </th>
-                    @endif
                       <th class="text-center"> เริ่มโครงการ </th>
                       <th class="text-center"> เสร็จสิ้นโครงการ </th>
                       <th class="text-center"> ตีพิมพ์ </th>
+                      @if(Auth::hasRole('manager'))
+                        <th class="text-center"> ชื่อ/สกุล </th>
+                        <th class="text-center"> หน่วยงาน </th>
+                      @endif
                       <th class="text-center"> การตรวจสอบ </th>
                       <th class="text-right"> Actions </th>
                     </tr>
                 </thead>
 
                 <tbody>
+                  @php
+                      $i = 1;
+                  @endphp
                   @foreach ($research as $value)
                   <tr>
+                    <td class="text-center"> {{ $i }} </td>
                     <td class="text-center"> {{ $value->id }} </td>
                     <td class="text-left"> {{ $value->pro_name_th." ".$value->pro_name_en}} </td>
-                  @if(Auth::hasRole('manager'))
-                    <td class="text-center"> {{ $value->users_name }} </td>
-                  @endif
                     <td class="text-center"> {{ CmsHelper::DateEnglish($value->pro_start_date) }} </td>
                     <td class="text-center"> {{ CmsHelper::DateEnglish($value->pro_end_date) }} </td>
                     <td class="text-center"> {{ $publish_status [ $value->publish_status ] }} </td>
+                  @if(Auth::hasRole('manager'))
+                    <td class="text-center"> {{ $value->users_name }} </td>
+                    <td class="text-center"> {{ $value->deptName }} </td>
+                  @endif
 
                     <td class="text-center">
                       @if($value->verified == "ตรวจสอบแล้ว")
-                        <span class="badge bg-secondary badge-pill"> {{ $value->verified }} </span> <!-- null = ตรวจสอบแล้ว -->
+                        <span class="badge bg-secondary badge-pill"> {{ $value->verified }} </span>
+                      @elseif($value->verified == "เอกสารไม่สมบูรณ์")
+                        <span class="badge bg-info badge-pill"> {{ $value->verified }} </span>
+                      @elseif($value->verified == "ไม่อนุมัติ")
+                        <span class="badge bg-danger badge-pill"> {{ $value->verified }} </span>
                       @else
-                        <span class="badge bg-danger badge-pill"> {{ $value->verified }} </span> <!--  1 = รอตรวจสอบ -->
+                        <span class="badge bg-danger badge-pill"> {{ $value->verified }} </span>
                       @endif
                     </td>
 
@@ -333,12 +345,26 @@
 
                       @if(Auth::hasRole('manager'))
                           @if($value->verified == "ตรวจสอบแล้ว")
-                            <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Verfied" disabled>
+                          <a href=" {{ route('research.waiting', $value->id) }} ">
+                            <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Verfied">
                               <i class="fas fa-user-check"></i>
                             </button>
+                          </a>
+                          @elseif($value->verified == "ไม่อนุมัติ")
+                          <a href=" {{ route('research.unverified', $value->id) }} ">
+                            <button type="button" class="btn btn-danger btn-md" data-toggle="tooltip" title="Waiting">
+                              <i class="fas fa-user-check"></i>
+                            </button>
+                          </a>
+                          @elseif($value->verified == "เอกสารไม่สมบูรณ์")
+                          <a href=" {{ route('research.incomplete', $value->id) }} ">
+                            <button type="button" class="btn btn-info btn-md" data-toggle="tooltip" title="Verfied">
+                              <i class="fas fa-user-check"></i>
+                            </button>
+                          </a>
                           @else
                             <a href=" {{ route('research.verified', $value->id) }} ">
-                              <button type="button" class="btn btn-md" data-toggle="tooltip" title="Verfied" style="background-color: #567fa8;">
+                              <button type="button" class="verify btn btn-md" data-toggle="tooltip" title="Verfied" style="background-color: #567fa8;">
                                 <i class="fas fa-user-check"></i>
                               </button>
                             </a>
@@ -347,6 +373,9 @@
                     </td>
 
                   </tr>
+                  @php
+                      $i++;
+                  @endphp
                   @endforeach
                 </tbody>
 
@@ -398,7 +427,8 @@
         Swal.fire({
             icon: 'success',
             title: 'บันทึกข้อมูลเรียบร้อยแล้ว',
-            showConfirmButton: false,
+            showConfirmButton: true,
+            confirmButtonColor: '#2C6700',
             timer: 2500
         })
       </script>
@@ -406,29 +436,34 @@
     <!-- END INSERT success -->
 
 
-  <!-- Verfied -->
     @if(Session::get('verify'))
-      <?php Session::forget('message'); ?>
-        <script>
-          Swal.fire({
-            title: 'Do you want to save the changes?',
-            icon: 'warning',
-            showDenyButton: true,
-            showCancelButton: true,
-            confirmButtonText: `Comfirm`,
+     <?php Session::forget('verify'); ?>
+      <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Verified Successfully',
+            showConfirmButton: true,
             confirmButtonColor: '#2C6700',
-            denyButtonText: `Don't save`,
-          }).then((result) => {
-            /* Read more about isConfirmed, isDenied below */
-            if (result.isConfirmed) {
-              Swal.fire('Verified Success', '', 'success')
-            } else if (result.isDenied) {
-              Swal.fire('Changes are not saved', '', 'info')
-            }
-          })
-        </script>
-      @endif
-    <!-- Verfied -->
+            timer: 3800
+        })
+      </script>
+    @endif
+
+
+    @if(Session::get('Noverify'))
+     <?php Session::forget('Noverify'); ?>
+      <script>
+        Swal.fire({
+            icon: 'warning',
+            title: 'Unverified Successfully',
+            text: 'รายการนี้ยังไม่ได้ตรวจสอบ',
+            showConfirmButton: true,
+            confirmButtonColor: '#d33',
+            timer: 6000
+        })
+      </script>
+    @endif
+
 
 
 <!-- FILE INPUT -->

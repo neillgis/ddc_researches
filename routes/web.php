@@ -41,7 +41,7 @@ Route::group(['middleware' => 'keycloak-web'], function () {
     //  -- DOWNLOAD --
     Route::get('/Download-Files/research/{id}/{files}','ResearchController@DownloadFile')->name('DownloadFile.research');
     //  -- VERIFIED --
-    Route::get('/research/verified/{id}', 'ResearchController@action_verified')->name('research.verified');
+    Route::post('/research/verified', 'ResearchController@action_verified')->name('research.verified');
     //  -- NO VERIFIED --
     Route::get('/research/unverified/{id}', 'ResearchController@No_verified')->name('research.unverified');
 

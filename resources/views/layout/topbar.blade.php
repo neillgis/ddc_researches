@@ -28,13 +28,13 @@
            <!-- <a class="dropdown-item" href="#"> -->
              <a class="dropdown-item">
 
-             Role :
+            status :
              @if (Gate::allows('keycloak-web', ['manager']))
-                 <b>MANAGER</b>
+                 <font color="red"><b>MANAGER</b></font>
              @elseif (Gate::allows('keycloak-web', ['admin']))
                  <b>ADMIN</b>
              @else
-                 <b>USER</b>
+                  <font color="red"><b>USER</b></font>
              @endif
 
              <!-- {{ __('แก้ไขข้อมูลส่วนตัว') }} -->

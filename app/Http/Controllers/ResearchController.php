@@ -41,23 +41,30 @@ class ResearchController extends Controller
                           'db_research_project.users_id',
                           'db_research_project.users_name',
                           'users.deptName',
-                          \DB::raw('(CASE
-                                        WHEN verified = "1" THEN "ตรวจสอบแล้ว"
-                                        ELSE "รอตรวจสอบ"
-                                        END) AS verified'
-                          ))
+                          // \DB::raw('(CASE
+                          //               WHEN verified = "1" THEN "ตรวจสอบแล้ว"
+                          //               WHEN verified = "2" THEN "เอกสารไม่สมบูรณ์"
+                          //               WHEN verified = "3" THEN "ไม่อนุมัติ"
+                          //               ELSE "รอตรวจสอบ"
+                          //               END
+                          //               ) AS verified'
+                          // )
+                          )
                        ->ORDERBY('id','DESC')
                        ->get();
+
+                        // dd($query);
 
     }elseif(Auth::hasRole('admin')) {
       $query = research::select('id','pro_name_th','pro_name_en','pro_position',
                                 'pro_start_date','pro_end_date','publish_status',
                                 'files', 'verified', 'users_id',
-                                \DB::raw('(CASE
-                                              WHEN verified = "1" THEN "ตรวจสอบแล้ว"
-                                              ELSE "รอตรวจสอบ"
-                                              END) AS verified'
-                                ))
+                                // \DB::raw('(CASE
+                                //               WHEN verified = "1" THEN "ตรวจสอบแล้ว"
+                                //               ELSE "รอตรวจสอบ"
+                                //               END) AS verified'
+                                // )
+                                )
                        ->ORDERBY('id','DESC')
                        ->get();
 
@@ -65,11 +72,12 @@ class ResearchController extends Controller
        $query = research::select('id','pro_name_th','pro_name_en','pro_position',
                                  'pro_start_date','pro_end_date','publish_status',
                                  'files', 'verified', 'users_id',
-                                 \DB::raw('(CASE
-                                               WHEN verified = "1" THEN "ตรวจสอบแล้ว"
-                                               ELSE "รอตรวจสอบ"
-                                               END) AS verified'
-                                 ))
+                                 )
+                                 // \DB::raw('(CASE
+                                 //               WHEN verified = "1" THEN "ตรวจสอบแล้ว"
+                                 //               ELSE "รอตรวจสอบ"
+                                 //               END) AS verified'
+                                 // ))
                         ->where('users_id', Auth::user()->preferred_username)
                         ->ORDERBY('id','DESC')
                         ->get();
@@ -94,6 +102,12 @@ class ResearchController extends Controller
        $query4 = [1=> 'ใช่',
                   2=> 'ไม่ใช่'
                  ];
+
+      $verified = [ 1 => 'ตรวจสอบแล้ว', //verify
+                    2 => 'อยู่ระหว่างตรวจสอบ', //process_checked
+                    3 => 'อยู่ระหว่างแก้ไข', //process_editing
+                    9 => 'ไม่ตรงเงื่อนไข', //no_conditions
+                  ];
 
 
 // --- COUNT 3 BOX on TOP ---
@@ -190,6 +204,7 @@ class ResearchController extends Controller
        'Total_research'     => $Total_research,
        'Total_master_pro'   => $Total_master_pro,
        'Total_publish_pro'  => $Total_publish_pro,
+       'verified_list'      => $verified
       ]);
   }
   //  -- END SELECT --
@@ -332,20 +347,21 @@ class ResearchController extends Controller
   //  -- VERIFIED --
   public function action_verified(Request $request){
       //UPDATE db_research_project
-      $verified = DB::table('db_research_project')
-                ->where('id', $request->id)
-                ->update(['verified'    => "1",
-                          'updated_at'  => date('Y-m-d H:i:s')
-                        ]);
-                // ->get();
+        $verified = DB::table('db_research_project')
+                  ->where('id', $request->id)
+                  ->update([
+                            'verified'  => $request->verified
+                            // 'updated_at'  => date('Y-m-d H:i:s')
+                          ]);
 
-       // dd($verified);
        if($verified){
+         //return Sweet Alert
            session()->put('verify', 'okkkkkayyyyy');
            return redirect()->route('page.research');
        }else{
            return redirect()->back()->with('swl_err', 'บันทึกไม่สำเร็จ');
        }
+
      }
   //  -- END VERIFIED --
 
@@ -356,13 +372,13 @@ class ResearchController extends Controller
       //UPDATE db_research_project
       $verified = DB::table('db_research_project')
                 ->where('id', $request->id)
-                ->update(['verified'    => NULL,
-                          'updated_at'  => date('Y-m-d H:i:s')
+                ->update([
+                          'verified' => NULL,
+                          // 'updated_at'  => date('Y-m-d H:i:s')
                         ]);
-                // ->get();
 
-       // dd($verified);
        if($verified){
+         //return Sweet Alert
            session()->put('Noverify', 'okkkkkayyyyy');
            return redirect()->route('page.research');
        }else{
@@ -370,7 +386,6 @@ class ResearchController extends Controller
        }
      }
   //  -- END No VERIFIED --
-
 
 
 }
