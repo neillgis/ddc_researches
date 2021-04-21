@@ -59,7 +59,7 @@ Route::group(['middleware' => 'keycloak-web'], function () {
     //  -- DOWNLOAD --
     Route::get('/Download-Files/journal/{id}/{files}','JournalController@DownloadFile')->name('DownloadFile.journal');
     //  -- VERIFIED --
-    Route::get('/journal/verified/{id}', 'JournalController@action_verified')->name('journal.verified');
+    Route::post('/journal/verified', 'JournalController@action_verified')->name('journal.verified');
     //  -- NO VERIFIED --
     Route::get('/journal/unverified/{id}', 'JournalController@No_verified')->name('journal.unverified');
 
@@ -77,7 +77,7 @@ Route::group(['middleware' => 'keycloak-web'], function () {
     //  -- DOWNLOAD --
     Route::get('/Download-Files/util/{id}/{files}','UtilizationController@DownloadFile')->name('DownloadFile.util');
     //  -- VERIFIED --
-    Route::get('/util/verified/{id}', 'UtilizationController@action_verified')->name('util.verified');
+    Route::post('/util/verified', 'UtilizationController@action_verified')->name('util.verified');
     //  -- NO VERIFIED --
     Route::get('/util/unverified/{id}', 'UtilizationController@No_verified')->name('util.unverified');
 

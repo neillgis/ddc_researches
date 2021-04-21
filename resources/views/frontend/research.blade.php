@@ -317,7 +317,7 @@
                         @endif
                     </td>
 
-                  <!-- Download button -->
+                <!-- Download button -->
                 <td class="td-actions text-right text-nowrap" href="#">
                       <!-- {{-- @if(Auth::hasRole('manager') || Auth::hasRole('user')) --}} -->
                         @if($value->verified == "1")
@@ -513,7 +513,7 @@
             // text: 'รายการนี้ยังไม่ได้ตรวจสอบ',
             showConfirmButton: true,
             confirmButtonColor: '#d33',
-            timer: 6000
+            timer: 3800
         })
       </script>
     @endif

@@ -7,8 +7,8 @@
 @section('css-custom')
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css">
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.6.4/css/buttons.dataTables.min.css">
-<link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
-<link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+<link rel="stylesheet" href="{{ asset('bower_components/admin-lte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
+<link rel="stylesheet" href="{{ asset('bower_components/admin-lte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.css" rel="stylesheet"/>
 
@@ -365,16 +365,27 @@
                   @endif
 
                     <td class="text-center">
-                      @if($value->verified == "ตรวจสอบแล้ว")
-                        <span class="badge bg-secondary badge-pill"> {{ $value->verified }} </span> <!-- null = ตรวจสอบแล้ว -->
-                      @else
-                        <span class="badge bg-danger badge-pill"> {{ $value->verified }} </span> <!--  1 = รอตรวจสอบ -->
+                      @if($value->verified == "1")
+                        <span class="badge bg-secondary badge-pill"><i class="fas fa-check-circle"></i> {{ $verified_list [ $value->verified ] }} </span>
+                      @elseif($value->verified == "2")
+                        <span class="badge bg-warning badge-pill"> {{ $verified_list [ $value->verified ] }} </span>
+                      @elseif($value->verified == "3")
+                         <span class="badge bg-info badge-pill"> {{ $verified_list [ $value->verified ] }} </span>
+                      @elseif($value->verified == "9")
+                         <span class="badge bg-primary badge-pill"><i class="fas fa-times-circle"></i> {{ $verified_list [ $value->verified ] }} </span>
+                      @else <!-- verified == "1" คือ รอตรวจสอบ [Default] -->
+                         <span class="badge bg-danger badge-pill"> รอตรวจสอบ </span>
                       @endif
                     </td>
 
+                    <!-- Download button -->
                     <td class="td-actions text-right text-nowrap" href="#">
                     <!-- {{-- @if(Auth::hasRole('manager') || Auth::hasRole('user')) --}} -->
-                        @if($value->verified == "ตรวจสอบแล้ว")
+                        @if($value->verified == "1")
+                          <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Edit" disabled>
+                            <i class="fas fa-arrow-alt-circle-down"></i>
+                          </button>
+                        @elseif($value->verified == "9")
                           <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Edit" disabled>
                             <i class="fas fa-arrow-alt-circle-down"></i>
                           </button>
@@ -385,8 +396,15 @@
                             </button>
                           </a>
                         @endif
+                    <!-- Download button -->
 
-                        @if($value->verified == "ตรวจสอบแล้ว")
+
+                    <!-- Edit button -->
+                        @if($value->verified == "1")
+                          <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Edit" disabled>
+                            <i class="fas fa-edit"></i>
+                          </button>
+                        @elseif($value->verified == "9")
                           <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Edit" disabled>
                             <i class="fas fa-edit"></i>
                           </button>
@@ -397,24 +415,76 @@
                             </button>
                           </a>
                         @endif
+                    <!-- Edit button -->
 
 
+                    <!-- Verify button -->
                       @if(Auth::hasRole('manager'))
-                          @if($value->verified == "ตรวจสอบแล้ว")
+                        @if($value->verified == "1")
+                          <!-- <a href=" {{-- route('journal.unverified', $value->id) --}} "> -->
+                            <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Verfied">
+                              <i class="fas fa-user-check"></i>
+                            </button>
+                          <!-- </a> -->
+                        @elseif($value->verified == "9")
                           <a href=" {{ route('journal.unverified', $value->id) }} ">
                             <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Verfied">
                               <i class="fas fa-user-check"></i>
                             </button>
                           </a>
-                          @else
-                            <a href=" {{ route('journal.verified', $value->id) }} ">
-                              <button type="button" class="btn btn-md" data-toggle="tooltip" title="Verfied" style="background-color: #567fa8;">
-                                <i class="fas fa-user-check"></i>
-                              </button>
-                            </a>
-                          @endif
+                        @else
+                          <!-- <a href=" {{-- route('journal.verified', $value->id) --}} "> -->
+                          <button type="button" class="verify btn btn-md" data-toggle="modal" data-target="#modal-default{{ $value->id }}"
+                                  title="Verfied" style="background-color: #567fa8;">
+                            <i class="fas fa-user-check"></i>
+                          </button>
+                          <!-- </a> -->
+                        @endif
                       @endif
                     </td>
+
+
+                    <!-- MODAL -->
+                      <div class="modal fade" id="modal-default{{ $value->id }}" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h4 class="modal-title"><b> สถานะการตรวจสอบ (ID </b><font color="red"> {{ $value->pro_id }} </font>) </h4>
+                            </div>
+
+                          <form action="{{ route('journal.verified') }}" method="POST">
+                            @csrf
+
+                            <div class="modal-body">
+                              <div class="row">
+                                <div class="col-md-12">
+                                  <!-- hidden = id -->
+                                  <input type="hidden" class="form-control" name="id" value="{{ $value->id }}">
+
+                                  <select class="form-control" name="verified" >
+                                    @foreach ($verified_list as $key => $value)
+                                      <option value="{{ $key }}" {{ $verified_list == $key ? 'selected' : '' }}> {{ $value }} </option>
+
+                                    @endforeach
+                                  </select>
+                                </div>
+                              </div>
+                              <br>
+                            </div>
+
+                            <div class="modal-footer justify-content-between">
+                              <button type="button" class="btn btn-default" data-dismiss="modal"> Close </button>
+                              <button type="submit" class="btn float-right" value="บันทึกข้อมูล" style="background-color: #7eaad6;">
+                                <i class="fas fa-save"></i> &nbsp;Save Change
+                              </button>
+                            </div>
+                          </form>
+
+                          </div>
+                        </div>
+                      </div>
+                    <!-- END MODAL -->
+
 
                   </tr>
                   @php
@@ -422,12 +492,11 @@
                   @endphp
                   @endforeach
                 </tbody>
-
               </table>
+
             </div>
           </div>
         </div>
-
       </section>
     <!-- END TABLE -> JOURNAL PROJECT -------------------------------------------------->
 
@@ -457,12 +526,12 @@
   @endif
 
   <!-- VERIFIED -->
-  @if(Session::get('verify'))
-   <?php Session::forget('verify'); ?>
+  @if(Session::get('verify2'))
+   <?php Session::forget('verify2'); ?>
     <script>
       Swal.fire({
           icon: 'success',
-          title: 'Verified Successfully',
+          title: 'การตรวจสอบถูกดำเนินการแล้ว',
           showConfirmButton: true,
           confirmButtonColor: '#2C6700',
           timer: 3800
@@ -476,11 +545,11 @@
     <script>
       Swal.fire({
           icon: 'warning',
-          title: 'Unverified Successfully',
-          text: 'รายการนี้ยังไม่ได้ตรวจสอบ',
+          title: 'รายการนี้ยังไม่ได้ตรวจสอบ',
+          // text: 'รายการนี้ยังไม่ได้ตรวจสอบ',
           showConfirmButton: true,
           confirmButtonColor: '#d33',
-          timer: 6000
+          timer: 3800
       })
     </script>
   @endif

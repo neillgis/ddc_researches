@@ -197,6 +197,13 @@ if(Auth::hasRole('manager')){
                ];
 
 
+     $verified = [ 1 => 'ตรวจสอบแล้ว', //verify
+                   2 => 'อยู่ระหว่างตรวจสอบ', //process_checked
+                   3 => 'อยู่ระหว่างแก้ไข', //process_editing
+                   9 => 'ไม่ตรงเงื่อนไข', //no_conditions
+                 ];
+
+
   // SELECT TABLE ----------------------------------------------------------------------->
   if(Auth::hasRole('manager')){
     $query_util = DB::table('db_utilization')
@@ -210,11 +217,12 @@ if(Auth::hasRole('manager')){
                                'db_research_project.pro_name_en',
                                'db_research_project.users_name',
                                'users.deptName',
-                               \DB::raw('(CASE
-                                             WHEN db_utilization.verified = "1" THEN "ตรวจสอบแล้ว"
-                                             ELSE "รอการตรวจสอบ"
-                                             END) AS verified'
-                               ))
+                               // \DB::raw('(CASE
+                               //               WHEN db_utilization.verified = "1" THEN "ตรวจสอบแล้ว"
+                               //               ELSE "รอการตรวจสอบ"
+                               //               END) AS verified'
+                               // )
+                               )
                     ->get();
 
 // dd($query_util);
@@ -224,11 +232,12 @@ if(Auth::hasRole('manager')){
                     -> select ('db_utilization.id','db_utilization.util_type','db_utilization.files',
                                 'db_utilization.verified',
                                 'db_research_project.pro_name_th','db_research_project.pro_name_en','db_research_project.users_name',
-                               \DB::raw('(CASE
-                                             WHEN db_utilization.verified = "1" THEN "ตรวจสอบแล้ว"
-                                             ELSE "รอการตรวจสอบ"
-                                             END) AS verified'
-                               ))
+                               // \DB::raw('(CASE
+                               //               WHEN db_utilization.verified = "1" THEN "ตรวจสอบแล้ว"
+                               //               ELSE "รอการตรวจสอบ"
+                               //               END) AS verified'
+                               // )
+                               )
                     ->get();
 
   }else {
@@ -237,11 +246,12 @@ if(Auth::hasRole('manager')){
                     -> select ('db_utilization.id','db_utilization.util_type','db_utilization.files',
                                 'db_utilization.verified',
                                 'db_research_project.pro_name_th','db_research_project.pro_name_en','db_research_project.users_name',
-                               \DB::raw('(CASE
-                                             WHEN db_utilization.verified = "1" THEN "ตรวจสอบแล้ว"
-                                             ELSE "รอการตรวจสอบ"
-                                             END) AS verified'
-                               ))
+                               // \DB::raw('(CASE
+                               //               WHEN db_utilization.verified = "1" THEN "ตรวจสอบแล้ว"
+                               //               ELSE "รอการตรวจสอบ"
+                               //               END) AS verified'
+                               // )
+                               )
                     -> where ('db_utilization.users_id', Auth::user()->preferred_username)
                     ->get();
   }
@@ -262,7 +272,7 @@ if(Auth::hasRole('manager')){
       'form_util_type'         => $query_util_type,
       // SELECT TABLE
       'table_util'             => $query_util,
-
+      'verified_list'          => $verified
 
     ]);
 }
@@ -387,10 +397,10 @@ if(Auth::hasRole('manager')){
         //UPDATE db_research_project
         $verified = DB::table('db_utilization')
                   ->where('id', $request->id)
-                  ->update(['verified' => "1",
+                  ->update([
+                            'verified' => $request->verified,
                             'updated_at'  => date('Y-m-d H:i:s')
                           ]);
-                  // ->get();
 
          // dd($verified);
 
@@ -412,7 +422,6 @@ if(Auth::hasRole('manager')){
                   ->update(['verified'    => NULL,
                             'updated_at'  => date('Y-m-d H:i:s')
                           ]);
-                  // ->get();
 
          // dd($verified);
          if($verified){

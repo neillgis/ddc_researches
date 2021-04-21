@@ -5,9 +5,8 @@
 <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css">
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.6.4/css/buttons.dataTables.min.css">
-<link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
-<link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
-
+<link rel="stylesheet" href="{{ asset('bower_components/admin-lte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
+<link rel="stylesheet" href="{{ asset('bower_components/admin-lte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
 
 <!-- SweetAlert2 -->
 <link rel="stylesheet" href="{{ asset('bower_components/admin-lte/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
@@ -297,58 +296,122 @@
                         @endif
 
                           <td class="text-center">
-                            @if($value->verified == "ตรวจสอบแล้ว")
-                              <span class="badge bg-secondary badge-pill"> {{ $value->verified }} </span> <!-- null = รอการตรวจสอบ -->
-                            @else
-                              <span class="badge bg-danger badge-pill"> {{ $value->verified }} </span> <!--  2 = ไม่อนุมัติ -->
-                            @endif
+                              @if($value->verified == "1")
+                                <span class="badge bg-secondary badge-pill"><i class="fas fa-check-circle"></i> {{ $verified_list [ $value->verified ] }} </span>
+                              @elseif($value->verified == "2")
+                                <span class="badge bg-warning badge-pill"> {{ $verified_list [ $value->verified ] }} </span>
+                              @elseif($value->verified == "3")
+                                 <span class="badge bg-info badge-pill"> {{ $verified_list [ $value->verified ] }} </span>
+                              @elseif($value->verified == "9")
+                                 <span class="badge bg-primary badge-pill"><i class="fas fa-times-circle"></i> {{ $verified_list [ $value->verified ] }} </span>
+                              @else <!-- verified == "1" คือ รอตรวจสอบ [Default] -->
+                                 <span class="badge bg-danger badge-pill"> รอตรวจสอบ </span>
+                              @endif
                           </td>
 
                           <!-- Actions -->
                           <td class="td-actions text-right text-nowrap" href="#">
                             <!-- {{-- @if(Auth::hasRole('manager') || Auth::hasRole('user')) --}} -->
-                            @if($value->verified == "ตรวจสอบแล้ว")
-                              <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Download" disabled>
-                                <i class="fas fa-arrow-alt-circle-down"></i>
-                              </button>
+                            @if($value->verified == "1")
+                                <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Download" disabled>
+                                  <i class="fas fa-arrow-alt-circle-down"></i>
+                                </button>
+                            @elseif($value->verified == "9")
+                                <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Download" disabled>
+                                  <i class="fas fa-arrow-alt-circle-down"></i>
+                                </button>
                             @else
-                            <a href=" {{ route('DownloadFile.util', ['id' => $value->id, 'files' => $value->files]) }} ">
-                              <button type="button" class="btn btn-danger btn-md" data-toggle="tooltip" title="Download">
-                                <i class="fas fa-arrow-alt-circle-down"></i>
-                              </button>
-                            </a>
+                              <a href=" {{ route('DownloadFile.util', ['id' => $value->id, 'files' => $value->files]) }} ">
+                                <button type="button" class="btn btn-danger btn-md" data-toggle="tooltip" title="Download">
+                                  <i class="fas fa-arrow-alt-circle-down"></i>
+                                </button>
+                              </a>
                             @endif
 
 
-                            @if($value->verified == "ตรวจสอบแล้ว")
-                              <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Edit" disabled>
-                                <i class="fas fa-edit"></i>
-                              </button>
+                            @if($value->verified == "1")
+                                <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Edit" disabled>
+                                  <i class="fas fa-edit"></i>
+                                </button>
+                            @elseif($value->verified == "9")
+                                <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Edit" disabled>
+                                  <i class="fas fa-edit"></i>
+                                </button>
                             @else
-                            <a href=" {{ route('util.edit', $value->id) }} ">
-                              <button type="button" class="btn btn-warning btn-md" data-toggle="tooltip" title="Edit">
-                                <i class="fas fa-edit"></i>
-                              </button>
-                            </a>
+                              <a href=" {{ route('util.edit', $value->id) }} ">
+                                <button type="button" class="btn btn-warning btn-md" data-toggle="tooltip" title="Edit">
+                                  <i class="fas fa-edit"></i>
+                                </button>
+                              </a>
                             @endif
 
 
                             @if(Auth::hasRole('manager'))
-                                @if($value->verified == "ตรวจสอบแล้ว")
-                                <a href=" {{ route('util.unverified', $value->id) }} ">
-                                  <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Verfied">
-                                    <i class="fas fa-user-check"></i>
-                                  </button>
-                                </a>
-                                @else
-                                  <a href=" {{ route('util.verified', $value->id) }} ">
-                                    <button type="button" class="verify btn btn-md" data-toggle="tooltip" title="Verfied" style="background-color: #567fa8;">
+                                @if($value->verified == "1")
+                                  <!-- <a href=" {{-- route('util.unverified', $value->id) --}} "> -->
+                                    <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Verfied">
+                                      <i class="fas fa-user-check"></i>
+                                    </button>
+                                  <!-- </a> -->
+                                @elseif($value->verified == "9")
+                                  <a href=" {{ route('util.unverified', $value->id) }} ">
+                                    <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Verfied">
                                       <i class="fas fa-user-check"></i>
                                     </button>
                                   </a>
+                                @else
+                                  <!-- <a href=" {{-- route('util.verified', $value->id) --}} "> -->
+                                    <button type="button" class="verify btn btn-md" data-toggle="modal" data-target="#modal-default-util{{ $value->id }}"
+                                    title="Verfied" style="background-color: #567fa8;">
+                                      <i class="fas fa-user-check"></i>
+                                    </button>
+                                  <!-- </a> -->
                                 @endif
                             @endif
                           </td>
+
+
+                          <!-- MODAL -->
+                            <div class="modal fade" id="modal-default-util{{ $value->id }}" tabindex="-1" role="dialog" aria-hidden="true">
+                              <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <h4 class="modal-title"><b> สถานะการตรวจสอบ (ID </b><font color="red"> {{ $value->id }} </font>) </h4>
+                                  </div>
+
+                                <form action="{{ route('util.verified') }}" method="POST">
+                                  @csrf
+
+                                  <div class="modal-body">
+                                    <div class="row">
+                                      <div class="col-md-12">
+                                        <!-- hidden = id -->
+                                        <input type="hidden" class="form-control" name="id" value="{{ $value->id }}">
+
+                                        <select class="form-control" name="verified" >
+                                          @foreach ($verified_list as $key => $value)
+                                            <option value="{{ $key }}" {{ $verified_list == $key ? 'selected' : '' }}> {{ $value }} </option>
+
+                                          @endforeach
+                                        </select>
+                                      </div>
+                                    </div>
+                                    <br>
+                                  </div>
+
+                                  <div class="modal-footer justify-content-between">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal"> Close </button>
+                                    <button type="submit" class="btn float-right" value="บันทึกข้อมูล" style="background-color: #7eaad6;">
+                                      <i class="fas fa-save"></i> &nbsp;Save Change
+                                    </button>
+                                  </div>
+                                </form>
+
+                                </div>
+                              </div>
+                            </div>
+                          <!-- END MODAL -->
+
 
                         </tr>
                         @php
