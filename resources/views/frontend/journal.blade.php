@@ -370,9 +370,9 @@
                       @elseif($value->verified == "2")
                         <span class="badge bg-warning badge-pill"> {{ $verified_list [ $value->verified ] }} </span>
                       @elseif($value->verified == "3")
-                         <span class="badge bg-info badge-pill"> {{ $verified_list [ $value->verified ] }} </span>
+                         <span class="badge badge-pill" style="background-color: #ff851b;"> {{ $verified_list [ $value->verified ] }} </span>
                       @elseif($value->verified == "9")
-                         <span class="badge bg-primary badge-pill"><i class="fas fa-times-circle"></i> {{ $verified_list [ $value->verified ] }} </span>
+                         <span class="badge bg-info badge-pill"><i class="fas fa-times-circle"></i> {{ $verified_list [ $value->verified ] }} </span>
                       @else <!-- verified == "1" คือ รอตรวจสอบ [Default] -->
                          <span class="badge bg-danger badge-pill"> รอตรวจสอบ </span>
                       @endif
@@ -381,11 +381,7 @@
                     <!-- Download button -->
                     <td class="td-actions text-right text-nowrap" href="#">
                     <!-- {{-- @if(Auth::hasRole('manager') || Auth::hasRole('user')) --}} -->
-                        @if($value->verified == "1")
-                          <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Edit" disabled>
-                            <i class="fas fa-arrow-alt-circle-down"></i>
-                          </button>
-                        @elseif($value->verified == "9")
+                        @if($value->verified == "1" || $value->verified == "9")
                           <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Edit" disabled>
                             <i class="fas fa-arrow-alt-circle-down"></i>
                           </button>
@@ -400,11 +396,7 @@
 
 
                     <!-- Edit button -->
-                        @if($value->verified == "1")
-                          <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Edit" disabled>
-                            <i class="fas fa-edit"></i>
-                          </button>
-                        @elseif($value->verified == "9")
+                        @if($value->verified == "1" || $value->verified == "2" || $value->verified == "3" || $value->verified == "9")
                           <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Edit" disabled>
                             <i class="fas fa-edit"></i>
                           </button>
@@ -420,18 +412,12 @@
 
                     <!-- Verify button -->
                       @if(Auth::hasRole('manager'))
-                        @if($value->verified == "1")
+                        @if($value->verified == "1" || $value->verified == "9")
                           <!-- <a href=" {{-- route('journal.unverified', $value->id) --}} "> -->
                             <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Verfied">
                               <i class="fas fa-user-check"></i>
                             </button>
                           <!-- </a> -->
-                        @elseif($value->verified == "9")
-                          <a href=" {{ route('journal.unverified', $value->id) }} ">
-                            <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Verfied">
-                              <i class="fas fa-user-check"></i>
-                            </button>
-                          </a>
                         @else
                           <!-- <a href=" {{-- route('journal.verified', $value->id) --}} "> -->
                           <button type="button" class="verify btn btn-md" data-toggle="modal" data-target="#modal-default{{ $value->id }}"
