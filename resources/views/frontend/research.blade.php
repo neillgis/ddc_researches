@@ -139,14 +139,16 @@
 
               <div class="card-body">
                 <div class="row">
-                  <div class="col-md-6">
+                  <div class="col-md-12">
                     <div class="form-group">
                       <label for="exampleInput1"> ชื่อโครงการวิจัย (TH) </label>
                       <input type="text" class="form-control" name="pro_name_th">
                     </div>
                   </div>
+                </div>
 
-                  <div class="col-md-6">
+                <div class="row">
+                  <div class="col-md-12">
                     <div class="form-group">
                       <label for="exampleInput1"> ชื่อโครงการวิจัย (ENG) </label>
                       <input type="text" class="form-control" name="pro_name_en">
@@ -183,7 +185,7 @@
                 </div>
 
                 <div class="row">
-                  <div class="col-md-6">
+                  <div class="col-md-4">
                     <div class="form-group">
                       <label for="exampleDatepicker1"> ปีที่เริ่มโครงการวิจัย <font color="red"> * </font></label>
                         <a class="one form-group" href="#" id="modal"> <b> (คำอธิบายเพิ่มเติม) </b></a>
@@ -192,7 +194,7 @@
                     </div>
                   </div>
 
-                  <div class="col-md-6">
+                  <div class="col-md-4">
                     <div class="form-group">
                       <label for="exampleDatepicker1"> ปีที่เสร็จสิ้นโครงการวิจัย <font color="red"> * </font></label>
                       <a class="two form-group" href="#" id="modal"> <b> (คำอธิบายเพิ่มเติม) </b></a>
@@ -200,11 +202,8 @@
                              name="pro_end_date" autocomplete="off" required>
                     </div>
                   </div>
-                </div>
 
-
-                <div class="row">
-                  <div class="col-md-6">
+                  <div class="col-md-4">
                     <div class="form-group">
                       <label for="exampleSelect1"> โครงการวิจัยได้รับการตีพิมพ์ในวารสารวิชาการ <font color="red"> * </font></label>
                       <!-- SELECT option ดึงมาจากฐานข้อมูล db_research_project -->
@@ -216,11 +215,21 @@
                       </select>
                     </div>
                   </div>
+                </div>
 
-                  <div class="col-md-6">
+                <div class="row" >
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <label for="exampleInput1"> URL ที่อยู่ออนไลน์ของรายงานวิจัยฉบับสมบูรณ์ (ถ้ามี) </label>
+                      <input type="text" class="form-control" name="url_research">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-12">
                     <div class="form-group">
                       <label for="expInputFile"> อัพโหลดไฟล์ : รายงานวิจัยฉบับสมบูรณ์.pdf <font color="red"> * </font></label>
-
                       <div class="input-group">
                         <div class="custom-file">
                           <input type="file" class="custom-file-input" name="files" required>

@@ -77,14 +77,16 @@
 
               <div class="card-body">
                 <div class="row">
-                  <div class="col-md-6">
+                  <div class="col-md-12">
                     <div class="form-group">
                       <label for="exampleInput1"> ชื่อโครงการ (TH) </label>
                       <input type="text" class="form-control" name="pro_name_th" value="{{ $data->pro_name_th }}">
                     </div>
                   </div>
+                </div>
 
-                  <div class="col-md-6">
+                <div class="row">
+                  <div class="col-md-12">
                     <div class="form-group">
                       <label for="exampleInput1"> ชื่อโครงการ (ENG) </label>
                       <!-- hidden = id -->
@@ -154,6 +156,15 @@
                           {{ $data->publish_status == $key ? 'selected' : '' }}> {{ $value }} </option>
                         @endforeach
                       </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <label for="exampleInput1"> URL ที่อยู่ออนไลน์ของรายงานวิจัยฉบับสมบูรณ์ (ถ้ามี) </label>
+                      <input type="text" class="form-control" name="url_research" value="{{ $data->url_research }}">
                     </div>
                   </div>
                 </div>

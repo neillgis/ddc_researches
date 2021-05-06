@@ -70,7 +70,7 @@
   <div class="container">
 
     <div class="row">
-      <div class="col-md-5">
+      <div class="col-md-6">
         <div class="card shadow" id="rcorners3">
           <div class="card-header" style="background-color: #FFD800;">
             <h4><i class="fas fa-user-alt"></i>&nbsp; <b>ข้อมูลส่วนบุคคล</b> </h4>
@@ -132,7 +132,7 @@
         </div>
 
 
-        <div class="col-md-7">
+        <div class="col-md-6">
           <div class="card shadow card-success" id="rcorners3">
             <div class="card-header" style="background-color: #587498;">
               <h4><i class="fas fa-hotel"></i>&nbsp; <b>หน่วยงาน / สังกัด</b> </h4>
@@ -294,7 +294,7 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <!-- <script src="{{ asset('bower_components/admin-lte/plugins/sweetalert2/sweetalert2.min.js') }}"></script> -->
 
-  <script>
+  <!-- <script>
     Swal.fire({
         icon: 'warning',
         title: 'กรุณา "เพิ่มข้อมูลนักวิจัย"',
@@ -303,7 +303,7 @@
         confirmButtonColor: '#2C6700',
         timer: 8000
     })
-  </script>
+  </script> -->
 
 
   <!-- INSERT success -->

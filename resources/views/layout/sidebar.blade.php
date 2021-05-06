@@ -38,12 +38,12 @@
            </li>
 
           @if(Auth::hasRole('manager') || Auth::hasRole('admin'))
-            <li class="nav-item">
-             <a class="nav-link {{ Active::check('summary_form') }}" href="{{ route('page.summary') }}" >
+            <!-- <li class="nav-item">
+             <a class="nav-link {{-- Active::check('summary_form') --}}" href="{{-- route('page.summary') --}}" >
                <i class="nav-icon far fas fa-chart-line"></i>
                <p> สรุปข้อมูลสำหรับ (กนว.) </p>
              </a>
-            </li>
+            </li> -->
           @endif
 
              <li class="nav-item ">
@@ -86,25 +86,36 @@
                      <p> การตีพิมพ์วารสาร </p>
                    </a>
                  </li>
-                 <!-- <li class="nav-item">
-                   <a class="nav-link" href="{{-- route('export_totals') --}}" >
+                 <li class="nav-item">
+                   <a class="nav-link" href="{{ route('export_util') }}" >
                      <i class="far fa-circle nav-icon text-warning"></i>
-                     <p> สรุปข้อมูลภาพรวม </p>
+                     <p> นำไปใช้ประโยชน์ </p>
                    </a>
-                 </li> -->
+                 </li>
                </ul>
              </li>
             @endif
 
              <li class="nav-item ">
-               <a class="nav-link" href="{{ asset('Manual_DIR/manual.pdf') }}" target="_blank">
-                 <i class="nav-icon fas fa-folder-open"></i>
-                 <p> คู่มือการใช้งาน
-                   <span class="right badge badge-danger">Update</span>
-                 </p>
+               <a class="nav-link " href="#" >
+                 <i class="nav-icon fas fa-bookmark"></i>
+                 <p> คู่มือ & FAQ <span class="right badge badge-danger"> New </span></p>
                </a>
-             </li>
-
+             <ul class="nav nav-treeview">
+               <li class="nav-item">
+                 <a class="nav-link" href="{{ asset('Manual_DIR/manual.pdf') }}" target="_blank">
+                   <i class="far fa-circle nav-icon text-warning"></i>
+                   <p> คู่มือการใช้งาน </p>
+                 </a>
+               </li>
+               <!-- <li class="nav-item">
+                 <a class="nav-link" href="#" target="_blank">
+                   <i class="far fa-circle nav-icon text-warning"></i>
+                    <p> FAQ </p>
+                 </a>
+               </li> -->
+             </ul>
+           </li>
 
       </ul>
     </nav>

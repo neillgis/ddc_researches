@@ -102,7 +102,7 @@ Route::group(['middleware' => 'keycloak-web'], function () {
 
     Route::get('export_journal', 'ExportController@export_journal')->name('export_journal');
 
-    Route::get('export_totals', 'ExportController@export_totals')->name('export_totals');
+    Route::get('export_util', 'ExportController@export_util')->name('export_util');
 
 
 

@@ -262,6 +262,7 @@ class ResearchController extends Controller
       "pro_start_date"    => $request->pro_start_date,
       "pro_end_date"      => $request->pro_end_date,
       "publish_status"    => $request->publish_status,
+      "url_research"      => $request->url_research,
       "files"             => $request->files,
       "created_at"        => date('Y-m-d H:i:s')
     ];
@@ -304,7 +305,8 @@ class ResearchController extends Controller
                             'pro_co_researcher' => $request->pro_co_researcher,
                             'pro_start_date'  => $request->pro_start_date,
                             'pro_end_date'    => $request->pro_end_date,
-                            'publish_status'  => $request->publish_status
+                            'publish_status'  => $request->publish_status,
+                            'url_research'    => $request->url_research
                           ]);
 
     if($update){
