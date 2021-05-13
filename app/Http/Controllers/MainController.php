@@ -42,6 +42,10 @@ class MainController extends Controller
   }
 
   public function summary(){
+    return view('frontend.faq');
+  }
+
+  public function summary(){
     return view('frontend.summary');
   }
 

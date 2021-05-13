@@ -25,6 +25,11 @@ Route::get('/', function () {
 Route::group(['middleware' => 'keycloak-web'], function () {
     Route::get('/keycloak/demo','KeycloakDemoController@index') -> name('page.keycloak.demo');
 
+
+    // -- DASHBOARD --
+    Route::get('/dashboard','DashboardController@dash_index')->name('page.dashboard');
+
+
     Route::get('/profile','ProfileController@index')->name('page.profile');
     //  -- INSERT --
     Route::post('/profile_insert','ProfileController@insert')->name('profile.insert');
@@ -82,6 +87,9 @@ Route::group(['middleware' => 'keycloak-web'], function () {
     Route::get('/util/unverified/{id}', 'UtilizationController@No_verified')->name('util.unverified');
 
 
+    // -- FAQ --
+    Route::get('/faq','FaqController@faq_index')->name('page.faq');
+
 
     // FORM  SUMMARY
     // Route::get('/summary_form','SummaryController@summary') -> name('page.summary');
@@ -102,7 +110,7 @@ Route::group(['middleware' => 'keycloak-web'], function () {
 
     Route::get('export_journal', 'ExportController@export_journal')->name('export_journal');
 
-    Route::get('export_util', 'ExportController@export_util')->name('export_util');
+    Route::get('export_totals', 'ExportController@export_totals')->name('export_totals');
 
 
 

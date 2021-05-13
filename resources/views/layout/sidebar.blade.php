@@ -108,12 +108,12 @@
                    <p> คู่มือการใช้งาน </p>
                  </a>
                </li>
-               <!-- <li class="nav-item">
-                 <a class="nav-link" href="#" target="_blank">
-                   <i class="far fa-circle nav-icon text-warning"></i>
+               <li class="nav-item">
+                 <a class="nav-link {{ Active::check('faq') }} " href="{{ route('page.faq') }}">
+                   <i class="far fa-circle nav-icon text-success"></i>
                     <p> FAQ </p>
                  </a>
-               </li> -->
+               </li>
              </ul>
            </li>
 
