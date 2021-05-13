@@ -88,7 +88,6 @@
                  </li>
                  <li class="nav-item">
                    <a class="nav-link" href="{{ route('export_util') }}" >
-                     <a class="nav-link" href="{{ route('export_journal') }}" >
                      <i class="far fa-circle nav-icon text-warning"></i>
                      <p> นำไปใช้ประโยชน์ </p>
                    </a>
