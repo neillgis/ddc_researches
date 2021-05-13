@@ -86,7 +86,7 @@
           <div class="card-header" style="background-color: #54BEAE;">
 
             <div class="card-tools">
-              <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i>
+              <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus" style="color:#000000;"></i>
               </button>
             </div>
 
@@ -110,7 +110,7 @@
           <div class="card-header" style="background-color: #54BEAE;">
 
             <div class="card-tools">
-              <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i>
+              <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus" style="color:#000000;"></i>
               </button>
             </div>
 
@@ -135,7 +135,7 @@
           <div class="card-header" style="background-color: #54BEAE;">
 
             <div class="card-tools">
-              <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i>
+              <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus" style="color:#000000;"></i>
               </button>
             </div>
 
@@ -172,7 +172,7 @@
           <div class="card-header" style="background-color: #54BEAE;">
 
             <div class="card-tools">
-              <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i>
+              <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus" style="color:#000000;"></i>
               </button>
             </div>
 
@@ -197,7 +197,7 @@
           <div class="card-header" style="background-color: #54BEAE;">
 
             <div class="card-tools">
-              <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i>
+              <button type="button" class="btn btn-tool" data-card-widget="collapse" ><i class="fas fa-plus" style="color:#000000;"></i>
               </button>
             </div>
 
@@ -253,7 +253,7 @@
           <div class="card-header" style="background-color: #54BEAE;">
 
             <div class="card-tools">
-              <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i>
+              <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus" style="color:#000000;"></i>
               </button>
             </div>
 
@@ -282,7 +282,7 @@
           <div class="card-header" style="background-color: #54BEAE;">
 
             <div class="card-tools">
-              <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i>
+              <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus" style="color:#000000;"></i>
               </button>
             </div>
 
@@ -325,7 +325,7 @@
           <div class="card-header" style="background-color: #54BEAE;">
 
           <div class="card-tools">
-            <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i>
+            <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus" style="color:#000000;"></i>
             </button>
           </div>
 
@@ -363,7 +363,7 @@
           <div class="card-header" style="background-color: #54BEAE;">
 
             <div class="card-tools">
-              <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i>
+              <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus" style="color:#000000;"></i>
               </button>
             </div>
 
@@ -378,7 +378,7 @@
                 <h5>กรณีนักวิจัยไม่มีไฟล์รายงานฉบับสมบูรณ์
           <br>
           </br>
-                สามารถเข้าไปสืบค้นได้ที่ระบบ
+                สามารถเข้าไปสืบค้นระบบ ได้ด้วยตัวเองที่
           <br>
                 <a href="https://nriis.nrct.go.th">คลิก NRIIS</a>
           <br>
