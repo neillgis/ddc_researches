@@ -66,7 +66,7 @@
       <div class="row mb-2">
         <div class="col-sm-12">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item active"> FAQ (คำถามที่พบบ่อย) </li>
+            <li class="breadcrumb-item active"> คำถามที่พบบ่อย (FAQ) </li>
           </ol>
         </div>
       </div>

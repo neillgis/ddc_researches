@@ -111,7 +111,7 @@
                <li class="nav-item">
                  <a class="nav-link {{ Active::check('faq') }} " href="{{ route('page.faq') }}">
                    <i class="far fa-circle nav-icon text-success"></i>
-                    <p> FAQ </p>
+                    <p> คำถามที่พบบ่อย (FAQ) </p>
                  </a>
                </li>
              </ul>
