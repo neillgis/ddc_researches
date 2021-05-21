@@ -23,9 +23,10 @@ Route::get('/', function () {
 });
 
 Route::group(['middleware' => 'keycloak-web'], function () {
+    // -- Log Viewer --
+    Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index') -> name('page.logs');
+    // -- keycloak/demo --
     Route::get('/keycloak/demo','KeycloakDemoController@index') -> name('page.keycloak.demo');
-
-
     // -- DASHBOARD --
     Route::get('/dashboard','DashboardController@dash_index')->name('page.dashboard');
 

@@ -15,6 +15,7 @@
         "laravel/tinker": "^1.0",
         "maatwebsite/excel": "^3.1",
         "pyaesone17/active-state": "1.1.1",
+        "rap2hpoutre/laravel-log-viewer": "^1.7",
         "vizir/laravel-keycloak-web-guard": "^2.3"
     },
     "require-dev": {

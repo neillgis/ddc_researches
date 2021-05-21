@@ -170,6 +170,11 @@ return [
          * Maatwebsite Package Export CSV
          */
         Maatwebsite\Excel\ExcelServiceProvider::class,
+        /*
+         * LOG Viewer
+         */
+        Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider::class,
+
 
         /*
          * Package Service Providers...
