@@ -24,7 +24,7 @@ class JournalController extends Controller
   // }
 
 
-  //  -- SELECT DataTables JOURNAL --
+  //  -- Show Dropdown บทความนี้เป็นผลจากโครงการวิจัย --
   public function table_journal(){
     if(Auth::hasRole('manager')){
       $query  = DB::table('db_research_project')
@@ -61,7 +61,7 @@ class JournalController extends Controller
      }
 
 
-
+  //  -- SELECT DataTables PROJECT join JOURNAL --
     if(Auth::hasRole('manager')){
       $query2 = DB::table('db_published_journal')
                 ->join('db_research_project', 'db_research_project.id', '=', 'db_published_journal.pro_id')
@@ -119,7 +119,6 @@ class JournalController extends Controller
     }
 
 
-
       $query3 = [1=> 'ผู้นิพนธ์หลัก (first-author)',
                  2=> 'ผู้นิพนธ์ร่วม (co-author)'
                 ];
@@ -135,6 +134,27 @@ class JournalController extends Controller
                     3 => 'อยู่ระหว่างแก้ไข', //process_editing
                     9 => 'ไม่ตรงเงื่อนไข', //no_conditions
                   ];
+
+
+      // -- DataTable Show -> not_from_project --
+      $query5 = DB::table('db_published_journal')
+                ->join('users', 'db_published_journal.users_id', '=', 'users.idCard')
+                ->select('db_published_journal.id',
+                         'db_published_journal.pro_id',
+                         'db_published_journal.users_name',
+                         'db_published_journal.article_name_th',
+                         'db_published_journal.article_name_en',
+                         'db_published_journal.journal_name_th',
+                         'db_published_journal.journal_name_en',
+                         'db_published_journal.publish_years',
+                         'db_published_journal.files',
+                         'db_published_journal.corres',
+                         'db_published_journal.verified',
+                         'users.deptName'
+                         )
+                ->where('pro_id', null)
+                ->orderby('id', 'DESC')
+                ->get();
 
 
 
@@ -215,7 +235,8 @@ class JournalController extends Controller
         'Total_journal'            => $Total_journal,
         'Total_journal_verify'     => $Total_journal_verify,
         'Total_master_jour'        => $Total_master_jour,
-        'verified_list'            => $verified
+        'verified_list'            => $verified,
+        'not_from_project'         => $query5
      ]);
   }
   //  -- END SELECT --
@@ -225,6 +246,7 @@ class JournalController extends Controller
 
   //  -- EDIT JOURNAL--
   public function edit_journal_form(Request $request){
+
     //แสดงข้อมูล Query EDIT
      $edit = DB::table('db_published_journal')
                ->join('db_research_project', 'db_research_project.id', '=', 'db_published_journal.pro_id')
@@ -239,7 +261,6 @@ class JournalController extends Controller
                         'publish_years',
                         'publish_no',
                         'publish_volume',
-                        // 'publish_page',
                         'publish_firstpage',
                         'publish_lastpage',
                         'url_journal',
@@ -281,6 +302,51 @@ class JournalController extends Controller
 
 
 
+  //  -- EDIT 2 JOURNAL (** กรณี ไม่ได้มาจากโครงการวิจัย) --
+  public function edit2_journal_form(Request $request){
+
+    //แสดงข้อมูล Query EDIT 2
+     $edit9 = DB::table('db_published_journal')
+               ->select(
+                        'db_published_journal.id', 'article_name_th', 'article_name_en', 'journal_name_th',
+                        'journal_name_en', 'publish_years','publish_no', 'publish_volume', 'publish_firstpage',
+                        'publish_lastpage', 'url_journal', 'doi_number', 'contribute', 'corres'
+                        )
+               ->where('db_published_journal.id', $request->id)
+               ->orderby('id', 'DESC')
+               ->first();
+
+
+    $edit2 = [1=> 'ผู้วิจัยหลัก',
+              2=> 'ผู้วิจัยหลัก-ร่วม',
+              3=> 'ผู้วิจัยร่วม',
+              4=> 'ผู้ช่วยวิจัย',
+              5=> 'ที่ปรึกษาโครงการ'
+             ];
+
+
+     $edit3 = [1=> 'ผู้นิพนธ์หลัก (first-author)',
+               2=> 'ผู้นิพนธ์ร่วม (co-author)'
+              ];
+
+
+      $edit4 = [1=> 'ใช่',
+                2=> 'ไม่ใช่'
+               ];
+
+     return view('frontend.journal_edit2',
+     [
+        'data'  => $edit9,
+        'datax' => $edit2,
+        'datay' => $edit3,
+        'dataz' => $edit4
+     ]);
+  }
+  //  -- END EDIT --
+
+
+
+
 
   //  INSERT
   public function insert(Request $request){
@@ -288,6 +354,7 @@ class JournalController extends Controller
     $data_post = [
       "pro_id"            => $request->pro_id,
       "users_id"          => Auth::user()->preferred_username,
+      "users_name"        => Auth::user()->name,
       "article_name_th"   => $request->article_name_th,
       "article_name_en"   => $request->article_name_en,
       "journal_name_th"   => $request->journal_name_th,
@@ -295,7 +362,6 @@ class JournalController extends Controller
       "publish_years"     => $request->publish_years,
       "publish_no"        => $request->publish_no,
       "publish_volume"    => $request->publish_volume,
-      // "publish_page"      => $request->publish_page,
       "publish_firstpage" => $request->publish_firstpage,
       "publish_lastpage"  => $request->publish_lastpage,
       "url_journal"       => $request->url_journal,

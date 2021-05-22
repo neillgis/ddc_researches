@@ -60,6 +60,8 @@ Route::group(['middleware' => 'keycloak-web'], function () {
     Route::post('/journal_insert','JournalController@insert')->name('journal.insert');
     //  -- EDIT --
     Route::get('/journal_edit/{id}/{pro_id}','JournalController@edit_journal_form')->name('journal.edit');
+    //  -- EDIT --
+    Route::get('/journal_edit/{id}','JournalController@edit2_journal_form')->name('journal.edit2');
     //  -- SAVE --
     Route::post('/save_journal_edit','JournalController@save_journal_form')->name('journal.save');
     //  -- DOWNLOAD --

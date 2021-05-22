@@ -248,6 +248,7 @@
                       <!-- SELECT Table -> db_research_project -->
                       <select class="form-control" name="pro_id" required>
                           <option value="" disabled="true" selected="true"> -- กรุณาเลือก -- </option>
+                          <option value=""> ไม่ได้มาจากโครงการวิจัย </option>
                         @foreach ($journal_res as $value)
                           <option value = "{{ $value->id }}"> {{ $value->pro_name_en }} {{ $value->pro_name_th }} </option>
                         @endforeach
@@ -317,7 +318,6 @@
 
 
 
-
     <!-- START TABLE -> JOURNAL PROJECT -------------------------------------------------->
       <section class="content">
         <div class="card">
@@ -334,8 +334,8 @@
                     <tr>
                       <th class="text-center"> ลำดับ </th>
                       <th class="text-center"> Project ID </th>
-                      <th class="text-center"> ชื่อบทความ (ENG) </th>
-                      <th class="text-center"> ชื่อวารสาร (ENG) </th>
+                      <th> ชื่อบทความ (ENG) </th>
+                      <th> ชื่อวารสาร (ENG) </th>
                       <th class="text-center"> ตีพิมพ์ </th>
                       <th class="text-center"> ผู้รับผิดชอบบทความ </th>
                     @if(Auth::hasRole('manager'))
@@ -400,6 +400,12 @@
                           <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Edit" disabled>
                             <i class="fas fa-edit"></i>
                           </button>
+                        @elseif($value->pro_id == NULL)
+                          <a href=" {{ route('journal.edit2', ['id' => $value->id]) }} ">
+                            <button type="button" class="btn btn-warning btn-md" data-toggle="tooltip" title="Edit2">
+                              <i class="fas fa-edit"></i>
+                            </button>
+                          </a>
                         @else
                           <a href=" {{ route('journal.edit', ['id' => $value->id, 'pro_id' => $value->pro_id]) }} ">
                             <button type="button" class="btn btn-warning btn-md" data-toggle="tooltip" title="Edit">
@@ -486,7 +492,184 @@
       </section>
     <!-- END TABLE -> JOURNAL PROJECT -------------------------------------------------->
 
-      </div>
+
+<br>
+
+  @if(Auth::hasRole('manager'))
+    <!-- START TABLE -> JOURNAL (** กรณี ไม่ได้มาจากโครงการวิจัย) -------------------------------------------------->
+      <section class="content">
+        <div class="card">
+          <div class="card shadow" style="background-color:#74828F;">
+            <div class="card-header">
+              <h3 class="card-title"><b> บทความที่ตีพิมพ์แล้ว (** กรณี ไม่ได้มาจากโครงการวิจัย) </b></h3>
+            </div>
+          </div>
+
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-hover" id="example55">
+                <thead>
+                    <tr>
+                      <th class="text-center"> ลำดับ </th>
+                      <th> ชื่อบทความ (ENG) </th>
+                      <th> ชื่อวารสาร (ENG) </th>
+                      <th class="text-center"> ตีพิมพ์ </th>
+                      <th class="text-center"> ผู้รับผิดชอบบทความ </th>
+                    @if(Auth::hasRole('manager'))
+                      <th class="text-center"> ชื่อ/สกุล </th>
+                      <th class="text-center"> หน่วยงาน </th>
+                    @endif
+                      <th class="text-center"> การตรวจสอบ </th>
+                      <th class="text-right"> Actions </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                  @php
+                      $i = 1;
+                  @endphp
+                  @foreach ($not_from_project as $value)
+                  <tr>
+                    <td class="text-center"> {{ $i }} </td>
+                    <td> {{ $value->article_name_en }} </td>
+                    <td> {{ $value->journal_name_en }} </td>
+                    <td class="text-center"> {{ $value->publish_years }} </td>
+                    <td class="text-center"> {{ $corres_sl [ $value->corres ] }} </td>
+                  @if(Auth::hasRole('manager'))
+                    <td class="text-center"> {{ $value->users_name }} </td>
+                    <td class="text-center"> {{ $value->deptName }} </td>
+                  @endif
+
+                    <td class="text-center">
+                      @if($value->verified == "1")
+                        <span class="badge bg-secondary badge-pill"><i class="fas fa-check-circle"></i> {{ $verified_list [ $value->verified ] }} </span>
+                      @elseif($value->verified == "2")
+                        <span class="badge bg-warning badge-pill"> {{ $verified_list [ $value->verified ] }} </span>
+                      @elseif($value->verified == "3")
+                         <span class="badge badge-pill" style="background-color: #ff851b;"> {{ $verified_list [ $value->verified ] }} </span>
+                      @elseif($value->verified == "9")
+                         <span class="badge bg-info badge-pill"><i class="fas fa-times-circle"></i> {{ $verified_list [ $value->verified ] }} </span>
+                      @else <!-- verified == "1" คือ รอตรวจสอบ [Default] -->
+                         <span class="badge bg-danger badge-pill"> รอตรวจสอบ </span>
+                      @endif
+                    </td>
+
+                    <!-- Download button -->
+                    <td class="td-actions text-right text-nowrap" href="#">
+                    <!-- {{-- @if(Auth::hasRole('manager') || Auth::hasRole('user')) --}} -->
+                        @if($value->verified == "1" || $value->verified == "9")
+                          <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Edit" disabled>
+                            <i class="fas fa-arrow-alt-circle-down"></i>
+                          </button>
+                        @else
+                          <a href=" {{ route('DownloadFile.journal', ['id' => $value->id, 'files' => $value->files]) }} ">
+                            <button type="button" class="btn btn-danger btn-md" data-toggle="tooltip" title="Download">
+                              <i class="fas fa-arrow-alt-circle-down"></i>
+                            </button>
+                          </a>
+                        @endif
+                    <!-- Download button -->
+
+
+                    <!-- Edit button -->
+                        @if($value->verified == "1" || $value->verified == "2" || $value->verified == "3" || $value->verified == "9")
+                          <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Edit" disabled>
+                            <i class="fas fa-edit"></i>
+                          </button>
+                        @elseif($value->pro_id == NULL)
+                          <a href=" {{ route('journal.edit2', ['id' => $value->id]) }} ">
+                            <button type="button" class="btn btn-warning btn-md" data-toggle="tooltip" title="Edit2">
+                              <i class="fas fa-edit"></i>
+                            </button>
+                          </a>
+                        @else
+                          <a href=" {{ route('journal.edit', ['id' => $value->id, 'pro_id' => $value->pro_id]) }} ">
+                            <button type="button" class="btn btn-warning btn-md" data-toggle="tooltip" title="Edit">
+                              <i class="fas fa-edit"></i>
+                            </button>
+                          </a>
+                        @endif
+                    <!-- Edit button -->
+
+
+                    <!-- Verify button -->
+                      @if(Auth::hasRole('manager'))
+                        @if($value->verified == "1" || $value->verified == "9")
+                          <!-- <a href=" {{-- route('journal.unverified', $value->id) --}} "> -->
+                            <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Verfied">
+                              <i class="fas fa-user-check"></i>
+                            </button>
+                          <!-- </a> -->
+                        @else
+                          <!-- <a href=" {{-- route('journal.verified', $value->id) --}} "> -->
+                          <button type="button" class="verify btn btn-md" data-toggle="modal" data-target="#modal-default{{ $value->id }}"
+                                  title="Verfied" style="background-color: #567fa8;">
+                            <i class="fas fa-user-check"></i>
+                          </button>
+                          <!-- </a> -->
+                        @endif
+                      @endif
+                    </td>
+
+
+                    <!-- MODAL -->
+                      <div class="modal fade" id="modal-default{{ $value->id }}" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h4 class="modal-title"><b> สถานะการตรวจสอบ </b></h4>
+                            </div>
+
+                          <form action="{{ route('journal.verified') }}" method="POST">
+                            @csrf
+
+                            <div class="modal-body">
+                              <div class="row">
+                                <div class="col-md-12">
+                                  <!-- hidden = id -->
+                                  <input type="hidden" class="form-control" name="id" value="{{ $value->id }}">
+
+                                  <select class="form-control" name="verified" >
+                                    @foreach ($verified_list as $key => $value)
+                                      <option value="{{ $key }}" {{ $verified_list == $key ? 'selected' : '' }}> {{ $value }} </option>
+
+                                    @endforeach
+                                  </select>
+                                </div>
+                              </div>
+                              <br>
+                            </div>
+
+                            <div class="modal-footer justify-content-between">
+                              <button type="button" class="btn btn-default" data-dismiss="modal"> Close </button>
+                              <button type="submit" class="btn float-right" value="บันทึกข้อมูล" style="background-color: #7eaad6;">
+                                <i class="fas fa-save"></i> &nbsp;Save Change
+                              </button>
+                            </div>
+                          </form>
+
+                          </div>
+                        </div>
+                      </div>
+                    <!-- END MODAL -->
+
+
+                  </tr>
+                  @php
+                      $i++;
+                  @endphp
+                  @endforeach
+                </tbody>
+              </table>
+
+            </div>
+          </div>
+        </div>
+      </section>
+    <!-- END TABLE -> JOURNAL PROJECT (** กรณี ไม่ได้มาจากโครงการวิจัย) -------------------------------------------------->
+    @endif
+
+    </div>
   </section>
 @stop('contents')
 
@@ -592,6 +775,18 @@
     });
   });
 </script>
+
+<script type="text/javascript" class="init">
+  $(document).ready(function() {
+    $('#example55').DataTable({
+      dom: 'Bfrtip',
+      buttons: [
+        'excel', 'print'
+      ]
+    });
+  });
+</script>
+
 
 <!-- <script>
   $(document).ready(function() {
