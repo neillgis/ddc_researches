@@ -25,7 +25,7 @@ class ResearchController extends Controller
 
 
 // -- SELECT DataTables RESEARCH --
-  public function table_research(){
+  public function table_research(Request $request){
     if(Auth::hasRole('manager')) {
       $query = DB::table('db_research_project')
                  ->join('users', 'db_research_project.users_id', '=', 'users.idCard')
@@ -55,18 +55,44 @@ class ResearchController extends Controller
 
                         // dd($query);
 
-    }elseif(Auth::hasRole('admin')) {
-      $query = research::select('id','pro_name_th','pro_name_en','pro_position',
-                                'pro_start_date','pro_end_date','publish_status',
-                                'files', 'verified', 'users_id',
-                                // \DB::raw('(CASE
-                                //               WHEN verified = "1" THEN "ตรวจสอบแล้ว"
-                                //               ELSE "รอตรวจสอบ"
-                                //               END) AS verified'
-                                // )
-                                )
-                       ->ORDERBY('id','DESC')
-                       ->get();
+    }elseif(Auth::hasRole('departments')) {
+      $query = DB::table('db_research_project')
+                ->leftjoin('users', 'users.idCard', '=', 'db_research_project.users_id')
+                ->select( 'db_research_project.id',
+                          'db_research_project.users_id',
+                          'db_research_project.pro_name_th',
+                          'db_research_project.pro_name_en',
+                          'db_research_project.pro_position',
+                          'db_research_project.pro_start_date',
+                          'db_research_project.pro_end_date',
+                          'db_research_project.publish_status',
+                          'db_research_project.files',
+                          'db_research_project.verified',
+                          'users_id',
+                          'users.idCard',
+                          'users.deptName',
+                          // \DB::raw('(CASE
+                          //               WHEN verified = "1" THEN "ตรวจสอบแล้ว"
+                          //               ELSE "รอตรวจสอบ"
+                          //               END) AS verified'
+                          // )
+                          )
+                ->where('users.deptName', Auth::user()->family_name)
+                ->ORDERBY('id','DESC')
+                ->get();
+              // dd($query);
+
+      // $query = research::select('id','pro_name_th','pro_name_en','pro_position',
+      //                           'pro_start_date','pro_end_date','publish_status',
+      //                           'files', 'verified', 'users_id',
+      //                           // \DB::raw('(CASE
+      //                           //               WHEN verified = "1" THEN "ตรวจสอบแล้ว"
+      //                           //               ELSE "รอตรวจสอบ"
+      //                           //               END) AS verified'
+      //                           // )
+      //                           )
+      //                  ->ORDERBY('id','DESC')
+      //                  ->get();
 
      }else {
        $query = research::select('id','pro_name_th','pro_name_en','pro_position',
@@ -111,6 +137,61 @@ class ResearchController extends Controller
 
 
 // --- COUNT 3 BOX on TOP ---
+
+    //For Departments ONLY
+    $Total_departments = DB::table('db_research_project')
+                      ->leftjoin('users', 'users.idCard', '=', 'db_research_project.users_id')
+                      ->select( 'users.id',
+                                'users.idCard',
+                                'users.deptName',
+                                'db_research_project.id',
+                                'db_research_project.users_id',
+                                'db_research_project.pro_name_en',
+                                'db_research_project.publish_status'
+                              )
+                      // ->whereIn('publish_status', ['1'])
+                      ->where('deptName', Auth::user()->family_name)
+                      ->get()
+                      ->count();
+
+
+      // COUNT = publish_status = 1
+      if(Auth::hasRole('manager')){
+        $Total_publish_pro = DB::table('db_research_project')
+                          -> select('id','pro_name_th','pro_name_en','pro_position',
+                                    'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
+                          ->whereIn ('publish_status', ['1'])
+                          ->get()
+                          ->count();
+
+      }elseif(Auth::hasRole('departments')) {
+        $Total_publish_pro = DB::table('db_research_project')
+                          ->leftjoin('users', 'users.idCard', '=', 'db_research_project.users_id')
+                          ->select( 'users.id',
+                                    'users.idCard',
+                                    'users.deptName',
+                                    'db_research_project.id',
+                                    'db_research_project.users_id',
+                                    'db_research_project.pro_name_en',
+                                    'db_research_project.publish_status'
+                                  )
+                          ->whereIn('publish_status', ['1'])
+                          ->where('deptName', Auth::user()->family_name)
+                          ->get()
+                          ->count();
+
+      }else {
+        $Total_publish_pro = DB::table('db_research_project')
+                          -> select('id','pro_name_th','pro_name_en','pro_position',
+                                    'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
+                          ->whereIn ('publish_status', ['1'])
+                          ->where('users_id', Auth::user()->preferred_username)
+                          ->get()
+                          ->count();
+      }
+
+
+
       // COUNT = All Record
       if(Auth::hasRole('manager')){
         $Total_research = DB::table('db_research_project')
@@ -120,13 +201,20 @@ class ResearchController extends Controller
                         ->get()
                         ->count();
 
-      }elseif(Auth::hasRole('admin')) {
+      }elseif(Auth::hasRole('departments')) {
         $Total_research = DB::table('db_research_project')
-                        -> select('id','pro_name_th','pro_name_en','pro_position',
-                                  'pro_start_date','pro_end_date','pro_co_researcher','publish_status', 'verified')
-                        ->where('verified', 1)
-                        ->get()
-                        ->count();
+                          ->leftjoin('users', 'users.idCard', '=', 'db_research_project.users_id')
+                          ->select( 'users.id',
+                                    'users.idCard',
+                                    'users.deptName',
+                                    'db_research_project.id',
+                                    'db_research_project.users_id',
+                                    'db_research_project.verified',
+                                  )
+                          ->whereIn('verified', ['1'])
+                          ->where('deptName', Auth::user()->family_name)
+                          ->get()
+                          ->count();
 
       }else {
         $Total_research = DB::table('db_research_project')
@@ -139,6 +227,7 @@ class ResearchController extends Controller
       }
 
 
+
       // COUNT = pro_position = 1
       if(Auth::hasRole('manager')){
           $Total_master_pro = DB::table('db_research_project')
@@ -148,11 +237,18 @@ class ResearchController extends Controller
                             ->get()
                             ->count();
 
-      }elseif(Auth::hasRole('admin')) {
+      }elseif(Auth::hasRole('departments')) {
         $Total_master_pro = DB::table('db_research_project')
-                          -> select('id','pro_name_th','pro_name_en','pro_position',
-                                    'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
-                          -> whereIn ('pro_position', ['1'])
+                          ->leftjoin('users', 'users.idCard', '=', 'db_research_project.users_id')
+                          ->select( 'users.id',
+                                    'users.idCard',
+                                    'users.deptName',
+                                    'db_research_project.id',
+                                    'db_research_project.users_id',
+                                    'db_research_project.pro_position',
+                                  )
+                          ->whereIn('pro_position', ['1'])
+                          ->where('deptName', Auth::user()->family_name)
                           ->get()
                           ->count();
 
@@ -167,32 +263,6 @@ class ResearchController extends Controller
       }
 
 
-      // COUNT = publish_status = 1
-      if(Auth::hasRole('manager')){
-          $Total_publish_pro = DB::table('db_research_project')
-                            -> select('id','pro_name_th','pro_name_en','pro_position',
-                                      'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
-                            -> whereIn ('publish_status', ['1'])
-                            ->get()
-                            ->count();
-
-      }elseif(Auth::hasRole('admin')) {
-        $Total_publish_pro = DB::table('db_research_project')
-                          -> select('id','pro_name_th','pro_name_en','pro_position',
-                                    'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
-                          -> whereIn ('publish_status', ['1'])
-                          ->get()
-                          ->count();
-
-      }else {
-          $Total_publish_pro = DB::table('db_research_project')
-                            -> select('id','pro_name_th','pro_name_en','pro_position',
-                                      'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
-                            -> whereIn ('publish_status', ['1'])
-                            ->where('users_id', Auth::user()->preferred_username)
-                            ->get()
-                            ->count();
-      }
 // --- END COUNT 3 BOX on TOP ---
 
     return view('frontend.research',
@@ -204,7 +274,8 @@ class ResearchController extends Controller
        'Total_research'     => $Total_research,
        'Total_master_pro'   => $Total_master_pro,
        'Total_publish_pro'  => $Total_publish_pro,
-       'verified_list'      => $verified
+       'verified_list'      => $verified,
+       'Total_departments'  => $Total_departments
       ]);
   }
   //  -- END SELECT --

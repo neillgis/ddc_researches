@@ -75,7 +75,7 @@
     <!-- START SUMMARY Total Box -->
       <div class="row">
         <div class="col-md-4 mx-auto">
-          <div class="small-box bg-danger mx-auto">
+          <div class="small-box bg-danger mx-auto shadow">
             <div class="inner">
               <h3> {{ empty($Total_publish_pro)?'0': $Total_publish_pro }} โครงการ</h3>
               <br>
@@ -89,7 +89,7 @@
         </div>
 
         <div class="col-md-4 mx-auto">
-          <div class="small-box bg-success mx-auto">
+          <div class="small-box bg-success mx-auto shadow">
             <div class="inner">
               <h3> {{ empty($Total_research)?'0': $Total_research }} โครงการ</h3>
               <br>
@@ -103,7 +103,7 @@
         </div>
 
         <div class="col-md-4 mx-auto">
-          <div class="small-box bg-info mx-auto">
+          <div class="small-box bg-info mx-auto shadow">
             <div class="inner">
               <h3> {{ empty($Total_master_pro)?'0': $Total_master_pro }} โครงการ</h3>
               <br>
@@ -115,15 +115,38 @@
             <!-- <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
           </div>
         </div>
-
       </div>
+
+      @if(Auth::hasRole('departments'))
+      <div class="row">
+        <div class="col-md-4">
+          <div class="small-box bg-warning mx-auto shadow">
+            <div class="inner">
+              <h3> {{ empty($Total_departments)?'0': $Total_departments }} โครงการ</h3>
+              <br>
+              <p> โครงการวิจัยของหน่วยงานทั้งหมด </p>
+            </div>
+            <div class="icon">
+              <i class="fas fa-dice-d20"></i>
+            </div>
+            <!-- <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
+          </div>
+        </div>
+      </div>
+      @endif
       <br>
     <!-- END SUMMARY Total Box -->
 
 
 
     <!-- START From Input RESEARCH PROJECT -------------------------------------------------->
-    <!-- {{-- @if(Auth::hasRole('user')) --}} -->
+
+    @if(Auth::hasRole('departments'))
+    
+      <!-- NO Show BUTTON For Departments ONLY -->
+
+    @else
+
       <div class="row">
         <div class="col-md-12">
           <div class="card">
@@ -260,7 +283,7 @@
         </div>
       </div>
     <br>
-  <!-- {{-- @endif --}} -->
+  @endif
 
     <!-- END From Input RESEARCH PROJECT -------------------------------------------------->
 
@@ -290,8 +313,12 @@
                         <th class="text-center"> ชื่อ/สกุล </th>
                         <th class="text-center"> หน่วยงาน </th>
                       @endif
-                      <th class="text-center"> การตรวจสอบ </th>
-                      <th class="text-right"> Actions </th>
+                        <th class="text-center"> การตรวจสอบ </th>
+                      @if(Auth::hasRole('departments'))
+                        <!-- NO Show BUTTON For Departments ONLY -->
+                      @else
+                        <th class="text-right"> Actions </th>
+                      @endif
                     </tr>
                 </thead>
 
@@ -326,8 +353,13 @@
                         @endif
                     </td>
 
-                <!-- Download button -->
-                <td class="td-actions text-right text-nowrap" href="#">
+                  @if(Auth::hasRole('departments'))
+
+                    <!-- NO Show BUTTON For Departments ONLY -->
+
+                  @else
+                  <!-- Download button -->
+                  <td class="td-actions text-right text-nowrap" href="#">
                       <!-- {{-- @if(Auth::hasRole('manager') || Auth::hasRole('user')) --}} -->
                         @if($value->verified == "1" || $value->verified == "9")
                           <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Download" disabled>
@@ -356,27 +388,28 @@
                           </a>
                         @endif
                   <!-- Edit button -->
-
-
-                  <!-- Verify button -->
-                  @if(Auth::hasRole('manager'))
-                    @if($value->verified == "1" || $value->verified == "9")
-                      <!-- <a href=" {{-- route('research.unverified', $value->id) --}} "> -->
-                        <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Verfied">
-                          <i class="fas fa-user-check"></i>
-                        </button>
-                      <!-- </a> -->
-                    @else
-                      <!-- <a href=" {{-- route('research.verified', $value->id) --}} "> -->
-                        <button type="button" class="verify btn btn-md" data-toggle="modal" data-target="#modal-default{{ $value->id }}"
-                                title="Verfied" style="background-color: #567fa8;">
-                          <i class="fas fa-user-check"></i>
-                        </button>
-                      <!-- </a> -->
-                  <!-- Verify button -->
-                    @endif
                   @endif
-                </td>
+
+
+                    <!-- Verify button -->
+                    @if(Auth::hasRole('manager'))
+                      @if($value->verified == "1" || $value->verified == "9")
+                        <!-- <a href=" {{-- route('research.unverified', $value->id) --}} "> -->
+                          <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Verfied">
+                            <i class="fas fa-user-check"></i>
+                          </button>
+                        <!-- </a> -->
+                      @else
+                        <!-- <a href=" {{-- route('research.verified', $value->id) --}} "> -->
+                          <button type="button" class="verify btn btn-md" data-toggle="modal" data-target="#modal-default{{ $value->id }}"
+                                  title="Verfied" style="background-color: #567fa8;">
+                            <i class="fas fa-user-check"></i>
+                          </button>
+                        <!-- </a> -->
+                    <!-- Verify button -->
+                      @endif
+                    @endif
+                  </td>
 
 
                   <!-- MODAL -->

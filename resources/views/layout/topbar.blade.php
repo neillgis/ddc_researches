@@ -29,19 +29,26 @@
              <a class="dropdown-item">
 
             status :
-             @if (Gate::allows('keycloak-web', ['manager']))
-                 <font color="red"><b>MANAGER</b></font>
-             @elseif (Gate::allows('keycloak-web', ['admin']))
-                 <b>ADMIN</b>
-             @else
-                  <font color="red"><b>USER</b></font>
-             @endif
-
+            @if(Gate::allows('keycloak-web', ['manager']))
+                <font color="red"><b>MANAGER</b></font>
+            @elseif (Gate::allows('keycloak-web', ['admin']))
+                <b>ADMIN</b>
+            @elseif (Gate::allows('keycloak-web', ['departments']))
+                <font color="#32977e"><b>ADMIN-DEPARTMENT</b></font>
+            @else
+                 <font color="red"><b>USER</b></font>
+            @endif
              <!-- {{ __('แก้ไขข้อมูลส่วนตัว') }} -->
            </a>
 
+          @if(Auth::hasRole('departments'))
+
+             <!-- NO Show BUTTON For Departments ONLY -->
+
+          @else
            <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="https://hr.ddc.moph.go.th" target="_blank">แก้ไขข้อมูลส่วนตัว</a>
+          @endif
 
            <div class="dropdown-divider"></div>
               <a class="dropdown-item" href="{{ route('keycloak.logout') }}">{{ __('ออกจากระบบ') }}</a>

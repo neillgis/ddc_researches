@@ -112,7 +112,6 @@
             <!-- <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
           </div>
         </div>
-
       </div>
       <br>
     <!-- END SUMMARY Total Box -->
@@ -120,7 +119,13 @@
 
 
     <!-- START From Input JOURNAL PROJECT -------------------------------------------------->
-    <!-- {{-- @if(Auth::hasRole('user')) --}} -->
+
+    @if(Auth::hasRole('departments'))
+
+      <!-- NO Show BUTTON For Departments ONLY -->
+
+    @else
+
     <div class="row">
       <div class="col-md-12">
         <div class="card">
@@ -313,7 +318,7 @@
         </div>
       </div>
       <br>
-    <!-- {{-- @endif --}} -->
+    @endif
     <!-- END From Input JOURNAL PROJECT -------------------------------------------------->
 
 
@@ -343,7 +348,11 @@
                       <th class="text-center"> หน่วยงาน </th>
                     @endif
                       <th class="text-center"> การตรวจสอบ </th>
+                    @if(Auth::hasRole('departments'))
+                        <!-- NO Show BUTTON For Departments ONLY -->
+                    @else
                       <th class="text-right"> Actions </th>
+                    @endif
                     </tr>
                 </thead>
 
@@ -378,42 +387,49 @@
                       @endif
                     </td>
 
-                    <!-- Download button -->
-                    <td class="td-actions text-right text-nowrap" href="#">
-                    <!-- {{-- @if(Auth::hasRole('manager') || Auth::hasRole('user')) --}} -->
-                        @if($value->verified == "1" || $value->verified == "9")
-                          <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Edit" disabled>
-                            <i class="fas fa-arrow-alt-circle-down"></i>
-                          </button>
-                        @else
-                          <a href=" {{ route('DownloadFile.journal', ['id' => $value->id, 'files' => $value->files]) }} ">
-                            <button type="button" class="btn btn-danger btn-md" data-toggle="tooltip" title="Download">
+                    @if(Auth::hasRole('departments'))
+
+                      <!-- NO Show BUTTON For Departments ONLY -->
+
+                    @else
+
+                      <!-- Download button -->
+                      <td class="td-actions text-right text-nowrap" href="#">
+                      <!-- {{-- @if(Auth::hasRole('manager') || Auth::hasRole('user')) --}} -->
+                          @if($value->verified == "1" || $value->verified == "9")
+                            <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Edit" disabled>
                               <i class="fas fa-arrow-alt-circle-down"></i>
                             </button>
-                          </a>
-                        @endif
-                    <!-- Download button -->
+                          @else
+                            <a href=" {{ route('DownloadFile.journal', ['id' => $value->id, 'files' => $value->files]) }} ">
+                              <button type="button" class="btn btn-danger btn-md" data-toggle="tooltip" title="Download">
+                                <i class="fas fa-arrow-alt-circle-down"></i>
+                              </button>
+                            </a>
+                          @endif
+                      <!-- Download button -->
 
 
-                    <!-- Edit button -->
-                        @if($value->verified == "1" || $value->verified == "2" || $value->verified == "3" || $value->verified == "9")
-                          <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Edit" disabled>
-                            <i class="fas fa-edit"></i>
-                          </button>
-                        @elseif($value->pro_id == NULL)
-                          <a href=" {{ route('journal.edit2', ['id' => $value->id]) }} ">
-                            <button type="button" class="btn btn-warning btn-md" data-toggle="tooltip" title="Edit2">
+                      <!-- Edit button -->
+                          @if($value->verified == "1" || $value->verified == "2" || $value->verified == "3" || $value->verified == "9")
+                            <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Edit" disabled>
                               <i class="fas fa-edit"></i>
                             </button>
-                          </a>
-                        @else
-                          <a href=" {{ route('journal.edit', ['id' => $value->id, 'pro_id' => $value->pro_id]) }} ">
-                            <button type="button" class="btn btn-warning btn-md" data-toggle="tooltip" title="Edit">
-                              <i class="fas fa-edit"></i>
-                            </button>
-                          </a>
-                        @endif
-                    <!-- Edit button -->
+                          @elseif($value->pro_id == NULL)
+                            <a href=" {{ route('journal.edit2', ['id' => $value->id]) }} ">
+                              <button type="button" class="btn btn-warning btn-md" data-toggle="tooltip" title="Edit2">
+                                <i class="fas fa-edit"></i>
+                              </button>
+                            </a>
+                          @else
+                            <a href=" {{ route('journal.edit', ['id' => $value->id, 'pro_id' => $value->pro_id]) }} ">
+                              <button type="button" class="btn btn-warning btn-md" data-toggle="tooltip" title="Edit">
+                                <i class="fas fa-edit"></i>
+                              </button>
+                            </a>
+                          @endif
+                      <!-- Edit button -->
+                    @endif
 
 
                     <!-- Verify button -->

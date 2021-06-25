@@ -32,6 +32,8 @@
                                 manager
                             @elseif (Gate::allows('keycloak-web', ['admin']))
                                 admin
+                            @elseif (Gate::allows('keycloak-web', ['departments']))
+                                admin departments
                             @else
                                 user
                             @endif
