@@ -173,8 +173,15 @@
             <br>
 <!-- END CONTENT  BOX --------------------------------------------------------->
 
+
+
 <!-- START FORM  INSERT ------------------------------------------------------->
-      <!-- {{-- @if(Auth::hasRole('user')) --}} -->
+      @if(Auth::hasRole('departments'))
+
+      <!-- NO Show BUTTON For Departments ONLY -->
+
+      @else
+
           <div class="row">
             <div class="col-md-12 mx-auto">
               <div class="card">
@@ -250,7 +257,7 @@
             </div>
           </div>
           <br>
-      <!-- {{-- @endif --}} -->
+      @endif
 <!-- END FORM  INSERT --------------------------------------------------------->
 
 <!-- START TABLE LIST --------------------------------------------------------->
@@ -276,8 +283,12 @@
                             <th class="text-center"> หน่วยงาน </th>
                           @endif
                             <th class="text-center"> การตรวจสอบ </th>
-                            <th class="text-right"> Actions </th>
-                        </tr>
+                            @if(Auth::hasRole('departments'))
+                              <!-- NO Show BUTTON For Departments ONLY -->
+                            @else
+                              <th class="text-right"> Actions </th>
+                            @endif
+                          </tr>
                     </thead>
 
                     <tbody>
@@ -309,6 +320,11 @@
                               @endif
                           </td>
 
+                        @if(Auth::hasRole('departments'))
+
+                          <!-- NO Show BUTTON For Departments ONLY -->
+
+                        @else
                           <!-- Download button -->
                           <td class="td-actions text-right text-nowrap" href="#">
                             <!-- {{-- @if(Auth::hasRole('manager') || Auth::hasRole('user')) --}} -->
@@ -339,7 +355,7 @@
                               </a>
                             @endif
                           <!-- Edit button -->
-
+                        @endif
 
                             <!-- Verify button -->
                             @if(Auth::hasRole('manager'))

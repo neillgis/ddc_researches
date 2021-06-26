@@ -31,10 +31,17 @@ class UtilizationController extends Controller
                     -> select('pro_id','util_type')
                     ->get()->count();
 
-  }elseif(Auth::hasRole('admin')) {
+  }elseif(Auth::hasRole('departments')) {
     $Total_util = DB::table('db_utilization')
-                    -> select('pro_id','util_type')
-                    ->get()->count();
+                    ->leftjoin('users', 'db_utilization.users_id', '=', 'users.idCard')
+                    ->select( 'db_utilization.pro_id',
+                              'db_utilization.util_type',
+                              'users.idCard',
+                              'users.deptName',
+                            )
+                    ->where('deptName', Auth::user()->family_name)
+                    ->get()
+                    ->count();
   }else {
     $Total_util = DB::table('db_utilization')
                     -> select('pro_id','util_type')
@@ -51,11 +58,20 @@ if(Auth::hasRole('manager')){
                         -> whereIn ('verified', ['1'])
                         ->get()->count();
 
-}elseif(Auth::hasRole('admin')) {
+}elseif(Auth::hasRole('departments')) {
   $Total_util_verify = DB::table('db_utilization')
-                        -> select('pro_id','util_type')
-                        -> whereIn ('verified', ['1'])
-                        ->get()->count();
+                        ->leftjoin('users', 'db_utilization.users_id', '=', 'users.idCard')
+                        ->select( 'db_utilization.pro_id',
+                                  'db_utilization.util_type',
+                                  'db_utilization.verified',
+                                  'users.idCard',
+                                  'users.deptName',
+                                )
+                        ->whereIn('verified', ['1'])
+                        ->where('deptName', Auth::user()->family_name)
+                        ->get()
+                        ->count();
+
 }else {
   $Total_util_verify = DB::table('db_utilization')
                         -> select('pro_id','util_type')
@@ -66,6 +82,44 @@ if(Auth::hasRole('manager')){
 // dd($Total_util);
 
 
+
+if(Auth::hasRole('manager')){
+  // โครงการที่นำไปใช้ประโยชน์เชิงนโยบาย db_utilization -> โดย count id -> util_type = เชิงนโยบาย --------->
+  $Total_policy_util = DB::table('db_utilization')
+                        -> select('pro_id','util_type')
+                        -> where ('util_type', '=', 'เชิงนโยบาย')
+                        -> whereIn ('verified', ['1'])
+                        ->get()->count();
+
+}elseif(Auth::hasRole('departments')) {
+  $Total_policy_util = DB::table('db_utilization')
+                        ->leftjoin('users', 'db_utilization.users_id', '=', 'users.idCard')
+                        ->select( 'db_utilization.pro_id',
+                                  'db_utilization.util_type',
+                                  'db_utilization.verified',
+                                  'users.idCard',
+                                  'users.deptName',
+                                )
+                        ->where('util_type', '=', 'เชิงนโยบาย')
+                        ->whereIn('verified', ['1'])
+                        ->where('deptName', Auth::user()->family_name)
+                        ->get()
+                        ->count();
+
+}else {
+  $Total_policy_util = DB::table('db_utilization')
+                        -> select('pro_id','util_type')
+                        -> where ('util_type', '=', 'เชิงนโยบาย')
+                        -> whereIn ('verified', ['1'])
+                        -> where ('users_id', Auth::user()->preferred_username)
+                        ->get()->count();
+}
+// dd($Total_policy_util);
+
+
+
+
+
   if(Auth::hasRole('manager')){
     // โครงการที่นำไปใช้ประโยชน์เชิงวิชาการ db_utilization -> โดย count id -> util_type = เชิงวิชาการ --------->
     $Total_academic_util = DB::table('db_utilization')
@@ -74,12 +128,20 @@ if(Auth::hasRole('manager')){
                           -> whereIn ('verified', ['1'])
                           ->get()->count();
 
-  }elseif(Auth::hasRole('admin')) {
+  }elseif(Auth::hasRole('departments')) {
     $Total_academic_util = DB::table('db_utilization')
-                          -> select('pro_id','util_type')
-                          -> where ('util_type', '=', 'เชิงวิชาการ')
-                          -> whereIn ('verified', ['1'])
-                          ->get()->count();
+                              ->leftjoin('users', 'db_utilization.users_id', '=', 'users.idCard')
+                              ->select( 'db_utilization.pro_id',
+                                        'db_utilization.util_type',
+                                        'db_utilization.verified',
+                                        'users.idCard',
+                                        'users.deptName',
+                                      )
+                              ->where('util_type', '=', 'เชิงวิชาการ')
+                              ->whereIn('verified', ['1'])
+                              ->where('deptName', Auth::user()->family_name)
+                              ->get()
+                              ->count();
 
   }else {
     $Total_academic_util = DB::table('db_utilization')
@@ -100,12 +162,20 @@ if(Auth::hasRole('manager')){
                           -> whereIn ('verified', ['1'])
                           ->get()->count();
 
-  }elseif(Auth::hasRole('admin')) {
+  }elseif(Auth::hasRole('departments')) {
     $Total_social_util = DB::table('db_utilization')
-                          -> select('pro_id','util_type')
-                          -> where ('util_type', '=', 'เชิงสังคม/ชุมชน')
-                          -> whereIn ('verified', ['1'])
-                          ->get()->count();
+                          ->leftjoin('users', 'db_utilization.users_id', '=', 'users.idCard')
+                          ->select( 'db_utilization.pro_id',
+                                    'db_utilization.util_type',
+                                    'db_utilization.verified',
+                                    'users.idCard',
+                                    'users.deptName',
+                                  )
+                          ->where('util_type', '=', 'เชิงสังคม/ชุมชน')
+                          ->whereIn('verified', ['1'])
+                          ->where('deptName', Auth::user()->family_name)
+                          ->get()
+                          ->count();
 
   }else {
     $Total_social_util = DB::table('db_utilization')
@@ -118,31 +188,6 @@ if(Auth::hasRole('manager')){
 // dd($Total_social_util);
 
 
-  if(Auth::hasRole('manager')){
-    // โครงการที่นำไปใช้ประโยชน์เชิงนโยบาย db_utilization -> โดย count id -> util_type = เชิงนโยบาย --------->
-    $Total_policy_util = DB::table('db_utilization')
-                          -> select('pro_id','util_type')
-                          -> where ('util_type', '=', 'เชิงนโยบาย')
-                          -> whereIn ('verified', ['1'])
-                          ->get()->count();
-
-  }elseif(Auth::hasRole('admin')) {
-    $Total_policy_util = DB::table('db_utilization')
-                          -> select('pro_id','util_type')
-                          -> where ('util_type', '=', 'เชิงนโยบาย')
-                          -> whereIn ('verified', ['1'])
-                          ->get()->count();
-
-  }else {
-    $Total_policy_util = DB::table('db_utilization')
-                          -> select('pro_id','util_type')
-                          -> where ('util_type', '=', 'เชิงนโยบาย')
-                          -> whereIn ('verified', ['1'])
-                          -> where ('users_id', Auth::user()->preferred_username)
-                          ->get()->count();
-  }
-// dd($Total_policy_util);
-
 
   if(Auth::hasRole('manager')){
     // โครงการที่นำไปใช้ประโยชน์เชิงนโยบาย db_utilization -> โดย count id -> util_type = เชิงพาณิชย์ --------->
@@ -152,12 +197,20 @@ if(Auth::hasRole('manager')){
                           -> whereIn ('verified', ['1'])
                           ->get()->count();
 
-  }elseif(Auth::hasRole('admin')) {
+  }elseif(Auth::hasRole('departments')) {
     $Total_commercial_util = DB::table('db_utilization')
-                          -> select('pro_id','util_type')
-                          -> where ('util_type', '=', 'เชิงพาณิชย์')
-                          -> whereIn ('verified', ['1'])
-                          ->get()->count();
+                              ->leftjoin('users', 'db_utilization.users_id', '=', 'users.idCard')
+                              ->select( 'db_utilization.pro_id',
+                                        'db_utilization.util_type',
+                                        'db_utilization.verified',
+                                        'users.idCard',
+                                        'users.deptName',
+                                      )
+                              -> where('util_type', '=', 'เชิงพาณิชย์')
+                              ->whereIn('verified', ['1'])
+                              ->where('deptName', Auth::user()->family_name)
+                              ->get()
+                              ->count();
 
   }else {
     $Total_commercial_util = DB::table('db_utilization')
@@ -170,6 +223,7 @@ if(Auth::hasRole('manager')){
 // dd($Total_commercial_util);
 
 // END SUM BOX ------------------------------------------------------------------------>
+
 
 
 // TABLE LIST--------------------------------------------------------------------------->
@@ -225,25 +279,33 @@ if(Auth::hasRole('manager')){
                                )
                     ->get();
 
-// dd($query_util);
-  }elseif(Auth::hasRole('admin')){
+}elseif(Auth::hasRole('departments')){
     $query_util = DB::table('db_utilization')
-                    -> join ('db_research_project', 'db_utilization.pro_id', '=', 'db_research_project.id')
-                    -> select ('db_utilization.id','db_utilization.util_type','db_utilization.files',
-                                'db_utilization.verified',
-                                'db_research_project.pro_name_th','db_research_project.pro_name_en','db_research_project.users_name',
+                    ->join ('db_research_project', 'db_utilization.pro_id', '=', 'db_research_project.id')
+                    ->leftjoin('users', 'db_utilization.users_id', '=', 'users.idCard')
+                    -> select ('db_utilization.id',
+                               'db_utilization.util_type',
+                               'db_utilization.files',
+                               'db_utilization.verified',
+                               'db_research_project.pro_name_th',
+                               'db_research_project.pro_name_en',
+                               'db_research_project.users_name',
+                               'users.idCard',
+                               'users.deptName',
                                // \DB::raw('(CASE
                                //               WHEN db_utilization.verified = "1" THEN "ตรวจสอบแล้ว"
                                //               ELSE "รอการตรวจสอบ"
                                //               END) AS verified'
                                // )
                                )
+                    ->where('deptName', Auth::user()->family_name)
                     ->get();
+                    // dd($query_util);
 
   }else {
     $query_util = DB::table('db_utilization')
-                    -> join ('db_research_project', 'db_utilization.pro_id', '=', 'db_research_project.id')
-                    -> select ('db_utilization.id','db_utilization.util_type','db_utilization.files',
+                    ->join ('db_research_project', 'db_utilization.pro_id', '=', 'db_research_project.id')
+                    ->select ('db_utilization.id','db_utilization.util_type','db_utilization.files',
                                 'db_utilization.verified',
                                 'db_research_project.pro_name_th','db_research_project.pro_name_en','db_research_project.users_name',
                                // \DB::raw('(CASE
@@ -256,8 +318,6 @@ if(Auth::hasRole('manager')){
                     ->get();
   }
   // dd($query_util);
-
-
 
     return view('frontend.util',
     [
