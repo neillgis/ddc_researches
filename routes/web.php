@@ -50,6 +50,8 @@ Route::group(['middleware' => 'keycloak-web'], function () {
     Route::post('/research/verified', 'ResearchController@action_verified')->name('research.verified');
     //  -- NO VERIFIED --
     Route::get('/research/unverified/{id}', 'ResearchController@No_verified')->name('research.unverified');
+    //  -- DELETE --
+    Route::get('/Delete-Research/{id}', 'ResearchController@delete_research')->name('research.delete');
 
 
 
@@ -70,6 +72,8 @@ Route::group(['middleware' => 'keycloak-web'], function () {
     Route::post('/journal/verified', 'JournalController@action_verified')->name('journal.verified');
     //  -- NO VERIFIED --
     Route::get('/journal/unverified/{id}', 'JournalController@No_verified')->name('journal.unverified');
+    //  -- DELETE --
+    Route::get('/Delete-Journal/{id}', 'JournalController@delete_journal')->name('journal.delete');
 
 
 
@@ -88,6 +92,8 @@ Route::group(['middleware' => 'keycloak-web'], function () {
     Route::post('/util/verified', 'UtilizationController@action_verified')->name('util.verified');
     //  -- NO VERIFIED --
     Route::get('/util/unverified/{id}', 'UtilizationController@No_verified')->name('util.unverified');
+    //  -- DELETE --
+    Route::get('/Delete-Utilization/{id}', 'UtilizationController@delete_util')->name('util.delete');
 
 
     // -- FAQ --

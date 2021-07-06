@@ -142,7 +142,7 @@
     <!-- START From Input RESEARCH PROJECT -------------------------------------------------->
 
     @if(Auth::hasRole('departments'))
-    
+
       <!-- NO Show BUTTON For Departments ONLY -->
 
     @else
@@ -367,7 +367,7 @@
                           </button>
                         @else
                           <a href=" {{ route('DownloadFile.research', ['id' => $value->id, 'files' => $value->files]) }} ">
-                            <button type="button" class="btn btn-danger btn-md" data-toggle="tooltip" title="Download">
+                            <button type="button" class="btn btn-primary btn-md" data-toggle="tooltip" title="Download">
                               <i class="fas fa-arrow-alt-circle-down"></i>
                             </button>
                           </a>
@@ -388,6 +388,7 @@
                           </a>
                         @endif
                   <!-- Edit button -->
+
                   @endif
 
 
@@ -409,7 +410,60 @@
                     <!-- Verify button -->
                       @endif
                     @endif
+
+
+                  <!-- Delete button -->
+                    @if(Auth::hasRole('manager'))
+                          <!-- NO Show BUTTON For USER ONLY -->
+                    @elseif(Auth::hasRole('departments'))
+                          <!-- NO Show BUTTON For USER ONLY -->
+                    @else
+                      @if($value->verified == "1" || $value->verified == "9")
+                          <button type="button" class="btn btn-secondary btn-md" title="Delete" data-toggle="tooltip" disabled>
+                            <i class="fas fa-trash-alt"></i>
+                          </button>
+                      @else
+                          <button type="button" class="btn btn-danger btn-md" title="Delete" data-toggle="modal" data-target="#DeleteModal{{ $value->id }}">
+                            <i class="fas fa-trash-alt"></i>
+                          </button>
+                        <!-- END Delete button -->
+                      @endif
+                    @endif
+
                   </td>
+
+
+                  <!-- MODAL Delete -->
+                    <div class="modal fade" id="DeleteModal{{ $value->id }}">
+                      <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                          <div class="modal-body">
+                            <br>
+                              <img class="mx-auto d-block" src="{{ asset('img/exclamation.png') }}" alt="exclamation" style="width:90px;">
+                            <br>
+                              <h2 class="text-center"> ต้องการลบรายการนี้ใช่ไหม ? <br> </h2>
+                              <h5 class="text-center"> Project ID. [ <font color = "red"> {{ $value->id }} </font> ]  </h5>
+                            <br>
+                            <div class="text-center">
+                              <!-- Cancel -->
+                                <button type="button" class="btn btn-danger" data-dismiss="modal" role="button" aria-disabled="true">
+                                  <i class="fas fa-times-circle"></i> Cancel
+                                </button>
+                              <!-- Confirms -->
+                              <a href="{{ route('research.delete',['id' => $value->id]) }}">
+                                <button type="button" class="btn btn-success" role="button" aria-disabled="true">
+                                  <i class="fas fa-trash-alt"></i> Confirms
+                                </button>
+                              </a>
+
+                            </div>
+                          </div> <!-- END modal-bodyl -->
+                        </div>
+                      </div>
+                    </div>
+                  <!-- END MODAL Delete -->
+
+
 
 
                   <!-- MODAL -->
@@ -452,6 +506,7 @@
                       </div>
                     </div>
                   <!-- END MODAL -->
+
 
 
                   </tr>
@@ -518,6 +573,23 @@
     <!-- END INSERT success -->
 
 
+    <!-- DELETE success -->
+      @if(Session::get('delete_research'))
+       <?php Session::forget('delete_research'); ?>
+        <script>
+          Swal.fire({
+            icon: 'success',
+            title: 'ลบข้อมูลเรียบร้อยแล้ว',
+            showConfirmButton: false,
+            confirmButtonColor: '#2C6700',
+            timer: 2500
+          })
+        </script>
+      @endif
+    <!-- END DELETE success -->
+
+
+
     @if(Session::get('verify'))
      <?php Session::forget('verify'); ?>
       <script>
@@ -545,6 +617,7 @@
         })
       </script>
     @endif
+
 
 
 

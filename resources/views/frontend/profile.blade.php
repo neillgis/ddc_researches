@@ -67,7 +67,38 @@
 
 <!-- Main content -->
 <section class="content">
-  <div class="container">
+    <br>
+
+  <!-- SHOW DATA for "departments" ONLY -->
+  @if(Auth::hasRole('departments'))
+
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card card-outline shadow">
+          <div class="card-header" style="background-color: #54BEAE;">
+            <h4><i class="fas fa-hotel"></i>&nbsp; ข้อมูลหน่วยงาน / องค์กร </h4>
+          </div>
+
+            <div class="card-body">
+                <br>
+                  <img class="mx-auto d-block" src="{{ asset('img/moph-logo.png') }}" alt="building" style="width:140px;">
+                <br>
+                  <h4 class="text-center" id="fname_th"> </h4>
+                <br>
+                  <h3 class="text-center" id="lname_th"> </h3>
+                <br>
+            </div> <!-- end card-body -->
+        </div>
+      </div>
+    </div>
+</section>
+
+
+  @else
+
+
+  <section class="content">
+    <div class="container">
 
     <div class="row">
       <div class="col-md-6">
@@ -286,6 +317,8 @@
     </form>
   </div>
 </section>
+@endif
+
 @stop('contents')
 
 

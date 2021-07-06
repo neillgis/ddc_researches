@@ -402,7 +402,7 @@
                             </button>
                           @else
                             <a href=" {{ route('DownloadFile.journal', ['id' => $value->id, 'files' => $value->files]) }} ">
-                              <button type="button" class="btn btn-danger btn-md" data-toggle="tooltip" title="Download">
+                              <button type="button" class="btn btn-primary btn-md" data-toggle="tooltip" title="Download">
                                 <i class="fas fa-arrow-alt-circle-down"></i>
                               </button>
                             </a>
@@ -449,7 +449,59 @@
                           <!-- </a> -->
                         @endif
                       @endif
+
+
+                  <!-- Delete button -->
+                      @if(Auth::hasRole('manager'))
+                          <!-- NO Show BUTTON For USER ONLY -->
+                      @elseif(Auth::hasRole('departments'))
+                          <!-- NO Show BUTTON For USER ONLY -->
+                      @else
+                        @if($value->verified == "1" || $value->verified == "2" || $value->verified == "3" || $value->verified == "9")
+                            <button type="button" class="btn btn-secondary btn-md" title="Delete" data-toggle="tooltip" disabled>
+                              <i class="fas fa-trash-alt"></i>
+                            </button>
+                        @else
+                            <button type="button" class="btn btn-danger btn-md" title="Delete" data-toggle="modal" data-target="#DeleteJournal{{ $value->id }}">
+                              <i class="fas fa-trash-alt"></i>
+                            </button>
+                        @endif
+                    @endif
+                  <!-- END Delete button -->
+
                     </td>
+
+
+                    <!-- MODAL Delete -->
+                      <div class="modal fade" id="DeleteJournal{{ $value->id }}">
+                        <div class="modal-dialog modal-dialog-centered">
+                          <div class="modal-content">
+                            <div class="modal-body">
+                              <br>
+                                <img class="mx-auto d-block" src="{{ asset('img/exclamation.png') }}" alt="exclamation" style="width:90px;">
+                              <br>
+                                <h2 class="text-center"> ต้องการลบรายการนี้ใช่ไหม ? <br> </h2>
+                                <!-- <h5 class="text-center"> Project ID. [ <font color = "red"> {{-- $value->id --}} </font> ]  </h5> -->
+                              <br>
+                              <div class="text-center">
+                                <!-- Cancel -->
+                                  <button type="button" class="btn btn-danger" data-dismiss="modal" role="button" aria-disabled="true">
+                                    <i class="fas fa-times-circle"></i> Cancel
+                                  </button>
+                                <!-- Confirms -->
+                                <a href="{{ route('journal.delete',['id' => $value->id]) }}">
+                                  <button type="button" class="btn btn-success" role="button" aria-disabled="true">
+                                    <i class="fas fa-trash-alt"></i> Confirms
+                                  </button>
+                                </a>
+
+                              </div>
+                            </div> <!-- END modal-bodyl -->
+                          </div>
+                        </div>
+                      </div>
+                    <!-- END MODAL Delete -->
+
 
 
                     <!-- MODAL -->
@@ -510,6 +562,7 @@
 
 
 <br>
+
 
   @if(Auth::hasRole('manager'))
     <!-- START TABLE -> JOURNAL (** กรณี ไม่ได้มาจากโครงการวิจัย) -------------------------------------------------->
@@ -579,7 +632,7 @@
                           </button>
                         @else
                           <a href=" {{ route('DownloadFile.journal', ['id' => $value->id, 'files' => $value->files]) }} ">
-                            <button type="button" class="btn btn-danger btn-md" data-toggle="tooltip" title="Download">
+                            <button type="button" class="btn btn-primary btn-md" data-toggle="tooltip" title="Download">
                               <i class="fas fa-arrow-alt-circle-down"></i>
                             </button>
                           </a>
@@ -625,6 +678,8 @@
                           <!-- </a> -->
                         @endif
                       @endif
+                    <!-- Verify button -->
+
                     </td>
 
 
@@ -709,6 +764,23 @@
       })
     </script>
   @endif
+
+
+  <!-- DELETE -->
+  @if(Session::get('deletejournal'))
+   <?php Session::forget('deletejournal'); ?>
+    <script>
+      Swal.fire({
+          icon: 'success',
+          title: 'ลบข้อมูลเรียบร้อยแล้ว',
+          showConfirmButton: false,
+          confirmButtonColor: '#2C6700',
+          timer: 2500
+      })
+    </script>
+  @endif
+
+
 
   <!-- VERIFIED -->
   @if(Session::get('verify2'))

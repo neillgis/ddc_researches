@@ -105,6 +105,7 @@ class ResearchController extends Controller
                                  //               END) AS verified'
                                  // ))
                         ->where('users_id', Auth::user()->preferred_username)
+                        ->whereNull('deleted_at')
                         ->ORDERBY('id','DESC')
                         ->get();
      }
@@ -459,6 +460,27 @@ class ResearchController extends Controller
        }
      }
   //  -- END No VERIFIED --
+
+
+
+
+  public function delete_research(Request $request)
+  {
+
+      $delete = research::where('id', $request->id)
+                        ->update(["deleted_at"  =>  date('Y-m-d H:i:s')]);
+
+      // dd($delete);
+
+    if($delete){
+      session()->put('delete_research', 'okkkkkayyyyy');
+      return redirect()->route('page.research')->with('Okayyyyy');
+    }else{
+      return redirect()->back()->with('Errorrr');
+    }
+
+  }
+
 
 
 }

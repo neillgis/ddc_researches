@@ -65,15 +65,6 @@ class JournalController extends Controller
   //  -- SELECT DataTables PROJECT join JOURNAL --
     if(Auth::hasRole('manager')){
 
-      // $query2 = journal::select('id', 'pro_id', 'article_name_th', 'article_name_en',
-      //                           'journal_name_th', 'journal_name_en', 'publish_years',
-      //                           'corres', 'files', 'verified',
-      //                           )
-      //                 // ->where('users_id', Auth::user()->preferred_username)
-      //                 ->ORDERBY('id','DESC')
-      //                 ->get();
-
-
       $query2 = DB::table('db_published_journal')
                 ->join('db_research_project', 'db_research_project.id', '=', 'db_published_journal.pro_id')
                 ->join('users', 'db_published_journal.users_id', '=', 'users.idCard')
@@ -94,8 +85,7 @@ class JournalController extends Controller
                 ->orderby('id', 'DESC')
                 ->get();
          // dd($query2);
-    }
-    elseif(Auth::hasRole('departments')){
+    }elseif(Auth::hasRole('departments')){
 
       $query2 = DB::table('db_published_journal')
                 ->leftjoin('users', 'db_published_journal.users_id', '=', 'users.idCard')
@@ -129,6 +119,7 @@ class JournalController extends Controller
                                 // )
                                 )
                       ->where('users_id', Auth::user()->preferred_username)
+                      ->whereNull('deleted_at')
                       ->ORDERBY('id','DESC')
                       ->get();
     }
@@ -536,6 +527,26 @@ class JournalController extends Controller
        }
      }
   //  -- END No VERIFIED --
+
+
+
+
+  public function delete_journal(Request $request)
+  {
+    $delete = journal::where('id', $request->id)
+                     ->update(["deleted_at"  =>  date('Y-m-d H:i:s')]);
+
+    // dd($delete);
+
+    if($delete){
+      session()->put('deletejournal', 'okkkkkayyyyy');
+      return redirect()->route('page.journal')->with('Okayyyyy');
+    }else{
+      return redirect()->back()->with('Errorrr');
+    }
+
+  }
+
 
 
 }

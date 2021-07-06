@@ -315,6 +315,7 @@ if(Auth::hasRole('manager')){
                                // )
                                )
                     -> where ('db_utilization.users_id', Auth::user()->preferred_username)
+                    ->where('db_utilization.deleted_at')
                     ->get();
   }
   // dd($query_util);
@@ -492,6 +493,26 @@ if(Auth::hasRole('manager')){
          }
        }
     //  -- END No VERIFIED --
+
+
+
+    public function delete_util(Request $request)
+    {
+
+        $delete = util::where('id', $request->id)
+                      ->update(["deleted_at"  =>  date('Y-m-d H:i:s')]);
+
+        // dd($delete);
+
+      if($delete){
+        session()->put('delete_util', 'okkkkkayyyyy');
+        return redirect()->route('page.util')->with('Okayyyyy');
+      }else{
+        return redirect()->back()->with('Errorrr');
+      }
+
+    }
+
 
 
 // END TABLE LIST------------------------------------------------------------------>
