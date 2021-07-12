@@ -71,6 +71,7 @@ class ResearchController extends Controller
                           'users_id',
                           'users.idCard',
                           'users.deptName',
+                          'users_name'
                           // \DB::raw('(CASE
                           //               WHEN verified = "1" THEN "ตรวจสอบแล้ว"
                           //               ELSE "รอตรวจสอบ"

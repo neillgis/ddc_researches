@@ -350,6 +350,7 @@
                       <th class="text-center"> การตรวจสอบ </th>
                     @if(Auth::hasRole('departments'))
                         <!-- NO Show BUTTON For Departments ONLY -->
+                        <th class="text-center"> ชื่อ/สกุล </th>
                     @else
                       <th class="text-right"> Actions </th>
                     @endif
@@ -390,6 +391,7 @@
                     @if(Auth::hasRole('departments'))
 
                       <!-- NO Show BUTTON For Departments ONLY -->
+                      <td class="text-center"> {{ $value->fname." ".$value->lname }} </td>
 
                     @else
 

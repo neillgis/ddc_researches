@@ -292,6 +292,8 @@ if(Auth::hasRole('manager')){
                                'db_research_project.users_name',
                                'users.idCard',
                                'users.deptName',
+                               'users.fname',
+                               'users.lname',
                                // \DB::raw('(CASE
                                //               WHEN db_utilization.verified = "1" THEN "ตรวจสอบแล้ว"
                                //               ELSE "รอการตรวจสอบ"

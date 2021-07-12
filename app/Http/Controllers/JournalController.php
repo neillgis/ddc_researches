@@ -102,8 +102,10 @@ class JournalController extends Controller
                          'db_published_journal.verified',
                          'users.deptName',
                          'users.idCard',
+                         'users.fname',
+                         'users.lname',
                          )
-                ->where('deptName', Auth::user()->family_name)
+                ->where('users.deptName', Auth::user()->family_name)
                 ->orderby('id', 'DESC')
                 ->get();
         // dd($query2);
