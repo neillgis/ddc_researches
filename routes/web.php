@@ -74,6 +74,8 @@ Route::group(['middleware' => 'keycloak-web'], function () {
     Route::get('/journal/unverified/{id}', 'JournalController@No_verified')->name('journal.unverified');
     //  -- DELETE --
     Route::get('/Delete-Journal/{id}', 'JournalController@delete_journal')->name('journal.delete');
+    //  -- STATUS --
+    Route::post('/journal/status', 'JournalController@status_journal')->name('journal.status');
 
 
 

@@ -206,12 +206,20 @@ use App\User;
           return $arr;
         }
 
-        public static function Get_Position_TH(){
-          $lists_position = Position::all();
-          foreach($lists_position as $position_th){
-            $arr[$position_th->position_id] = $position_th->position_name;
+        public static function Get_Status($status_id)
+        {
+          $query = Ref_Journal_Status::find($status_id);
+          $id = 0;
+          $journal_status = '';
+          if (!empty($query)) {
+            $id = $query->id;
+            $journal_status = $query->journal_status;
           }
-          return $arr;
+          //--------------------------
+          return array(
+            "id"      => $id,
+            "status"  => $journal_status,
+          );
         }
 
         public static function Get_Prefix_TH(){

@@ -79,12 +79,14 @@ class JournalController extends Controller
                          'db_published_journal.files',
                          'db_published_journal.corres',
                          'db_published_journal.verified',
+                         'db_published_journal.status',
                          'users.deptName',
                         )
                 // ->where('db_published_journal.id', $request->id)
                 ->orderby('id', 'DESC')
                 ->get();
          // dd($query2);
+
     }elseif(Auth::hasRole('departments')){
 
       $query2 = DB::table('db_published_journal')
@@ -100,6 +102,7 @@ class JournalController extends Controller
                          'db_published_journal.files',
                          'db_published_journal.corres',
                          'db_published_journal.verified',
+                         'db_published_journal.status',
                          'users.deptName',
                          'users.idCard',
                          'users.fname',
@@ -113,7 +116,7 @@ class JournalController extends Controller
     }else {
       $query2 = journal::select('id', 'pro_id', 'article_name_th', 'article_name_en',
                                 'journal_name_th', 'journal_name_en', 'publish_years',
-                                'corres', 'files', 'verified',
+                                'corres', 'files', 'verified', 'status',
                                 // \DB::raw('(CASE
                                 //               WHEN verified = "1" THEN "ตรวจสอบแล้ว"
                                 //               ELSE "รอตรวจสอบ"
@@ -158,12 +161,14 @@ class JournalController extends Controller
                          'db_published_journal.files',
                          'db_published_journal.corres',
                          'db_published_journal.verified',
+                         'db_published_journal.status',
                          'users.deptName'
                          )
                 ->where('pro_id', null)
                 ->orderby('id', 'DESC')
                 ->get();
 
+      $query6 = DB::table('ref_journal_status')->get();
 
 
 // --- COUNT 2 BOX on TOP ---
@@ -265,11 +270,12 @@ class JournalController extends Controller
         'journals'                 => $query2,
         'contribute'               => $query3,
         'corres_sl'                => $query4,
+        'not_from_project'         => $query5,
+        'status'                   => $query6,
         'Total_journal'            => $Total_journal,
         'Total_journal_verify'     => $Total_journal_verify,
         'Total_master_jour'        => $Total_master_jour,
         'verified_list'            => $verified,
-        'not_from_project'         => $query5
      ]);
   }
   //  -- END SELECT --
@@ -494,7 +500,8 @@ class JournalController extends Controller
       $verified = DB::table('db_published_journal')
                 ->where('id', $request->id)
                 ->update([
-                          'verified'  => $request->verified,
+                          'verified'    => $request->verified,
+                          'status'      => $request->status,
                           'updated_at'  => date('Y-m-d H:i:s')
                         ]);
 
@@ -549,6 +556,26 @@ class JournalController extends Controller
 
   }
 
+
+  //  -- STATUS --
+  public function status_journal(Request $request){
+      //UPDATE db_published_journal = "STATUS"
+      $status_journal = DB::table('db_published_journal')
+                          ->where('id', $request->id)
+                          ->update([
+                                    'status'      => $request->status,
+                                    'updated_at'  => date('Y-m-d H:i:s')
+                                  ]);
+       // dd($status_journal);
+
+       if($status_journal){
+           session()->put('statusjournal', 'okkkkkayyyyy');
+           return redirect()->route('page.journal');
+       }else{
+           return redirect()->back()->with('swl_err', 'บันทึกไม่สำเร็จ');
+       }
+     }
+  //  -- END STATUS --
 
 
 }

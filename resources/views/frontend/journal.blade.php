@@ -342,7 +342,7 @@
                       <th> ชื่อบทความ (ENG) </th>
                       <th> ชื่อวารสาร (ENG) </th>
                       <th class="text-center"> ตีพิมพ์ </th>
-                      <th class="text-center"> ผู้รับผิดชอบบทความ </th>
+                      <th class="text-center"> สถานะ </th>
                     @if(Auth::hasRole('manager'))
                       <th class="text-center"> ชื่อ/สกุล </th>
                       <th class="text-center"> หน่วยงาน </th>
@@ -352,7 +352,7 @@
                         <!-- NO Show BUTTON For Departments ONLY -->
                         <th class="text-center"> ชื่อ/สกุล </th>
                     @else
-                      <th class="text-right"> Actions </th>
+                      <th class="text-center"> Actions </th>
                     @endif
                     </tr>
                 </thead>
@@ -368,7 +368,13 @@
                     <td> {{ $value->article_name_en }} </td>
                     <td> {{ $value->journal_name_en }} </td>
                     <td class="text-center"> {{ $value->publish_years }} </td>
-                    <td class="text-center"> {{ $corres_sl [ $value->corres ] }} </td>
+                    <td class="text-center">
+                      @if($value->status != NULL)
+                        <span class="badge bg-info badge-pill"> {{ CmsHelper::Get_Status($value->status)['status'] }} </span>
+                      @else
+                        {{ $value->status != "" ? $value->status : '-' }}
+                      @endif
+                    </td>
                   @if(Auth::hasRole('manager'))
                     <td class="text-center"> {{ $value->users_name }} </td>
                     <td class="text-center"> {{ $value->deptName }} </td>
@@ -388,16 +394,77 @@
                       @endif
                     </td>
 
-                    @if(Auth::hasRole('departments'))
+                  @if(Auth::hasRole('departments'))
 
                       <!-- NO Show BUTTON For Departments ONLY -->
                       <td class="text-center"> {{ $value->fname." ".$value->lname }} </td>
 
-                    @else
+                  @else
+                      <!-- BUTTON TOTAL -->
+                      <td class="td-actions text-center text-nowrap" href="#">
 
-                      <!-- Download button -->
-                      <td class="td-actions text-right text-nowrap" href="#">
-                      <!-- {{-- @if(Auth::hasRole('manager') || Auth::hasRole('user')) --}} -->
+                        @if(Auth::hasRole('manager'))
+                          <div class="btn-group">
+                              <button type="button" class="btn btn-warning dropdown-toggle dropdown-icon" data-toggle="dropdown"> Action link </button>
+                              <div class="dropdown-menu" role="menu">
+                              <!-- Download -->
+                              @if($value->verified == "1" || $value->verified == "9")
+                                <a class="dropdown-item disabled" href="#" title="Download">
+                                  <i class="fas fa-arrow-alt-circle-down"></i>&nbsp; Download
+                                </a>
+                              @else
+                                <a class="dropdown-item" href="{{ route('DownloadFile.journal', ['id' => $value->id, 'files' => $value->files]) }}" title="Download">
+                                  <i class="fas fa-arrow-alt-circle-down"></i>&nbsp; Download
+                                </a>
+                              @endif
+                              <!-- END Download -->
+
+                                  <div class="dropdown-divider"></div>
+
+                              <!-- Edit -->
+                              @if($value->verified == "1" || $value->verified == "2" || $value->verified == "3" || $value->verified == "9")
+                                <a class="dropdown-item disabled" href="#" title="Edit">
+                                  <i class="fas fa-edit"></i>&nbsp; Edit
+                                </a>
+                              @elseif($value->pro_id == NULL)
+                                <a class="dropdown-item" href="{{ route('journal.edit2', ['id' => $value->id]) }}" title="Edit">
+                                  <i class="fas fa-edit"></i>&nbsp; Edit
+                                </a>
+                              @else
+                                <a class="dropdown-item" href="{{ route('journal.edit', ['id' => $value->id, 'pro_id' => $value->pro_id]) }}" title="Edit">
+                                  <i class="fas fa-edit"></i>&nbsp; Edit
+                                </a>
+                              @endif
+                              <!-- END Edit -->
+
+                                  <div class="dropdown-divider"></div>
+
+                              <!-- Verfied -->
+                              @if($value->verified == "1" || $value->verified == "9")
+                                <a class="dropdown-item disabled" href="#" title="Verfied">
+                                  <i class="fas fa-user-check"></i>&nbsp; Verfied
+                                </a>
+                              @else
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#modal-default{{ $value->id }}" title="Status & Verfied">
+                                  <i class="fas fa-user-check"></i>&nbsp; Status & Verified
+                                </a>
+                              @endif
+                              <!-- END Verfied -->
+                              </div>
+                          </div>
+                        @endif
+                  @endif
+
+
+
+                  <!-- Download & Edit -->
+                      @if(Auth::hasRole('manager'))
+                          <!-- NO Show BUTTON For USER ONLY -->
+                      @elseif(Auth::hasRole('departments'))
+                          <!-- NO Show BUTTON For USER ONLY -->
+                      @else
+
+                          <!-- Download button -->
                           @if($value->verified == "1" || $value->verified == "9")
                             <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Edit" disabled>
                               <i class="fas fa-arrow-alt-circle-down"></i>
@@ -409,10 +476,8 @@
                               </button>
                             </a>
                           @endif
-                      <!-- Download button -->
 
-
-                      <!-- Edit button -->
+                          <!-- Edit button -->
                           @if($value->verified == "1" || $value->verified == "2" || $value->verified == "3" || $value->verified == "9")
                             <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Edit" disabled>
                               <i class="fas fa-edit"></i>
@@ -430,27 +495,9 @@
                               </button>
                             </a>
                           @endif
-                      <!-- Edit button -->
-                    @endif
-
-
-                    <!-- Verify button -->
-                      @if(Auth::hasRole('manager'))
-                        @if($value->verified == "1" || $value->verified == "9")
-                          <!-- <a href=" {{-- route('journal.unverified', $value->id) --}} "> -->
-                            <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Verfied">
-                              <i class="fas fa-user-check"></i>
-                            </button>
-                          <!-- </a> -->
-                        @else
-                          <!-- <a href=" {{-- route('journal.verified', $value->id) --}} "> -->
-                          <button type="button" class="verify btn btn-md" data-toggle="modal" data-target="#modal-default{{ $value->id }}"
-                                  title="Verfied" style="background-color: #567fa8;">
-                            <i class="fas fa-user-check"></i>
-                          </button>
-                          <!-- </a> -->
-                        @endif
                       @endif
+                  <!-- Download & Edit -->
+
 
 
                   <!-- Delete button -->
@@ -506,12 +553,12 @@
 
 
 
-                    <!-- MODAL -->
+                    <!-- MODAL Verfied-->
                       <div class="modal fade" id="modal-default{{ $value->id }}" tabindex="-1" role="dialog" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
                           <div class="modal-content">
                             <div class="modal-header">
-                              <h4 class="modal-title"><b> สถานะการตรวจสอบ (ID </b><font color="red"> {{ $value->pro_id }} </font>) </h4>
+                              <h4 class="modal-title"><b> การตรวจสอบ (ID </b><font color="red"> {{ $value->pro_id }} </font>) </h4>
                             </div>
 
                           <form action="{{ route('journal.verified') }}" method="POST">
@@ -522,11 +569,19 @@
                                 <div class="col-md-12">
                                   <!-- hidden = id -->
                                   <input type="hidden" class="form-control" name="id" value="{{ $value->id }}">
-
-                                  <select class="form-control" name="verified" >
+                                  <label> สถานะของวารสาร </label>
+                                  <select class="form-control" name="status" >
+                                      <option value="" selected="true" disabled="true"> -- กรุณาเลือก -- </option>
+                                    @foreach ($status as $value)
+                                      <option value="{{ $value->id }}"> {{ $value->journal_status }} </option>
+                                    @endforeach
+                                  </select>
+                                  <br>
+                                  <label> การตรวจสอบ </label>
+                                  <select class="form-control" name="verified">
+                                      <option value="" selected="true" disabled="true"> -- กรุณาเลือก -- </option>
                                     @foreach ($verified_list as $key => $value)
                                       <option value="{{ $key }}" {{ $verified_list == $key ? 'selected' : '' }}> {{ $value }} </option>
-
                                     @endforeach
                                   </select>
                                 </div>
@@ -536,7 +591,7 @@
 
                             <div class="modal-footer justify-content-between">
                               <button type="button" class="btn btn-default" data-dismiss="modal"> Close </button>
-                              <button type="submit" class="btn float-right" value="บันทึกข้อมูล" style="background-color: #7eaad6;">
+                              <button type="submit" class="btn btn-success float-right" value="บันทึกข้อมูล">
                                 <i class="fas fa-save"></i> &nbsp;Save Change
                               </button>
                             </div>
@@ -545,7 +600,7 @@
                           </div>
                         </div>
                       </div>
-                    <!-- END MODAL -->
+                    <!-- END MODAL Verify -->
 
 
                   </tr>
@@ -570,9 +625,9 @@
     <!-- START TABLE -> JOURNAL (** กรณี ไม่ได้มาจากโครงการวิจัย) -------------------------------------------------->
       <section class="content">
         <div class="card">
-          <div class="card shadow" style="background-color:#74828F;">
+          <div class="card card-secondary shadow">
             <div class="card-header">
-              <h3 class="card-title"><b> บทความที่ตีพิมพ์แล้ว (** กรณี ไม่ได้มาจากโครงการวิจัย) </b></h3>
+              <h3 class="card-title"><b> บทความที่ตีพิมพ์แล้ว <font color="orange">( กรณี ไม่ได้มาจากโครงการวิจัย )</font></b></h3>
             </div>
           </div>
 
@@ -585,7 +640,7 @@
                       <th> ชื่อบทความ (ENG) </th>
                       <th> ชื่อวารสาร (ENG) </th>
                       <th class="text-center"> ตีพิมพ์ </th>
-                      <th class="text-center"> ผู้รับผิดชอบบทความ </th>
+                      <th class="text-center"> สถานะ </th>
                     @if(Auth::hasRole('manager'))
                       <th class="text-center"> ชื่อ/สกุล </th>
                       <th class="text-center"> หน่วยงาน </th>
@@ -605,7 +660,13 @@
                     <td> {{ $value->article_name_en }} </td>
                     <td> {{ $value->journal_name_en }} </td>
                     <td class="text-center"> {{ $value->publish_years }} </td>
-                    <td class="text-center"> {{ $corres_sl [ $value->corres ] }} </td>
+                    <td class="text-center">
+                      @if($value->status != NULL)
+                        <span class="badge bg-info badge-pill"> {{ CmsHelper::Get_Status($value->status)['status'] }} </span>
+                      @else
+                        {{ $value->status != "" ? $value->status : '-' }}
+                      @endif
+                    </td>
                   @if(Auth::hasRole('manager'))
                     <td class="text-center"> {{ $value->users_name }} </td>
                     <td class="text-center"> {{ $value->deptName }} </td>
@@ -627,70 +688,113 @@
 
                     <!-- Download button -->
                     <td class="td-actions text-right text-nowrap" href="#">
-                    <!-- {{-- @if(Auth::hasRole('manager') || Auth::hasRole('user')) --}} -->
-                        @if($value->verified == "1" || $value->verified == "9")
-                          <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Edit" disabled>
-                            <i class="fas fa-arrow-alt-circle-down"></i>
-                          </button>
-                        @else
-                          <a href=" {{ route('DownloadFile.journal', ['id' => $value->id, 'files' => $value->files]) }} ">
-                            <button type="button" class="btn btn-primary btn-md" data-toggle="tooltip" title="Download">
+
+                      @if(Auth::hasRole('manager'))
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-warning dropdown-toggle dropdown-icon" data-toggle="dropdown"> Action link </button>
+                            <div class="dropdown-menu" role="menu">
+                            <!-- Download -->
+                            @if($value->verified == "1" || $value->verified == "9")
+                              <a class="dropdown-item disabled" href="#" title="Download">
+                                <i class="fas fa-arrow-alt-circle-down"></i>&nbsp; Download
+                              </a>
+                            @else
+                              <a class="dropdown-item" href="{{ route('DownloadFile.journal', ['id' => $value->id, 'files' => $value->files]) }}" title="Download">
+                                <i class="fas fa-arrow-alt-circle-down"></i>&nbsp; Download
+                              </a>
+                            @endif
+                            <!-- END Download -->
+
+                                <div class="dropdown-divider"></div>
+
+                            <!-- Edit -->
+                            @if($value->verified == "1" || $value->verified == "2" || $value->verified == "3" || $value->verified == "9")
+                              <a class="dropdown-item disabled" href="#" title="Edit">
+                                <i class="fas fa-edit"></i>&nbsp; Edit
+                              </a>
+                            @elseif($value->pro_id == NULL)
+                              <a class="dropdown-item" href="{{ route('journal.edit2', ['id' => $value->id]) }}" title="Edit">
+                                <i class="fas fa-edit"></i>&nbsp; Edit
+                              </a>
+                            @else
+                              <a class="dropdown-item" href="{{ route('journal.edit', ['id' => $value->id, 'pro_id' => $value->pro_id]) }}" title="Edit">
+                                <i class="fas fa-edit"></i>&nbsp; Edit
+                              </a>
+                            @endif
+                            <!-- END Edit -->
+
+                                <div class="dropdown-divider"></div>
+
+                            <!-- Verfied -->
+                            @if($value->verified == "1" || $value->verified == "9")
+                              <a class="dropdown-item disabled" href="#" title="Verfied">
+                                <i class="fas fa-user-check"></i>&nbsp; Verfied
+                              </a>
+                            @else
+                              <a class="dropdown-item" href="#" data-toggle="modal" data-target="#modal-default{{ $value->id }}" title="Status & Verfied">
+                                <i class="fas fa-user-check"></i>&nbsp; Status & Verified
+                              </a>
+                            @endif
+                            <!-- END Verfied -->
+                            </div>
+                        </div>
+                      @endif
+
+
+
+                  <!-- Download & Edit -->
+                      @if(Auth::hasRole('manager'))
+                          <!-- NO Show BUTTON For USER ONLY -->
+                      @elseif(Auth::hasRole('departments'))
+                          <!-- NO Show BUTTON For USER ONLY -->
+                      @else
+
+                          <!-- Download button -->
+                              <!-- {{-- @if(Auth::hasRole('manager') || Auth::hasRole('user')) --}} -->
+                          @if($value->verified == "1" || $value->verified == "9")
+                            <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Edit" disabled>
                               <i class="fas fa-arrow-alt-circle-down"></i>
                             </button>
-                          </a>
-                        @endif
-                    <!-- Download button -->
+                          @else
+                            <a href=" {{ route('DownloadFile.journal', ['id' => $value->id, 'files' => $value->files]) }} ">
+                              <button type="button" class="btn btn-primary btn-md" data-toggle="tooltip" title="Download">
+                                <i class="fas fa-arrow-alt-circle-down"></i>
+                              </button>
+                            </a>
+                          @endif
 
 
-                    <!-- Edit button -->
-                        @if($value->verified == "1" || $value->verified == "2" || $value->verified == "3" || $value->verified == "9")
-                          <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Edit" disabled>
-                            <i class="fas fa-edit"></i>
-                          </button>
-                        @elseif($value->pro_id == NULL)
-                          <a href=" {{ route('journal.edit2', ['id' => $value->id]) }} ">
-                            <button type="button" class="btn btn-warning btn-md" data-toggle="tooltip" title="Edit2">
+                          <!-- Edit button -->
+                          @if($value->verified == "1" || $value->verified == "2" || $value->verified == "3" || $value->verified == "9")
+                            <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Edit" disabled>
                               <i class="fas fa-edit"></i>
                             </button>
-                          </a>
-                        @else
-                          <a href=" {{ route('journal.edit', ['id' => $value->id, 'pro_id' => $value->pro_id]) }} ">
-                            <button type="button" class="btn btn-warning btn-md" data-toggle="tooltip" title="Edit">
-                              <i class="fas fa-edit"></i>
-                            </button>
-                          </a>
-                        @endif
-                    <!-- Edit button -->
-
-
-                    <!-- Verify button -->
-                      @if(Auth::hasRole('manager'))
-                        @if($value->verified == "1" || $value->verified == "9")
-                          <!-- <a href=" {{-- route('journal.unverified', $value->id) --}} "> -->
-                            <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Verfied">
-                              <i class="fas fa-user-check"></i>
-                            </button>
-                          <!-- </a> -->
-                        @else
-                          <!-- <a href=" {{-- route('journal.verified', $value->id) --}} "> -->
-                          <button type="button" class="verify btn btn-md" data-toggle="modal" data-target="#modal-default{{ $value->id }}"
-                                  title="Verfied" style="background-color: #567fa8;">
-                            <i class="fas fa-user-check"></i>
-                          </button>
-                          <!-- </a> -->
-                        @endif
+                          @elseif($value->pro_id == NULL)
+                            <a href=" {{ route('journal.edit2', ['id' => $value->id]) }} ">
+                              <button type="button" class="btn btn-warning btn-md" data-toggle="tooltip" title="Edit2">
+                                <i class="fas fa-edit"></i>
+                              </button>
+                            </a>
+                          @else
+                            <a href=" {{ route('journal.edit', ['id' => $value->id, 'pro_id' => $value->pro_id]) }} ">
+                              <button type="button" class="btn btn-warning btn-md" data-toggle="tooltip" title="Edit">
+                                <i class="fas fa-edit"></i>
+                              </button>
+                            </a>
+                          @endif
                       @endif
-                    <!-- Verify button -->
+                  <!-- Download & Edit -->
 
                     </td>
 
 
-                    <!-- MODAL -->
+
+                    <!-- MODAL Verfied-->
                       <div class="modal fade" id="modal-default{{ $value->id }}" tabindex="-1" role="dialog" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
                           <div class="modal-content">
                             <div class="modal-header">
-                              <h4 class="modal-title"><b> สถานะการตรวจสอบ </b></h4>
+                              <h4 class="modal-title"><b> การตรวจสอบ (ID </b><font color="red"> {{ $value->pro_id }} </font>) </h4>
                             </div>
 
                           <form action="{{ route('journal.verified') }}" method="POST">
@@ -701,11 +805,19 @@
                                 <div class="col-md-12">
                                   <!-- hidden = id -->
                                   <input type="hidden" class="form-control" name="id" value="{{ $value->id }}">
-
-                                  <select class="form-control" name="verified" >
+                                  <label> สถานะของวารสาร </label>
+                                  <select class="form-control" name="status" >
+                                      <option value="" selected="true" disabled="true"> -- กรุณาเลือก -- </option>
+                                    @foreach ($status as $value)
+                                      <option value="{{ $value->id }}"> {{ $value->journal_status }} </option>
+                                    @endforeach
+                                  </select>
+                                  <br>
+                                  <label> การตรวจสอบ </label>
+                                  <select class="form-control" name="verified">
+                                      <option value="" selected="true" disabled="true"> -- กรุณาเลือก -- </option>
                                     @foreach ($verified_list as $key => $value)
                                       <option value="{{ $key }}" {{ $verified_list == $key ? 'selected' : '' }}> {{ $value }} </option>
-
                                     @endforeach
                                   </select>
                                 </div>
@@ -715,7 +827,7 @@
 
                             <div class="modal-footer justify-content-between">
                               <button type="button" class="btn btn-default" data-dismiss="modal"> Close </button>
-                              <button type="submit" class="btn float-right" value="บันทึกข้อมูล" style="background-color: #7eaad6;">
+                              <button type="submit" class="btn btn-success float-right" value="บันทึกข้อมูล">
                                 <i class="fas fa-save"></i> &nbsp;Save Change
                               </button>
                             </div>
@@ -724,7 +836,7 @@
                           </div>
                         </div>
                       </div>
-                    <!-- END MODAL -->
+                    <!-- END MODAL Verify -->
 
 
                   </tr>
@@ -775,6 +887,22 @@
       Swal.fire({
           icon: 'success',
           title: 'ลบข้อมูลเรียบร้อยแล้ว',
+          showConfirmButton: false,
+          confirmButtonColor: '#2C6700',
+          timer: 2500
+      })
+    </script>
+  @endif
+
+
+
+  <!-- STATUS -->
+  @if(Session::get('statusjournal'))
+   <?php Session::forget('statusjournal'); ?>
+    <script>
+      Swal.fire({
+          icon: 'success',
+          title: 'แก้ไขข้อมูลเรียบร้อยแล้ว',
           showConfirmButton: false,
           confirmButtonColor: '#2C6700',
           timer: 2500
@@ -877,12 +1005,6 @@
   });
 </script>
 
-
-<!-- <script>
-  $(document).ready(function() {
-    $('[data-toggle="tooltip"]').tooltip();
-  });
-</script> -->
 @stop('js-custom-script')
 
 
