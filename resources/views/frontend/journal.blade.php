@@ -352,7 +352,7 @@
                         <!-- NO Show BUTTON For Departments ONLY -->
                         <th class="text-center"> ชื่อ/สกุล </th>
                     @else
-                      <th class="text-center"> Actions </th>
+                      <th class="text-right"> Actions </th>
                     @endif
                     </tr>
                 </thead>
@@ -466,7 +466,7 @@
 
                           <!-- Download button -->
                           @if($value->verified == "1" || $value->verified == "9")
-                            <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Edit" disabled>
+                            <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Download" disabled>
                               <i class="fas fa-arrow-alt-circle-down"></i>
                             </button>
                           @else
@@ -484,7 +484,7 @@
                             </button>
                           @elseif($value->pro_id == NULL)
                             <a href=" {{ route('journal.edit2', ['id' => $value->id]) }} ">
-                              <button type="button" class="btn btn-warning btn-md" data-toggle="tooltip" title="Edit2">
+                              <button type="button" class="btn btn-warning btn-md" data-toggle="tooltip" title="Edit">
                                 <i class="fas fa-edit"></i>
                               </button>
                             </a>
@@ -553,7 +553,7 @@
 
 
 
-                    <!-- MODAL Verfied-->
+                    <!-- MODAL Verify & Status -->
                       <div class="modal fade" id="modal-default{{ $value->id }}" tabindex="-1" role="dialog" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
                           <div class="modal-content">
@@ -600,7 +600,7 @@
                           </div>
                         </div>
                       </div>
-                    <!-- END MODAL Verify -->
+                    <!-- END MODAL Verify & Status -->
 
 
                   </tr>

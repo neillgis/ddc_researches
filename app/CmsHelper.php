@@ -222,6 +222,24 @@ use App\User;
           );
         }
 
+
+        public static function Get_Status_Util($statusx_id)
+        {
+          $query = Ref_Util_Status::find($statusx_id);
+          $id = 0;
+          $util_status = '';
+          if (!empty($query)) {
+            $id = $query->id;
+            $util_status = $query->util_status;
+          }
+          //--------------------------
+          return array(
+            "id"      => $id,
+            "status"  => $util_status,
+          );
+        }
+
+
         public static function Get_Prefix_TH(){
           $list_prefix_th = RefPrefix::all();
           foreach($list_prefix_th as $prefix_th){

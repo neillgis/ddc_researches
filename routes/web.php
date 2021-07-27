@@ -96,6 +96,9 @@ Route::group(['middleware' => 'keycloak-web'], function () {
     Route::get('/util/unverified/{id}', 'UtilizationController@No_verified')->name('util.unverified');
     //  -- DELETE --
     Route::get('/Delete-Utilization/{id}', 'UtilizationController@delete_util')->name('util.delete');
+    //  -- STATUS --
+    Route::post('/util/status', 'UtilizationController@status_util')->name('util.status');
+
 
 
     // -- FAQ --

@@ -267,6 +267,7 @@ if(Auth::hasRole('manager')){
                                'db_utilization.util_type',
                                'db_utilization.files',
                                'db_utilization.verified',
+                               'db_utilization.status',
                                'db_research_project.pro_name_th',
                                'db_research_project.pro_name_en',
                                'db_research_project.users_name',
@@ -287,6 +288,7 @@ if(Auth::hasRole('manager')){
                                'db_utilization.util_type',
                                'db_utilization.files',
                                'db_utilization.verified',
+                               'db_utilization.status',
                                'db_research_project.pro_name_th',
                                'db_research_project.pro_name_en',
                                'db_research_project.users_name',
@@ -302,14 +304,18 @@ if(Auth::hasRole('manager')){
                                )
                     ->where('deptName', Auth::user()->family_name)
                     ->get();
-                    // dd($query_util);
 
   }else {
     $query_util = DB::table('db_utilization')
                     ->join ('db_research_project', 'db_utilization.pro_id', '=', 'db_research_project.id')
-                    ->select ('db_utilization.id','db_utilization.util_type','db_utilization.files',
-                                'db_utilization.verified',
-                                'db_research_project.pro_name_th','db_research_project.pro_name_en','db_research_project.users_name',
+                    ->select ( 'db_utilization.id',
+                               'db_utilization.util_type',
+                               'db_utilization.files',
+                               'db_utilization.verified',
+                               'db_utilization.status',
+                               'db_research_project.pro_name_th',
+                               'db_research_project.pro_name_en',
+                               'db_research_project.users_name',
                                // \DB::raw('(CASE
                                //               WHEN db_utilization.verified = "1" THEN "ตรวจสอบแล้ว"
                                //               ELSE "รอการตรวจสอบ"
@@ -320,7 +326,9 @@ if(Auth::hasRole('manager')){
                     ->where('db_utilization.deleted_at')
                     ->get();
   }
-  // dd($query_util);
+
+    $query9 = DB::table('ref_util_status')->get();
+
 
     return view('frontend.util',
     [
@@ -335,8 +343,8 @@ if(Auth::hasRole('manager')){
       'form_util_type'         => $query_util_type,
       // SELECT TABLE
       'table_util'             => $query_util,
-      'verified_list'          => $verified
-
+      'verified_list'          => $verified,
+      'status'                 => $query9,
     ]);
 }
 
@@ -461,7 +469,8 @@ if(Auth::hasRole('manager')){
         $verified = DB::table('db_utilization')
                   ->where('id', $request->id)
                   ->update([
-                            'verified' => $request->verified,
+                            'verified'    => $request->verified,
+                            'status'      => $request->status,
                             'updated_at'  => date('Y-m-d H:i:s')
                           ]);
 
@@ -503,7 +512,6 @@ if(Auth::hasRole('manager')){
 
         $delete = util::where('id', $request->id)
                       ->update(["deleted_at"  =>  date('Y-m-d H:i:s')]);
-
         // dd($delete);
 
       if($delete){
@@ -514,6 +522,28 @@ if(Auth::hasRole('manager')){
       }
 
     }
+
+
+    //  -- STATUS --
+    public function status_util(Request $request){
+        //UPDATE db_utilization = "STATUS"
+        $status_util = DB::table('db_utilization')
+                         ->where('id', $request->id)
+                         ->update([
+                                  'status'      => $request->status,
+                                  'updated_at'  => date('Y-m-d H:i:s')
+                                ]);
+     // dd($status_util);
+
+         if($status_util){
+             session()->put('status_util', 'okkkkkayyyyy');
+             return redirect()->route('page.util');
+         }else{
+             return redirect()->back()->with('swl_err', 'บันทึกไม่สำเร็จ');
+         }
+       }
+    //  -- END STATUS --
+
 
 
 
