@@ -360,77 +360,114 @@
                     <td class="text-center"> {{ $value->users_name }} </td>
 
                   @else
-                  <!-- Download button -->
-                  <td class="td-actions text-right text-nowrap" href="#">
-                      <!-- {{-- @if(Auth::hasRole('manager') || Auth::hasRole('user')) --}} -->
-                        @if($value->verified == "1" || $value->verified == "9")
-                          <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Download" disabled>
-                            <i class="fas fa-arrow-alt-circle-down"></i>
-                          </button>
-                        @else
-                          <a href=" {{ route('DownloadFile.research', ['id' => $value->id, 'files' => $value->files]) }} ">
-                            <button type="button" class="btn btn-primary btn-md" data-toggle="tooltip" title="Download">
-                              <i class="fas fa-arrow-alt-circle-down"></i>
-                            </button>
-                          </a>
-                        @endif
-                  <!-- Download button -->
+
+                    <td class="td-actions text-right text-nowrap" href="#">
 
 
-                  <!-- Edit button -->
-                        @if($value->verified == "1" || $value->verified == "2" || $value->verified == "3" || $value->verified == "9")
-                          <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Edit" disabled>
-                            <i class="fas fa-edit"></i>
-                          </button>
-                        @else
-                          <a href=" {{ route('research.edit', $value->id) }} ">
-                            <button type="button" class="btn btn-warning btn-md" data-toggle="tooltip" title="Edit">
-                              <i class="fas fa-edit"></i>
-                            </button>
-                          </a>
-                        @endif
-                  <!-- Edit button -->
+                      @if(Auth::hasRole('manager'))
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-warning dropdown-toggle dropdown-icon" data-toggle="dropdown"> Action link </button>
+                            <div class="dropdown-menu" role="menu">
+                            <!-- DOWNLOAD -->
+                            @if($value->verified == "1" || $value->verified == "9")
+                                <a class="dropdown-item disabled" href="#" title="Download">
+                                  <i class="fas fa-arrow-alt-circle-down"></i>&nbsp; Download
+                                </a>
+                            @else
+                                <a class="dropdown-item" href="{{ route('DownloadFile.research', ['id' => $value->id, 'files' => $value->files]) }}" title="Download">
+                                  <i class="fas fa-arrow-alt-circle-down"></i>&nbsp; Download
+                                </a>
+                            @endif
+                            <!-- END DOWNLOAD -->
 
+                                <div class="dropdown-divider"></div>
+
+                            <!-- EDIT -->
+                            @if($value->verified == "1" || $value->verified == "2" || $value->verified == "3" || $value->verified == "9")
+                                <a class="dropdown-item disabled" href="#" title="Edit">
+                                  <i class="fas fa-edit"></i>&nbsp; Edit
+                                </a>
+                            @else
+                                <a class="dropdown-item" href="{{ route('research.edit', $value->id) }}" title="Edit">
+                                  <i class="fas fa-edit"></i>&nbsp; Edit
+                                </a>
+                            @endif
+                            <!-- END EDIT -->
+
+                                <div class="dropdown-divider"></div>
+
+                            <!-- VERIFIED -->
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#modal-default{{ $value->id }}" title="Verfied">
+                                  <i class="fas fa-user-check"></i>&nbsp; Verified
+                                </a>
+                            <!-- END VERIFIED -->
+
+                                <div class="dropdown-divider"></div>
+
+                            <!-- DELETE -->
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#DeleteModal{{ $value->id }}" title="Delete">
+                                  <i class="fas fa-trash-alt"></i>&nbsp; Delete
+                                </a>
+                              <!-- END DELETE -->
+                            </div>
+                        </div>
+                      @endif
                   @endif
 
 
-                    <!-- Verify button -->
-                    @if(Auth::hasRole('manager'))
-                      @if($value->verified == "1" || $value->verified == "9")
-                        <!-- <a href=" {{-- route('research.unverified', $value->id) --}} "> -->
-                          <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Verfied">
-                            <i class="fas fa-user-check"></i>
-                          </button>
-                        <!-- </a> -->
+                  <!-- Download & Edit -->
+                      @if(Auth::hasRole('manager'))
+                          <!-- NO Show BUTTON For USER ONLY -->
+                      @elseif(Auth::hasRole('departments'))
+                          <!-- NO Show BUTTON For USER ONLY -->
                       @else
-                        <!-- <a href=" {{-- route('research.verified', $value->id) --}} "> -->
-                          <button type="button" class="verify btn btn-md" data-toggle="modal" data-target="#modal-default{{ $value->id }}"
-                                  title="Verfied" style="background-color: #567fa8;">
-                            <i class="fas fa-user-check"></i>
-                          </button>
-                        <!-- </a> -->
-                    <!-- Verify button -->
+
+                          <!-- Download button -->
+                          @if($value->verified == "1" || $value->verified == "9")
+                            <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Download" disabled>
+                              <i class="fas fa-arrow-alt-circle-down"></i>
+                            </button>
+                          @else
+                            <a href=" {{ route('DownloadFile.research', ['id' => $value->id, 'files' => $value->files]) }} ">
+                              <button type="button" class="btn btn-primary btn-md" data-toggle="tooltip" title="Download">
+                                <i class="fas fa-arrow-alt-circle-down"></i>
+                              </button>
+                            </a>
+                          @endif
+
+                          <!-- Edit button -->
+                          @if($value->verified == "1" || $value->verified == "2" || $value->verified == "3" || $value->verified == "9")
+                            <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Edit" disabled>
+                              <i class="fas fa-edit"></i>
+                            </button>
+                          @else
+                            <a href=" {{ route('research.edit', $value->id) }} ">
+                              <button type="button" class="btn btn-warning btn-md" data-toggle="tooltip" title="Edit">
+                                <i class="fas fa-edit"></i>
+                              </button>
+                            </a>
+                          @endif
                       @endif
-                    @endif
+                  <!-- Download & Edit -->
 
 
-                  <!-- Delete button -->
-                    @if(Auth::hasRole('manager'))
-                          <!-- NO Show BUTTON For USER ONLY -->
-                    @elseif(Auth::hasRole('departments'))
-                          <!-- NO Show BUTTON For USER ONLY -->
-                    @else
-                      @if($value->verified == "1" || $value->verified == "9")
-                          <button type="button" class="btn btn-secondary btn-md" title="Delete" data-toggle="tooltip" disabled>
-                            <i class="fas fa-trash-alt"></i>
-                          </button>
+                    <!-- Delete button -->
+                      @if(Auth::hasRole('manager'))
+                            <!-- NO Show BUTTON For USER ONLY -->
+                      @elseif(Auth::hasRole('departments'))
+                            <!-- NO Show BUTTON For USER ONLY -->
                       @else
-                          <button type="button" class="btn btn-danger btn-md" title="Delete" data-toggle="modal" data-target="#DeleteModal{{ $value->id }}">
-                            <i class="fas fa-trash-alt"></i>
-                          </button>
-                        <!-- END Delete button -->
+                          @if($value->verified == "1" || $value->verified == "2" || $value->verified == "3" || $value->verified == "9")
+                              <button type="button" class="btn btn-secondary btn-md" title="Delete" data-toggle="tooltip" disabled>
+                                <i class="fas fa-trash-alt"></i>
+                              </button>
+                          @else
+                              <button type="button" class="btn btn-danger btn-md" title="Delete" data-toggle="modal" data-target="#DeleteModal{{ $value->id }}">
+                                <i class="fas fa-trash-alt"></i>
+                              </button>
+                            <!-- END Delete button -->
+                          @endif
                       @endif
-                    @endif
 
                   </td>
 
@@ -468,12 +505,12 @@
 
 
 
-                  <!-- MODAL -->
+                  <!-- MODAL Verify -->
                     <div class="modal fade" id="modal-default{{ $value->id }}" tabindex="-1" role="dialog" aria-hidden="true">
                       <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
                           <div class="modal-header">
-                            <h4 class="modal-title"><b> สถานะการตรวจสอบ (ID </b><font color="red"> {{ $value->id }} </font>) </h4>
+                            <h4 class="modal-title"><b>การตรวจสอบ</b> (Project ID. <font color="red">{{ $value->id }}</font>) </h4>
                           </div>
 
                         <form action="{{ route('research.verified') }}" method="POST">
@@ -486,9 +523,9 @@
                                 <input type="hidden" class="form-control" name="id" value="{{ $value->id }}">
 
                                 <select class="form-control" name="verified" >
+                                    <option value="" selected="true" disabled="true"> -- กรุณาเลือก -- </option>
                                   @foreach ($verified_list as $key => $value)
                                     <option value="{{ $key }}" {{ $verified_list == $key ? 'selected' : '' }}> {{ $value }} </option>
-
                                   @endforeach
                                 </select>
                               </div>
@@ -498,7 +535,7 @@
 
                           <div class="modal-footer justify-content-between">
                             <button type="button" class="btn btn-default" data-dismiss="modal"> Close </button>
-                            <button type="submit" class="btn float-right" value="บันทึกข้อมูล" style="background-color: #7eaad6;">
+                            <button type="submit" class="btn btn-success float-right" value="บันทึกข้อมูล">
                               <i class="fas fa-save"></i> &nbsp;Save Change
                             </button>
                           </div>
@@ -507,7 +544,7 @@
                         </div>
                       </div>
                     </div>
-                  <!-- END MODAL -->
+                  <!-- END MODAL Verify -->
 
 
 
@@ -598,7 +635,7 @@
         Swal.fire({
             icon: 'success',
             title: 'การตรวจสอบถูกดำเนินการแล้ว',
-            showConfirmButton: true,
+            showConfirmButton: false,
             confirmButtonColor: '#2C6700',
             timer: 3800
         })

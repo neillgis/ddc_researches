@@ -435,7 +435,7 @@
                             @elseif(Auth::hasRole('departments'))
                                   <!-- NO Show BUTTON For USER ONLY -->
                             @else
-                                @if($value->verified == "1" || $value->verified == "9")
+                                @if($value->verified == "1" || $value->verified == "2" || $value->verified == "3" || $value->verified == "9")
                                     <button type="button" class="btn btn-secondary btn-md" title="Delete" data-toggle="tooltip" disabled>
                                       <i class="fas fa-trash-alt"></i>
                                     </button>

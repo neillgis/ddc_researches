@@ -50,6 +50,7 @@ class ResearchController extends Controller
                           //               ) AS verified'
                           // )
                           )
+                       ->whereNull('db_research_project.deleted_at')
                        ->ORDERBY('id','DESC')
                        ->get();
 
@@ -79,6 +80,7 @@ class ResearchController extends Controller
                           // )
                           )
                 ->where('users.deptName', Auth::user()->family_name)
+                ->whereNull('db_research_project.deleted_at')
                 ->ORDERBY('id','DESC')
                 ->get();
               // dd($query);
@@ -140,7 +142,7 @@ class ResearchController extends Controller
 
 // --- COUNT 3 BOX on TOP ---
 
-    //For Departments ONLY
+    //For "Departments" ONLY
     $Total_departments = DB::table('db_research_project')
                       ->leftjoin('users', 'users.idCard', '=', 'db_research_project.users_id')
                       ->select( 'users.id',
@@ -163,6 +165,7 @@ class ResearchController extends Controller
                           -> select('id','pro_name_th','pro_name_en','pro_position',
                                     'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
                           ->whereIn ('publish_status', ['1'])
+                          ->whereNull('deleted_at')
                           ->get()
                           ->count();
 
@@ -179,6 +182,7 @@ class ResearchController extends Controller
                                   )
                           ->whereIn('publish_status', ['1'])
                           ->where('deptName', Auth::user()->family_name)
+                          ->whereNull('deleted_at')
                           ->get()
                           ->count();
 
@@ -188,6 +192,7 @@ class ResearchController extends Controller
                                     'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
                           ->whereIn ('publish_status', ['1'])
                           ->where('users_id', Auth::user()->preferred_username)
+                          ->whereNull('deleted_at')
                           ->get()
                           ->count();
       }
@@ -200,6 +205,7 @@ class ResearchController extends Controller
                         -> select('id','pro_name_th','pro_name_en','pro_position',
                                   'pro_start_date','pro_end_date','pro_co_researcher','publish_status', 'verified')
                         ->where('verified', 1)
+                        ->whereNull('deleted_at')
                         ->get()
                         ->count();
 
@@ -215,6 +221,7 @@ class ResearchController extends Controller
                                   )
                           ->whereIn('verified', ['1'])
                           ->where('deptName', Auth::user()->family_name)
+                          ->whereNull('deleted_at')
                           ->get()
                           ->count();
 
@@ -224,6 +231,7 @@ class ResearchController extends Controller
                                   'pro_start_date','pro_end_date','pro_co_researcher','publish_status', 'verified')
                         ->where('users_id', Auth::user()->preferred_username)
                         ->where('verified', 1)
+                        ->whereNull('deleted_at')
                         ->get()
                         ->count();
       }
@@ -235,7 +243,8 @@ class ResearchController extends Controller
           $Total_master_pro = DB::table('db_research_project')
                             -> select('id','pro_name_th','pro_name_en','pro_position',
                                       'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
-                            -> whereIn ('pro_position', ['1'])
+                            ->whereIn('pro_position', ['1'])
+                            ->whereNull('deleted_at')
                             ->get()
                             ->count();
 
@@ -251,15 +260,17 @@ class ResearchController extends Controller
                                   )
                           ->whereIn('pro_position', ['1'])
                           ->where('deptName', Auth::user()->family_name)
+                          ->whereNull('deleted_at')
                           ->get()
                           ->count();
 
       }else {
         $Total_master_pro = DB::table('db_research_project')
-                          -> select('id','pro_name_th','pro_name_en','pro_position',
+                          ->select('id','pro_name_th','pro_name_en','pro_position',
                                     'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
-                          -> whereIn ('pro_position', ['1'])
+                          ->whereIn('pro_position', ['1'])
                           ->where('users_id', Auth::user()->preferred_username)
+                          ->whereNull('deleted_at')
                           ->get()
                           ->count();
       }
