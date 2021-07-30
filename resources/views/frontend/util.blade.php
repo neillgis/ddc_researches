@@ -346,45 +346,47 @@
                               <div class="btn-group">
                                   <button type="button" class="btn btn-warning dropdown-toggle dropdown-icon" data-toggle="dropdown"> Action link </button>
                                   <div class="dropdown-menu" role="menu">
-                                  <!-- Download -->
+                                  <!-- DOWNLOAD -->
                                   @if($value->verified == "1" || $value->verified == "9")
-                                    <a class="dropdown-item disabled" href="#" title="Download">
-                                      <i class="fas fa-arrow-alt-circle-down"></i>&nbsp; Download
-                                    </a>
+                                      <a class="dropdown-item disabled" href="#" title="Download">
+                                        <i class="fas fa-arrow-alt-circle-down"></i>&nbsp; Download
+                                      </a>
                                   @else
-                                    <a class="dropdown-item" href="{{ route('DownloadFile.util', ['id' => $value->id, 'files' => $value->files]) }}" title="Download">
-                                      <i class="fas fa-arrow-alt-circle-down"></i>&nbsp; Download
-                                    </a>
+                                      <a class="dropdown-item" href="{{ route('DownloadFile.util', ['id' => $value->id, 'files' => $value->files]) }}" title="Download">
+                                        <i class="fas fa-arrow-alt-circle-down"></i>&nbsp; Download
+                                      </a>
                                   @endif
-                                  <!-- END Download -->
+                                  <!-- END DOWNLOAD -->
 
                                       <div class="dropdown-divider"></div>
 
-                                  <!-- Edit -->
+                                  <!-- EDIT -->
                                   @if($value->verified == "1" || $value->verified == "2" || $value->verified == "3" || $value->verified == "9")
-                                    <a class="dropdown-item disabled" href="#" title="Edit">
-                                      <i class="fas fa-edit"></i>&nbsp; Edit
-                                    </a>
+                                      <a class="dropdown-item disabled" href="#" title="Edit">
+                                        <i class="fas fa-edit"></i>&nbsp; Edit
+                                      </a>
                                   @else
-                                    <a class="dropdown-item" href="{{ route('util.edit', $value->id) }}" title="Edit">
-                                      <i class="fas fa-edit"></i>&nbsp; Edit
-                                    </a>
+                                      <a class="dropdown-item" href="{{ route('util.edit', $value->id) }}" title="Edit">
+                                        <i class="fas fa-edit"></i>&nbsp; Edit
+                                      </a>
                                   @endif
-                                  <!-- END Edit -->
+                                  <!-- END EDIT -->
 
                                       <div class="dropdown-divider"></div>
 
-                                  <!-- Verfied -->
-                                  @if($value->verified == "1" || $value->verified == "9")
-                                    <a class="dropdown-item disabled" href="#" title="Verfied">
-                                      <i class="fas fa-user-check"></i>&nbsp; Verfied
-                                    </a>
-                                  @else
-                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#modal-default-util{{ $value->id }}" title="Status & Verfied">
-                                      <i class="fas fa-user-check"></i>&nbsp; Status & Verified
-                                    </a>
-                                  @endif
-                                  <!-- END Verfied -->
+                                  <!-- VERIFIED -->
+                                      <a class="dropdown-item" href="#" data-toggle="modal" data-target="#modal-default-util{{ $value->id }}" title="Status & Verfied">
+                                        <i class="fas fa-user-check"></i>&nbsp; Status & Verified
+                                      </a>
+                                  <!-- END VERIFIED -->
+
+                                      <div class="dropdown-divider"></div>
+
+                                  <!-- DELETE -->
+                                      <a class="dropdown-item" href="#" data-toggle="modal" data-target="#DeleteModalUtil{{ $value->id }}" title="Delete">
+                                        <i class="fas fa-trash-alt"></i>&nbsp; Delete
+                                      </a>
+                                    <!-- END DELETE -->
                                   </div>
                               </div>
                             @endif
@@ -485,7 +487,7 @@
                               <div class="modal-dialog modal-dialog-centered" role="document">
                                 <div class="modal-content">
                                   <div class="modal-header">
-                                    <h4 class="modal-title"><b> การตรวจสอบ (ID </b><font color="red"> {{ $value->id }} </font>) </h4>
+                                    <h4 class="modal-title"><b>การตรวจสอบ</b> (Util ID. <font color="red">{{ $value->id }}</font>) </h4>
                                   </div>
 
                                   <form action="{{ route('util.verified') }}" method="POST">
@@ -496,7 +498,7 @@
                                       <div class="col-md-12">
                                         <!-- hidden = id -->
                                         <input type="hidden" class="form-control" name="id" value="{{ $value->id }}">
-                                        <label> สถานะของวารสาร </label>
+                                        <label> สถานะการนำไปใช้ประโยชน์ </label>
                                         <select class="form-control" name="status">
                                             <option value="" selected="true" disabled="true"> -- กรุณาเลือก -- </option>
                                           @foreach ($status as $value)
@@ -645,8 +647,8 @@
   <script>
     Swal.fire({
         icon: 'success',
-        title: 'Verified Successfully',
-        showConfirmButton: true,
+        title: 'การตรวจสอบถูกดำเนินการแล้ว',
+        showConfirmButton: false,
         confirmButtonColor: '#2C6700',
         timer: 3800
     })

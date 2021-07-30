@@ -33,6 +33,7 @@ class JournalController extends Controller
                               'db_research_project.pro_name_en',
                               )
                      ->where('users_id', Auth::user()->preferred_username)
+                     ->whereNull('deleted_at')
                      // ->whereNotNull('db_research_project.pro_name_en')
                      ->orderby('id', 'DESC')
                      ->get();
@@ -44,6 +45,7 @@ class JournalController extends Controller
                               'db_research_project.pro_name_en',
                               )
                      ->where('users_id', Auth::user()->preferred_username)
+                     ->whereNull('deleted_at')
                      // ->whereNotNull('db_research_project.pro_name_en')
                      ->orderby('id', 'DESC')
                      ->get();
@@ -53,8 +55,10 @@ class JournalController extends Controller
                       ->select('db_research_project.id',
                                'db_research_project.pro_name_th',
                                'db_research_project.pro_name_en',
+                               'db_research_project.pro_name_en',
                                )
                       ->where('users_id', Auth::user()->preferred_username)
+                      ->whereNull('deleted_at')
                       // ->whereNotNull('db_research_project.pro_name_en')
                       ->orderby('id', 'DESC')
                       ->get();
@@ -83,6 +87,7 @@ class JournalController extends Controller
                          'users.deptName',
                         )
                 // ->where('db_published_journal.id', $request->id)
+                ->whereNull('db_published_journal.deleted_at')
                 ->orderby('id', 'DESC')
                 ->get();
          // dd($query2);
@@ -114,19 +119,30 @@ class JournalController extends Controller
         // dd($query2);
 
     }else {
-      $query2 = journal::select('id', 'pro_id', 'article_name_th', 'article_name_en',
-                                'journal_name_th', 'journal_name_en', 'publish_years',
-                                'corres', 'files', 'verified', 'status',
-                                // \DB::raw('(CASE
-                                //               WHEN verified = "1" THEN "ตรวจสอบแล้ว"
-                                //               ELSE "รอตรวจสอบ"
-                                //               END) AS verified'
-                                // )
-                                )
-                      ->where('users_id', Auth::user()->preferred_username)
-                      ->whereNull('deleted_at')
-                      ->ORDERBY('id','DESC')
-                      ->get();
+      $query2 = DB::table('db_published_journal')
+                  ->select('id',
+                           'pro_id',
+                           'article_name_th',
+                           'article_name_en',
+                           'journal_name_th',
+                           'journal_name_en',
+                           'publish_years',
+                            'corres',
+                            'files',
+                            'verified',
+                            'status',
+                            'deleted_at',
+                            // \DB::raw('(CASE
+                            //               WHEN verified = "1" THEN "ตรวจสอบแล้ว"
+                            //               ELSE "รอตรวจสอบ"
+                            //               END) AS verified'
+                            // )
+                            )
+                  ->where('users_id', Auth::user()->preferred_username)
+                  ->whereNull('deleted_at')
+                  ->ORDERBY('id','DESC')
+                  ->get();
+              // dd($query2);
     }
 
 
@@ -165,6 +181,7 @@ class JournalController extends Controller
                          'users.deptName'
                          )
                 ->where('pro_id', null)
+                ->whereNull('deleted_at')
                 ->orderby('id', 'DESC')
                 ->get();
 
@@ -176,6 +193,7 @@ class JournalController extends Controller
       // บทความตีพิมพ์ทั้งหมด COUNT = All Record
       if(Auth::hasRole('manager')){
         $Total_journal = journal::select('id', 'users_id')
+                                  ->whereNull('deleted_at')
                                   ->get()
                                   ->count();
 
@@ -188,6 +206,7 @@ class JournalController extends Controller
                                     'users.deptName',
                                   )
                           ->where('deptName', Auth::user()->family_name)
+                          ->whereNull('deleted_at')
                           ->get()
                           ->count();
                   // dd($Total_journal);
@@ -195,6 +214,7 @@ class JournalController extends Controller
       }else {
         $Total_journal = journal::select('id', 'users_id')
                                   ->where('users_id', Auth::user()->preferred_username)
+                                  ->whereNull('deleted_at')
                                   ->get()
                                   ->count();
       }
@@ -203,7 +223,8 @@ class JournalController extends Controller
       // บทความตีพิมพ์ ที่ตรวจสอบแล้ว COUNT = All Record -> 'verified', ['1']
       if(Auth::hasRole('manager')){
         $Total_journal_verify = journal::select('id', 'users_id')
-                                      -> whereIn ('verified', ['1'])
+                                      ->whereIn('verified', ['1'])
+                                      ->whereNull('deleted_at')
                                       ->get()
                                       ->count();
 
@@ -218,6 +239,7 @@ class JournalController extends Controller
                                           )
                                   ->whereIn('verified', ['1'])
                                   ->where('deptName', Auth::user()->family_name)
+                                  ->whereNull('deleted_at')
                                   ->get()
                                   ->count();
 
@@ -225,6 +247,7 @@ class JournalController extends Controller
         $Total_journal_verify = journal::select('id', 'users_id')
                                       -> whereIn ('verified', ['1'])
                                       ->where('users_id', Auth::user()->preferred_username)
+                                      ->whereNull('deleted_at')
                                       ->get()
                                       ->count();
       }
@@ -235,6 +258,7 @@ class JournalController extends Controller
         $Total_master_jour = journal::select('id', 'contribute')
                                     ->whereIn ('contribute', ['1'])
                                     -> whereIn ('verified', ['1'])
+                                    ->whereNull('deleted_at')
                                     ->get()
                                     ->count();
 
@@ -251,6 +275,7 @@ class JournalController extends Controller
                                   ->whereIn('contribute', ['1'])
                                   ->whereIn('verified', ['1'])
                                   ->where('deptName', Auth::user()->family_name)
+                                  ->whereNull('deleted_at')
                                   ->get()
                                   ->count();
 
@@ -259,6 +284,7 @@ class JournalController extends Controller
                                     ->whereIn ('contribute', ['1'])
                                     -> whereIn ('verified', ['1'])
                                     ->where('users_id', Auth::user()->preferred_username)
+                                    ->whereNull('deleted_at')
                                     ->get()
                                     ->count();
       }

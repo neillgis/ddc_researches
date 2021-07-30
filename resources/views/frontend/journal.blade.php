@@ -5,6 +5,7 @@
 ?>
 
 @section('css-custom')
+<link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css">
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.6.4/css/buttons.dataTables.min.css">
 <link rel="stylesheet" href="{{ asset('bower_components/admin-lte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
@@ -45,12 +46,13 @@
         top: 3px;
       }
   </style>
-
 @stop('css-custom')
 
 
 
 @section('contents')
+<section class="content">
+  <div class="container-fluid">
 
 <!-- Content Header (Page header) -->
   <div class="content-header">
@@ -66,9 +68,6 @@
   </div>
 <!-- /.content-header -->
 
-  <section class="content">
-    <div class="container-fluid">
-
     <!-- START SUMMARY Total Box -->
       <div class="row">
         <div class="col-md-4 mx-auto">
@@ -81,7 +80,6 @@
             <div class="icon">
               <i class="fas fa-book-reader"></i>
             </div>
-            <!-- <a class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
           </div>
         </div>
 
@@ -113,18 +111,22 @@
           </div>
         </div>
       </div>
+    </div>
+  </section>
       <br>
     <!-- END SUMMARY Total Box -->
 
 
 
-    <!-- START From Input JOURNAL PROJECT -------------------------------------------------->
+<!-- START From Input JOURNAL PROJECT -------------------------------------------------->
+  @if(Auth::hasRole('departments'))
 
-    @if(Auth::hasRole('departments'))
+    <!-- NO Show BUTTON For Departments ONLY -->
 
-      <!-- NO Show BUTTON For Departments ONLY -->
+  @else
 
-    @else
+  <section class="content">
+    <div class="container-fluid">
 
     <div class="row">
       <div class="col-md-12">
@@ -317,14 +319,15 @@
           </div>
         </div>
       </div>
-      <br>
-    @endif
-    <!-- END From Input JOURNAL PROJECT -------------------------------------------------->
+  <br>
+
+  @endif
+  <!-- END From Input JOURNAL PROJECT -------------------------------------------------->
 
 
 
-    <!-- START TABLE -> JOURNAL PROJECT -------------------------------------------------->
-      <section class="content">
+  <!-- START TABLE -> JOURNAL PROJECT -------------------------------------------------->
+
         <div class="card">
           <div class="card card-secondary shadow">
             <div class="card-header">
@@ -407,49 +410,51 @@
                           <div class="btn-group">
                               <button type="button" class="btn btn-warning dropdown-toggle dropdown-icon" data-toggle="dropdown"> Action link </button>
                               <div class="dropdown-menu" role="menu">
-                              <!-- Download -->
+                              <!-- DOWNLOAD -->
                               @if($value->verified == "1" || $value->verified == "9")
-                                <a class="dropdown-item disabled" href="#" title="Download">
-                                  <i class="fas fa-arrow-alt-circle-down"></i>&nbsp; Download
-                                </a>
+                                  <a class="dropdown-item disabled" href="#" title="Download">
+                                    <i class="fas fa-arrow-alt-circle-down"></i>&nbsp; Download
+                                  </a>
                               @else
-                                <a class="dropdown-item" href="{{ route('DownloadFile.journal', ['id' => $value->id, 'files' => $value->files]) }}" title="Download">
-                                  <i class="fas fa-arrow-alt-circle-down"></i>&nbsp; Download
-                                </a>
+                                  <a class="dropdown-item" href="{{ route('DownloadFile.journal', ['id' => $value->id, 'files' => $value->files]) }}" title="Download">
+                                    <i class="fas fa-arrow-alt-circle-down"></i>&nbsp; Download
+                                  </a>
                               @endif
-                              <!-- END Download -->
+                              <!-- END DOWNLOAD -->
 
                                   <div class="dropdown-divider"></div>
 
-                              <!-- Edit -->
+                              <!-- EDIT -->
                               @if($value->verified == "1" || $value->verified == "2" || $value->verified == "3" || $value->verified == "9")
-                                <a class="dropdown-item disabled" href="#" title="Edit">
-                                  <i class="fas fa-edit"></i>&nbsp; Edit
-                                </a>
+                                  <a class="dropdown-item disabled" href="#" title="Edit">
+                                    <i class="fas fa-edit"></i>&nbsp; Edit
+                                  </a>
                               @elseif($value->pro_id == NULL)
-                                <a class="dropdown-item" href="{{ route('journal.edit2', ['id' => $value->id]) }}" title="Edit">
-                                  <i class="fas fa-edit"></i>&nbsp; Edit
-                                </a>
+                                  <a class="dropdown-item" href="{{ route('journal.edit2', ['id' => $value->id]) }}" title="Edit">
+                                    <i class="fas fa-edit"></i>&nbsp; Edit
+                                  </a>
                               @else
-                                <a class="dropdown-item" href="{{ route('journal.edit', ['id' => $value->id, 'pro_id' => $value->pro_id]) }}" title="Edit">
-                                  <i class="fas fa-edit"></i>&nbsp; Edit
-                                </a>
+                                  <a class="dropdown-item" href="{{ route('journal.edit', ['id' => $value->id, 'pro_id' => $value->pro_id]) }}" title="Edit">
+                                    <i class="fas fa-edit"></i>&nbsp; Edit
+                                  </a>
                               @endif
-                              <!-- END Edit -->
+                              <!-- END EDIT -->
 
                                   <div class="dropdown-divider"></div>
 
-                              <!-- Verfied -->
-                              @if($value->verified == "1" || $value->verified == "9")
-                                <a class="dropdown-item disabled" href="#" title="Verfied">
-                                  <i class="fas fa-user-check"></i>&nbsp; Verfied
-                                </a>
-                              @else
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#modal-default{{ $value->id }}" title="Status & Verfied">
-                                  <i class="fas fa-user-check"></i>&nbsp; Status & Verified
-                                </a>
-                              @endif
-                              <!-- END Verfied -->
+                              <!-- VERIFIED -->
+                                  <a class="dropdown-item" href="#" data-toggle="modal" data-target="#modal-default{{ $value->id }}" title="Status & Verfied">
+                                    <i class="fas fa-user-check"></i>&nbsp; Status & Verified
+                                  </a>
+                              <!-- END VERIFIED -->
+
+                                  <div class="dropdown-divider"></div>
+
+                              <!-- DELETE -->
+                                  <a class="dropdown-item" href="#" data-toggle="modal" data-target="#DeleteJournal{{ $value->id }}" title="Delete">
+                                    <i class="fas fa-trash-alt"></i>&nbsp; Delete
+                                  </a>
+                              <!-- END DELETE -->
                               </div>
                           </div>
                         @endif
@@ -499,7 +504,6 @@
                   <!-- Download & Edit -->
 
 
-
                   <!-- Delete button -->
                       @if(Auth::hasRole('manager'))
                           <!-- NO Show BUTTON For USER ONLY -->
@@ -530,7 +534,7 @@
                                 <img class="mx-auto d-block" src="{{ asset('img/exclamation.png') }}" alt="exclamation" style="width:90px;">
                               <br>
                                 <h2 class="text-center"> ต้องการลบรายการนี้ใช่ไหม ? <br> </h2>
-                                <!-- <h5 class="text-center"> Project ID. [ <font color = "red"> {{-- $value->id --}} </font> ]  </h5> -->
+                                <h5 class="text-center"> Project ID. [ <font color = "red"> {{ $value->pro_id }} </font> ]  </h5>
                               <br>
                               <div class="text-center">
                                 <!-- Cancel -->
@@ -558,7 +562,7 @@
                         <div class="modal-dialog modal-dialog-centered" role="document">
                           <div class="modal-content">
                             <div class="modal-header">
-                              <h4 class="modal-title"><b> การตรวจสอบ (ID </b><font color="red"> {{ $value->pro_id }} </font>) </h4>
+                              <h4 class="modal-title"><b>การตรวจสอบ</b> (Project ID. <font color="red">{{ $value->pro_id }}</font>) </h4>
                             </div>
 
                           <form action="{{ route('journal.verified') }}" method="POST">
@@ -614,8 +618,7 @@
             </div>
           </div>
         </div>
-      </section>
-    <!-- END TABLE -> JOURNAL PROJECT -------------------------------------------------->
+  <!-- END TABLE -> JOURNAL PROJECT -------------------------------------------------->
 
 
 <br>
@@ -623,7 +626,6 @@
 
   @if(Auth::hasRole('manager'))
     <!-- START TABLE -> JOURNAL (** กรณี ไม่ได้มาจากโครงการวิจัย) -------------------------------------------------->
-      <section class="content">
         <div class="card">
           <div class="card card-secondary shadow">
             <div class="card-header">
@@ -656,7 +658,7 @@
                   @endphp
                   @foreach ($not_from_project as $value)
                   <tr>
-                    <td class="text-center"> {{ $i }} </td>
+                    <td class="text-center"> {{ $value->id }} </td>
                     <td> {{ $value->article_name_en }} </td>
                     <td> {{ $value->journal_name_en }} </td>
                     <td class="text-center"> {{ $value->publish_years }} </td>
@@ -693,49 +695,51 @@
                         <div class="btn-group">
                             <button type="button" class="btn btn-warning dropdown-toggle dropdown-icon" data-toggle="dropdown"> Action link </button>
                             <div class="dropdown-menu" role="menu">
-                            <!-- Download -->
+                            <!-- DOWNLOAD -->
                             @if($value->verified == "1" || $value->verified == "9")
-                              <a class="dropdown-item disabled" href="#" title="Download">
-                                <i class="fas fa-arrow-alt-circle-down"></i>&nbsp; Download
-                              </a>
+                                <a class="dropdown-item disabled" href="#" title="Download">
+                                  <i class="fas fa-arrow-alt-circle-down"></i>&nbsp; Download
+                                </a>
                             @else
-                              <a class="dropdown-item" href="{{ route('DownloadFile.journal', ['id' => $value->id, 'files' => $value->files]) }}" title="Download">
-                                <i class="fas fa-arrow-alt-circle-down"></i>&nbsp; Download
-                              </a>
+                                <a class="dropdown-item" href="{{ route('DownloadFile.journal', ['id' => $value->id, 'files' => $value->files]) }}" title="Download">
+                                  <i class="fas fa-arrow-alt-circle-down"></i>&nbsp; Download
+                                </a>
                             @endif
-                            <!-- END Download -->
+                            <!-- END DOWNLOAD -->
 
                                 <div class="dropdown-divider"></div>
 
-                            <!-- Edit -->
+                            <!-- EDIT -->
                             @if($value->verified == "1" || $value->verified == "2" || $value->verified == "3" || $value->verified == "9")
-                              <a class="dropdown-item disabled" href="#" title="Edit">
-                                <i class="fas fa-edit"></i>&nbsp; Edit
-                              </a>
+                                <a class="dropdown-item disabled" href="#" title="Edit">
+                                  <i class="fas fa-edit"></i>&nbsp; Edit
+                                </a>
                             @elseif($value->pro_id == NULL)
-                              <a class="dropdown-item" href="{{ route('journal.edit2', ['id' => $value->id]) }}" title="Edit">
-                                <i class="fas fa-edit"></i>&nbsp; Edit
-                              </a>
+                                <a class="dropdown-item" href="{{ route('journal.edit2', ['id' => $value->id]) }}" title="Edit">
+                                  <i class="fas fa-edit"></i>&nbsp; Edit
+                                </a>
                             @else
-                              <a class="dropdown-item" href="{{ route('journal.edit', ['id' => $value->id, 'pro_id' => $value->pro_id]) }}" title="Edit">
-                                <i class="fas fa-edit"></i>&nbsp; Edit
-                              </a>
+                                <a class="dropdown-item" href="{{ route('journal.edit', ['id' => $value->id, 'pro_id' => $value->pro_id]) }}" title="Edit">
+                                  <i class="fas fa-edit"></i>&nbsp; Edit
+                                </a>
                             @endif
-                            <!-- END Edit -->
+                            <!-- END EDIT -->
 
                                 <div class="dropdown-divider"></div>
 
-                            <!-- Verfied -->
-                            @if($value->verified == "1" || $value->verified == "9")
-                              <a class="dropdown-item disabled" href="#" title="Verfied">
-                                <i class="fas fa-user-check"></i>&nbsp; Verfied
-                              </a>
-                            @else
-                              <a class="dropdown-item" href="#" data-toggle="modal" data-target="#modal-default{{ $value->id }}" title="Status & Verfied">
-                                <i class="fas fa-user-check"></i>&nbsp; Status & Verified
-                              </a>
-                            @endif
-                            <!-- END Verfied -->
+                            <!-- VERIFIED -->
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#modal-default{{ $value->id }}" title="Status & Verfied">
+                                  <i class="fas fa-user-check"></i>&nbsp; Status & Verified
+                                </a>
+                            <!-- END VERIFIED -->
+
+                                <div class="dropdown-divider"></div>
+
+                            <!-- DELETE -->
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#DeleteJournal{{ $value->id }}" title="Delete">
+                                  <i class="fas fa-trash-alt"></i>&nbsp; Delete
+                                </a>
+                            <!-- END DELETE -->
                             </div>
                         </div>
                       @endif
@@ -788,13 +792,43 @@
                     </td>
 
 
+                    <!-- MODAL Delete not_from_project -->
+                      <div class="modal fade" id="DeleteJournal{{ $value->id }}">
+                        <div class="modal-dialog modal-dialog-centered">
+                          <div class="modal-content">
+                            <div class="modal-body">
+                              <br>
+                                <img class="mx-auto d-block" src="{{ asset('img/exclamation.png') }}" alt="exclamation" style="width:90px;">
+                              <br>
+                                <h2 class="text-center"> ต้องการลบรายการนี้ใช่ไหม ? <br> </h2>
+                                <h5 class="text-center"> ลำดับ [ <font color = "red"> {{ $value->id }} </font> ]  </h5>
+                              <br>
+                              <div class="text-center">
+                                <!-- Cancel -->
+                                  <button type="button" class="btn btn-danger" data-dismiss="modal" role="button" aria-disabled="true">
+                                    <i class="fas fa-times-circle"></i> Cancel
+                                  </button>
+                                <!-- Confirms -->
+                                <a href="{{ route('journal.delete',['id' => $value->id]) }}">
+                                  <button type="button" class="btn btn-success" role="button" aria-disabled="true">
+                                    <i class="fas fa-trash-alt"></i> Confirms
+                                  </button>
+                                </a>
 
-                    <!-- MODAL Verfied-->
+                              </div>
+                            </div> <!-- END modal-bodyl -->
+                          </div>
+                        </div>
+                      </div>
+                    <!-- END MODAL Delete not_from_project -->
+
+
+                    <!-- MODAL Verfied & Status-->
                       <div class="modal fade" id="modal-default{{ $value->id }}" tabindex="-1" role="dialog" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
                           <div class="modal-content">
                             <div class="modal-header">
-                              <h4 class="modal-title"><b> การตรวจสอบ (ID </b><font color="red"> {{ $value->pro_id }} </font>) </h4>
+                              <h4 class="modal-title"><b>การตรวจสอบ</b> (ID <font color="red">{{ $value->id }}</font>) </h4>
                             </div>
 
                           <form action="{{ route('journal.verified') }}" method="POST">
@@ -836,8 +870,7 @@
                           </div>
                         </div>
                       </div>
-                    <!-- END MODAL Verify -->
-
+                    <!-- END MODAL Verify & Status -->
 
                   </tr>
                   @php
@@ -850,18 +883,15 @@
             </div>
           </div>
         </div>
-      </section>
-    <!-- END TABLE -> JOURNAL PROJECT (** กรณี ไม่ได้มาจากโครงการวิจัย) -------------------------------------------------->
+  <!-- END TABLE -> JOURNAL PROJECT (** กรณี ไม่ได้มาจากโครงการวิจัย) -------------------------------------------------->
     @endif
+  </div>
+</section>
 
-    </div>
-  </section>
 @stop('contents')
 
 
-
 @section('js-custom-script')
-
 <!-- SweetAlert2 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <!-- <script src="{{-- asset('bower_components/admin-lte/plugins/sweetalert2/sweetalert2.min.js') --}}"></script> -->
@@ -879,7 +909,6 @@
     </script>
   @endif
 
-
   <!-- DELETE -->
   @if(Session::get('deletejournal'))
    <?php Session::forget('deletejournal'); ?>
@@ -893,8 +922,6 @@
       })
     </script>
   @endif
-
-
 
   <!-- STATUS -->
   @if(Session::get('statusjournal'))
@@ -910,8 +937,6 @@
     </script>
   @endif
 
-
-
   <!-- VERIFIED -->
   @if(Session::get('verify2'))
    <?php Session::forget('verify2'); ?>
@@ -919,7 +944,7 @@
       Swal.fire({
           icon: 'success',
           title: 'การตรวจสอบถูกดำเนินการแล้ว',
-          showConfirmButton: true,
+          showConfirmButton: false,
           confirmButtonColor: '#2C6700',
           timer: 3800
       })
@@ -940,7 +965,6 @@
       })
     </script>
   @endif
-
 <!-- END SweetAlert2 -->
 
 
@@ -960,7 +984,7 @@
 <!-- DatePicker YEAR -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
 
 <script>
   $("#datepicker4").datepicker({
@@ -971,7 +995,6 @@
   });
 </script>
 <!-- END DatePicker YEAR -->
-
 
 
 <!-- FILE INPUT -->
@@ -1010,6 +1033,7 @@
 
 
 @section('js-custom')
+
 <!-- DataTables -->
 <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
