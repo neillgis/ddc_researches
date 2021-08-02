@@ -134,12 +134,16 @@
         </div>
       </div>
       @endif
-      <br>
-    <!-- END SUMMARY Total Box -->
+    </div>
+  </section>
+  <br>
+  <!-- END SUMMARY Total Box -->
 
 
 
     <!-- START From Input RESEARCH PROJECT -------------------------------------------------->
+    <section class="content">
+      <div class="container-fluid">
 
     @if(Auth::hasRole('departments'))
 

@@ -118,15 +118,15 @@
 
 
 
-<!-- START From Input JOURNAL PROJECT -------------------------------------------------->
+  <!-- START From Input JOURNAL PROJECT -------------------------------------------------->
+<section class="content">
+  <div class="container-fluid">
+    
   @if(Auth::hasRole('departments'))
 
     <!-- NO Show BUTTON For Departments ONLY -->
 
   @else
-
-  <section class="content">
-    <div class="container-fluid">
 
     <div class="row">
       <div class="col-md-12">
