@@ -121,7 +121,7 @@
   <!-- START From Input JOURNAL PROJECT -------------------------------------------------->
 <section class="content">
   <div class="container-fluid">
-    
+
   @if(Auth::hasRole('departments'))
 
     <!-- NO Show BUTTON For Departments ONLY -->
@@ -345,7 +345,7 @@
                       <th> ชื่อบทความ (ENG) </th>
                       <th> ชื่อวารสาร (ENG) </th>
                       <th class="text-center"> ตีพิมพ์ </th>
-                      <th class="text-center"> สถานะ </th>
+                      <th class="text-center"> ระดับ </th>
                     @if(Auth::hasRole('manager'))
                       <th class="text-center"> ชื่อ/สกุล </th>
                       <th class="text-center"> หน่วยงาน </th>
@@ -573,7 +573,7 @@
                                 <div class="col-md-12">
                                   <!-- hidden = id -->
                                   <input type="hidden" class="form-control" name="id" value="{{ $value->id }}">
-                                  <label> สถานะของวารสาร </label>
+                                  <label> ระดับของวารสาร </label>
                                   <select class="form-control" name="status" >
                                       <option value="" selected="true" disabled="true"> -- กรุณาเลือก -- </option>
                                     @foreach ($status as $value)
@@ -642,7 +642,7 @@
                       <th> ชื่อบทความ (ENG) </th>
                       <th> ชื่อวารสาร (ENG) </th>
                       <th class="text-center"> ตีพิมพ์ </th>
-                      <th class="text-center"> สถานะ </th>
+                      <th class="text-center"> ระดับ </th>
                     @if(Auth::hasRole('manager'))
                       <th class="text-center"> ชื่อ/สกุล </th>
                       <th class="text-center"> หน่วยงาน </th>
@@ -839,7 +839,7 @@
                                 <div class="col-md-12">
                                   <!-- hidden = id -->
                                   <input type="hidden" class="form-control" name="id" value="{{ $value->id }}">
-                                  <label> สถานะของวารสาร </label>
+                                  <label> ระดับของวารสาร </label>
                                   <select class="form-control" name="status" >
                                       <option value="" selected="true" disabled="true"> -- กรุณาเลือก -- </option>
                                     @foreach ($status as $value)
