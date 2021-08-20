@@ -217,7 +217,7 @@
                       <label for="exampleDatepicker1"> ปีที่เริ่มโครงการวิจัย <font color="red"> * </font></label>
                         <a class="one form-group" href="#" id="modal"> <b> (คำอธิบายเพิ่มเติม) </b></a>
                         <input type="text" class="form-control" id="datepicker1" placeholder="กรุณาเลือก ปี/เดือน/วัน"
-                               name="pro_start_date" autocomplete="off" data-date-language="th-th" required>
+                               name="pro_start_date" autocomplete="off" data-date-language="th-th" required readonly>
                     </div>
                   </div>
 
@@ -226,7 +226,7 @@
                       <label for="exampleDatepicker1"> ปีที่เสร็จสิ้นโครงการวิจัย <font color="red"> * </font></label>
                       <a class="two form-group" href="#" id="modal"> <b> (คำอธิบายเพิ่มเติม) </b></a>
                       <input type="text" class="form-control" id="datepicker2" placeholder="กรุณาเลือก ปี/เดือน/วัน"
-                             name="pro_end_date" autocomplete="off" required>
+                             name="pro_end_date" autocomplete="off" required readonly>
                     </div>
                   </div>
 

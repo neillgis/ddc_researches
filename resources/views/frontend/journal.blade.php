@@ -177,11 +177,17 @@
                 <div class="row">
                   <div class="col-md-6">
                     <div class="form-group">
-                      <label for="exampleInput1"> ปีที่พิมพ์ (Year) <font color="red"> * </font></label>
-                      <input type="text" class="form-control" placeholder="ปี ค.ศ." name="publish_years"
-                             id="datepicker4" autocomplete="off" required>
+                        <label for="exampleInput1"> ปีที่พิมพ์ (Year) <font color="red"> * </font></label>
+                        <div class="input-group date">
+                              <input type="text" class="form-control datetimepicker-input" placeholder="กรุณาเลือกเป็นปี ค.ศ." name="publish_years"
+                                     id="datepicker4" autocomplete="off" required readonly>
+                             <div class="input-group-append" >
+                               <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                             </div>
+                         </div>
                     </div>
                   </div>
+
                   <div class="col-md-6">
                     <div class="form-group">
                       <label for="exampleInput1"> ฉบับที่ (Issue) <font color="red"> * </font></label>
@@ -992,6 +998,7 @@
       viewMode: "years",
       minViewMode: "years",
       autoclose: true,
+
   });
 </script>
 <!-- END DatePicker YEAR -->
