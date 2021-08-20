@@ -683,18 +683,21 @@
         uiLibrary: 'bootstrap4',
         // iconsLibrary: 'fontawesome',
         format: 'yyyy/mm/dd',
-        maxDate: today,
         autoclose: true,
         todayHighlight: true,
-        // thaiyear: true
+        maxDate: function() {
+          return $('#datepicker2').val();
+        }
     })
     $('#datepicker2').datepicker({
         uiLibrary: 'bootstrap4',
         // iconsLibrary: 'fontawesome',
         format: 'yyyy/mm/dd',
-        maxDate: today,
         autoclose: true,
-        todayHighlight: true
+        todayHighlight: true,
+        minDate: function() {
+          return $('#datepicker1').val();
+        }
     });
 </script>
 <!-- END DatePicker Style -->
