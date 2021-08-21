@@ -11,6 +11,7 @@ use Storage;
 use File;
 use Auth;
 use Session;
+use Carbon\Carbon;
 use app\Exceptions\Handler;
 use Illuminate\Support\Facades\Route;
 // use App\KeycloakUser;
@@ -343,13 +344,16 @@ class ResearchController extends Controller
       "pro_name_en"       => $request->pro_name_en,
       "pro_position"      => $request->pro_position,
       "pro_co_researcher" => $request->pro_co_researcher,
-      "pro_start_date"    => $request->pro_start_date,
-      "pro_end_date"      => $request->pro_end_date,
+      // "pro_start_date"    => $request->pro_start_date,
+      // "pro_end_date"      => $request->pro_end_date,
+      "pro_start_date"    => CmsHelper::Date_Format_BC_To_AD($request->pro_start_date),
+      "pro_end_date"      => CmsHelper::Date_Format_BC_To_AD($request->pro_end_date),
       "publish_status"    => $request->publish_status,
       "url_research"      => $request->url_research,
       "files"             => $request->files,
       "created_at"        => date('Y-m-d H:i:s')
     ];
+
 
       //  --  UPLOAD FILE research_form  --
     if ($request->file('files')->isValid()) {

@@ -11,9 +11,12 @@
 <link rel="stylesheet" href="{{ asset('bower_components/admin-lte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
 
 <!-- DatePicker Style -->
-<link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css">
+<!-- <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css"> -->
 <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
 <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous"> -->
+
+<!-- DatePicker Thai -->
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
 <!-- SweetAlert2 -->
 <link rel="stylesheet" href="{{ asset('bower_components/admin-lte/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
@@ -216,8 +219,13 @@
                     <div class="form-group">
                       <label for="exampleDatepicker1"> ปีที่เริ่มโครงการวิจัย <font color="red"> * </font></label>
                         <a class="one form-group" href="#" id="modal"> <b> (คำอธิบายเพิ่มเติม) </b></a>
-                        <input type="text" class="form-control" id="datepicker1" placeholder="กรุณาเลือก ปี/เดือน/วัน"
-                               name="pro_start_date" autocomplete="off" data-date-language="th-th" required readonly>
+                        <div class="input-group date">
+                            <input type="text" class="form-control" id="datepicker1" placeholder="กรุณาเลือก ปี/เดือน/วัน"
+                                   name="pro_start_date" autocomplete="off" required readonly>
+                               <div class="input-group-append">
+                                 <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
+                               </div>
+                         </div>
                     </div>
                   </div>
 
@@ -225,8 +233,13 @@
                     <div class="form-group">
                       <label for="exampleDatepicker1"> ปีที่เสร็จสิ้นโครงการวิจัย <font color="red"> * </font></label>
                       <a class="two form-group" href="#" id="modal"> <b> (คำอธิบายเพิ่มเติม) </b></a>
-                      <input type="text" class="form-control" id="datepicker2" placeholder="กรุณาเลือก ปี/เดือน/วัน"
-                             name="pro_end_date" autocomplete="off" required readonly>
+                      <div class="input-group date">
+                          <input type="text" class="form-control" id="datepicker2" placeholder="กรุณาเลือก ปี/เดือน/วัน"
+                                 name="pro_end_date" autocomplete="off" required readonly>
+                             <div class="input-group-append">
+                               <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
+                             </div>
+                       </div>
                     </div>
                   </div>
 
@@ -336,8 +349,8 @@
                     <td class="text-center"> {{ $i }} </td>
                     <td class="text-center"> {{ $value->id }} </td>
                     <td class="text-left"> {{ $value->pro_name_th." ".$value->pro_name_en}} </td>
-                    <td class="text-center"> {{ CmsHelper::DateEnglish($value->pro_start_date) }} </td>
-                    <td class="text-center"> {{ CmsHelper::DateEnglish($value->pro_end_date) }} </td>
+                    <td class="text-center"> {{ CmsHelper::DateThai($value->pro_start_date) }} </td>
+                    <td class="text-center"> {{ CmsHelper::DateThai($value->pro_end_date) }} </td>
                     <td class="text-center"> {{ $publish_status [ $value->publish_status ] }} </td>
                   @if(Auth::hasRole('manager'))
                     <td class="text-center"> {{ $value->users_name }} </td>
@@ -587,8 +600,6 @@
       "warning"
       );
     });
-  </script>
-  <script>
     document.querySelector(".two").addEventListener('click', function(){
       Swal.fire(
       "ปีที่เสร็จสิ้นโครงการ",
@@ -632,7 +643,6 @@
     <!-- END DELETE success -->
 
 
-
     @if(Session::get('verify'))
      <?php Session::forget('verify'); ?>
       <script>
@@ -663,7 +673,6 @@
 
 
 
-
 <!-- FILE INPUT -->
   <script type="text/javascript">
     $(document).ready(function () {
@@ -674,37 +683,37 @@
 
 
 <!-- DatePicker Style -->
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-<script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
+<!-- <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script> -->
+
+<!-- DatePicker Thai -->
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/i18n/datepicker-th.js"></script>
 
 <script>
-  var today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
-    $('#datepicker1').datepicker({
-        uiLibrary: 'bootstrap4',
-        // iconsLibrary: 'fontawesome',
-        format: 'yyyy/mm/dd',
-        autoclose: true,
-        todayHighlight: true,
-        maxDate: function() {
-          return $('#datepicker2').val();
-        }
-    })
-    $('#datepicker2').datepicker({
-        uiLibrary: 'bootstrap4',
-        // iconsLibrary: 'fontawesome',
-        format: 'yyyy/mm/dd',
-        autoclose: true,
-        todayHighlight: true,
-        minDate: function() {
-          return $('#datepicker1').val();
-        }
-    });
-</script>
-<!-- END DatePicker Style -->
-
-
-
-<script type="text/javascript" class="init">
+  // var today = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+    // $('#datepicker1').datepicker({
+    //     uiLibrary: 'bootstrap4',
+    //     // iconsLibrary: 'fontawesome',
+    //     format: 'yyyy/mm/dd',
+    //     autoclose: true,
+    //     todayHighlight: true,
+    //     maxDate: function() {
+    //       return $('#datepicker2').val();
+    //     }
+    // })
+    // $('#datepicker2').datepicker({
+    //     uiLibrary: 'bootstrap4',
+    //     // iconsLibrary: 'fontawesome',
+    //     format: 'yyyy/mm/dd',
+    //     autoclose: true,
+    //     todayHighlight: true,
+    //     minDate: function() {
+    //       return $('#datepicker1').val();
+    //     }
+    // });
+// <!-- END DatePicker Style -->
   $(document).ready(function() {
     $('#example55').DataTable({
       dom: 'Bfrtip',
@@ -713,6 +722,35 @@
       ]
     });
   });
+
+  // DATE-Picker-Thai use Jquery
+  var CurrentDate = new Date();
+  CurrentDate.setYear(CurrentDate.getFullYear() + 543);
+  //DatePicker_1
+    $("#datepicker1").datepicker({
+        changeMonth: true,
+        changeYear: true,
+        yearRange: '+443:+543',
+        dateFormat: 'dd-mm-yy',
+        // maxDate: +1
+        // maxDate: function() {
+        //   return $('#datepicker2').val();
+        // }
+      });
+      $('#datepicker1').datepicker("setDate", CurrentDate);
+
+  //DatePicker_2
+    $("#datepicker2").datepicker({
+        changeMonth: true,
+        changeYear: true,
+        yearRange: '+443:+543',
+        dateFormat: 'dd-mm-yy',
+        // maxDate: function() {
+        //   return $('#datepicker1').val();
+        // }
+      });
+      $('#datepicker2').datepicker("setDate",CurrentDate);
+
 </script>
 
 @stop('js-custom-script')

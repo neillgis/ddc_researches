@@ -108,7 +108,7 @@ use App\User;
 
         public static function Date_Format_BC_To_AD($strDate){
           if(empty($strDate)) return false;
-            $bc_year = explode("/",$strDate);
+            $bc_year = explode("-",$strDate);
             $day = $bc_year['0'];
             $month = $bc_year['1'];
             $year = $bc_year['2']-543;
