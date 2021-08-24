@@ -182,7 +182,7 @@
                               <input type="text" class="form-control datetimepicker-input" placeholder="กรุณาเลือกเป็นปี ค.ศ." name="publish_years"
                                      id="datepicker4" autocomplete="off" required readonly>
                              <div class="input-group-append" >
-                               <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                               <div class="input-group-text"><i class="far fa-calendar-alt"></i></div>
                              </div>
                          </div>
                     </div>
