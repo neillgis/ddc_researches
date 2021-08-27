@@ -19,17 +19,24 @@ class export_util implements FromCollection, WithHeadings
         // return research::all();
 
         return DB::table('db_research_project')
-                ->join('db_utilization', 'db_research_project.id', '=', 'db_utilization.pro_id')
-                ->join('users', 'db_research_project.users_id', '=', 'users.idCard')
+                ->rightjoin('db_utilization', 'db_research_project.id', '=', 'db_utilization.pro_id')
+                ->leftjoin('users', 'db_research_project.users_id', '=', 'users.idCard')
+
+                ->leftjoin('ref_util_status', 'db_utilization.status', '=', 'ref_util_status.id')
+                ->leftjoin('ref_verified', 'db_utilization.verified', '=', 'ref_verified.id')
                 ->select('db_utilization.pro_id',
                          'db_utilization.users_id',
                          'db_research_project.users_name',
                          'users.deptName',
                          'util_type',
                          'util_descrip',
-                         'db_utilization.verified'
+                         'ref_util_status.util_status',
+                         'ref_verified.verify'
                          )
+                ->whereNull('db_utilization.deleted_at')
+                ->orderBy('db_utilization.id', 'ASC')
                 ->get();
+
     }
 
 
@@ -42,6 +49,7 @@ class export_util implements FromCollection, WithHeadings
             'หน่วยงาน',
             'ประเภท',
             'คำอธิบาย',
+            'สถานะของการนำไปใช้ประโยชน์',
             'การตรวจสอบ'
         ];
     }

@@ -18,22 +18,28 @@ class export_research implements FromCollection, WithHeadings
     {
         // return research::all();
 
-        return DB::table('db_research_project')
-                ->join('users', 'db_research_project.users_id', '=', 'users.idCard')
-                ->select('db_research_project.id',
-                         'db_research_project.users_id',
-                         'db_research_project.users_name',
-                         'users.deptName',
-                         'db_research_project.pro_name_en',
-                         'db_research_project.pro_name_th',
-                         'db_research_project.pro_position',
-                         'db_research_project.pro_co_researcher',
-                         'db_research_project.pro_start_date',
-                         'db_research_project.pro_end_date',
-                         'db_research_project.publish_status',
-                         'db_research_project.verified'
-                        )
-                ->get();
+         return DB::table('db_research_project')
+                  ->leftjoin('users', 'db_research_project.users_id', '=', 'users.idCard')
+                  ->leftjoin('ref_pro_position', 'db_research_project.pro_position', '=', 'ref_pro_position.id')
+                  ->leftjoin('ref_yes_no', 'db_research_project.verified', '=', 'ref_yes_no.id')
+                  ->leftjoin('ref_verified', 'db_research_project.verified', '=', 'ref_verified.id')
+                  ->select('db_research_project.id',
+                           'db_research_project.users_id',
+                           'db_research_project.users_name',
+                           'users.deptName',
+                           'db_research_project.pro_name_en',
+                           'db_research_project.pro_name_th',
+                           'ref_pro_position.names',
+                           'db_research_project.pro_co_researcher',
+                           'db_research_project.pro_start_date',
+                           'db_research_project.pro_end_date',
+                           'ref_yes_no.choice',
+                           'ref_verified.verify',
+                          )
+                  ->whereNull('db_research_project.deleted_at')
+                  ->orderBy('db_research_project.id', 'ASC')
+                  ->get();
+
     }
 
 

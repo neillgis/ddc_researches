@@ -19,28 +19,36 @@ class export_journal implements FromCollection, WithHeadings
         // return journal::all();
 
         return DB::table('db_research_project')
-                ->join('db_published_journal', 'db_research_project.id', '=', 'db_published_journal.pro_id')
-                ->join('users', 'db_research_project.users_id', '=', 'users.idCard')
+                ->rightjoin('db_published_journal', 'db_research_project.id', '=', 'db_published_journal.pro_id')
+                ->leftjoin('users', 'db_research_project.users_id', '=', 'users.idCard')
+                ->leftjoin('ref_contribute', 'db_published_journal.contribute', '=', 'ref_contribute.id')
+                ->leftjoin('ref_yes_no', 'db_published_journal.verified', '=', 'ref_yes_no.id')
+                ->leftjoin('ref_journal_status', 'db_published_journal.status', '=', 'ref_journal_status.id')
+                ->leftjoin('ref_verified', 'db_published_journal.verified', '=', 'ref_verified.id')
                 ->select('db_published_journal.pro_id',
                          'db_published_journal.users_id',
                          'db_research_project.users_name',
                          'users.deptName',
-                         'article_name_en',
-                         'article_name_th',
-                         'journal_name_en',
-                         'journal_name_th',
-                         'publish_years',
-                         'publish_no',
-                         'publish_volume',
-                         'publish_firstpage',
-                         'publish_lastpage',
-                         'doi_number',
-                         'contribute',
-                         'corres',
-                         'url_journal',
-                         'db_published_journal.verified'
+                         'db_published_journal.article_name_en',
+                         'db_published_journal.article_name_th',
+                         'db_published_journal.journal_name_en',
+                         'db_published_journal.journal_name_th',
+                         'db_published_journal.publish_years',
+                         'db_published_journal.publish_no',
+                         'db_published_journal.publish_volume',
+                         'db_published_journal.publish_firstpage',
+                         'db_published_journal.publish_lastpage',
+                         'db_published_journal.doi_number',
+                         'ref_contribute.contributes',
+                         'ref_yes_no.choice',
+                         'db_published_journal.url_journal',
+                         'ref_journal_status.journal_status',
+                         'ref_verified.verify',
                          )
+                ->whereNull('db_published_journal.deleted_at')
+                ->orderBy('db_published_journal.id', 'ASC')
                 ->get();
+
     }
 
 
@@ -64,6 +72,7 @@ class export_journal implements FromCollection, WithHeadings
             'การมีส่วนร่วมในบทความ',
             'การเป็นผู้รับผิดชอบบทความ (correspondent)',
             'URL',
+            'สถานะของวารสาร',
             'การตรวจสอบ'
         ];
     }
