@@ -78,7 +78,7 @@
              <li class="nav-item ">
                <a class="nav-link " href="#" >
                  <i class="nav-icon fas fa-download"></i>
-                 <p> Export Data </p>
+                 <p> Export Data <i class="fas fa-chevron-down right" style="padding: 9px;"></i></p>
                </a>
                <ul class="nav nav-treeview">
                  <li class="nav-item">

@@ -385,8 +385,8 @@
                         <div class="btn-group">
                             <button type="button" class="btn btn-warning dropdown-toggle dropdown-icon" data-toggle="dropdown"> Action link </button>
                             <div class="dropdown-menu" role="menu">
-                            <!-- DOWNLOAD -->
-                            @if($value->verified == "1" || $value->verified == "9")
+                            <!-- DOWNLOAD old-->
+                            <!-- {{-- @if($value->verified == "1" || $value->verified == "9")
                                 <a class="dropdown-item disabled" href="#" title="Download">
                                   <i class="fas fa-arrow-alt-circle-down"></i>&nbsp; Download
                                 </a>
@@ -394,7 +394,13 @@
                                 <a class="dropdown-item" href="{{ route('DownloadFile.research', ['id' => $value->id, 'files' => $value->files]) }}" title="Download">
                                   <i class="fas fa-arrow-alt-circle-down"></i>&nbsp; Download
                                 </a>
-                            @endif
+                            @endif --}} -->
+
+                            <!-- DOWNLOAD new-->
+                                <a class="dropdown-item" href="{{ route('DownloadFile.research', ['id' => $value->id, 'files' => $value->files]) }}" title="Download">
+                                  <i class="fas fa-arrow-alt-circle-down"></i>&nbsp; Download
+                                </a>
+
                             <!-- END DOWNLOAD -->
 
                                 <div class="dropdown-divider"></div>
