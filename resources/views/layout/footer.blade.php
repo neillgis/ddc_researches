@@ -9,4 +9,4 @@
     <b>Version</b> 2.0
   </div>
 </footer>
-<!-- Developers by ITC Team -->
+<!-- Developers by ITC Team : Mr.Praphan Chuchara -->
