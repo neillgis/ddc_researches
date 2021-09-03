@@ -405,8 +405,8 @@
 
                                 <div class="dropdown-divider"></div>
 
-                            <!-- EDIT -->
-                            @if($value->verified == "1" || $value->verified == "2" || $value->verified == "3" || $value->verified == "9")
+                            <!-- EDIT old -->
+                            <!-- {{-- @if($value->verified == "1" || $value->verified == "2" || $value->verified == "3" || $value->verified == "9")
                                 <a class="dropdown-item disabled" href="#" title="Edit">
                                   <i class="fas fa-edit"></i>&nbsp; Edit
                                 </a>
@@ -414,7 +414,12 @@
                                 <a class="dropdown-item" href="{{ route('research.edit', $value->id) }}" title="Edit">
                                   <i class="fas fa-edit"></i>&nbsp; Edit
                                 </a>
-                            @endif
+                            @endif --}} -->
+
+                            <!-- EDIT new -->
+                                <a class="dropdown-item" href="{{ route('research.edit', $value->id) }}" title="Edit">
+                                  <i class="fas fa-edit"></i>&nbsp; Edit
+                                </a>
                             <!-- END EDIT -->
 
                                 <div class="dropdown-divider"></div>
@@ -732,14 +737,15 @@
   // DATE-Picker-Thai use Jquery
   var CurrentDate = new Date();
   CurrentDate.setYear(CurrentDate.getFullYear() + 543);
+
   //DatePicker_1
     $("#datepicker1").datepicker({
         changeMonth: true,
         changeYear: true,
         yearRange: '+443:+543',
         dateFormat: 'dd-mm-yy',
-        // maxDate: +1
-        // maxDate: function() {
+        maxDate: CurrentDate,
+        // minDate: function() {
         //   return $('#datepicker2').val();
         // }
       });
@@ -751,11 +757,12 @@
         changeYear: true,
         yearRange: '+443:+543',
         dateFormat: 'dd-mm-yy',
+        maxDate: CurrentDate,
         // maxDate: function() {
         //   return $('#datepicker1').val();
         // }
       });
-      $('#datepicker2').datepicker("setDate",CurrentDate);
+      $('#datepicker2').datepicker("setDate", CurrentDate);
 
 </script>
 

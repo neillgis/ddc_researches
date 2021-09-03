@@ -435,12 +435,23 @@
 
                                   <div class="dropdown-divider"></div>
 
-                              <!-- EDIT -->
-                              @if($value->verified == "1" || $value->verified == "2" || $value->verified == "3" || $value->verified == "9")
+                              <!-- EDIT old -->
+                            <!-- {{-- @if($value->verified == "1" || $value->verified == "2" || $value->verified == "3" || $value->verified == "9")
                                   <a class="dropdown-item disabled" href="#" title="Edit">
                                     <i class="fas fa-edit"></i>&nbsp; Edit
                                   </a>
                               @elseif($value->pro_id == NULL)
+                                  <a class="dropdown-item" href="{{ route('journal.edit2', ['id' => $value->id]) }}" title="Edit">
+                                    <i class="fas fa-edit"></i>&nbsp; Edit
+                                  </a>
+                              @else
+                                  <a class="dropdown-item" href="{{ route('journal.edit', ['id' => $value->id, 'pro_id' => $value->pro_id]) }}" title="Edit">
+                                    <i class="fas fa-edit"></i>&nbsp; Edit
+                                  </a>
+                              @endif --}} -->
+
+                              <!-- EDIT new -->
+                              @if($value->pro_id == NULL)
                                   <a class="dropdown-item" href="{{ route('journal.edit2', ['id' => $value->id]) }}" title="Edit">
                                     <i class="fas fa-edit"></i>&nbsp; Edit
                                   </a>
@@ -725,12 +736,23 @@
 
                                 <div class="dropdown-divider"></div>
 
-                            <!-- EDIT -->
-                            @if($value->verified == "1" || $value->verified == "2" || $value->verified == "3" || $value->verified == "9")
+                              <!-- EDIT old For NO-pro_id -->
+                          <!-- {{-- @if($value->verified == "1" || $value->verified == "2" || $value->verified == "3" || $value->verified == "9")
                                 <a class="dropdown-item disabled" href="#" title="Edit">
                                   <i class="fas fa-edit"></i>&nbsp; Edit
                                 </a>
                             @elseif($value->pro_id == NULL)
+                                <a class="dropdown-item" href="{{ route('journal.edit2', ['id' => $value->id]) }}" title="Edit">
+                                  <i class="fas fa-edit"></i>&nbsp; Edit
+                                </a>
+                            @else
+                                <a class="dropdown-item" href="{{ route('journal.edit', ['id' => $value->id, 'pro_id' => $value->pro_id]) }}" title="Edit">
+                                  <i class="fas fa-edit"></i>&nbsp; Edit
+                                </a>
+                            @endif --}} -->
+
+                            <!-- EDIT new For NO-pro_id -->
+                            @if($value->pro_id == NULL)
                                 <a class="dropdown-item" href="{{ route('journal.edit2', ['id' => $value->id]) }}" title="Edit">
                                   <i class="fas fa-edit"></i>&nbsp; Edit
                                 </a>
