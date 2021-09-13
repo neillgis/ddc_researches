@@ -201,7 +201,7 @@
                   <div class="col-md-4">
                     <div class="form-group">
                       <label for="exampleInput1"> เล่มที่ (Volume) <font color="red"> * </font></label>
-                      <input type="text" class="form-control" name="publish_volume" maxlength="2"
+                      <input type="text" class="form-control" name="publish_volume" maxlength="3"
                              onKeyUp="if(isNaN(this.value)){ alert('กรุณากรอกตัวเลขเท่านั้น !'); this.value='';}" required>
                     </div>
                   </div>
