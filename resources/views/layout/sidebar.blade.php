@@ -45,12 +45,12 @@
            @endif
 
           @if(Auth::hasRole('manager') || Auth::hasRole('admin'))
-            <!-- <li class="nav-item">
-             <a class="nav-link {{-- Active::check('summary_form') --}}" href="{{-- route('page.summary') --}}" >
+            <li class="nav-item">
+             <a class="nav-link {{ Active::check('summary_form') }}" href="{{ route('page.summary') }}" >
                <i class="nav-icon far fas fa-chart-line"></i>
                <p> สรุปข้อมูลสำหรับ (กนว.) </p>
              </a>
-            </li> -->
+            </li>
           @endif
 
              <li class="nav-item ">
@@ -106,7 +106,7 @@
              <li class="nav-item ">
                <a class="nav-link " href="#" >
                  <i class="nav-icon fas fa-bookmark"></i>
-                 <p> คู่มือ & FAQ <span class="right badge badge-danger"> New </span></p>
+                 <p> คู่มือ & FAQ <i class="fas fa-chevron-down right" style="padding: 9px;"></i></p>
                </a>
              <ul class="nav nav-treeview">
                <li class="nav-item">

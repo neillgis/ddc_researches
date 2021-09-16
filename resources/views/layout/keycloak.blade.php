@@ -51,6 +51,10 @@
                 <div class="col-4" id="cid"></div>
             </div>
             <div class="row">
+                <div class="col-2">work_bu1</div>
+                <div class="col-4" id="work_bu1"></div>
+            </div>
+            <div class="row">
                 <div class="col-2">dept_id</div>
                 <div class="col-4" id="dept_id"></div>
                 <div class="col-2">edu_class</div>
@@ -151,6 +155,7 @@
 
                     $("#employee_id").text(result.employeeId);
                     $("#cid").text(result.idCard);
+                    $("#work_bu1").text(result.work_bu1);
                     $("#dept_id").text(result.deptId + '|'+result.deptName);
                     $("#edu_class").text(result.educationLevel);
                     $("#prefix").text(result.title);

@@ -116,6 +116,8 @@ Route::group(['middleware' => 'keycloak-web'], function () {
     Route::post('/save_summary_edit','SummaryController@save_summary') -> name('summary.save');
     //  -- DOWNLOAD --
     Route::get('/Download-Files/summary/{id}/{files}','SummaryController@DownloadFile')->name('DownloadFile.summary');
+    //  -- VERIFIED --
+    Route::post('/summary/verified', 'SummaryController@auditor_verified')->name('summary.verified');
 
 
 

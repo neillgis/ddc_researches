@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-// use Illuminate\Contracts\Auth\Guard;
 use App\CmsHelper;
 use App\summary;
 use App\research;
@@ -15,6 +14,9 @@ use Auth;
 use Session;
 use app\Exceptions\Handler;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Cache;
+
+// use Illuminate\Support\Arr;
 
 
 class SummaryController extends Controller
@@ -28,166 +30,146 @@ class SummaryController extends Controller
 
     public function table_summary(){
     // SUM BOX ------------------------------------------------------------------------>
+
       // โครงการวิจัยที่ทำเสร็จสิ้นทั้งหมด db_research_project -> โดย count id --------->
       if(Auth::hasRole('manager')){
         $Total_research = DB::table('db_research_project')
-                        -> select('db_research_project.id','pro_name_th','pro_name_en','pro_position',
-                                  'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
-                        ->get()
-                        ->count();
+                            ->select('db_research_project.id','pro_name_th','pro_name_en','pro_position',
+                                      'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
+                            ->whereNull('deleted_at')
+                            ->get()
+                            ->count();
+
+        $Total_research_verify = DB::table('db_research_project')
+                                  ->select('db_research_project.id','pro_name_th','pro_name_en','pro_position',
+                                            'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
+                                  ->whereNull('deleted_at')
+                                  ->whereIn('verified', ['1'])
+                                  ->get()
+                                  ->count();
+
+        $Total_research_position_pi = DB::table('db_research_project')
+                                        ->select('db_research_project.id','pro_name_th','pro_name_en','pro_position',
+                                                  'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
+                                        ->whereNull('deleted_at')
+                                        ->whereIn('verified', ['1'])
+                                        ->whereIn('pro_position', ['1'])
+                                        ->OrwhereIn('pro_position', ['2'])
+                                        ->get()
+                                        ->count();
+
+        $Total_research_users = DB::table('db_research_project')
+                                    ->rightjoin('users', 'db_research_project.users_id', '=', 'users.idCard')
+                                    ->select('users_id')
+                                    ->groupBy('db_research_project.users_id')
+                                    ->whereNull('db_research_project.deleted_at')
+                                    ->where('db_research_project.verified', 1)
+                                    ->get()
+                                    ->count();
 
       }elseif(Auth::hasRole('admin')) {
         $Total_research = DB::table('db_research_project')
                         -> select('db_research_project.id','pro_name_th','pro_name_en','pro_position',
                                   'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
-                        ->get()
-                        ->count();
-
-      }else {
-        $Total_research = DB::table('db_research_project')
-                        -> select('db_research_project.id','pro_name_th','pro_name_en','pro_position',
-                                  'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
-                        -> where ('users_id', Auth::user()->preferred_username)
+                        ->whereNull('deleted_at')
                         ->get()
                         ->count();
       }
 
-      // โครงการวิจัยที่เป็นผู้วิจัยหลัก ที่ตรวจสอบแล้ว db_research_project -> โดย count id -> pro_position = 1 (เป็นผู้วิจัยหลัก)--------->
-    if(Auth::hasRole('manager')){
-      $Total_master_pro = DB::table('db_research_project')
-                        -> select('db_research_project.id','pro_name_th','pro_name_en','pro_position',
-                                  'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
-                        -> whereIn ('verified', ['1'])
-                        -> whereIn ('pro_position', ['1'])
-                        ->get()
-                        ->count();
 
-    }elseif(Auth::hasRole('admin')) {
-      $Total_master_pro = DB::table('db_research_project')
-                        -> select('db_research_project.id','pro_name_th','pro_name_en','pro_position',
-                                  'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
-                        -> whereIn ('verified', ['1'])
-                        -> whereIn ('pro_position', ['1'])
-                        ->get()
-                        ->count();
+      // บทความตีพิมพ์ ที่ตรวจสอบแล้ว db_published_journal โดย count id  --------->
+      if(Auth::hasRole('manager')){
+        $Total_journal = DB::table('db_published_journal')
+                           ->select('id','article_name_th','article_name_en','journal_name_th','journal_name_en',
+                                     'publish_years','publish_no','publish_volume','publish_page','doi_number',
+                                     'contribute','corres')
+                           ->whereNull('deleted_at')
+                           ->get()
+                           ->count();
 
-    }else {
-      $Total_master_pro = DB::table('db_research_project')
-                        -> select('db_research_project.id','pro_name_th','pro_name_en','pro_position',
-                                  'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
-                        -> whereIn ('verified', ['1'])
-                        -> whereIn ('pro_position', ['1'])
-                        -> where ('users_id', Auth::user()->preferred_username)
-                        ->get()->count();
-    }
+        $Total_journal_verify = DB::table('db_published_journal')
+                                  ->select('id','article_name_th','article_name_en','journal_name_th','journal_name_en',
+                                            'publish_years','publish_no','publish_volume','publish_page','doi_number',
+                                            'contribute','corres')
+                                  ->whereNull('deleted_at')
+                                  ->whereIn('verified', ['1'])
+                                  ->get()
+                                  ->count();
 
-      // โครงการวิจัยที่ตีพิมพ์ ที่ตรวจสอบแล้ว db_research_project -> โดย count id -> publish_status = 1 (ใช่ )--------->
-    if(Auth::hasRole('manager')){
-      $Total_publish_pro = DB::table('db_research_project')
-                        -> select('db_research_project.users_id','pro_name_th','pro_name_en','pro_position',
-                                  'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
-                        -> whereIn ('verified', ['1'])
-                        -> whereIn ('publish_status', ['1'])
-                        ->get()
-                        ->count();
+        $Total_journal_tci_1 = DB::table('db_published_journal')
+                                ->select('id','article_name_th','article_name_en','journal_name_th','journal_name_en',
+                                          'publish_years','publish_no','publish_volume','publish_page','doi_number',
+                                          'contribute','corres')
+                                ->whereNull('deleted_at')
+                                ->whereIn('verified', ['1'])
+                                ->whereIn('status', ['1'])
+                                ->get()
+                                ->count();
 
-    }elseif(Auth::hasRole('admin')) {
-      $Total_publish_pro = DB::table('db_research_project')
-                        -> select('db_research_project.users_id','pro_name_th','pro_name_en','pro_position',
-                                  'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
-                        -> whereIn ('verified', ['1'])
-                        -> whereIn ('publish_status', ['1'])
-                        ->get()
-                        ->count();
+        $Total_journal_q1_3 = DB::table('db_published_journal')
+                                ->select('id','article_name_th','article_name_en','journal_name_th','journal_name_en',
+                                          'publish_years','publish_no','publish_volume','publish_page','doi_number',
+                                          'contribute','corres')
+                                ->whereNull('deleted_at')
+                                ->whereIn('verified', ['1'])
+                                ->whereIn('status', ['4'])
+                                ->OrwhereIn('status', ['5'])
+                                ->OrwhereIn('status', ['6'])
+                                ->get()
+                                ->count();
 
-    }else {
-      $Total_publish_pro = DB::table('db_research_project')
-                        -> select('db_research_project.users_id','pro_name_th','pro_name_en','pro_position',
-                                  'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
-                        -> whereIn ('verified', ['1'])
-                        -> whereIn ('publish_status', ['1'])
-                        -> where ('users_id', Auth::user()->preferred_username)
-                        ->get()
-                        ->count();
-    }
-
-      // บทความผู้นิพนธ์หลัก db_published_journal -> โดย count id -> contribute = ผู้นิพนธ์หลัก (first-author) --------->
-      // $Total_master_journal = DB::table('db_published_journal')
-      //                       -> select('db_published_journal.id','article_name_th','article_name_en','journal_name_th','journal_name_en',
-      //                                 'publish_years','publish_no','publish_volume','publish_page','doi_number',
-      //                                 'contribute','corres')
-      //                       -> whereIn ('verified', ['1'])
-      //                       -> where ('contribute', ['1'])
-      //                       ->get()->count();
-
-      // บทความตีพิมพ์ ที่ตรวจสอบแล้ว db_published_journal โดย count id -> verified = '1' (ตรวจสอบแล้ว) --------->
-    if(Auth::hasRole('manager')){
-      $Total_publish_journal = DB::table('db_published_journal')
-                             -> select ('id','article_name_th','article_name_en','journal_name_th','journal_name_en',
-                                       'publish_years','publish_no','publish_volume','publish_page','doi_number',
-                                       'contribute','corres')
-                             -> whereIn ('verified', ['1'])
-                             ->get()
-                             ->count();
-
-     }elseif(Auth::hasRole('admin')) {
-       $Total_publish_journal = DB::table('db_published_journal')
-                              -> select ('id','article_name_th','article_name_en','journal_name_th','journal_name_en',
-                                        'publish_years','publish_no','publish_volume','publish_page','doi_number',
-                                        'contribute','corres')
-                            -> whereIn ('verified', ['1'])
+       }elseif(Auth::hasRole('admin')) {
+         $Total_journal = DB::table('db_published_journal')
+                            ->select('id','article_name_th','article_name_en','journal_name_th','journal_name_en',
+                                      'publish_years','publish_no','publish_volume','publish_page','doi_number',
+                                      'contribute','corres')
+                            ->whereNull('deleted_at')
+                            ->whereIn('verified', ['1'])
                             ->get()
                             ->count();
-
-    }else {
-      $Total_publish_journal = DB::table('db_published_journal')
-                             -> select ('id','article_name_th','article_name_en','journal_name_th','journal_name_en',
-                                       'publish_years','publish_no','publish_volume','publish_page','doi_number',
-                                       'contribute','corres')
-                             -> whereIn ('verified', ['1'])
-                             -> where ('users_id', Auth::user()->preferred_username)
-                             ->get()
-                             ->count();
-    }
-
-      // บทความที่นำไปใช้ประโยชน์เชิงวิชาการ db_utilization -> โดย count id -> util_type = เชิงวิชาการ --------->
-      // $Total_academic_util = DB::table('db_utilization')
-      //                       -> select('pro_id','util_type')
-      //                       -> where ('util_type', '=', 'เชิงวิชาการ')
-      //                       ->get()->count();
-
-      // บทความที่นำไปใช้ประโยชน์เชิงนโยบาย db_utilization -> โดย count id -> util_type = เชิงนโยบาย --------->
-    if(Auth::hasRole('manager')){
-      $Total_policy_util = DB::table('db_utilization')
-                            -> select('pro_id','util_type')
-                            -> where ('util_type', '=', 'เชิงนโยบาย')
-                            -> whereIn ('verified', ['1'])
-                            ->get()
-                            ->count();
-
-    }elseif(Auth::hasRole('admin')) {
-      $Total_policy_util = DB::table('db_utilization')
-                            -> select('pro_id','util_type')
-                            -> where ('util_type', '=', 'เชิงนโยบาย')
-                            -> whereIn ('verified', ['1'])
-                            ->get()
-                            ->count();
-
-    }else {
-      $Total_policy_util = DB::table('db_utilization')
-                            -> select('pro_id','util_type')
-                            -> where ('util_type', '=', 'เชิงนโยบาย')
-                            -> whereIn ('verified', ['1'])
-                            -> where ('users_id', Auth::user()->preferred_username)
-                            ->get()
-                            ->count();
-    }
-    // END SUM BOX ------------------------------------------------------------------------>
+      }
 
 
-    // TABLE LIST ------------------------------------------------------------------------>
+      // บทความที่นำไปใช้ประโยชน์เชิงนโยบาย db_utilization -> โดย count id --------->
+      if(Auth::hasRole('manager')){
+        $Total_util = DB::table('db_utilization')
+                        ->select('pro_id','util_type')
+                        ->whereNull('deleted_at')
+                        ->get()
+                        ->count();
 
-      $data_table_count = DB::table('db_research_project')
+        $Total_util_verify = DB::table('db_utilization')
+                              ->select('pro_id','util_type')
+                              ->whereNull('deleted_at')
+                              ->whereIn('verified', ['1'])
+                              ->get()
+                              ->count();
+
+        $Total_util_policies = DB::table('db_utilization')
+                                ->select('pro_id','util_type')
+                                ->where('util_type', '=', 'เชิงนโยบาย')
+                                ->whereIn('verified', ['1'])
+                                ->whereNull('deleted_at')
+                                ->get()
+                                ->count();
+
+      }elseif(Auth::hasRole('admin')) {
+        $Total_policy_util = DB::table('db_utilization')
+                              ->select('pro_id','util_type')
+                              ->where('util_type', '=', 'เชิงนโยบาย')
+                              ->whereIn('verified', ['1'])
+                              ->whereNull('deleted_at')
+                              ->get()
+                              ->count();
+      }
+// --------------- END SUM BOX ------------------------------------------------------------------------>
+
+
+
+// --------------- TABLE LIST ------------------------------------------------------------------------>
+
+      $data_table_total = DB::table('db_research_project')
+
           ->leftjoin ('db_published_journal', 'db_research_project.id', '=', 'db_published_journal.pro_id')
           ->leftjoin ('db_utilization', 'db_research_project.id', '=', 'db_utilization.pro_id')
           ->leftjoin ('db_summary', 'db_research_project.users_id', '=', 'db_summary.users_id')
@@ -204,120 +186,143 @@ class SummaryController extends Controller
 
           ->GROUPBY ('db_research_project.users_name','db_research_project.researcher_level')
           ->get();
-
-// dd($data_table_count);
-
-        $select_lev = [1      => 'นักวิจัยฝึกหัด',
-                       2      => 'นักวิจัยรุ่นใหม่',
-                       3      => 'นักวิจัยรุ่นกลาง',
-                       4      => 'นักวิจัยอาวุโส'
-                       ];
+      // dd($data_table_count);
 
 
-      return view('frontend.summary',
-      [
+
+      // DATA SUMMARY TOTAL Table ***IMPORTANT*** and Use Cache
+      $summary_list = Cache::remember('summary_list', '30', function () {
+            return DB::table('summary_list')->get();
+            // dd($summary_list);
+      });
+
+
+
+      // ก้อนที่ 1 RESEARCH  = 76 users
+      // $users_total_research = DB::table('users')
+      //                         ->join('db_research_project', 'users.idCard', '=', 'db_research_project.users_id')
+      //                         ->selectRaw('count(db_research_project.users_id) AS count_research,
+      //                                      sum(if(db_research_project.pro_position <= 2, 1, 0)) AS position,
+      //                                      idCard,
+      //                                      title,
+      //                                      fname,
+      //                                      lname,
+      //                                      deptName
+      //                                    ')
+      //                         ->whereNull('db_research_project.deleted_at')
+      //                         ->whereIn('db_research_project.verified', ['1'])
+      //                         ->groupBy('db_research_project.users_id')
+      //                         ->orderBy('users.id', 'ASC')
+      //                         ->get();
+                          // dd($users_total_research);
+
+          // ก้อนที่ 2 JOURNAL  = 43 users
+          // $users_total_journal = DB::table('users')
+          //                         ->leftjoin('db_published_journal', 'users.idCard', '=', 'db_published_journal.users_id')
+          //                         ->selectRaw('count(db_published_journal.users_id) AS count_journal,
+          //                                      sum(if(status = 1, 1, 0)) AS tci_one,
+          //                                      users_id,
+          //                                      title,
+          //                                      fname,
+          //                                      lname
+          //                                    ')
+          //                               ->where('db_published_journal.users_id', 3609900892134)
+          //                         ->whereNull('db_published_journal.deleted_at')
+          //                         ->where('db_published_journal.verified', ['1'])
+          //                         ->groupBy('db_published_journal.users_id')
+          //                         ->orderBy('users.id', 'ASC')
+          //                         ->get();
+                              // dd($users_total_journal);
+
+
+// -------------------------------------------------------------------------------------
+        // TOTAL 190 users
+        $users = DB::table('users')
+                    ->select('idCard')
+                    ->groupBy('idCard')
+                    ->get();
+
+        // TOTAL 102 users หาก Where ตามจำนวนนี้  ==> จะได้ทั้งหมด 76 users
+        $research = DB::table('db_research_project')
+                    // ->rightjoin('users', 'db_research_project.users_id', '=', 'users.idCard')
+                    ->select('users_id')
+                    ->groupBy('db_research_project.users_id')
+                    ->whereNull('db_research_project.deleted_at')
+                    ->where('db_research_project.verified', 1)
+                    ->get()
+                    ->count();
+
+        // TOTAL 71 users
+        $journal = DB::table('db_published_journal')
+                    ->join('users', 'db_published_journal.users_id', '=', 'users.idCard')
+                    ->select('users_id')
+                    ->groupBy('users_id')
+                    ->whereNull('db_published_journal.deleted_at')
+                    ->get();
+
+        // TOTAL 21 users
+        $util = DB::table('db_utilization')
+                    ->select('users_id')
+                    ->groupBy('users_id')
+                    ->orderBy('id')
+                    ->get();
+// -------------------------------------------------------------------------------------
+
+        $verified_list = [  1   => 'นักวิจัยฝึกหัด',
+                            2   => 'นักวิจัยรุ่นใหม่',
+                            3   => 'นักวิจัยรุ่นกลาง',
+                            4   => 'นักวิจัยอาวุโส'
+                          ];
+
+
+      return view('frontend.summary',[
         'Total_research'          => $Total_research,
-        'Total_master_pro'        => $Total_master_pro,
-        'Total_publish_pro'       => $Total_publish_pro,
-        // 'Total_master_journal'    => $Total_master_journal,
-        'Total_publish_journal'   => $Total_publish_journal,
-        'Total_policy_util'       => $Total_policy_util,
-
-        'user_list'               => $data_table_count,
-        'user_lev'               => $select_lev,
-
+        'Total_research_verify'   => $Total_research_verify,
+        'Total_research_position_pi'  => $Total_research_position_pi,
+        'Total_research_users'    => $Total_research_users,
+        // -----------------------------------------------
+        'Total_journal'           => $Total_journal,
+        'Total_journal_verify'    => $Total_journal_verify,
+        'Total_journal_tci_1'     => $Total_journal_tci_1,
+        'Total_journal_q1_3'      => $Total_journal_q1_3,
+        // -----------------------------------------------
+        'Total_util'              => $Total_util,
+        'Total_util_verify'       => $Total_util_verify,
+        'Total_util_policies'     => $Total_util_policies,
+        // -----------------------------------------------
+        'data_table_total'        => $data_table_total,
+        // 'users_total_research'    => $users_total_research,
+        // 'users_total_journal'     => $users_total_journal,
+        // -----------------------------------------------
+        'summary_list'            => $summary_list,
+        'verified_list'           => $verified_list,
       ]);
+
     }
-// END TABLE LIST ----------------------------------------------------------------->
+// ------ END TABLE LIST ----------------------------------------------------------------->
 
 
-    // EDIT ----------------------------------------------------------------->
-    public function edit_summary(Request $request){
 
-      // // users
-      // $edit_0 = research::where('id' , $request->id)->first();
-
-      $edit_0 = DB::table('db_research_project')
-                  -> leftjoin ('db_summary', 'db_research_project.users_id', '=', 'db_summary.users_id')
-                  -> select ('db_research_project.id','db_research_project.users_id',
-                             'db_research_project.users_name','db_summary.researcher_level','db_summary.data_auditor')
-                  -> where ('db_research_project.users_name', $request->id)
-                  ->first();
-
-
-      // ระดับนักวิจัย researcher_level
-      $edit_2 = [1      => 'นักวิจัยฝึกหัด',
-                 2      => 'นักวิจัยรุ่นใหม่',
-                 3      => 'นักวิจัยรุ่นกลาง',
-                 4      => 'นักวิจัยอาวุโส'
-                 ];
-// dd($edit_2);
-
-
-      return view('frontend.summary_edit',
-      [
-         'edit_users'        => $edit_0,
-         'edit_lev'          => $edit_2
-      ]);
-      }
-      // END EDIT ----------------------------------------------------------------->
-
-
-      // INSERT ------------------------------------------------------------->
-          // public function insert(Request $request){
-          //   $data_post = [
-          //     "users_id"              => Auth::user()->preferred_username,
-          //     "users_name"            => Auth::user()->name,
-          //     "researcher_level"      => $request->researcher_level,
-          //     "data_auditor"          => $request->data_auditor,
-          //     "created_at"            => date('Y-m-d H:i:s')
-          //
-          //   ];
-          //   $insert = summary::insert($data_post);
-          //
-          //   if($insert){
-          //     return redirect()->route('page.summary')->with('swl_add', 'เพิ่มข้อมูลสำเร็จแล้ว');
-          // }else {
-          //     return redirect()->back()->with('swl_err', 'บันทึกแล้ว');
-          //   }
-          // }
-      // END INSERT ----------------------------------------------------------->
-
-
-      // SAVE ----------------------------------------------------------------->
-      public function save_summary(Request $request){
-
-      // $update = DB::table('db_summary')
-      //                 -> where ('users_name', $request->users_name)
-      //                 ->where('id', $request->id)
-      //
-      //                 ->update([
-      //                         'users_id'              => Auth::user()->preferred_username,
-      //                         'users_name'            => Auth::user()->name,
-      //                         'researcher_level'      => $request->researcher_level,
-      //                         'data_auditor'          => $request->data_auditor
-      //                         ]);
-
-
-      $update = DB::table('db_research_project')
-                      ->where('users_name', $request->users_name)
+    //  -- VERIFIED --
+    public function auditor_verified(Request $request){
+        //UPDATE Table users
+        $verified = DB::table('users')
+                      ->where('idCard', $request->idCard)
                       ->update([
-                              'researcher_level'      => $request->researcher_level,
-                              'updated_at'            => date('Y-m-d H:i:s')
-
+                                'researcher_level'  => $request->researcher_level,
+                                'data_auditor'      => $request->data_auditor,
+                                'updated_at'        => date('Y-m-d H:i:s')
                               ]);
 
-
-      if($update){
-        //return Sweet Alert
-         return redirect()->route('page.summary')->with('swl_update','แก้ไขข้อมูลสำเร็จแล้ว');
-      } else {
-         return redirect()->back()->with('swl_errs','บันทึกข้อมูลไม่สำเร็จ');
-      }
-      }
-      // END SAVE ----------------------------------------------------------------->
-
-
+         // dd($verified);
+         if($verified){
+             session()->put('auditor', 'okkkkkayyyyy');
+             return redirect()->route('page.summary');
+         }else{
+             return redirect()->back()->with('swl_err', 'บันทึกไม่สำเร็จ');
+         }
+       }
+    //  -- END VERIFIED --
 
 
 }

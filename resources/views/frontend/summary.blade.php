@@ -7,18 +7,13 @@
 
 @section('css-custom')
 <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-<!-- <link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="http://www.datatables.net/rss.xml"> -->
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css">
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.6.4/css/buttons.dataTables.min.css">
 <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
 <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
-<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-<link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" /> -->
-
 
 <!-- SweetAlert2 -->
 <link rel="stylesheet" href="{{ asset('bower_components/admin-lte/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
-
 
 <!-- Fonts Style : Kanit -->
   <style>
@@ -29,8 +24,6 @@
       font-family: 'Kanit', sans-serif;
     }
   </style>
-<!-- END Fonts Style : Kanit -->
-
 
   <style>
        button {
@@ -51,105 +44,178 @@
         top: 3px;
       }
   </style>
-
-
 @stop('css-custom')
 
-@section('contents')
 
-<!-- Content Header (Page header) -->
-  <div class="content-header">
-    <div class="container-fluid">
-      <div class="row mb-2">
-        <div class="col-sm-12">
-          <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item active"> สรุปข้อมูลสำหรับ (กนว.) </li>
-          </ol>
+@section('contents')
+  <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-12">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item active"> สรุปข้อมูลสำหรับ (กนว.) </li>
+            </ol>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-<!-- /.content-header -->
+  <!-- /.content-header -->
+
+      <section class="content">
+        <div class="container-fluid">
 
 <!-- START SUM  BOX ------------------------------------------------------->
-        <section class="content">
-          <div class="container-fluid">
-
+        <!-- ข้อมูลโครงการวิจัย -->
+        <h4 class="badge badge-secondary badge-pill text-lg"> ข้อมูลโครงการวิจัย </h4>
             <div class="row">
-              <div class="col-md-12 mx-auto">
-                <div class="small-box bg-red">
-                  <div class="inner">
-                    <!-- เรียกจาก db_research_project -> โดย count id -> verified = 1 ( ตรวจสอบแล้ว ) ------------>
-                    <h3> {{ empty($Total_research)?'0': $Total_research }} โครงการ </h3>
-                    <br>
-                    <p> โครงการวิจัยที่ทำเสร็จสิ้นทั้งหมด </p>
-                  </div>
-                  <div class="icon">
+              <div class=" col-sm-6 col-md-3">
+                <div class="info-box">
+                  <span class="info-box-icon bg-info elevation-1">
+                    <!-- <i class="fas fa-cog"></i> -->
                     <i class="fas fa-chart-line"></i>
-                  </div>
-                  <!-- <a class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
-                </div>
-              </div>
-
-              <div class="col-md-3 mx-auto">
-                <div class="small-box bg-info">
-                  <div class="inner">
-                    <!-- เรียกจาก db_research_project -> โดย count id -> pro_position = 1 ( เป็นผู้วิจัยหลัก ) ------------>
-                    <h3> {{ empty($Total_master_pro)?'0': $Total_master_pro }} โครงการ </h3>
-                    <br>
-                    <p> โครงการวิจัยที่เป็นผู้วิจัยหลัก </p>
-                  </div>
-                  <div class="icon">
-                    <i class="fas fa-chalkboard-teacher"></i>
+                  </span>
+                  <div class="info-box-content">
+                    <span class="info-box-text"> โครงการวิจัยทั้งหมด </span>
+                        <h3><b> {{ empty($Total_research)?'0' : $Total_research }} </b></h3>
                   </div>
                 </div>
               </div>
 
-              <div class="col-md-3 mx-auto">
-                <div class="small-box bg-info">
-                  <div class="inner">
-                    <!-- เรียกจาก db_research_project -> โดย count id -> publish_status = 1 (ใช่ ) ------------>
-                    <h3> {{ empty($Total_publish_pro)?'0': $Total_publish_pro }} โครงการ </h3>
-                    <br>
-                    <p> โครงการวิจัยตีพิมพ์ </p>
-                  </div>
-                  <div class="icon">
-                    <i class="fas fa-dice-d20"></i>
+              <div class=" col-sm-6 col-md-3">
+                <div class="info-box mb-3">
+                  <span class="info-box-icon bg-danger elevation-1">
+                    <i class="fas fa-user-check"></i>
+                  </span>
+                  <div class="info-box-content">
+                    <span class="info-box-text"> ตรวจสอบแล้ว </span>
+                        <h3><b> {{ empty($Total_research_verify)?'0' : $Total_research_verify }} </b></h3>
                   </div>
                 </div>
               </div>
 
-              <div class="col-md-3 mx-auto">
-                <div class="small-box bg-info">
-                  <div class="inner">
-                    <!-- เรียกจาก db_published_journal โดย count id -> verified = 1 ( ตรวจสอบแล้ว ) ------------>
-                    <h3> {{ empty($Total_publish_journal)?'0': $Total_publish_journal }} บทความ </h3>
-                    <br>
-                    <p> บทความตีพิมพ์ </p>
+              <div class=" col-sm-6 col-md-3">
+                <div class="info-box mb-3">
+                  <span class="info-box-icon bg-success elevation-1">
+                    <i class="fas fa-id-card-alt"></i>
+                  </span>
+                  <div class="info-box-content">
+                    <span class="info-box-text text-auto"> ตำแหน่ง PI & Co-PI </span>
+                        <h3><b> {{ empty($Total_research_position_pi)?'0' : $Total_research_position_pi }} </b></h3>
                   </div>
-                  <div class="icon">
+                </div>
+              </div>
+
+              <div class=" col-sm-6 col-md-3">
+                <div class="info-box mb-3">
+                  <span class="info-box-icon bg-warning elevation-1">
+                    <i class="fas fa-users"></i>
+                  </span>
+                  <div class="info-box-content">
+                    <span class="info-box-text text-auto"> จำนวนนักวิจัยโครงการ </span>
+                        <h3><b> {{ empty($Total_research_users)?'0' : $Total_research_users }} </b></h3>
+                  </div>
+                </div>
+              </div>
+            </div> <!-- END row -->
+
+        <!-- ข้อมูลการตีพิมพ์วารสาร -->
+        <h4 class="badge badge-secondary badge-pill text-lg"> การตีพิมพ์วารสาร </h4>
+            <div class="row">
+              <div class=" col-sm-6 col-md-3">
+                <div class="info-box">
+                  <span class="info-box-icon bg-info elevation-1">
+                    <!-- <i class="fas fa-cog"></i> -->
+                    <i class="fas fa-chart-line"></i>
+                  </span>
+                  <div class="info-box-content">
+                    <span class="info-box-text"> ตีพิมพ์วารสารทั้งหมด </span>
+                        <h3><b> {{ empty($Total_journal)?'0' : $Total_journal }} </b></h3>
+                  </div>
+                </div>
+              </div>
+
+              <div class=" col-sm-6 col-md-3">
+                <div class="info-box mb-3">
+                  <span class="info-box-icon bg-danger elevation-1">
+                    <i class="fas fa-user-check"></i>
+                  </span>
+                  <div class="info-box-content">
+                    <span class="info-box-text"> ตรวจสอบแล้ว </span>
+                        <h3><b> {{ empty($Total_journal_verify)?'0' : $Total_journal_verify }} </b></h3>
+                  </div>
+                </div>
+              </div>
+
+              <div class=" col-sm-6 col-md-3">
+                <div class="info-box mb-3">
+                  <span class="info-box-icon bg-warning elevation-1">
                     <i class="fas fa-book-reader"></i>
+                  </span>
+                  <div class="info-box-content">
+                    <span class="info-box-text text-auto"> ระดับวารสาร (TCI 1) </span>
+                        <h3><b> {{ empty($Total_journal_tci_1)?'0' : $Total_journal_tci_1 }} </b></h3>
                   </div>
                 </div>
               </div>
 
-              <div class="col-md-3 mx-auto">
-                <div class="small-box bg-info">
-                  <div class="inner">
-                    <!-- เรียกจาก db_utilization -> โดย count id -> util_type = เชิงนโยบาย ------------>
-                    <h3> {{ empty($Total_policy_util)?'0': $Total_policy_util }} บทความ </h3>
-                    <br>
-                    <p> บทความเชิงนโยบาย </p>
-                  </div>
-                  <div class="icon">
-                    <i class="fas fa-cubes"></i>
+              <div class=" col-sm-6 col-md-3">
+                <div class="info-box mb-3">
+                  <span class="info-box-icon bg-warning elevation-1">
+                    <i class="fas fa-book-open"></i>
+                  </span>
+                  <div class="info-box-content">
+                    <span class="info-box-text text-auto"> ระดับวารสาร (Q1 - Q3) </span>
+                        <h3><b> {{ empty($Total_journal_q1_3)?'0' : $Total_journal_q1_3 }} </b></h3>
                   </div>
                 </div>
               </div>
-            </div>
+            </div> <!-- END row -->
+
+        <!-- ข้อมูลการตีพิมพ์วารสาร -->
+        <h4 class="badge badge-secondary badge-pill text-lg"> การนำไปใช้ประโยชน์ </h4>
+            <div class="row">
+              <div class=" col-sm-6 col-md-3">
+                <div class="info-box">
+                  <span class="info-box-icon bg-info elevation-1">
+                    <!-- <i class="fas fa-cog"></i> -->
+                    <i class="fas fa-chart-line"></i>
+                  </span>
+                  <div class="info-box-content">
+                    <span class="info-box-text"> การนำไปใช้ประโยชน์ </span>
+                        <h3><b> {{ empty($Total_util)?'0' : $Total_util }} </b></h3>
+                  </div>
+                </div>
+              </div>
+
+              <div class=" col-sm-6 col-md-3">
+                <div class="info-box mb-3">
+                  <span class="info-box-icon bg-danger elevation-1">
+                    <i class="fas fa-user-check"></i>
+                  </span>
+                  <div class="info-box-content">
+                    <span class="info-box-text"> ตรวจสอบแล้ว </span>
+                        <h3><b> {{ empty($Total_util_verify)?'0' : $Total_util_verify }} </b></h3>
+                  </div>
+                </div>
+              </div>
+
+              <div class=" col-sm-6 col-md-3">
+                <div class="info-box mb-3">
+                  <span class="info-box-icon bg-success elevation-1">
+                    <!-- <i class="fas fa-clipboard-check"></i> -->
+                    <i class="fas fa-file-signature"></i>
+                  </span>
+                  <div class="info-box-content">
+                    <span class="info-box-text text-auto"> เชิงนโยบาย </span>
+                        <h3><b> {{ empty($Total_util_policies)?'0' : $Total_util_policies }} </b></h3>
+                  </div>
+                </div>
+              </div>
+
+            </div> <!-- END row -->
             <br>
 <!-- END SUM  BOX --------------------------------------------------------->
-
 
 
 <!-- START TABLE LIST --------------------------------------------------------->
@@ -157,113 +223,194 @@
             <div class="card">
               <div class="card card-gray">
                 <div class="card-header">
-                    <h3 class="card-title"><b> สรุปข้อมูลนักวิจัย </b></h3>
+                    <h3 class="card-title"> สรุปข้อมูลนักวิจัย </h3>
                 </div>
               </div>
 
               <div class="card-body">
                 <div class="table-responsive">
                   <table class="table table-hover" style="width:100%" id="example1" >
-                  <thead>
-                    <tr>
-                      <th class="text-center"> ชื่อ-นามสกุล </th>
-                      <th class="text-center"> โครงการวิจัย </th>
-                      <th class="text-center"> โครงการวิจัยที่เป็นผู้วิจัยหลัก </th>
-                      <th class="text-center"> บทความที่ตีพิมพ์ </th>
-                      <th class="text-center"> บทความใช้ประโยชน์เชิงนโยบาย </th>
-                      <th class="text-center"> ระดับนักวิจัย </th>
-                      <th class="text-center"> ผู้ตรวจสอบ </th>
-                      <th class="text-center"> วันที่ตรวจสอบ </th>
-                      <th class="text-right"> Actions </th>
-                    </tr>
-                  </thead>
-
-                  <tbody>
-                      @foreach($user_list as $value)
-
-            <?php //dd($user_list); ?>
-
+                    <thead>
                       <tr>
-                        <td class="text-center"> {{ $value->users_name }} </td>
-                        <td class="text-center"> {{ $value->count_verified_pro }} </td>
-                        <td class="text-center"> {{ $value->count_master_pro }} </td>
-                        <td class="text-center"> {{ $value->count_verified_journal }} </td>
-                        <td class="text-center"> {{ $value->count_policy_util }} </td>
-                        <td class="text-center"> @if( !empty($value->researcher_level))
-                                                  {{$user_lev[$value->researcher_level]}}
-                                                 @endif </td>
-                        <td class="text-center">    </td>
-                        <td class="text-center">    </td>
-
-                        <!-- จัดการข้อมูล -->
-                        <td class="td-actions text-right text-nowrap" href="#">
-                          <a href=" {{ route('summary.edit', $value->users_name) }} ">
-                            <button type="button" class="btn btn-warning btn-md" data-toggle="tooltip" title="Edit">
-                              <i class="fas fa-edit"></i>
-                            </button>
-                          </a>
-                        </td>
+                        <th class="text-center"> ชื่อ-นามสกุล </th>
+                        <th class="text-center"> หน่วยงาน </th>
+                        <th class="text-center"> โครงการวิจัย </th>
+                        <th class="text-center"> ตำแหน่ง PI & Co-PI </th>
+                        <th class="text-center"> วารสาร (ตรวจสอบแล้ว) </th>
+                        <th class="text-center"> วารสาร (TCI 1) </th>
+                        <th class="text-center"> วารสาร (Q1-Q3) </th>
+                        <th class="text-center"> การนำไปใช้ประโยชน์ </th>
+                        <th class="text-center"> ระดับนักวิจัย </th>
+                        <th class="text-center"> ผู้ตรวจสอบ </th>
+                        <th class="text-right"> Actions </th>
                       </tr>
-                  @endforeach
-                  </tbody>
+                    </thead>
+
+                    <tbody>
+
+                        @foreach($summary_list as $value)
+                        <tr>
+                            <td class="text-nowrap"> {{ $value->fullname }} </td>
+                            <td class="text-nowrap"> {{ $value->deptName }} </td>
+                            <td class="text-center">
+                                @if( isset($value->countPro))
+                                    {{ ($value->countPro) }}
+                                @else
+                                    <font color="red"> 0 </font>
+                                @endif
+                            </td>
+                            <td class="text-center">
+                                @if( isset($value->countPosition))
+                                    {{ ($value->countPosition) }}
+                                @else
+                                    <font color="red"> 0 </font>
+                                @endif
+                            </td>
+                            <td class="text-center">
+                                @if( isset($value->countJour))
+                                    {{ ($value->countJour) }}
+                                @else
+                                    <font color="red"> 0 </font>
+                                @endif
+                            </td>
+                            <td class="text-center">
+                                @if( isset($value->countJour_tci_one))
+                                    {{ ($value->countJour_tci_one) }}
+                                @else
+                                    <font color="red"> 0 </font>
+                                @endif
+                            </td>
+                            <td class="text-center">
+                                @if( isset($value->countJour_q_one2three))
+                                    {{ ($value->countJour_q_one2three) }}
+                                @else
+                                    <font color="red"> 0 </font>
+                                @endif
+                            </td>
+                            <td class="text-center">
+                                @if( isset($value->countUtil))
+                                    {{ ($value->countUtil) }}
+                                @else
+                                    <font color="red"> 0 </font>
+                                @endif
+                            </td>
+                            <td class="text-center ">
+                                @if( isset($value->researcher_level))
+                                    <span class="badge bg-info"> {{ $verified_list [$value->researcher_level] }} </span>
+                                @else
+                                    <span class="badge bg-danger"> No results </span>
+                                @endif
+                            </td>
+                            <td class="text-center text-nowrap">
+                                @if( isset($value->data_auditor))
+                                    {{ $value->data_auditor }}
+                                    <br><small><font color="red">({{ CmsHelper::DateThai($value->updated_at) }})</font></small>
+                                @else
+                                    <span class="badge bg-danger"> No results </span>
+                                    <!-- <span class="badge badge-pill" style="background-color: #ff851b;"> No results </span> -->
+                                @endif
+                            </td>
+
+                            <!-- Manage Data -->
+                            <td class="td-actions text-right text-nowrap" href="#">
+                                <button type="button" class="btn btn-primary btn-md" data-toggle="modal" title="Auditor" data-target="#ModalAuditor{{ $value->idCard }}">
+                                  <i class="fas fa-bars"></i>
+                                </button>
+                            </td>
+
+
+                            <!-- MODAL Verify & Status -->
+                              <div class="modal fade" id="ModalAuditor{{ $value->idCard }}" tabindex="-1" role="dialog" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                  <div class="modal-content">
+                                    <form action="{{ route('summary.verified') }}" method="POST">
+                                      @csrf
+
+                                      <div class="modal-body">
+                                        <br>
+                                          <img class="mx-auto d-block" src="{{ asset('img/verified.png') }}" alt="exclamation" style="width:90px;">
+                                        <br>
+                                        <font color="darkblue"><h4 class="text-center"><b> {{ $value->fullname }}  </b></h4></font>
+
+                                        <div class="row">
+                                          <div class="col-md-12">
+                                            <!-- hidden = ID -->
+                                            <input type="hidden" class="form-control" name="idCard" value="{{ $value->idCard }}">
+                                            <input type="hidden" class="form-control" name="data_auditor" value="{{ Auth::user()->name }}">
+                                            <label> ระดับนักวิจัย </label>
+                                            <select class="form-control" name="researcher_level">
+                                                <option value="" selected="true" disabled="true"> -- กรุณาเลือก -- </option>
+                                              @foreach ($verified_list as $key => $value)
+                                                <option value="{{ $key }}" {{ $verified_list == $key ? 'selected' : '' }}> {{ $value }} </option>
+                                              @endforeach
+                                            </select>
+                                          </div>
+                                        </div>
+                                        <br>
+                                      </div>
+
+                                      <div class="modal-footer justify-content-between">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal"> Close </button>
+                                        <button type="submit" class="btn btn-success float-right" value="บันทึกข้อมูล">
+                                          <i class="fas fa-save"></i> &nbsp;Save Change
+                                        </button>
+                                      </div>
+                                    </form>
+
+                                  </div>
+                                </div>
+                              </div>
+                            <!-- END MODAL Verify & Status -->
+
+                        </tr>
+                     @endforeach
+                    </tbody>
                   </table>
                 </div>
               </div>
             </div>
           </section>
-        </div>
 
+        </div>
       </section>
 <!-- END TABLE LIST ----------------------------------------------------------->
-
 @stop('contents')
 
-<!-- SCRIPT ------------------------------------------------------------------->
+
 @section('js-custom-script')
+<!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
+<!-- VERIFIED -->
+  @if(Session::get('auditor'))
+   <?php Session::forget('auditor'); ?>
+    <script>
+      Swal.fire({
+          icon: 'success',
+          title: 'ตรวจสอบเรียบร้อยแล้ว',
+          showConfirmButton: false,
+          confirmButtonColor: '#2C6700',
+          timer: 3800
+      })
+    </script>
+  @endif
 
-<!-- START ALERT บันทึกข้อมูลสำเร็จ  -->
-    @if(session()->has('swl_add'))
-      <script>
-          Swal.fire({
-              icon: 'success',
-              title: 'บันทึกข้อมูลเรียบร้อยแล้ว',
-              showConfirmButton: false,
-              timer: 2800
-          })
-      </script>
-
-    @elseif(session()->has('swl_del'))
-      <script>
-          Swal.fire({
-              icon: 'error',
-              title: 'บันทึกข้อมูลไม่สำเร็จ !!!',
-              showConfirmButton: false,
-              timer: 2800
-          })
-      </script>
-    @endif
-<!-- END ALERT บันทึกข้อมูลสำเร็จ  -->
-
-
-<!-- REPORT FILE -->
-<script type="text/javascript" class="init">
-  $(document).ready(function() {
-    $('#example1').DataTable({
-      dom: 'Bfrtip',
-      buttons: [
-        // 'excel', 'print'
-      ]
+<!-- Data Table -->
+  <script type="text/javascript" class="init">
+    $(document).ready(function() {
+      $('#example1').DataTable({
+        "ordering": false,
+        dom: 'Bfrtip',
+        buttons: [
+          // 'excel', 'print'
+        ]
+      });
     });
-  });
-</script>
-<!-- END REPORT FILE -->
-
-
+  </script>
 @stop('js-custom-script')
 
-@section('js-custom')
 
+@section('js-custom')
 <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.6.4/js/dataTables.buttons.min.js"></script>
