@@ -361,7 +361,7 @@
     <script>
         $(document).ready(function() {
             $.ajax({
-                url: "https://hr.ddc.moph.go.th/api/v2/employee/{{ Auth::user()->preferred_username }}",
+                url: "https://hr-ddc.moph.go.th/api/v2/employee/{{ Auth::user()->preferred_username }}",
                 type: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -399,7 +399,7 @@
             });
 
             $.ajax({
-                url: "https://hr.ddc.moph.go.th/api/v2/employee/pic/{{ Auth::user()->preferred_username }}",
+                url: "https://hr-ddc.moph.go.th/api/v2/employee/pic/{{ Auth::user()->preferred_username }}",
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": "bearer {{ KeycloakWeb::retrieveToken()['access_token'] }}"
