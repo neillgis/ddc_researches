@@ -18,11 +18,9 @@ use Illuminate\Support\Facades\Route;
 class JournalController extends Controller
 {
 
-
   // public function journal(){
   //   return view('frontend.journal');
   // }
-
 
   //  -- Show Dropdown บทความนี้เป็นผลจากโครงการวิจัย --
   public function table_journal(){
@@ -66,9 +64,8 @@ class JournalController extends Controller
 
 
 
-  //  -- SELECT DataTables PROJECT join JOURNAL --
+//  ---- SELECT DataTables PROJECT join JOURNAL -----
     if(Auth::hasRole('manager')){
-
       $query2 = DB::table('db_published_journal')
                 ->join('db_research_project', 'db_research_project.id', '=', 'db_published_journal.pro_id')
                 ->join('users', 'db_published_journal.users_id', '=', 'users.idCard')
@@ -85,6 +82,7 @@ class JournalController extends Controller
                          'db_published_journal.verified',
                          'db_published_journal.status',
                          'users.deptName',
+                         'db_published_journal.deleted_at'
                         )
                 // ->where('db_published_journal.id', $request->id)
                 ->whereNull('db_published_journal.deleted_at')
@@ -93,7 +91,6 @@ class JournalController extends Controller
          // dd($query2);
 
     }elseif(Auth::hasRole('departments')){
-
       $query2 = DB::table('db_published_journal')
                 ->leftjoin('users', 'db_published_journal.users_id', '=', 'users.idCard')
                 ->select(
@@ -114,6 +111,7 @@ class JournalController extends Controller
                          'users.lname',
                          )
                 ->where('users.deptName', Auth::user()->family_name)
+                ->whereNull('db_published_journal.deleted_at')
                 ->orderby('id', 'DESC')
                 ->get();
         // dd($query2);
@@ -162,8 +160,12 @@ class JournalController extends Controller
                     9 => 'ไม่ตรงเงื่อนไข', //no_conditions
                   ];
 
+      $verified_departments = [ 2 => 'อยู่ระหว่างตรวจสอบ', //process_checked
+                                3 => 'อยู่ระหว่างแก้ไข', //process_editing
+                              ];
 
-      // -- DataTable Show -> not_from_project --
+
+// ---- DataTable Show -> not_from_project ----
       $query5 = DB::table('db_published_journal')
                 ->join('users', 'db_published_journal.users_id', '=', 'users.idCard')
                 ->select('db_published_journal.id',
@@ -188,9 +190,9 @@ class JournalController extends Controller
       $query6 = DB::table('ref_journal_status')->get();
 
 
-// --- COUNT 2 BOX on TOP ---
+// ------ COUNT 3 BOX on TOP ------
 
-      // บทความตีพิมพ์ทั้งหมด COUNT = All Record
+      // ตีพิมพ์วารสารทั้งหมด COUNT = All Record
       if(Auth::hasRole('manager')){
         $Total_journal = journal::select('id', 'users_id')
                                   ->whereNull('deleted_at')
@@ -220,7 +222,7 @@ class JournalController extends Controller
       }
 
 
-      // บทความตีพิมพ์ ที่ตรวจสอบแล้ว COUNT = All Record -> 'verified', ['1']
+      // ตีพิมพ์วารสารที่ตรวจสอบแล้ว COUNT = All Record -> 'verified', ['1']
       if(Auth::hasRole('manager')){
         $Total_journal_verify = journal::select('id', 'users_id')
                                       ->whereIn('verified', ['1'])
@@ -253,7 +255,7 @@ class JournalController extends Controller
       }
 
 
-      // บทความที่เป็นผู้นิพนธ์หลัก ที่ตรวจสอบแล้ว COUNT = contribute = 1 -> 'verified', ['1']
+      // วารสารที่เป็นผู้นิพนธ์หลัก ที่ตรวจสอบแล้ว COUNT = contribute = 1 -> 'verified', ['1']
       if(Auth::hasRole('manager')){
         $Total_master_jour = journal::select('id', 'contribute')
                                     ->whereIn ('contribute', ['1'])
@@ -288,7 +290,7 @@ class JournalController extends Controller
                                     ->get()
                                     ->count();
       }
-// --- END COUNT 2 BOX on TOP ---
+// --- END COUNT 3 BOX on TOP ---
 
     return view('frontend.journal',
       [
@@ -302,6 +304,7 @@ class JournalController extends Controller
         'Total_journal_verify'     => $Total_journal_verify,
         'Total_master_jour'        => $Total_master_jour,
         'verified_list'            => $verified,
+        'verified_departments'     => $verified_departments
      ]);
   }
   //  -- END SELECT --

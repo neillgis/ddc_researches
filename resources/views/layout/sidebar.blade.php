@@ -32,9 +32,12 @@
              with font-awesome or any other icon font library -->
 
           @if(Auth::hasRole('departments'))
-
-            <!-- NO Show BUTTON For Departments ONLY -->
-
+            <li class="nav-item">
+             <a class="nav-link {{ Active::check('summary_form') }}" href="{{ route('page.summary') }}" >
+               <i class="nav-icon far fas fa-chart-line"></i>
+               <p> สรุปข้อมูลหน่วยงาน </p>
+             </a>
+            </li>
           @else
              <li class="nav-item ">
                <a class="nav-link {{ Active::check('profile') }} " href="{{ route('page.profile') }}" >
@@ -110,7 +113,7 @@
                </a>
              <ul class="nav nav-treeview">
                <li class="nav-item">
-                 <a class="nav-link" href="{{ asset('Manual_DIR/manual.pdf') }}" target="_blank">
+                 <a class="nav-link" href="{{ asset('Manual_DIR/manuals.pdf') }}" target="_blank">
                    <i class="far fa-circle nav-icon text-warning"></i>
                    <p> คู่มือการใช้งาน </p>
                  </a>

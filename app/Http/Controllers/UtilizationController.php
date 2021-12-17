@@ -256,20 +256,24 @@ if(Auth::hasRole('manager')){
 
 
 
-// TABLE LIST--------------------------------------------------------------------------->
+// --------- TABLE LIST ------------------------------------------->
 
-  // SELECT FORM --------------------------------------------------------------------->
+  // --------- SELECT FORM ----------->
   if(Auth::hasRole('manager')) {
-    $query_research   = research::select ('id','pro_name_th','pro_name_en','users_id','users_name')
+    $query_research   = research::select('id','pro_name_th','pro_name_en','users_id','users_name')
+                                ->where('users_id', Auth::user()->preferred_username)
+                                ->whereNull('deleted_at')
                                 ->get();
 
   }elseif(Auth::hasRole('admin')) {
-    $query_research   = research::select ('id','pro_name_th','pro_name_en','users_id','users_name')
+    $query_research   = research::select('id','pro_name_th','pro_name_en','users_id','users_name')
+                                ->whereNull('deleted_at')
                                 ->get();
 
   }else {
-    $query_research   = research::select ('id','pro_name_th','pro_name_en','users_id','users_name')
-                                -> where ('users_id', Auth::user()->preferred_username)
+    $query_research   = research::select('id','pro_name_th','pro_name_en','users_id','users_name')
+                                ->where('users_id', Auth::user()->preferred_username)
+                                ->whereNull('deleted_at')
                                 ->get();
   }
 
@@ -287,8 +291,13 @@ if(Auth::hasRole('manager')){
                    9 => 'ไม่ตรงเงื่อนไข', //no_conditions
                  ];
 
+     $verified_departments = [ 2 => 'อยู่ระหว่างตรวจสอบ', //process_checked
+                               3 => 'อยู่ระหว่างแก้ไข', //process_editing
+                             ];
 
-  // SELECT TABLE ----------------------------------------------------------------------->
+
+
+  //------------- SELECT TABLE ----------------------------------------------------------------------->
   if(Auth::hasRole('manager')){
     $query_util = DB::table('db_utilization')
                     ->join ('db_research_project', 'db_utilization.pro_id', '=', 'db_research_project.id')
@@ -315,7 +324,7 @@ if(Auth::hasRole('manager')){
     $query_util = DB::table('db_utilization')
                     ->join ('db_research_project', 'db_utilization.pro_id', '=', 'db_research_project.id')
                     ->leftjoin('users', 'db_utilization.users_id', '=', 'users.idCard')
-                    -> select ('db_utilization.id',
+                    ->select ('db_utilization.id',
                                'db_utilization.util_type',
                                'db_utilization.files',
                                'db_utilization.verified',
@@ -334,6 +343,7 @@ if(Auth::hasRole('manager')){
                                // )
                                )
                     ->where('deptName', Auth::user()->family_name)
+                    ->whereNull('db_utilization.deleted_at')
                     ->get();
 
   }else {
@@ -354,7 +364,7 @@ if(Auth::hasRole('manager')){
                                // )
                                )
                     ->where('db_utilization.users_id', Auth::user()->preferred_username)
-                    ->where('db_utilization.deleted_at')
+                    ->whereNull('db_utilization.deleted_at')
                     ->get();
   }
 
@@ -375,6 +385,7 @@ if(Auth::hasRole('manager')){
       // SELECT TABLE
       'table_util'             => $query_util,
       'verified_list'          => $verified,
+      'verified_departments'   => $verified_departments,
       'status'                 => $query9,
     ]);
 }

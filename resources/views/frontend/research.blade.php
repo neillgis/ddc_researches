@@ -77,12 +77,12 @@
 
     <!-- START SUMMARY Total Box -->
       <div class="row">
-        <div class="col-md-4 mx-auto">
-          <div class="small-box bg-danger mx-auto shadow">
+        <div class="col-lg-3 col-md-6 mx-auto">
+          <div class="small-box bg-blue mx-auto shadow">
             <div class="inner">
-              <h3> {{ empty($Total_publish_pro)?'0': $Total_publish_pro }} โครงการ</h3>
+              <h3> {{ empty($Total_departments)?'0': $Total_departments }} โครงการ</h3>
               <br>
-              <p> โครงการวิจัยที่ตีพิมพ์ทั้งหมด </p>
+              <p><b>โครงการทั้งหมด</b></p>
             </div>
             <div class="icon">
               <i class="fas fa-dice-d20"></i>
@@ -91,12 +91,26 @@
           </div>
         </div>
 
-        <div class="col-md-4 mx-auto">
+        <div class="col-lg-3 col-md-6 mx-auto">
+          <div class="small-box bg-danger mx-auto shadow">
+            <div class="inner">
+              <h3> {{ empty($Total_publish_pro)?'0': $Total_publish_pro }} โครงการ</h3>
+              <br>
+              <p> โครงการที่ตีพิมพ์ </p>
+            </div>
+            <div class="icon">
+              <i class="fas fa-dice-d20"></i>
+            </div>
+            <!-- <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
+          </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6 mx-auto">
           <div class="small-box bg-success mx-auto shadow">
             <div class="inner">
               <h3> {{ empty($Total_research)?'0': $Total_research }} โครงการ</h3>
               <br>
-              <p> โครงการวิจัยที่ตรวจสอบแล้ว </p>
+              <p> โครงการที่ตรวจสอบแล้ว </p>
             </div>
             <div class="icon">
               <i class="fas fa-microscope"></i>
@@ -105,12 +119,12 @@
           </div>
         </div>
 
-        <div class="col-md-4 mx-auto">
+        <div class="col-lg-3 col-md-6 mx-auto">
           <div class="small-box bg-info mx-auto shadow">
             <div class="inner">
               <h3> {{ empty($Total_master_pro)?'0': $Total_master_pro }} โครงการ</h3>
               <br>
-              <p> โครงการวิจัยที่เป็นผู้วิจัยหลัก</p>
+              <p> โครงการที่เป็นผู้วิจัยหลัก</p>
             </div>
             <div class="icon">
               <i class="fas fa-user-graduate"></i>
@@ -118,25 +132,8 @@
             <!-- <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
           </div>
         </div>
-      </div>
 
-      @if(Auth::hasRole('departments'))
-      <div class="row">
-        <div class="col-md-4">
-          <div class="small-box bg-warning mx-auto shadow">
-            <div class="inner">
-              <h3> {{ empty($Total_departments)?'0': $Total_departments }} โครงการ</h3>
-              <br>
-              <p> โครงการวิจัยของหน่วยงานทั้งหมด </p>
-            </div>
-            <div class="icon">
-              <i class="fas fa-dice-d20"></i>
-            </div>
-            <!-- <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> -->
-          </div>
-        </div>
       </div>
-      @endif
     </div>
   </section>
   <br>
@@ -164,7 +161,7 @@
             </div>
 
             <!-- <form role="form"> -->
-            <form method="POST" action="{{ route('research.insert') }}" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('research.insert') }}" enctype="multipart/form-data" onsubmit="disableButton()">
               @csrf
 
               <div class="card-body">
@@ -290,7 +287,7 @@
               </div>
 
               <div class="card-footer">
-                <button type="submit" class="btn btn-success float-right" value="บันทึกข้อมูล">
+                <button type="submit" class="btn btn-success float-right" value="บันทึกข้อมูล" id="btn_disabled">
                   <i class="fas fa-save"></i> &nbsp;บันทึกข้อมูล </button>
               </div>
 
@@ -334,6 +331,7 @@
                       @if(Auth::hasRole('departments'))
                         <!-- NO Show BUTTON For Departments ONLY -->
                           <th class="text-center"> ชื่อ/สกุล </th>
+                          <th class="text-right"> Actions </th>
                       @else
                         <th class="text-right"> Actions </th>
                       @endif
@@ -373,17 +371,38 @@
 
                   @if(Auth::hasRole('departments'))
 
-                    <!-- NO Show BUTTON For Departments ONLY -->
+                    <!--  Show SOME_BUTTON For Departments ONLY -->
                     <td class="text-center"> {{ $value->users_name }} </td>
 
-                  @else
-
+                    <!-- ACTIONS Button for Departments -->
                     <td class="td-actions text-right text-nowrap" href="#">
+                      <div class="btn-group">
+                        <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown"><i class="fas fa-cog"></i></button>
+                          <div class="dropdown-menu" role="menu">
+                          <!-- DOWNLOAD new-->
+                              <a class="dropdown-item" href="{{ route('DownloadFile.research', ['id' => $value->id, 'files' => $value->files]) }}" title="Download">
+                                <i class="fas fa-arrow-alt-circle-down"></i>&nbsp; Download
+                              </a>
+                          <!-- END DOWNLOAD -->
 
+                              <div class="dropdown-divider"></div>
+
+                          <!-- VERIFIED -->
+                              <a class="dropdown-item" href="#" data-toggle="modal" data-target="#modal-default{{ $value->id }}" title="Verfied">
+                                <i class="fas fa-user-check"></i>&nbsp; Verified
+                              </a>
+                          <!-- END VERIFIED -->
+                          </div>
+                      </div>
+                    </td>
+
+                  @else
+                    <!-- ACTIONS Button for MANAGER -->
+                    <td class="td-actions text-right text-nowrap" href="#">
 
                       @if(Auth::hasRole('manager'))
                         <div class="btn-group">
-                            <button type="button" class="btn btn-warning dropdown-toggle dropdown-icon" data-toggle="dropdown"> Action link </button>
+                          <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown"><i class="fas fa-cog"></i></button>
                             <div class="dropdown-menu" role="menu">
                             <!-- DOWNLOAD old-->
                             <!-- {{-- @if($value->verified == "1" || $value->verified == "9")
@@ -531,8 +550,6 @@
                   <!-- END MODAL Delete -->
 
 
-
-
                   <!-- MODAL Verify -->
                     <div class="modal fade" id="modal-default{{ $value->id }}" tabindex="-1" role="dialog" aria-hidden="true">
                       <div class="modal-dialog modal-dialog-centered" role="document">
@@ -541,7 +558,7 @@
                             <h4 class="modal-title"><b>การตรวจสอบ</b> (Project ID. <font color="red">{{ $value->id }}</font>) </h4>
                           </div>
 
-                        <form action="{{ route('research.verified') }}" method="POST">
+                        <form action="{{ route('research.verified') }}" method="POST" onsubmit="disableButtonVerify()">
                           @csrf
 
                           <div class="modal-body">
@@ -550,12 +567,22 @@
                                 <!-- hidden = id -->
                                 <input type="hidden" class="form-control" name="id" value="{{ $value->id }}">
 
-                                <select class="form-control" name="verified" >
-                                    <option value="" selected="true" disabled="true"> -- กรุณาเลือก -- </option>
-                                  @foreach ($verified_list as $key => $value)
-                                    <option value="{{ $key }}" {{ $verified_list == $key ? 'selected' : '' }}> {{ $value }} </option>
-                                  @endforeach
-                                </select>
+                                @if(Auth::hasRole('manager'))
+                                    <select class="form-control" name="verified">
+                                        <option value="" selected="true" disabled="true"> -- กรุณาเลือก -- </option>
+                                      @foreach ($verified_list as $key => $value)
+                                        <option value="{{ $key }}" {{ $verified_list == $key ? 'selected' : '' }}> {{ $value }} </option>
+                                      @endforeach
+                                    </select>
+                                @elseif(Auth::hasRole('departments'))
+                                    <select class="form-control" name="verified">
+                                        <option value="" selected="true" disabled="true"> -- กรุณาเลือก -- </option>
+                                      @foreach ($verified_departments as $key => $value)
+                                        <option value="{{ $key }}" {{ $verified_departments == $key ? 'selected' : '' }}> {{ $value }} </option>
+                                      @endforeach
+                                    </select>
+                                @endif
+
                               </div>
                             </div>
                             <br>
@@ -563,8 +590,8 @@
 
                           <div class="modal-footer justify-content-between">
                             <button type="button" class="btn btn-default" data-dismiss="modal"> Close </button>
-                            <button type="submit" class="btn btn-success float-right" value="บันทึกข้อมูล">
-                              <i class="fas fa-save"></i> &nbsp;Save Change
+                            <button type="submit" class="btn_disabled_verify btn btn-success float-right" value="บันทึกข้อมูล">
+                              <i class="fas fa-save"></i> &nbsp;บันทึกข้อมูล
                             </button>
                           </div>
                         </form>
@@ -573,7 +600,6 @@
                       </div>
                     </div>
                   <!-- END MODAL Verify -->
-
 
 
                   </tr>
@@ -629,9 +655,9 @@
         Swal.fire({
             icon: 'success',
             title: 'บันทึกข้อมูลเรียบร้อยแล้ว',
-            showConfirmButton: true,
+            showConfirmButton: false,
             confirmButtonColor: '#2C6700',
-            timer: 2500
+            timer: 2000
         })
       </script>
     @endif
@@ -647,7 +673,7 @@
             title: 'ลบข้อมูลเรียบร้อยแล้ว',
             showConfirmButton: false,
             confirmButtonColor: '#2C6700',
-            timer: 2500
+            timer: 2000
           })
         </script>
       @endif
@@ -662,7 +688,7 @@
             title: 'การตรวจสอบถูกดำเนินการแล้ว',
             showConfirmButton: false,
             confirmButtonColor: '#2C6700',
-            timer: 3800
+            timer: 2500
         })
       </script>
     @endif
@@ -674,14 +700,12 @@
         Swal.fire({
             icon: 'warning',
             title: 'รายการนี้ยังไม่ได้ตรวจสอบ',
-            // text: 'รายการนี้ยังไม่ได้ตรวจสอบ',
-            showConfirmButton: true,
+            showConfirmButton: false,
             confirmButtonColor: '#d33',
-            timer: 3800
+            timer: 2500
         })
       </script>
     @endif
-
 
 
 <!-- FILE INPUT -->
@@ -763,6 +787,25 @@
         // }
       });
       $('#datepicker2').datepicker("setDate", CurrentDate);
+
+  //OnSubmit Disable Button
+    function disableButton() {
+        var btn = document.getElementById('btn_disabled');
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Loading...'
+    }
+
+    //OnSubmit Disable Button Verify
+      function disableButtonVerify() {
+          var btn2 = document.getElementsByClassName("btn_disabled_verify");
+            for(var i=0; i<btn2.length; i++)
+              {
+                btn2[i].disabled = true;
+                btn2[i].innerHTML = '<span class="spinner-border spinner-border-sm"></span> Loading...';
+                  // alert(theOddOnes[i].innerHTML);
+              }
+      }
+
 
 </script>
 

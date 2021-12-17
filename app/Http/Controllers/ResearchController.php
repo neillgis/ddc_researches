@@ -140,24 +140,50 @@ class ResearchController extends Controller
                     9 => 'ไม่ตรงเงื่อนไข', //no_conditions
                   ];
 
+      $verified_departments = [ 2 => 'อยู่ระหว่างตรวจสอบ', //process_checked
+                                3 => 'อยู่ระหว่างแก้ไข', //process_editing
+                              ];
 
-// --- COUNT 3 BOX on TOP ---
 
-    //For "Departments" ONLY
-    $Total_departments = DB::table('db_research_project')
-                      ->leftjoin('users', 'users.idCard', '=', 'db_research_project.users_id')
-                      ->select( 'users.id',
-                                'users.idCard',
-                                'users.deptName',
-                                'db_research_project.id',
-                                'db_research_project.users_id',
-                                'db_research_project.pro_name_en',
-                                'db_research_project.publish_status'
-                              )
-                      // ->whereIn('publish_status', ['1'])
-                      ->where('deptName', Auth::user()->family_name)
-                      ->get()
-                      ->count();
+
+// ---------- COUNT 4 BOX on TOP ----------
+
+    // COUNT Totals
+    if(Auth::hasRole('manager')){
+        $Total_departments = DB::table('db_research_project')
+                          ->leftjoin('users', 'users.idCard', '=', 'db_research_project.users_id')
+                          ->select( 'users.id',
+                                    'users.idCard',
+                                    'users.deptName',
+                                    'db_research_project.id',
+                                    'db_research_project.users_id',
+                                    'db_research_project.pro_name_en',
+                                    'db_research_project.publish_status'
+                                  )
+                          // ->whereIn('publish_status', ['1'])
+                          // ->where('deptName', Auth::user()->family_name)
+                          ->whereNull('deleted_at')
+                          ->get()
+                          ->count();
+
+    }elseif('departments') {
+      $Total_departments = DB::table('db_research_project')
+                        ->leftjoin('users', 'users.idCard', '=', 'db_research_project.users_id')
+                        ->select( 'users.id',
+                                  'users.idCard',
+                                  'users.deptName',
+                                  'db_research_project.id',
+                                  'db_research_project.users_id',
+                                  'db_research_project.pro_name_en',
+                                  'db_research_project.publish_status'
+                                )
+                        // ->whereIn('publish_status', ['1'])
+                        ->where('deptName', Auth::user()->family_name)
+                        ->whereNull('deleted_at')
+                        ->get()
+                        ->count();
+    }
+
 
 
       // COUNT = publish_status = 1
@@ -191,7 +217,7 @@ class ResearchController extends Controller
         $Total_publish_pro = DB::table('db_research_project')
                           -> select('id','pro_name_th','pro_name_en','pro_position',
                                     'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
-                          ->whereIn ('publish_status', ['1'])
+                          // ->whereIn ('publish_status', ['1'])
                           ->where('users_id', Auth::user()->preferred_username)
                           ->whereNull('deleted_at')
                           ->get()
@@ -289,7 +315,8 @@ class ResearchController extends Controller
        'Total_master_pro'   => $Total_master_pro,
        'Total_publish_pro'  => $Total_publish_pro,
        'verified_list'      => $verified,
-       'Total_departments'  => $Total_departments
+       'verified_departments' => $verified_departments,
+       'Total_departments'    => $Total_departments
       ]);
   }
   //  -- END SELECT --

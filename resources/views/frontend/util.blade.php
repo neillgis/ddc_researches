@@ -73,7 +73,7 @@
           <div class="container-fluid">
             <div class="row">
               <div class="col-md-6 mx-auto">
-                <div class="small-box bg-red">
+                <div class="small-box bg-red shadow">
                   <div class="inner">
                     <!-- เรียกจาก db_utilization -> โดย count id (All Record) --------->
                     <h3> {{ empty($Total_util)?'0': $Total_util }} โครงการ </h3>
@@ -87,7 +87,7 @@
               </div>
 
               <div class="col-md-6 mx-auto">
-                <div class="small-box bg-green">
+                <div class="small-box bg-green shadow">
                   <div class="inner">
                     <!-- เรียกจาก db_utilization -> โดย count id (All Record) --------->
                     <h3> {{ empty($Total_util_verify)?'0': $Total_util_verify }} โครงการ </h3>
@@ -101,7 +101,7 @@
               </div>
 
               <div class="col-md-3 mx-auto">
-                <div class="small-box bg-info">
+                <div class="small-box bg-info shadow">
                   <div class="inner">
                     <!-- เรียกจาก db_utilization -> โดย count id -> util_type = เชิงนโยบาย --------->
                     <h3> {{ empty($Total_policy_util)?'0': $Total_policy_util }} โครงการ </h3>
@@ -120,7 +120,7 @@
 
 
               <div class="col-md-3 mx-auto">
-                <div class="small-box bg-info">
+                <div class="small-box bg-info shadow">
                   <div class="inner">
                     <!-- เรียกจาก db_utilization -> โดย count id -> util_type = เชิงวิชาการ --------->
                     <h3> {{ empty($Total_academic_util)?'0': $Total_academic_util }} โครงการ </h3>
@@ -138,7 +138,7 @@
               </div>
 
               <div class="col-md-3 mx-auto">
-                <div class="small-box bg-info">
+                <div class="small-box bg-info shadow">
                   <div class="inner">
                     <!-- เรียกจาก db_utilization -> โดย count id -> util_type = เชิงสังคม/ชุมชน --------->
                     <h3> {{ empty($Total_social_util)?'0': $Total_social_util }} โครงการ </h3>
@@ -156,7 +156,7 @@
               </div>
 
               <div class="col-md-3 mx-auto">
-                <div class="small-box bg-info">
+                <div class="small-box bg-info shadow">
                   <div class="inner">
                     <!-- เรียกจาก db_utilization -> โดย count id -> util_type = เชิงพาณิชย์ --------->
                     <h3> {{ empty($Total_commercial_util)?'0': $Total_commercial_util }} โครงการ </h3>
@@ -194,69 +194,68 @@
                 </div>
               </div>
 
-                <form method="POST" action="{{ route('util.insert') }}" enctype="multipart/form-data">
+                <form method="POST" action="{{ route('util.insert') }}" enctype="multipart/form-data" onsubmit="disableButton()">
                   @csrf
 
-              <div class="card-body">
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <b><lebel for="exampleSelect1"> ชื่อโครงการ (TH-ENG) <font color="red"> * </font></lebel></b>
-                      <!-- SELECT ดึงข้อมูลชื่อโครงการมาจาก -> db_research_project Table -->
-                      <select class="form-control" name="pro_id" required>
-                          <option value="" disabled="true" selected="true"> กรุณาเลือก </option>
-                        @foreach ($form_research as $value)
-                          <option value = "{{ $value->id }}"> {{ $value->pro_name_th." ".$value->pro_name_en }} </option>
-                        @endforeach
-                      </select>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <b><lebel for="util_type"> ประเภทการนำไปใช้ประโยชน์ <font color="red"> * </font></lebel></b>
-                      <select class="form-control" name="util_type" required>
-                        <option value="" disabled="true" selected="true" > กรุณาเลือก </option>
-                        @foreach ($form_util_type as $key => $value)
-                          <option value="{{ $value }}"> {{ $value }} </option>
-                        @endforeach
-                      </select>
-                    </div>
-                  </div>
-                </div>
+                    <div class="card-body">
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <b><lebel for="exampleSelect1"> ชื่อโครงการ (TH-ENG) <font color="red"> * </font></lebel></b>
+                            <!-- SELECT ดึงข้อมูลชื่อโครงการมาจาก -> db_research_project Table -->
+                            <select class="form-control" name="pro_id" required>
+                                <option value="" disabled="true" selected="true"> กรุณาเลือก </option>
+                              @foreach ($form_research as $value)
+                                <option value = "{{ $value->id }}"> {{ $value->pro_name_th." ".$value->pro_name_en }} </option>
+                              @endforeach
+                            </select>
+                          </div>
+                        </div>
+                        <div class="col-md-6">
+                          <div class="form-group">
+                            <b><lebel for="util_type"> ประเภทการนำไปใช้ประโยชน์ <font color="red"> * </font></lebel></b>
+                            <select class="form-control" name="util_type" required>
+                              <option value="" disabled="true" selected="true" > กรุณาเลือก </option>
+                              @foreach ($form_util_type as $key => $value)
+                                <option value="{{ $value }}"> {{ $value }} </option>
+                              @endforeach
+                            </select>
+                          </div>
+                        </div>
+                      </div>
 
-                <div class="row">
-                  <div class="col-md-12">
-                    <div class="form-group">
-                      <label for="exampleInput1"> คำอธิบายการนำไปใช้ประโยชน์ </label>
-                      <textarea class="form-control" name="util_descrip" rows="3" cols="30" placeholder="ข้อความไม่เกิน 200 ตัวอักษร"></textarea>
-                    </div>
-                  </div>
-                </div>
+                      <div class="row">
+                        <div class="col-md-12">
+                          <div class="form-group">
+                            <label for="exampleInput1"> คำอธิบายการนำไปใช้ประโยชน์ </label>
+                            <textarea class="form-control" name="util_descrip" rows="3" cols="30" placeholder="ข้อความไม่เกิน 200 ตัวอักษร"></textarea>
+                          </div>
+                        </div>
+                      </div>
 
-                <div class="row" >
-                  <div class="col-md-12">
-                    <div class="form-group">
-                    <b><lebel for="expInputFile"> อัพโหลดไฟล์ : การนำไปใช้ประโยชน์.pdf <font color="red"> * </font></lebel></b>
-                        <a class="five small-box-footer" href="#" id="modal"> <b> (คำอธิบายการแนบหลักฐาน) </b></a>
-                    <div class="input-group">
-                      <div class="custom-file">
-                        <input type="file" class="custom-file-input" name="files" required>
-                        <label class="custom-file-label" for="expInputFile"> Upload File ขนาดไม่เกิน 20 MB </label>
+                      <div class="row" >
+                        <div class="col-md-12">
+                          <div class="form-group">
+                          <b><lebel for="expInputFile"> อัพโหลดไฟล์ : การนำไปใช้ประโยชน์.pdf <font color="red"> * </font></lebel></b>
+                              <a class="five small-box-footer" href="#" id="modal"> <b> (คำอธิบายการแนบหลักฐาน) </b></a>
+                          <div class="input-group">
+                            <div class="custom-file">
+                              <input type="file" class="custom-file-input" name="files" required>
+                              <label class="custom-file-label" for="expInputFile"> Upload File ขนาดไม่เกิน 20 MB </label>
+                            </div>
+                          </div>
+                          </div>
+                        </div>
                       </div>
                     </div>
+
+                    <div class="card-footer">
+                          <button type="submit" class="btn btn-success float-right" value="บันทึกข้อมูล" id="btn_disabled">
+                            <i class="fas fa-save"></i> &nbsp;บันทึกข้อมูล </button>
                     </div>
-                  </div>
-                </div>
+
+                </form>
               </div>
-
-              <div class="card-footer">
-                    <button type="submit" class="btn btn-success float-right" value="บันทึกข้อมูล">
-                      <i class="fas fa-save"></i> &nbsp;บันทึกข้อมูล </button>
-              </div>
-
-              </form>
-
-            </div>
             </div>
           </div>
           <br>
@@ -290,6 +289,7 @@
                             @if(Auth::hasRole('departments'))
                               <!-- NO Show BUTTON For Departments ONLY -->
                               <th class="text-center"> ชื่อ/สกุล </th>
+                              <th class="text-right"> Actions </th>
                             @else
                               <th class="text-right"> Actions </th>
                             @endif
@@ -333,9 +333,29 @@
                           </td>
 
                         @if(Auth::hasRole('departments'))
-
-                          <!-- NO Show BUTTON For Departments ONLY -->
+                          <!-- Show SOME_BUTTON For Departments ONLY -->
                           <td class="text-center"> {{ $value->fname." ".$value->lname }} </td>
+
+                          <td class="td-actions text-right text-nowrap" href="#">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown"><i class="fas fa-cog"></i></button>
+                                <div class="dropdown-menu" role="menu">
+                                <!-- DOWNLOAD new -->
+                                    <a class="dropdown-item" href="{{ route('DownloadFile.util', ['id' => $value->id, 'files' => $value->files]) }}" title="Download">
+                                      <i class="fas fa-arrow-alt-circle-down"></i>&nbsp; Download
+                                    </a>
+                                <!-- END DOWNLOAD -->
+
+                                    <div class="dropdown-divider"></div>
+
+                                <!-- VERIFIED -->
+                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#modal-default-util{{ $value->id }}" title="Status & Verfied">
+                                      <i class="fas fa-user-check"></i>&nbsp; Verified
+                                    </a>
+                                <!-- END VERIFIED -->
+                                </div>
+                            </div>
+                          </td>
 
                         @else
                           <!-- BUTTON TOTAL -->
@@ -344,7 +364,7 @@
 
                             @if(Auth::hasRole('manager'))
                               <div class="btn-group">
-                                  <button type="button" class="btn btn-warning dropdown-toggle dropdown-icon" data-toggle="dropdown"> Action link </button>
+                                  <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown"><i class="fas fa-cog"></i></button>
                                   <div class="dropdown-menu" role="menu">
                                   <!-- DOWNLOAD old -->
                                 <!-- {{-- @if($value->verified == "1" || $value->verified == "9")
@@ -500,7 +520,7 @@
                                     <h4 class="modal-title"><b>การตรวจสอบ</b> (Util ID. <font color="red">{{ $value->id }}</font>) </h4>
                                   </div>
 
-                                  <form action="{{ route('util.verified') }}" method="POST">
+                                  <form action="{{ route('util.verified') }}" method="POST" onsubmit="disableButtonVerify()">
                                   @csrf
 
                                   <div class="modal-body">
@@ -508,21 +528,32 @@
                                       <div class="col-md-12">
                                         <!-- hidden = id -->
                                         <input type="hidden" class="form-control" name="id" value="{{ $value->id }}">
-                                        <label> สถานะการนำไปใช้ประโยชน์ </label>
-                                        <select class="form-control" name="status">
-                                            <option value="" selected="true" disabled="true"> -- กรุณาเลือก -- </option>
-                                          @foreach ($status as $value)
-                                            <option value="{{ $value->id }}"> {{ $value->util_status }} </option>
-                                          @endforeach
-                                        </select>
-                                        <br>
-                                        <label> การตรวจสอบ </label>
-                                        <select class="form-control" name="verified" >
-                                            <option value="" selected="true" disabled="true"> -- กรุณาเลือก -- </option>
-                                          @foreach ($verified_list as $key => $value)
-                                            <option value="{{ $key }}" {{ $verified_list == $key ? 'selected' : '' }}> {{ $value }} </option>
-                                          @endforeach
-                                        </select>
+
+                                        @if(Auth::hasRole('manager'))
+                                            <label> สถานะการนำไปใช้ประโยชน์ </label>
+                                              <select class="form-control" name="status">
+                                                  <option value="" selected="true" disabled="true"> -- กรุณาเลือก -- </option>
+                                                @foreach ($status as $value)
+                                                  <option value="{{ $value->id }}"> {{ $value->util_status }} </option>
+                                                @endforeach
+                                              </select>
+                                            <br>
+                                            <label> การตรวจสอบ </label>
+                                              <select class="form-control" name="verified" >
+                                                  <option value="" selected="true" disabled="true"> -- กรุณาเลือก -- </option>
+                                                @foreach ($verified_list as $key => $value)
+                                                  <option value="{{ $key }}" {{ $verified_list == $key ? 'selected' : '' }}> {{ $value }} </option>
+                                                @endforeach
+                                              </select>
+                                        @elseif(Auth::hasRole('departments'))
+                                              <select class="form-control" name="verified" >
+                                                  <option value="" selected="true" disabled="true"> -- กรุณาเลือก -- </option>
+                                                @foreach ($verified_departments as $key => $value)
+                                                  <option value="{{ $key }}" {{ $verified_departments == $key ? 'selected' : '' }}> {{ $value }} </option>
+                                                @endforeach
+                                              </select>
+                                        @endif
+
                                       </div>
                                     </div>
                                     <br>
@@ -530,8 +561,8 @@
 
                                   <div class="modal-footer justify-content-between">
                                     <button type="button" class="btn btn-default" data-dismiss="modal"> Close </button>
-                                    <button type="submit" class="btn btn-success float-right" value="บันทึกข้อมูล">
-                                      <i class="fas fa-save"></i> &nbsp;Save Change
+                                    <button type="submit" class="btn_disabled_verify btn btn-success float-right" value="บันทึกข้อมูล">
+                                      <i class="fas fa-save"></i> &nbsp;บันทึกข้อมูล
                                     </button>
                                   </div>
                                 </form>
@@ -603,7 +634,6 @@
     Swal.fire("การนำไปใช้ประโยชน์",
     "• เชิงนโยบาย หมายถึง พิจารณาจากการมีหลักฐานการนำข้อมูลไปประกอบการตัดสินใจในการบริหาร/กำหนดนโยบาย <br> <br> • เชิงวิชาการ หมายถึง พิจารณาจากการถูกอ้างอิงในวารสารใน/หรือต่างประเทศ (citation)* การนำไปอ้างอิงในการจัดทำหนังสือ หรือรายงานของหน่วยงานระดับกรม การนำไปอ้างอิงของหน่วยงานในระดับรัฐวิสาหกิจ/บริษัทมหาชน การได้รับหนังสือเรียนเชิญเป็นวิทยากรเพื่อให้ความรู้ในกรอบของผลงานวิจัยจากหน่วยงานต่าง ๆ <br> <br> • เชิงชุมชน/สังคม หมายถึง พิจารณาจากการมีหลักฐานการถ่ายทอดเทคโนโลยีที่ได้จากงานวิจัยในชุมชน/ท้องถิ่นได้รับหนังสือเรียนเชิญให้ความรู้จากชุมชน/องค์กร/หน่วยงานในพื้นที่ต่าง ๆ <br> <br> • เชิงพาณิชย์ หมายถึง พิจารณาจากการมีหลักฐานการเจรจาทางธุรกิจ ไม่นับการยื่น/จดทะเบียนคุ้มครองทรัพย์สินทางปัญญา",
     // "warning"
-
     );
   });
 </script>
@@ -616,7 +646,7 @@
         icon: 'success',
         title: 'บันทึกข้อมูลเรียบร้อยแล้ว',
         showConfirmButton: false,
-        timer: 2500
+        timer: 2000
     })
   </script>
 @endif
@@ -631,7 +661,7 @@
         title: 'ลบข้อมูลเรียบร้อยแล้ว',
         showConfirmButton: false,
         confirmButtonColor: '#2C6700',
-        timer: 2500
+        timer: 2000
       })
     </script>
   @endif
@@ -646,7 +676,7 @@
         title: 'แก้ไขข้อมูลเรียบร้อยแล้ว',
         showConfirmButton: false,
         confirmButtonColor: '#2C6700',
-        timer: 2500
+        timer: 2000
     })
   </script>
 @endif
@@ -660,7 +690,7 @@
         title: 'การตรวจสอบถูกดำเนินการแล้ว',
         showConfirmButton: false,
         confirmButtonColor: '#2C6700',
-        timer: 3800
+        timer: 2500
     })
   </script>
 @endif
@@ -675,23 +705,19 @@
         text: 'รายการนี้ยังไม่ได้รับการตรวจสอบอีกครั้ง',
         showConfirmButton: false,
         confirmButtonColor: '#d33',
-        timer: 6000
+        timer: 2500
     })
   </script>
 @endif
 
 
-<!-- FILE INPUT -->
-<script type="text/javascript">
+<script>
+//FILE INPUT
   $(document).ready(function () {
     bsCustomFileInput.init();
   });
-</script>
-<!-- END FILE INPUT -->
 
-
-<!-- REPORT FILE -->
-<script type="text/javascript" class="init">
+//REPORT FILE
   $(document).ready(function() {
     $('#example1').DataTable({
       dom: 'Bfrtip',
@@ -700,9 +726,27 @@
       ]
     });
   });
-</script>
-<!-- END REPORT FILE -->
 
+  //OnSubmit Disable Button
+    function disableButton() {
+        var btn = document.getElementById('btn_disabled');
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Loading...'
+    }
+
+  //OnSubmit Disable Button Verify
+    function disableButtonVerify() {
+        var btn2 = document.getElementsByClassName("btn_disabled_verify");
+          for(var i=0; i<btn2.length; i++)
+            {
+              btn2[i].disabled = true;
+              btn2[i].innerHTML = '<span class="spinner-border spinner-border-sm"></span> Loading...';
+                // alert(theOddOnes[i].innerHTML);
+            }
+    }
+
+
+</script>
 
 @stop('js-custom-script')
 
