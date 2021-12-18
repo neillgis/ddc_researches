@@ -32,12 +32,9 @@
              with font-awesome or any other icon font library -->
 
           @if(Auth::hasRole('departments'))
-            <li class="nav-item">
-             <a class="nav-link {{ Active::check('summary_form') }}" href="{{ route('page.summary') }}" >
-               <i class="nav-icon far fas fa-chart-line"></i>
-               <p> สรุปข้อมูลหน่วยงาน </p>
-             </a>
-            </li>
+
+              <!-- No Show Button for "departments" -->
+
           @else
              <li class="nav-item ">
                <a class="nav-link {{ Active::check('profile') }} " href="{{ route('page.profile') }}" >
@@ -48,12 +45,19 @@
            @endif
 
           @if(Auth::hasRole('manager') || Auth::hasRole('admin'))
-            <li class="nav-item">
-             <a class="nav-link {{ Active::check('summary_form') }}" href="{{ route('page.summary') }}" >
-               <i class="nav-icon far fas fa-chart-line"></i>
-               <p> สรุปข้อมูลสำหรับ (กนว.) </p>
-             </a>
-            </li>
+              <li class="nav-item">
+               <a class="nav-link {{ Active::check('summary_form') }}" href="{{ route('page.summary') }}" >
+                 <i class="nav-icon far fas fa-chart-line"></i>
+                 <p> สรุปข้อมูลสำหรับ (กนว.) </p>
+               </a>
+              </li>
+          @elseif(Auth::hasRole('departments'))
+              <li class="nav-item">
+               <a class="nav-link {{ Active::check('summary_form') }}" href="{{ route('page.summary') }}" >
+                 <i class="nav-icon far fas fa-chart-line"></i>
+                 <p> สรุปข้อมูลหน่วยงาน </p>
+               </a>
+              </li>
           @endif
 
              <li class="nav-item ">
