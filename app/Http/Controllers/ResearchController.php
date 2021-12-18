@@ -160,8 +160,6 @@ class ResearchController extends Controller
                                     'db_research_project.pro_name_en',
                                     'db_research_project.publish_status'
                                   )
-                          // ->whereIn('publish_status', ['1'])
-                          // ->where('deptName', Auth::user()->family_name)
                           ->whereNull('deleted_at')
                           ->get()
                           ->count();
@@ -177,7 +175,6 @@ class ResearchController extends Controller
                                     'db_research_project.pro_name_en',
                                     'db_research_project.publish_status'
                                   )
-                          // ->whereIn('publish_status', ['1'])
                           ->where('deptName', Auth::user()->family_name)
                           ->whereNull('deleted_at')
                           ->get()
@@ -317,8 +314,6 @@ class ResearchController extends Controller
                           ->get()
                           ->count();
       }
-
-
 // --- END COUNT 3 BOX on TOP ---
 
     return view('frontend.research',
