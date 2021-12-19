@@ -29,98 +29,202 @@ class SummaryController extends Controller
 
 
     public function table_summary(){
-    // SUM BOX ------------------------------------------------------------------------>
+//---------- SUM BOX ------------------------------------------------------------------------>
 
       // โครงการวิจัยที่ทำเสร็จสิ้นทั้งหมด db_research_project -> โดย count id --------->
+      // For "MANAGER"
       if(Auth::hasRole('manager')){
-        $Total_research = DB::table('db_research_project')
-                            ->select('db_research_project.id','pro_name_th','pro_name_en','pro_position',
-                                      'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
-                            ->whereNull('deleted_at')
-                            ->get()
-                            ->count();
+          $Total_research = DB::table('db_research_project')
+                              ->select('db_research_project.id','pro_name_th','pro_name_en','pro_position',
+                                        'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
+                              ->whereNull('deleted_at')
+                              ->get()
+                              ->count();
 
-        $Total_research_verify = DB::table('db_research_project')
-                                  ->select('db_research_project.id','pro_name_th','pro_name_en','pro_position',
-                                            'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
-                                  ->whereNull('deleted_at')
-                                  ->whereIn('verified', ['1'])
-                                  ->get()
-                                  ->count();
-
-        $Total_research_position_pi = DB::table('db_research_project')
-                                        ->select('db_research_project.id','pro_name_th','pro_name_en','pro_position',
-                                                  'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
-                                        ->whereNull('deleted_at')
-                                        ->whereIn('verified', ['1'])
-                                        ->whereIn('pro_position', ['1'])
-                                        ->OrwhereIn('pro_position', ['2'])
-                                        ->get()
-                                        ->count();
-
-        $Total_research_users = DB::table('db_research_project')
-                                    ->rightjoin('users', 'db_research_project.users_id', '=', 'users.idCard')
-                                    ->select('users_id')
-                                    ->groupBy('db_research_project.users_id')
-                                    ->whereNull('db_research_project.deleted_at')
-                                    ->where('db_research_project.verified', 1)
+          $Total_research_verify = DB::table('db_research_project')
+                                    ->select('db_research_project.id','pro_name_th','pro_name_en','pro_position',
+                                              'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
+                                    ->whereNull('deleted_at')
+                                    ->whereIn('verified', ['1'])
                                     ->get()
                                     ->count();
 
+          // $Total_research_position_pi = DB::table('db_research_project')
+          //                                 ->select('db_research_project.id','pro_name_th','pro_name_en','pro_position',
+          //                                           'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
+          //                                 ->whereNull('deleted_at')
+          //                                 ->whereIn('verified', ['1'])
+          //                                 ->whereIn('pro_position', ['1'])
+          //                                 ->OrwhereIn('pro_position', ['2'])
+          //                                 ->get()
+          //                                 ->count();
+          $Total_research_position_pi = DB::table('db_research_project')
+                                          ->selectRaw('sum(if(db_research_project.pro_position <= 2, 1, 0)) AS position')
+                                          ->whereNull('deleted_at')
+                                          ->whereIn('verified', ['1'])
+                                          ->get();
+          // Convert "String" to "Int"
+          $num = $Total_research_position_pi[0]->position;
+          $int_position_pi = (int)$num;
+          // dd($int_position_pi);
+
+          $Total_research_users = DB::table('db_research_project')
+                                      ->rightjoin('users', 'db_research_project.users_id', '=', 'users.idCard')
+                                      ->select('users_id')
+                                      ->groupBy('db_research_project.users_id')
+                                      ->whereNull('db_research_project.deleted_at')
+                                      ->where('db_research_project.verified', 1)
+                                      ->get()
+                                      ->count();
+
+      // For "DEPARTMENT"
+    }elseif (Auth::hasRole('departments')) {
+          $Total_research = DB::table('db_research_project')
+                              ->join('users', 'users.idCard', '=', 'db_research_project.users_id')
+                              ->select('db_research_project.id','pro_name_th','pro_name_en','pro_position',
+                                        'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
+                              ->where('users.deptName', Auth::user()->family_name)
+                              ->whereNull('db_research_project.deleted_at')
+                              ->get()
+                              ->count();
+
+          $Total_research_verify = DB::table('db_research_project')
+                                    ->join('users', 'users.idCard', '=', 'db_research_project.users_id')
+                                    ->select('db_research_project.id','pro_name_th','pro_name_en','pro_position',
+                                              'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
+                                    ->where('users.deptName', Auth::user()->family_name)
+                                    ->whereNull('deleted_at')
+                                    ->whereIn('verified', ['1'])
+                                    ->get()
+                                    ->count();
+
+          $Total_research_position_pi = DB::table('db_research_project')
+                                          ->join('users', 'users.idCard', '=', 'db_research_project.users_id')
+                                          ->selectRaw('sum(if(db_research_project.pro_position <= 2, 1, 0)) AS position')
+                                          ->where('users.deptName', Auth::user()->family_name)
+                                          ->whereNull('deleted_at')
+                                          ->whereIn('verified', ['1'])
+                                          ->get();
+          // Convert "String" to "int"
+          $num = $Total_research_position_pi[0]->position;
+          $int_position_pi = (int)$num;
+          // dd($int_position_pi);
+
+
+          $Total_research_users = DB::table('db_research_project')
+                                      ->rightjoin('users', 'db_research_project.users_id', '=', 'users.idCard')
+                                      ->select('users_id')
+                                      ->groupBy('db_research_project.users_id')
+                                      ->where('users.deptName', Auth::user()->family_name)
+                                      ->whereNull('db_research_project.deleted_at')
+                                      ->where('db_research_project.verified', 1)
+                                      ->get()
+                                      ->count();
+
       }elseif(Auth::hasRole('admin')) {
-        $Total_research = DB::table('db_research_project')
-                        -> select('db_research_project.id','pro_name_th','pro_name_en','pro_position',
-                                  'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
-                        ->whereNull('deleted_at')
-                        ->get()
-                        ->count();
+          $Total_research = DB::table('db_research_project')
+                          -> select('db_research_project.id','pro_name_th','pro_name_en','pro_position',
+                                    'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
+                          ->whereNull('deleted_at')
+                          ->get()
+                          ->count();
       }
 
 
       // บทความตีพิมพ์ ที่ตรวจสอบแล้ว db_published_journal โดย count id  --------->
+      // For "MANAGER"
       if(Auth::hasRole('manager')){
-        $Total_journal = DB::table('db_published_journal')
-                           ->select('id','article_name_th','article_name_en','journal_name_th','journal_name_en',
-                                     'publish_years','publish_no','publish_volume','publish_page','doi_number',
-                                     'contribute','corres')
-                           ->whereNull('deleted_at')
-                           ->get()
-                           ->count();
+          $Total_journal = DB::table('db_published_journal')
+                             ->select('id','article_name_th','article_name_en','journal_name_th','journal_name_en',
+                                       'publish_years','publish_no','publish_volume','publish_page','doi_number',
+                                       'contribute','corres')
+                             ->whereNull('deleted_at')
+                             ->get()
+                             ->count();
 
-        $Total_journal_verify = DB::table('db_published_journal')
+          $Total_journal_verify = DB::table('db_published_journal')
+                                    ->select('id','article_name_th','article_name_en','journal_name_th','journal_name_en',
+                                              'publish_years','publish_no','publish_volume','publish_page','doi_number',
+                                              'contribute','corres')
+                                    ->whereNull('deleted_at')
+                                    ->whereIn('verified', ['1'])
+                                    ->get()
+                                    ->count();
+
+          $Total_journal_tci_1 = DB::table('db_published_journal')
                                   ->select('id','article_name_th','article_name_en','journal_name_th','journal_name_en',
                                             'publish_years','publish_no','publish_volume','publish_page','doi_number',
                                             'contribute','corres')
                                   ->whereNull('deleted_at')
                                   ->whereIn('verified', ['1'])
+                                  ->whereIn('status', ['1'])
                                   ->get()
                                   ->count();
 
-        $Total_journal_tci_1 = DB::table('db_published_journal')
-                                ->select('id','article_name_th','article_name_en','journal_name_th','journal_name_en',
-                                          'publish_years','publish_no','publish_volume','publish_page','doi_number',
-                                          'contribute','corres')
-                                ->whereNull('deleted_at')
-                                ->whereIn('verified', ['1'])
-                                ->whereIn('status', ['1'])
-                                ->get()
-                                ->count();
+          $Total_journal_q1_3 = DB::table('db_published_journal')
+                                  ->select('id','article_name_th','article_name_en','journal_name_th','journal_name_en',
+                                            'publish_years','publish_no','publish_volume','publish_page','doi_number',
+                                            'contribute','corres')
+                                  ->whereNull('deleted_at')
+                                  ->whereIn('verified', ['1'])
+                                  ->whereIn('status', ['4'])
+                                  ->OrwhereIn('status', ['5'])
+                                  ->OrwhereIn('status', ['6'])
+                                  ->get()
+                                  ->count();
 
-        $Total_journal_q1_3 = DB::table('db_published_journal')
-                                ->select('id','article_name_th','article_name_en','journal_name_th','journal_name_en',
-                                          'publish_years','publish_no','publish_volume','publish_page','doi_number',
-                                          'contribute','corres')
-                                ->whereNull('deleted_at')
-                                ->whereIn('verified', ['1'])
-                                ->whereIn('status', ['4'])
-                                ->OrwhereIn('status', ['5'])
-                                ->OrwhereIn('status', ['6'])
-                                ->get()
-                                ->count();
+      // For "DEPARTMEMT"
+    }elseif (Auth::hasRole('departments')) {
+          $Total_journal = DB::table('db_published_journal')
+                             ->join('users', 'users.idCard', '=', 'db_published_journal.users_id')
+                             ->select('article_name_th','article_name_en','journal_name_th',
+                                      'journal_name_en','publish_years','publish_no','publish_volume','publish_page',
+                                      'doi_number','contribute','corres')
+                             ->where('users.deptName', Auth::user()->family_name)
+                             ->whereNull('deleted_at')
+                             ->get()
+                             ->count();
+
+          $Total_journal_verify = DB::table('db_published_journal')
+                                    ->join('users', 'users.idCard', '=', 'db_published_journal.users_id')
+                                    ->select('article_name_th','article_name_en','journal_name_th','journal_name_en',
+                                              'publish_years','publish_no','publish_volume','publish_page','doi_number',
+                                              'contribute','corres')
+                                    ->where('users.deptName', Auth::user()->family_name)
+                                    ->whereNull('deleted_at')
+                                    ->whereIn('verified', ['1'])
+                                    ->get()
+                                    ->count();
+
+          $Total_journal_tci_1 = DB::table('db_published_journal')
+                                  ->join('users', 'users.deptName', '=', 'db_published_journal.users_id')
+                                  ->select('article_name_th','article_name_en','journal_name_th','journal_name_en',
+                                            'publish_years','publish_no','publish_volume','publish_page','doi_number',
+                                            'contribute','corres')
+                                  ->where('users.deptName', Auth::user()->family_name)
+                                  ->whereNull('deleted_at')
+                                  ->whereIn('verified', ['1'])
+                                  ->whereIn('status', ['1'])
+                                  ->get()
+                                  ->count();
+
+          $Total_journal_q1_3 = DB::table('db_published_journal')
+                                  ->join('users', 'users.deptName', '=', 'db_published_journal.users_id')
+                                  ->select('article_name_th','article_name_en','journal_name_th','journal_name_en',
+                                            'publish_years','publish_no','publish_volume','publish_page','doi_number',
+                                            'contribute','corres')
+                                  ->where('users.deptName', Auth::user()->family_name)
+                                  ->whereNull('deleted_at')
+                                  ->whereIn('verified', ['1'])
+                                  ->whereIn('status', ['4'])
+                                  ->OrwhereIn('status', ['5'])
+                                  ->OrwhereIn('status', ['6'])
+                                  ->get()
+                                  ->count();
 
        }elseif(Auth::hasRole('admin')) {
          $Total_journal = DB::table('db_published_journal')
-                            ->select('id','article_name_th','article_name_en','journal_name_th','journal_name_en',
+                            ->select('db_research_project.id','article_name_th','article_name_en','journal_name_th','journal_name_en',
                                       'publish_years','publish_no','publish_volume','publish_page','doi_number',
                                       'contribute','corres')
                             ->whereNull('deleted_at')
@@ -131,27 +235,57 @@ class SummaryController extends Controller
 
 
       // บทความที่นำไปใช้ประโยชน์เชิงนโยบาย db_utilization -> โดย count id --------->
+      // For "MANAGER"
       if(Auth::hasRole('manager')){
-        $Total_util = DB::table('db_utilization')
-                        ->select('pro_id','util_type')
-                        ->whereNull('deleted_at')
-                        ->get()
-                        ->count();
+          $Total_util = DB::table('db_utilization')
+                          ->select('pro_id','util_type')
+                          ->whereNull('deleted_at')
+                          ->get()
+                          ->count();
 
-        $Total_util_verify = DB::table('db_utilization')
-                              ->select('pro_id','util_type')
-                              ->whereNull('deleted_at')
-                              ->whereIn('verified', ['1'])
-                              ->get()
-                              ->count();
-
-        $Total_util_policies = DB::table('db_utilization')
+          $Total_util_verify = DB::table('db_utilization')
                                 ->select('pro_id','util_type')
-                                ->where('util_type', '=', 'เชิงนโยบาย')
-                                ->whereIn('verified', ['1'])
                                 ->whereNull('deleted_at')
+                                ->whereIn('verified', ['1'])
                                 ->get()
                                 ->count();
+
+          $Total_util_policies = DB::table('db_utilization')
+                                  ->select('pro_id','util_type')
+                                  ->where('util_type', '=', 'เชิงนโยบาย')
+                                  ->whereIn('verified', ['1'])
+                                  ->whereNull('deleted_at')
+                                  ->get()
+                                  ->count();
+
+      // For "DEPARTMEMT"
+      }elseif (Auth::hasRole('departments')) {
+          $Total_util = DB::table('db_utilization')
+                          ->join('users', 'users.idCard', '=', 'db_utilization.users_id')
+                          ->select('pro_id','util_type')
+                          ->where('users.deptName', Auth::user()->family_name)
+                          ->whereNull('deleted_at')
+                          ->get()
+                          ->count();
+
+          $Total_util_verify = DB::table('db_utilization')
+                                ->join('users', 'users.idCard', '=', 'db_utilization.users_id')
+                                ->select('pro_id','util_type')
+                                ->where('users.deptName', Auth::user()->family_name)
+                                ->whereNull('deleted_at')
+                                ->whereIn('verified', ['1'])
+                                ->get()
+                                ->count();
+
+          $Total_util_policies = DB::table('db_utilization')
+                                  ->join('users', 'users.idCard', '=', 'db_utilization.users_id')
+                                  ->select('pro_id','util_type')
+                                  ->where('users.deptName', Auth::user()->family_name)
+                                  ->where('util_type', '=', 'เชิงนโยบาย')
+                                  ->whereIn('verified', ['1'])
+                                  ->whereNull('deleted_at')
+                                  ->get()
+                                  ->count();
 
       }elseif(Auth::hasRole('admin')) {
         $Total_policy_util = DB::table('db_utilization')
@@ -189,12 +323,24 @@ class SummaryController extends Controller
       // dd($data_table_count);
 
 
+      // For "MANAGER"
+      if(Auth::hasRole('manager')){
+          // DATA SUMMARY TOTAL Table ***IMPORTANT*** and Use Cache
+          $summary_list = Cache::remember('summary_list', '30', function () {
+                return DB::table('summary_list')->get();
+                // dd($summary_list);
+          });
 
-      // DATA SUMMARY TOTAL Table ***IMPORTANT*** and Use Cache
-      $summary_list = Cache::remember('summary_list', '30', function () {
-            return DB::table('summary_list')->get();
-            // dd($summary_list);
-      });
+      // For "DEPARTMEMT"
+      }elseif (Auth::hasRole('departments')) {
+          // DATA SUMMARY TOTAL Table ***IMPORTANT*** and Use Cache
+          $summary_list = DB::table('summary_list')
+                ->select('fullname', 'countPro', 'countPosition', 'countJour',
+                         'countJour_tci_one', 'countJour_q_one2three', 
+                         'countUtil', 'researcher_level')
+                ->where('deptName', Auth::user()->family_name)
+                ->get();
+      }
 
 
 
@@ -278,7 +424,7 @@ class SummaryController extends Controller
       return view('frontend.summary',[
         'Total_research'          => $Total_research,
         'Total_research_verify'   => $Total_research_verify,
-        'Total_research_position_pi'  => $Total_research_position_pi,
+        'int_position_pi'         => $int_position_pi, //Convert "String" to "Int"
         'Total_research_users'    => $Total_research_users,
         // -----------------------------------------------
         'Total_journal'           => $Total_journal,

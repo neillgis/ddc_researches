@@ -84,7 +84,6 @@ class ResearchController extends Controller
                 ->whereNull('db_research_project.deleted_at')
                 ->ORDERBY('id','DESC')
                 ->get();
-              // dd($query);
 
       // $query = research::select('id','pro_name_th','pro_name_en','pro_position',
       //                           'pro_start_date','pro_end_date','publish_status',
@@ -299,10 +298,12 @@ class ResearchController extends Controller
                                     'db_research_project.pro_position',
                                   )
                           ->whereIn('pro_position', ['1'])
+                          // ->OrwhereIn('pro_position', ['2'])
                           ->where('deptName', Auth::user()->family_name)
                           ->whereNull('deleted_at')
                           ->get()
                           ->count();
+                      // dd($Total_master_pro);
 
       }else {
         $Total_master_pro = DB::table('db_research_project')

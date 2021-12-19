@@ -101,7 +101,7 @@
                   </span>
                   <div class="info-box-content">
                     <span class="info-box-text text-auto"> ตำแหน่ง PI & Co-PI </span>
-                        <h3><b> {{ empty($Total_research_position_pi)?'0' : $Total_research_position_pi }} </b></h3>
+                        <h3><b> {{ empty($int_position_pi)?'0' : $int_position_pi }} </b></h3>
                   </div>
                 </div>
               </div>
@@ -232,6 +232,7 @@
                   <table class="table table-hover" style="width:100%" id="example1" >
                     <thead>
                       <tr>
+                      @if(Auth::hasRole('manager'))
                         <th class="text-center"> ชื่อ-นามสกุล </th>
                         <th class="text-center"> หน่วยงาน </th>
                         <th class="text-center"> โครงการวิจัย </th>
@@ -243,15 +244,31 @@
                         <th class="text-center"> ระดับนักวิจัย </th>
                         <th class="text-center"> ผู้ตรวจสอบ </th>
                         <th class="text-right"> Actions </th>
+                      @elseif(Auth::hasRole('departments'))
+                        <th class="text-center"> ชื่อ-นามสกุล </th>
+                        <th class="text-center"> โครงการวิจัย </th>
+                        <th class="text-center"> ตำแหน่ง PI & Co-PI </th>
+                        <th class="text-center"> วารสาร (ตรวจสอบแล้ว) </th>
+                        <th class="text-center"> วารสาร (TCI 1) </th>
+                        <th class="text-center"> วารสาร (Q1-Q3) </th>
+                        <th class="text-center"> การนำไปใช้ประโยชน์ </th>
+                        <th class="text-center"> ระดับนักวิจัย </th>
+                      @endif
+
                       </tr>
                     </thead>
 
                     <tbody>
 
-                        @foreach($summary_list as $value)
-                        <tr>
+                      @foreach($summary_list as $value)
+                      <tr>
                             <td class="text-nowrap"> {{ $value->fullname }} </td>
+                          @if(Auth::hasRole('manager'))
                             <td class="text-nowrap"> {{ $value->deptName }} </td>
+                          @elseif(Auth::hasRole('departments'))
+                            <!-- No Show BUTTON -->
+                          @endif
+
                             <td class="text-center">
                                 @if( isset($value->countPro))
                                     {{ ($value->countPro) }}
@@ -301,6 +318,7 @@
                                     <span class="badge bg-danger"> No results </span>
                                 @endif
                             </td>
+                          @if(Auth::hasRole('manager'))
                             <td class="text-center text-nowrap">
                                 @if( isset($value->data_auditor))
                                     {{ $value->data_auditor }}
@@ -317,7 +335,6 @@
                                   <i class="fas fa-bars"></i>
                                 </button>
                             </td>
-
 
                             <!-- MODAL Verify & Status -->
                               <div class="modal fade" id="ModalAuditor{{ $value->idCard }}" tabindex="-1" role="dialog" aria-hidden="true">
@@ -361,6 +378,12 @@
                                 </div>
                               </div>
                             <!-- END MODAL Verify & Status -->
+
+                          @elseif(Auth::hasRole('departments'))
+
+                              <!-- No Show BUTTON -->
+
+                          @endif
 
                         </tr>
                      @endforeach
@@ -416,8 +439,8 @@
 <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.6.4/js/dataTables.buttons.min.js"></script>
 <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.6.4/js/buttons.flash.min.js"></script>
 <script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-<script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
-<script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<!-- <script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script> -->
 <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.6.4/js/buttons.html5.min.js"></script>
 <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.6.4/js/buttons.print.min.js"></script>
 
