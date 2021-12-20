@@ -104,16 +104,18 @@
       <div class="col-md-6">
         <div class="card shadow" id="rcorners3">
           <div class="card-header" style="background-color: #54BEAE;">
-            <h4><i class="fas fa-user-alt"></i>&nbsp; <b>ข้อมูลส่วนบุคคล</b> </h4>
+            <h4 style="color:#FFFFFF;"><i class="fas fa-user-alt"></i>&nbsp; <b>ข้อมูลส่วนบุคคล</b> </h4>
           </div>
 
           <form method="POST" action="{{ route('profile.insert') }}">
             @csrf
 
             <div class="card-body">
-              <h5 class="profile text-right" id="prefix"></h5>
-              <input type="hidden" class="form-control" name="title" id="k_prefix"> <!-- id="k_prefix" from JQuery below Declare เรียกข้อมูลเพื่อนำไป INSERT -->
-
+              <h4 class="profile text-right" id="prefix"></h4>
+              <!-- id="k_prefix" from Ajax below Declare for INSERT -->
+              <input type="hidden" class="form-control" name="title" id="k_prefix">
+              <input type="hidden" class="form-control" name="idCard" id="k_cid">
+              <input type="hidden" class="form-control" name="sex" id="k_gender">
 
               <ul class="list-group list-group-unbordered mb-3">
                   <li class="list-group-item">
@@ -125,18 +127,14 @@
                     <h4> นามสกุล <b><a class="float-right" id="lname_th"></b></a></h4>
                     <input type="hidden" class="form-control" name="lname" id="k_lname_th">
                   </li>
+              </ul>
 
-                  <li class="list-group-item">
-                    <h4> เลขบัตรประชาชน <b><a class="float-right" id="cid"></b></a></h4>
-                    <input type="hidden" class="form-control" name="idCard" id="k_cid">
-                  </li>
-                </ul>
 
               <div class="row">
                 <div class="col-md-12">
-                  <label> เพศ </label>
-                  <div class="border p-2" id="gender" style="background-color: #e9ecef;opacity: 1; font-size: 20px;"></div>
-                  <input type="hidden" class="form-control" name="sex" id="k_gender">
+                  <label> เบอร์โทร </label>
+                  <div class="border p-2" id="mobile" style="background-color: #e9ecef;opacity: 1; font-size: 18px;"></div>
+                  <input type="hidden" class="form-control" name="mobile" id="k_mobile">
                 </div>
               </div>
               <br>
@@ -144,7 +142,7 @@
               <div class="row">
                 <div class="col-md-12">
                   <label> E - Mail </label>
-                  <div class="border p-2" id="email" style="background-color: #e9ecef;opacity: 1; font-size: 20px;"></div>
+                  <div class="border p-2" id="email" style="background-color: #e9ecef;opacity: 1; font-size: 18px;"></div>
                   <input type="hidden" class="form-control" name="email" id="k_email">
                 </div>
               </div>
@@ -153,11 +151,11 @@
               <div class="row">
                 <div class="col-md-12">
                   <label> ระดับการศึกษา </label>
-                  <div class="border p-2" id="edu_class" style="background-color: #e9ecef;opacity: 1; font-size: 20px;"></div>
+                  <div class="border p-2" id="edu_class" style="background-color: #e9ecef;opacity: 1; font-size: 18px;"></div>
                   <input type="hidden" class="form-control" name="educationLevel" id="k_edu_class">
                 </div>
               </div>
-              <br>
+              <br><br>
             </div>
           </div>
         </div>
@@ -172,24 +170,24 @@
           <div class="card-body">
             <div class="col-md-12">
               <label for="exampleInput1"> หน่วยงาน </label>
-              <div class="border p-2" id="dept_id" style="background-color: #e9ecef;opacity: 1; font-size: 20px;"></div>
+              <div class="border p-2" id="dept_id" style="background-color: #e9ecef;opacity: 1; font-size: 18px;"></div>
               <input type="hidden" class="form-control" name="deptName" id="k_dept_id">
             </div>
             <br>
 
             <div class="col-md-12">
               <label for="exampleInput1"> ตำแหน่ง </label>
-              <div class="border p-2" id="position" style="background-color: #e9ecef;opacity: 1; font-size: 20px;"></div>
+              <div class="border p-2" id="position" style="background-color: #e9ecef;opacity: 1; font-size: 18px;"></div>
               <input type="hidden" class="form-control" name="position" id="k_position">
             </div>
             <br>
 
             <div class="col-md-12">
               <label for="exampleInput1"> ระดับตำแหน่ง </label>
-              <div class="border p-2" id="positionLevel" style="background-color: #e9ecef;opacity: 1; font-size: 20px;"></div>
+              <div class="border p-2" id="positionLevel" style="background-color: #e9ecef;opacity: 1; font-size: 18px;"></div>
               <input type="hidden" class="form-control" name="positionLevel" id="k_positionLevel">
             </div>
-          </div>
+          </div> <!-- card-body -->
         </div>
 
 
@@ -199,44 +197,72 @@
           </div>
 
           <div class="card-body">
-            <!-- <div class="card-footer"> -->
             <div class="row">
               <div class="col-md-12">
-                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modal-default"
-                  <?=(count($data)>0)?'disabled':''?>> <!-- Check Value in เพิ่มข้อมูลนักวิจัย if>0 = disabled  -->
-                  <i class="fas fa-plus-circle"></i>
-                  &nbsp;เพิ่มข้อมูลนักวิจัย
-                </button>
+                @if((count($data)>0)?'disabled':'')
+                  <button type="button" class="btn btn-warning shadow" data-toggle="modal" data-target="#modal-edit-profile">
+                    <i class="fas fa-user-edit"></i>
+                    &nbsp;แก้ไขข้อมูลนักวิจัย
+                  </button>
+                @else
+                  <button type="button" class="btn btn-info shadow" data-toggle="modal" data-target="#modal-default"
+                    <?=(count($data)>0)?'disabled':''?>> <!-- Check Value in เพิ่มข้อมูลนักวิจัย if>0 = disabled  -->
+                    <i class="fas fa-plus-circle"></i>
+                    &nbsp;เพิ่มข้อมูลนักวิจัย
+                  </button>
 
-                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal-Nodata"
-                  <?=(count($data)>0)?'disabled':''?>> <!-- Check Value in เพิ่มข้อมูลนักวิจัย if>0 = disabled  -->
-                  <i class="fas fa-check"></i>
-                  &nbsp;หากไม่มีข้อมูลเพิ่ม กรุณากดยืนยัน
-                </button>
+                  <button type="button" class="btn btn-danger shadow" data-toggle="modal" data-target="#modal-Nodata"
+                    <?=(count($data)>0)?'disabled':''?>> <!-- Check Value in เพิ่มข้อมูลนักวิจัย if>0 = disabled  -->
+                    <i class="fas fa-check"></i>
+                    &nbsp;หากไม่มีข้อมูลเพิ่ม กรุณากดยืนยัน
+                  </button>
+                @endif
+
               </div>
             </div>
             <br>
 
-            <div class="row">
-              <div class="col-md-6">
-                <label for="exampleInput1"> รหัสนักวิจัย </label>
-                  @foreach ($data as $value)
-                    <div class="border p-2" style="background-color: #e9ecef;opacity: 1; font-size: 20px;">
-                      {{ $value->nriis_id }}
-                    </div>
-                  @endforeach
-              </div>
+          <!-- CHECK Condition if have DATA -->
+          @if((count($data)>0)?'disabled':'')
 
-              <div class="col-md-6">
-                <label for="exampleInput1"> เลขประจำตัวนักวิจัย </label>
-                  @foreach ($data as $value)
-                    <div class="border p-2" style="background-color: #e9ecef;opacity: 1; font-size: 20px;">
-                      {{ $value->orcid_id }}
-                    </div>
-                  @endforeach
-              </div>
+            <div class="row">
+                <div class="col-md-6">
+                  <label for="exampleInput1"> รหัสนักวิจัย </label>
+                    @foreach($data as $value)
+                        @if($value->orcid_id != "")
+                          <div class="border p-2" style="background-color: #e9ecef;opacity: 1; font-size: 16px;">
+                            {{ $value->nriis_id }}
+                          </div>
+                        @else
+                          <div class="border p-2" style="background-color: #e9ecef;opacity: 1; font-size: 16px;">
+                             -
+                          </div>
+                        @endif
+                    @endforeach
+                </div>
+
+                <div class="col-md-6">
+                  <label for="exampleInput1"> เลขประจำตัวนักวิจัย </label>
+                    @foreach($data as $value)
+                        @if($value->orcid_id != "")
+                          <div class="border p-2" style="background-color: #e9ecef;opacity: 1; font-size: 16px;">
+                            {{ $value->orcid_id }}
+                          </div>
+                        @else
+                          <div class="border p-2" style="background-color: #e9ecef;opacity: 1; font-size: 16px;">
+                             -
+                          </div>
+                        @endif
+                    @endforeach
+                </div>
             </div>
-          </div>
+
+          @else
+
+            <!-- No Show BUTTON -->
+
+          @endif
+          </div> <!-- card-body -->
         </div>
 
 
@@ -277,7 +303,6 @@
       <!-- END MODAL [modal-default] -->
 
 
-
       <!-- MODAL [modal-NO data] -->
         <div class="modal fade" id="modal-Nodata">
           <div class="modal-dialog">
@@ -309,12 +334,60 @@
         </div>
       <!-- END MODAL [modal-NO data] -->
 
-
         <br>
       </div>
     </div>
+  </form>
 
-    </form>
+
+      <!-- MODAL EDIT [modal-edit-profile] -->
+        <div class="modal fade" id="modal-edit-profile">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title"><i class="fas fa-user-edit"></i><b> แก้ไขข้อมูลนักวิจัย </b></h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <form action="{{ route('profile.save') }}" method="POST">
+                @csrf
+
+                <div class="modal-body">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <label for="exampleInput1"> รหัสนักวิจัย </label>
+                      @if(count($data)>0?'disabled':'')
+                          <input type="text" class="form-control" name="nriis_id" value="{{ $edit_profile->nriis_id }}" maxlength="10">
+                      @else
+                          -
+                      @endif
+                    </div>
+                  </div>
+                  <br>
+                  <div class="row">
+                    <div class="col-md-12">
+                      <label for="exampleInput1"> เลขประจำตัวนักวิจัย </label>
+                      @if(count($data)>0?'disabled':'')
+                          <input type="text" class="form-control" name="orcid_id" value="{{ $edit_profile->orcid_id }}">
+                      @else
+                          -
+                      @endif
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                  <button type="button" class="btn btn-default" data-dismiss="modal"> Close </button>
+                  <button type="submit" class="btn btn-warning float-right" value="บันทึกข้อมูล">
+                    <i class="fas fa-save"></i> &nbsp;บันทึกข้อมูล
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      <!-- END MODAL [modal-edit-profile] -->
+
   </div>
 </section>
 @endif
@@ -325,19 +398,6 @@
 @section('js-custom-script')
 <!-- SweetAlert2 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-<!-- <script src="{{ asset('bower_components/admin-lte/plugins/sweetalert2/sweetalert2.min.js') }}"></script> -->
-
-  <!-- <script>
-    Swal.fire({
-        icon: 'warning',
-        title: 'กรุณา "เพิ่มข้อมูลนักวิจัย"',
-        text: "หากไม่มีให้กดยืนยันอีกครั้ง มิเช่นนั้น ระบบจะไม่สามารถเห็นข้อมูลและให้ระดับนักวิจัยแก่ท่านได้",
-        showConfirmButton: true,
-        confirmButtonColor: '#2C6700',
-        timer: 8000
-    })
-  </script> -->
-
 
   <!-- INSERT success -->
     @if(Session::get('messages'))
@@ -346,13 +406,12 @@
         Swal.fire({
             icon: 'success',
             title: 'อัพเดทข้อมูลของท่านเรียบร้อย',
-            showConfirmButton: true,
+            showConfirmButton: false,
             confirmButtonColor: '#2C6700',
-            timer: 2300
+            timer: 2000
         })
       </script>
     @endif
-
 
 @stop('js-custom-script')
 
@@ -391,6 +450,8 @@
                     $("#position").text(result.position);
                     $("#k_position").val(result.position);
                     $("#tel").text(result.telephone);
+                    $("#mobile").text(result.mobile);
+                    $("#k_mobile").val(result.mobile);
                     $("#email").text(result.email);
                     $("#k_email").val(result.email);
                     $("#positionLevel").text(result.positionLevel);

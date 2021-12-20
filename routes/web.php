@@ -34,6 +34,9 @@ Route::group(['middleware' => 'keycloak-web'], function () {
     Route::get('/profile','ProfileController@index')->name('page.profile');
     //  -- INSERT --
     Route::post('/profile_insert','ProfileController@insert')->name('profile.insert');
+    //  -- UPDATE PROFILE --
+    Route::post('profile/update', 'ProfileController@save_update_profile')->name('profile.save');
+
 
     // FORM  RESEARCH  PROJECT
     // Route::get('/research_form','ResearchController@research')->name('page.research');
