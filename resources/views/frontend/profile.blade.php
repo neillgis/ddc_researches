@@ -449,7 +449,7 @@
                     $("#birthdate").text(result.birthday);
                     $("#position").text(result.position);
                     $("#k_position").val(result.position);
-                    $("#tel").text(result.telephone);
+                    // $("#tel").text(result.telephone);
                     $("#mobile").text(result.mobile);
                     $("#k_mobile").val(result.mobile);
                     $("#email").text(result.email);
