@@ -170,8 +170,8 @@
           <div class="card-body">
             <div class="col-md-12">
               <label for="exampleInput1"> หน่วยงาน </label>
-              <div class="border p-2" id="dept_id" style="background-color: #e9ecef;opacity: 1; font-size: 18px;"></div>
-              <input type="hidden" class="form-control" name="deptName" id="k_dept_id">
+              <div class="border p-2" id="workBu1Name" style="background-color: #e9ecef;opacity: 1; font-size: 18px;"></div>
+              <input type="hidden" class="form-control" name="deptName" id="k_workBu1Name">
             </div>
             <br>
 
@@ -434,6 +434,8 @@
                     $("#k_cid").val(result.idCard);
                     $("#dept_id").text(result.deptName);
                     $("#k_dept_id").val(result.deptName);
+                    $("#workBu1Name").text(result.workBu1Name);
+                    $('#k_workBu1Name').val(result.workBu1Name);
                     $("#edu_class").text(result.educationLevel);
                     $("#k_edu_class").val(result.educationLevel);
                     $("#prefix").text(result.title);
@@ -449,7 +451,6 @@
                     $("#birthdate").text(result.birthday);
                     $("#position").text(result.position);
                     $("#k_position").val(result.position);
-                    // $("#tel").text(result.telephone);
                     $("#mobile").text(result.mobile);
                     $("#k_mobile").val(result.mobile);
                     $("#email").text(result.email);
