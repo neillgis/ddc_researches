@@ -51,7 +51,7 @@
           @endif
 
            <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="{{ route('keycloak.logout') }}">{{ __('ออกจากระบบ') }}</a>
+              <a class="dropdown-item" href="{{ route('keycloak.logout') }}"><i class="fas fa-power-off"></i> {{ __('ออกจากระบบ') }}</a>
 
            <form id="logout-form" action="#" method="POST" style="display: none;">
                @csrf
