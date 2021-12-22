@@ -24,18 +24,11 @@ class ProfileController extends Controller
                     ->first();
                 // dd($edit_profile);
 
-                $aaa = DB::table('mas_organization')
-                        ->join('users', 'users.deptName', '=', 'mas_organization.org_id')
-                        ->where('idCard', Auth::user()->preferred_username)
-                        ->first();
-                // dd($aaa);
-
 
       return view('frontend.profile',
         [
            'data'          => $data,
            'edit_profile'  => $edit_profile,
-           'aaa'           => $aaa,
         ]);
     }
 
