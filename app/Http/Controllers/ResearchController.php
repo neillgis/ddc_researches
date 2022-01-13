@@ -29,7 +29,7 @@ class ResearchController extends Controller
   public function table_research(Request $request){
     if(Auth::hasRole('manager')) {
       $query = DB::table('db_research_project')
-                 ->join('users', 'db_research_project.users_id', '=', 'users.idCard')
+                 ->leftjoin('users', 'db_research_project.users_id', '=', 'users.idCard')
                  ->select('db_research_project.id',
                           'db_research_project.pro_name_th',
                           'db_research_project.pro_name_en',

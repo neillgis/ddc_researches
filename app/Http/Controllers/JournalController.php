@@ -65,10 +65,11 @@ class JournalController extends Controller
 
 
 //  ---- SELECT DataTables PROJECT join JOURNAL -----
+    // บทความที่ตีพิมพ์แล้ว ===> pro_id = "Not Null"
     if(Auth::hasRole('manager')){
       $query2 = DB::table('db_published_journal')
                 ->join('db_research_project', 'db_research_project.id', '=', 'db_published_journal.pro_id')
-                ->join('users', 'db_published_journal.users_id', '=', 'users.idCard')
+                ->leftjoin('users', 'db_published_journal.users_id', '=', 'users.idCard')
                 ->select('db_research_project.users_name',
                          'db_published_journal.id',
                          'db_published_journal.pro_id',
@@ -166,8 +167,9 @@ class JournalController extends Controller
 
 
 // ---- DataTable Show -> not_from_project ----
+      // บทความที่ตีพิมพ์แล้ว ===> pro_id = "Null"
       $query5 = DB::table('db_published_journal')
-                ->join('users', 'db_published_journal.users_id', '=', 'users.idCard')
+                ->leftjoin('users', 'db_published_journal.users_id', '=', 'users.idCard')
                 ->select('db_published_journal.id',
                          'db_published_journal.pro_id',
                          'db_published_journal.users_name',
@@ -186,6 +188,7 @@ class JournalController extends Controller
                 ->whereNull('deleted_at')
                 ->orderby('id', 'DESC')
                 ->get();
+          // dd($query5);
 
       $query6 = DB::table('ref_journal_status')->get();
 

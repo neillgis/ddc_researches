@@ -28,7 +28,7 @@ class UtilizationController extends Controller
   if(Auth::hasRole('manager')){
     // โครงการที่นำไปใช้ประโยชน์ทั้งหมด db_utilization -> โดย count id (All Record) --------->
     $Total_util = DB::table('db_utilization')
-                    -> select('pro_id','util_type')
+                    ->select('pro_id','util_type')
                     ->whereNull('deleted_at')
                     ->get()
                     ->count();
@@ -301,7 +301,7 @@ if(Auth::hasRole('manager')){
   if(Auth::hasRole('manager')){
     $query_util = DB::table('db_utilization')
                     ->join ('db_research_project', 'db_utilization.pro_id', '=', 'db_research_project.id')
-                    ->join('users', 'db_utilization.users_id', '=', 'users.idCard')
+                    ->leftjoin('users', 'db_utilization.users_id', '=', 'users.idCard')
                     -> select ('db_utilization.id',
                                'db_utilization.util_type',
                                'db_utilization.files',
