@@ -136,11 +136,12 @@ class ResearchController extends Controller
       $verified = [ 1 => 'ตรวจสอบแล้ว', //verify
                     2 => 'อยู่ระหว่างตรวจสอบ', //process_checked
                     3 => 'อยู่ระหว่างแก้ไข', //process_editing
+                    4 => 'ผ่านการตรวจสอบแล้ว',
                     9 => 'ไม่ตรงเงื่อนไข', //no_conditions
                   ];
 
-      $verified_departments = [ 2 => 'ผ่านการตรวจสอบแล้ว', //process_checked
-                                3 => 'อยู่ระหว่างแก้ไข', //process_editing
+      $verified_departments = [ 3 => 'อยู่ระหว่างแก้ไข', //process_editing
+                                4 => 'ผ่านการตรวจสอบแล้ว', //process_pass
                               ];
 
 

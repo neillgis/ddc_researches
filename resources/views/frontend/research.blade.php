@@ -354,15 +354,11 @@
                         @if($value->verified == "1")
                           <span class="badge bg-secondary badge-pill"><i class="fas fa-check-circle"></i> {{ $verified_list [ $value->verified ] }} </span>
                         @elseif($value->verified == "2")
-
-                            @if(Auth::hasRole('manager'))
-                                <span class="badge bg-success badge-pill"> {{ $verified_list [ $value->verified ] }} </span>
-                            @elseif(Auth::hasRole('departments'))
-                                <span class="badge bg-success badge-pill"> {{ $verified_departments [ $value->verified ] }} </span>
-                            @endif
-
+                          <span class="badge bg-success badge-pill"> {{ $verified_list [ $value->verified ] }} </span>
                         @elseif($value->verified == "3")
                            <span class="badge badge-pill" style="background-color: #ff851b;"> {{ $verified_list [ $value->verified ] }} </span>
+                        @elseif($value->verified == "4")
+                           <span class="badge bg-warning badge-pill"> {{ $verified_list [ $value->verified ] }} </span>
                         @elseif($value->verified == "9")
                            <span class="badge bg-info badge-pill"><i class="fas fa-times-circle"></i> {{ $verified_list [ $value->verified ] }} </span>
                         @else <!-- verified == "1" คือ รอตรวจสอบ [Default] -->
