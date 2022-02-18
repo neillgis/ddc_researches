@@ -139,7 +139,7 @@ class ResearchController extends Controller
                     9 => 'ไม่ตรงเงื่อนไข', //no_conditions
                   ];
 
-      $verified_departments = [ 2 => 'อยู่ระหว่างตรวจสอบ', //process_checked
+      $verified_departments = [ 2 => 'ผ่านการตรวจสอบแล้ว', //process_checked
                                 3 => 'อยู่ระหว่างแก้ไข', //process_editing
                               ];
 
