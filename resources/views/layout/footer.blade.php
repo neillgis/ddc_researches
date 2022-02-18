@@ -6,7 +6,7 @@
 
     All rights reserved.
   <div class="float-right d-none d-sm-inline-block">
-    <b>Version</b> 2.0
+    <b>Version</b> 2.1
   </div>
 </footer>
 <!-- Developers by ITC Team : Mr.Praphan Chuchara -->
