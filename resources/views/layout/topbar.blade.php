@@ -1,4 +1,13 @@
-<!-- Topbar -->
+<?php
+  use App\CmsHelper;
+  use App\NotificationAlert;
+  use Carbon\Carbon;
+
+  if(Auth::user()->id){
+    $CountNewMessage  = count(NotificationAlert::CountNewMessage(Auth::user()->id));
+    $ListMessage = NotificationAlert::ListMessage();
+  }
+?>
 
   <nav class="main-header navbar navbar-expand navbar-white navbar-light">
     <!-- Left navbar links -->
@@ -9,14 +18,42 @@
     </ul>
 
 
-
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
+
+      <li class="nav-item dropdown">
+
+        @if($CountNewMessage != 0)
+          <a class="nav-link" data-toggle="dropdown" href="#">
+            <i class="far fa-bell"></i>
+            <span class="badge badge-danger navbar-badge">@if(isset($CountNewMessage)) {{ $CountNewMessage }} @endif</span>
+          </a>
+            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+              <a href="{{ route('all.notify') }}" class="dropdown-item">
+                <i class="fas fa-envelope py-2 mr-3"></i>
+                <font color="red"><b> ดูการแจ้งเตือนทั้งหมด </b></font>
+              </a>
+            </div>
+
+        @else
+
+            <a class="nav-link" data-toggle="dropdown" href="#">
+              <i class="far fa-bell"></i>
+            </a>
+            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+              <a href="#" class="dropdown-item">
+                <i class="fas fa-envelope py-2 mr-3"></i>
+                ไม่มีการแจ้งเตือน
+              </a>
+            </div>
+        @endif
+      </li>
+
 
        <li class="nav-item dropdown">
          <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false" id="navbarDropdown" v-pre>
-             <i class="nav-icon far fas fa-user"></i>
+             <i class="nav-icon fas fa-user-circle"></i>
 
                  <b> {{ Auth::user()->name }}</b>
 

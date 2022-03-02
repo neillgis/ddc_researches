@@ -133,6 +133,20 @@ Route::group(['middleware' => 'keycloak-web'], function () {
 
 
 
+    // Users-Manage for "ADMIN"
+    Route::get('/users-manage', 'UsersManageController@users_manage')->name('admin.users_manage');
+    // Delete-users
+    Route::get('/users-manage-delete/{users_id}', 'UsersManageController@users_manage_delete')->name('admin.users_manage_delete');
+
+
+
+    // ------- ALERT Notifications -------
+    Route::get('/all-notifications', 'UpdateNotifyController@notifications_all')->name('all.notify');
+    // Redirect to Message
+    Route::get('/redirect-url-notifications', 'UpdateNotifyController@redirect_url')->name('redirect.url');
+
+
+
     Route::get('dynamic_field', 'DynamicFieldUtilController@index');
     Route::post('dynamic_field/insert', 'DynamicFieldUtilController@insert')->name('dynamic-field.insert');
 

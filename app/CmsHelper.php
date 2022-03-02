@@ -166,30 +166,6 @@ use App\User;
         }
 
 
-        public static function Get_Talent_language(){
-          $lists_talent = Talent::all();
-          foreach($lists_talent as $talent_language){
-            $arr[$talent_language->id] = $talent_language->talent_name;
-          }
-          return $arr;
-        }
-
-        public static function Get_Talent_Drive(){
-          $lists_drive = TalentDrive::all();
-          foreach($lists_drive as $talent_drive){
-            $arr[$talent_drive->id] = $talent_drive->drive;
-          }
-          return $arr;
-        }
-
-        public static function Get_Talent_Course(){
-          $lists_course = TalentCourse::all();
-          foreach($lists_course as $talent_course){
-            $arr[$talent_course->id] = $talent_course->course;
-          }
-          return $arr;
-        }
-
         public static function Get_List_User_TH(){
           $users_lists = User::select('id','name_th','lname_th')->get();
           foreach($users_lists as $users){
@@ -240,44 +216,6 @@ use App\User;
         }
 
 
-        public static function Get_Prefix_TH(){
-          $list_prefix_th = RefPrefix::all();
-          foreach($list_prefix_th as $prefix_th){
-            $arr[$prefix_th->id] = trim($prefix_th->name_th);
-          }
-          return $arr;
-        }
-
-        public static function Get_Prefix_EN(){
-          $list_prefix_en = RefPrefix::all();
-          foreach($list_prefix_en as $prefix_en){
-            $arr[$prefix_en->id] = trim($prefix_en->name_en);
-          }
-          return $arr;
-        }
-
-        public static function Get_Current_Role_Group($id){
-          $model_has_row = DB::table('model_has_roles')->select('role_id')->where('model_id',$id)->first();
-          if(empty($model_has_row)) return array();
-          return $model_has_row->role_id;
-        }
-
-        public static function Get_Roles_TH2(){
-          $lists_roles = Roles::all();
-          foreach($lists_roles as $roles_th){
-            $arr[$roles_th->id] = $roles_th->name;
-          }
-          return $arr;
-        }
-
-        public static function Get_Roles_EN(){
-          $lists_roles = Roles::all();
-          foreach($lists_roles as $roles_en){
-            $arr[$roles_en->id] = $roles_en->name_eng;
-          }
-          return $arr;
-        }
-
         public static function Get_UserID($user_id){
           $query = User::find($user_id);
           return array(
@@ -287,6 +225,8 @@ use App\User;
             "lname" => $query->lname_th
           );
         }
+
+
         public static function Get_Icon_Notify($module_name){
           switch ($module_name) {
             case "task":
@@ -334,28 +274,5 @@ use App\User;
           }
 
 
-
-          // public function getGuzzleRequest(){
-          //     $client = new \GuzzleHttp\Client();
-          //     $request = $client->get('https://hr.ddc.moph.go.th/api/v2/employee/');
-          //     // ([ 'verify' => false, ]);
-          //     $response = $request->getBody();
-          //
-          //     return $response;
-          // }
-
-
-
-          // Get user profile [ALL] from SSO hr.ddc.moph.go.th
-          // public static function GetProfileAll(){
-          //   $client = new \GuzzleHttp\Client();
-          //   $response = $client->get('https://hr.ddc.moph.go.th/api/v2/employee/', [
-          //    'headers' => [
-          //        'Authorization' => 'Bearer '.env('TOKEN_GET')
-          //    ],
-          //    'verify' => false
-          //   ]);
-          //   return json_decode($response->getBody(), true);
-          // }
 
 }

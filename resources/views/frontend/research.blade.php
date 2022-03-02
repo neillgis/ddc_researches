@@ -652,7 +652,7 @@
           title: 'บันทึกข้อมูลเรียบร้อยแล้ว',
           showConfirmButton: false,
           confirmButtonColor: '#2C6700',
-          timer: 2000
+          timer: 1500
       })
     </script>
   @endif
@@ -666,7 +666,7 @@
           title: 'ลบข้อมูลเรียบร้อยแล้ว',
           showConfirmButton: false,
           confirmButtonColor: '#2C6700',
-          timer: 2000
+          timer: 1500
         })
       </script>
     @endif
@@ -679,7 +679,7 @@
             title: 'การตรวจสอบถูกดำเนินการแล้ว',
             showConfirmButton: false,
             confirmButtonColor: '#2C6700',
-            timer: 2500
+            timer: 2000
         })
       </script>
     @endif
@@ -692,7 +692,7 @@
             title: 'รายการนี้ยังไม่ได้ตรวจสอบ',
             showConfirmButton: false,
             confirmButtonColor: '#d33',
-            timer: 2500
+            timer: 2000
         })
       </script>
     @endif

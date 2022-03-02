@@ -112,7 +112,7 @@
 
              <li class="nav-item ">
                <a class="nav-link " href="#" >
-                 <i class="nav-icon fas fa-bookmark"></i>
+                 <i class="nav-icon fas fa-star"></i>
                  <p> คู่มือ & FAQ <i class="fas fa-chevron-down right" style="padding: 9px;"></i></p>
                </a>
              <ul class="nav nav-treeview">
@@ -130,6 +130,18 @@
                </li>
              </ul>
            </li>
+
+         @if(Auth::hasRole('manager') || Auth::hasRole('admin'))
+           <li class="nav-header">SETTINGS</li>
+             <li class="nav-item">
+               <a class="nav-link {{ Active::check('admin.users_manage') }} " href="{{ route('admin.users_manage') }}">
+                 <i class="nav-icon fas fa-user-cog"></i>
+                 <p>
+                   Users Manage
+                 </p>
+               </a>
+             </li>
+           @endif
 
       </ul>
     </nav>
