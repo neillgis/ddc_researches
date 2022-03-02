@@ -4,7 +4,7 @@
   use Carbon\Carbon;
 
   if(Auth::user()->id){
-    $CountNewMessage  = count(NotificationAlert::CountNewMessage(Auth::user()->id));
+    $CountNewMessage  = count(NotificationAlert::CountNewMessage(Auth::user()->preferred_username));
     $ListMessage = NotificationAlert::ListMessage();
   }
 ?>
