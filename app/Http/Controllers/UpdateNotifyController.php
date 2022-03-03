@@ -87,8 +87,8 @@ class UpdateNotifyController extends Controller
 
         $path = $query_download->files;
 
-      if(Storage::disk('research')->exists($path)) {
-        return Storage::disk('research')->download($path);
+      if(Storage::disk('NotificationAlert')->exists($path)) {
+        return Storage::disk('NotificationAlert')->download($path);
       }else {
         return view('error-page.error405');
       }
