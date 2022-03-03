@@ -6,6 +6,7 @@ use App\Position;
 use App\Roles;
 use Cache;
 use App\User;
+use App\member;
 
 
     class CmsHelper{
@@ -56,7 +57,7 @@ use App\User;
               $strMonthCut = Array("","มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน","กรกฎาคม","สิงหาคม","กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม");
               $strWeekThai=$strMonthWeek[$strWeek];
               $strMonthThai=$strMonthCut[$strMonth];
-          return "ประจำวัน".$strWeekThai ."ที่ ". $strDay ." ". $strMonthThai ." ". $strYear;
+          return $strDay ." ". $strMonthThai ." ". $strYear;
         }
 
         public static function TimeThai($strTime){
@@ -174,12 +175,30 @@ use App\User;
           return $arr;
         }
 
+
         public static function Get_Organization_TH(){
           $lists_organization = Organization::all();
           foreach($lists_organization as $organization_th){
             $arr[$organization_th->organization_id] = $organization_th->organization_name;
           }
           return $arr;
+        }
+
+
+        public static function Get_UserOrganize($orgs_id)
+        {
+          $query = member::where('idCard', $orgs_id)->first();
+          $id = 0;
+          $deptName = '';
+          if (!empty($query)) {
+            $id = $query->id;
+            $deptName = $query->deptName;
+          }
+          //--------------------------
+          return array(
+            "id"      => $id,
+            "deptName"  => $deptName,
+          );
         }
 
         public static function Get_Status($status_id)

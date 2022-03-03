@@ -24,17 +24,18 @@ class NotificationAlert extends Model
     }
 
 
-    public function scopeCountNewMessage($query,$id)
+    public function scopeCountNewMessage($query, $preferred_username)
     {
       return $query->where('receiver_id', Auth::user()->preferred_username)
                    ->whereNull('seen')
                    ->get();
+                // dd($aa);
     }
 
 
     public function scopeUpdateSeen($query,$id)
     {
-      return $query->where('id',$id)->update(['seen' => 1]);
+      return $query->where('id',$preferred_username)->update(['seen' => 1]);
     }
 
 }

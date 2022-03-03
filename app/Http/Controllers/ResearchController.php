@@ -394,8 +394,7 @@ class ResearchController extends Controller
       "created_at"        => date('Y-m-d H:i:s')
     ];
 
-
-      //  --  UPLOAD FILE research_form  --
+    // UPLOAD FILE research_form
     if ($request->file('files')->isValid()) {
           //TAG input [type=file] ดึงมาพักไว้ในตัวแปรที่ชื่อ files
         $file=$request->file('files');
@@ -407,9 +406,10 @@ class ResearchController extends Controller
         $data_post['files'] = $file_name;
     }
 
-    $output = research::insert($data_post);
+        $output = research::insert($data_post);
 
     if($output){
+
         session()->put('message', 'okkkkkayyyyy');
         return redirect()->route('page.research');
     }else{
@@ -461,7 +461,6 @@ class ResearchController extends Controller
 
     $path = $query->files;
 
-    // return Storage::disk('research')->download($path);
 
     if(Storage::disk('research')->exists($path)) {
       return Storage::disk('research')->download($path);

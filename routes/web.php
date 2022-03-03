@@ -144,6 +144,8 @@ Route::group(['middleware' => 'keycloak-web'], function () {
     Route::get('/all-notifications', 'UpdateNotifyController@notifications_all')->name('all.notify');
     // Redirect to Message
     Route::get('/redirect-url-notifications', 'UpdateNotifyController@redirect_url')->name('redirect.url');
+    //  -- DOWNLOAD File --
+    Route::get('/download-files/notify/{id}/{files}','UpdateNotifyController@DownloadFile_Notify')->name('DownloadFile.Notify');
 
 
 

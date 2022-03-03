@@ -3,7 +3,7 @@
   use App\NotificationAlert;
   use Carbon\Carbon;
 
-  if(Auth::user()->id){
+  if(Auth::user()->preferred_username){
     $CountNewMessage  = count(NotificationAlert::CountNewMessage(Auth::user()->preferred_username));
     $ListMessage = NotificationAlert::ListMessage();
   }
@@ -30,7 +30,7 @@
           </a>
             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
               <a href="{{ route('all.notify') }}" class="dropdown-item">
-                <i class="fas fa-envelope py-2 mr-3"></i>
+                <i class="fas fa-envelope py-2 mr-3 text-secondary"></i>
                 <font color="red"><b> ดูการแจ้งเตือนทั้งหมด </b></font>
               </a>
             </div>
