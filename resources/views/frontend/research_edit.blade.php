@@ -2,13 +2,9 @@
 
 
 @section('css-custom')
-<!-- <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
-<link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css"> -->
-
 <!-- DatePicker Style -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
-
   <!-- Fonts Style : Kanit -->
     <style>
     body {
@@ -32,7 +28,6 @@
         cursor: pointer;
         height: 38px;
         font-size: 14px;
-
       }
       button:active {
         box-shadow: 0 3px 0 #1D9AF2;
@@ -61,7 +56,7 @@
   <section class="content">
     <div class="container">
 
-    <!-- START EDIT RESEARCH PROJECT -------------------------------------------------->
+    <!-- START EDIT RESEARCH PROJECT ----------------->
       <div class="row">
         <div class="col-md-12">
           <div class="card">
@@ -83,53 +78,41 @@
                       <input type="text" class="form-control" name="pro_name_th" value="{{ $data->pro_name_th }}">
                     </div>
                   </div>
-                </div>
 
-                <div class="row">
                   <div class="col-md-12">
                     <div class="form-group">
                       <label for="exampleInput1"> ชื่อโครงการ (ENG) </label>
-                      <!-- hidden = id -->
+                      <!-- HIDDEN ID -->
                       <input type="hidden" class="form-control" name="id" value="{{ $data->id }}">
 
                       <input type="text" class="form-control" name="pro_name_en" value="{{ $data->pro_name_en }}">
                     </div>
                   </div>
-                </div>
 
-                <div class="row">
                   <div class="col-md-6">
                     <div class="form-group">
                       <label for="exampleSelect1"> ตำแหน่งในโครงการวิจัย </label>
-                      <!-- <input type="text" class="form-control" name="pro_position" value="{{-- $data2 [$data->pro_position] --}}"> **กรณี CONVERT Array to String** -->
-
-                      <!-- Query มาจากฐานข้อมูล db_research_project เพื่อมา UPDATE -->
-                      <select class="form-control" name="pro_position">
-                        @foreach ($data2 as $key => $value)
-                          <option value="{{ $key }}"
-                          {{ $data->pro_position == $key ? 'selected' : '' }}> {{ $value }}
-                          </option>
-                        @endforeach
-                      </select>
+                        <select class="form-control" name="pro_position">
+                          @foreach ($data2 as $key => $value)
+                            <option value="{{ $key }}"
+                            {{ $data->pro_position == $key ? 'selected' : '' }}> {{ $value }}
+                            </option>
+                          @endforeach
+                        </select>
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="form-group">
                       <label for="exampleSelect1"> จำนวนผู้ร่วมวิจัย </label>
-                      <!-- <input type="text" class="form-control" name="pro_position" value="{{-- $data2 [$data->pro_co_researcher] --}}"> **กรณี CONVERT Array to String** -->
-
-                      <!-- Query มาจากฐานข้อมูล db_research_project เพื่อมา UPDATE -->
-                      <select class="form-control" name="pro_co_researcher">
-                        @foreach ($data3 as $key => $value)
-                          <option value="{{ $key }}"
-                          {{ $data->pro_co_researcher == $key ? 'selected' : '' }}> {{ $value }} </option>
-                        @endforeach
-                      </select>
+                        <select class="form-control" name="pro_co_researcher">
+                          @foreach ($data3 as $key => $value)
+                            <option value="{{ $key }}"
+                            {{ $data->pro_co_researcher == $key ? 'selected' : '' }}> {{ $value }} </option>
+                          @endforeach
+                        </select>
                     </div>
                   </div>
-                </div>
 
-                <div class="row">
                   <div class="col-md-4">
                     <div class="form-group">
                       <label for="exampleDatepicker1"> ปี พ.ศ. ที่เริ่มโครงการ </label>
@@ -147,20 +130,14 @@
                   <div class="col-md-4">
                     <div class="form-group">
                       <label for="exampleSelect1"> โครงการได้ตีพิมพ์ </label>
-                      <!-- <input type="text" class="form-control" name="pro_position" value="{{-- $data2 [$data->publish_status] --}}"> **กรณี CONVERT Array to String** -->
-
-                      <!-- Query มาจากฐานข้อมูล db_research_project เพื่อมา UPDATE -->
-                      <select class="form-control" name="publish_status">
-                        @foreach ($data4 as $key => $value)
-                          <option value="{{ $key }}"
-                          {{ $data->publish_status == $key ? 'selected' : '' }}> {{ $value }} </option>
-                        @endforeach
-                      </select>
+                        <select class="form-control" name="publish_status">
+                          @foreach ($data4 as $key => $value)
+                            <option value="{{ $key }}" {{ $data->publish_status == $key ? 'selected' : '' }}> {{ $value }} </option>
+                          @endforeach
+                        </select>
                     </div>
                   </div>
-                </div>
 
-                <div class="row">
                   <div class="col-md-12">
                     <div class="form-group">
                       <label for="exampleInput1"> URL ที่อยู่ออนไลน์ของรายงานวิจัยฉบับสมบูรณ์ (ถ้ามี) </label>
@@ -169,11 +146,32 @@
                   </div>
                 </div>
 
-              </div>
+              </div> <!-- END Card-body -->
 
+          </div> <!-- END Card -->
+
+
+          <div class="card">
+            <div class="card-body">
+
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label><font color="red"> อัพโหลดไฟล์ **</font></label>
+                    <div class="input-group">
+                      <div class="custom-file">
+                        <input type="file" class="custom-file-input" name="files_upload">
+                        <label class="custom-file-label"> Upload File ขนาดไม่เกิน 20 MB </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div> <!-- END Row -->
+
+            </div> <!-- END Card-body -->
 
               <div class="card-footer">
-                <a class="btn btn-danger float-left" href="{{ route('page.research') }}">
+                <a class="btn btn-secondary float-left" href="{{ route('page.research') }}">
                   <i class="fas fa-arrow-alt-circle-left"></i>
                     ย้อนกลับ
                 </a>
@@ -188,7 +186,11 @@
               </div>
             </form>
 
-          </div>
+          </div> <!-- END Card -->
+
+
+
+
         </div>
       </div>
       <!-- END EDIT RESEARCH PROJECT -------------------------------------------------->

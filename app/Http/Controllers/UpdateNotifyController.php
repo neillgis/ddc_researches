@@ -11,6 +11,7 @@ use Auth;
 use app\Exceptions\Handler;
 use Illuminate\Support\Facades\Route;
 
+
 class UpdateNotifyController extends Controller
 {
     //
@@ -30,7 +31,7 @@ class UpdateNotifyController extends Controller
                                           // ->where('send_date', Carbon::today())
                                           // ->Orwhere('send_date', Carbon::yesterday())
                                           ->orderBy('id','DESC')
-                                          ->limit(30)
+                                          ->limit(40)
                                           ->get();
 
           $category = [ 1 => "โครงการวิจัย",
@@ -44,7 +45,7 @@ class UpdateNotifyController extends Controller
 
             $data_notify = NotificationAlert::where('receiver_id', Auth::user()->preferred_username)
                                             ->OrderBy('id','DESC')
-                                            ->limit(30)
+                                            ->limit(20)
                                             ->get();
 
             $category = [ 1 => "โครงการวิจัย",
@@ -57,9 +58,20 @@ class UpdateNotifyController extends Controller
             return view('error-page.error405');
         }
 
+
+      // USE in Research "VERIFIED"
+      $verified = [ 1 => 'ตรวจสอบแล้ว',
+                    2 => 'อยู่ระหว่างตรวจสอบ',
+                    3 => 'อยู่ระหว่างแก้ไข',
+                    4 => 'ผ่านการตรวจสอบแล้ว',
+                    9 => 'ไม่ตรงเงื่อนไข',
+                  ];
+
+
       return view('notify_all',[
-        "data_notify" =>  $data_notify,
-        "category"    =>  $category,
+        "data_notify"   =>  $data_notify,
+        "category"      =>  $category,
+        "verified"      =>  $verified,
       ]);
     }
 
@@ -80,15 +92,16 @@ class UpdateNotifyController extends Controller
 
         $query_download = NotificationAlert::where('id', $request->id)->first();
 
-        if(!isset($query_download)){
 
+        if(!isset($query_download)){
           return view('error-page.error405');
         }
 
-        $path = $query_download->files;
+        $path = $query_download->files_upload;
 
-      if(Storage::disk('NotificationAlert')->exists($path)) {
-        return Storage::disk('NotificationAlert')->download($path);
+
+      if(Storage::disk('notify_alert')->exists($path)) {
+        return Storage::disk('notify_alert')->download($path);
       }else {
         return view('error-page.error405');
       }

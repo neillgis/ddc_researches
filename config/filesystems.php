@@ -66,6 +66,12 @@ return [
             'url' => env('APP_URL').'/storage',
         ],
 
+        'notify_alert' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/file_upload_notify'),
+            'url' => env('APP_URL').'/storage',
+        ],
+
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),

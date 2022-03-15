@@ -55,6 +55,10 @@ Route::group(['middleware' => 'keycloak-web'], function () {
     Route::get('/research/unverified/{id}', 'ResearchController@No_verified')->name('research.unverified');
     //  -- DELETE --
     Route::get('/Delete-Research/{id}', 'ResearchController@delete_research')->name('research.delete');
+    //  -- COMMENTS for "MANAGER" --
+    Route::post('/research/comments', 'ResearchController@action_comments_manager')->name('research.comments');
+    //  -- COMMENTS for "USER" --
+    Route::post('/research/comments-users', 'ResearchController@action_comments_users')->name('research.comments_users');
 
 
 
@@ -145,7 +149,7 @@ Route::group(['middleware' => 'keycloak-web'], function () {
     // Redirect to Message
     Route::get('/redirect-url-notifications', 'UpdateNotifyController@redirect_url')->name('redirect.url');
     //  -- DOWNLOAD File --
-    Route::get('/download-files/notify/{id}/{files}','UpdateNotifyController@DownloadFile_Notify')->name('DownloadFile.Notify');
+    Route::get('/download-files/notify/{id}/{files_upload}','UpdateNotifyController@DownloadFile_Notify')->name('DownloadFile.Notify');
 
 
 

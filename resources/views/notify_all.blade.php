@@ -41,10 +41,14 @@
                   <div class="mb-4">
                     <i class="fas fa-envelope bg-yellow"></i>
                     <div class="timeline-item">
-                        @if($value->subject == "ไม่ตรงเงื่อนไข")
-                          <span class="time"><i class="fas fa-comment-dots text-info"></i> {{ $value->subject }} </span>
+                        @if($value->subject == "2")
+                          <span class="time"><i class="fas fa-comment-dots text-warning"></i> {{ $verified [$value->subject] }} </span>
+                        @elseif($value->subject == "3")
+                          <span class="time"><i class="fas fa-comment-dots text-warning"></i> {{ $verified [$value->subject] }} </span>
+                        @elseif($value->subject == "9")
+                          <span class="time"><i class="fas fa-comment-dots text-warning"></i> {{ $verified [$value->subject] }} </span>
                         @else
-                          <span class="time"><i class="fas fa-comment-dots text-success"></i> {{ $value->subject }} </span>
+                          <span class="time"><i class="fas fa-comment-dots text-warning"></i> - </span>
                         @endif
                       <h3 class="timeline-header" style="background-color:#fafcff;">
                         <div class="col-md-12">
@@ -64,7 +68,7 @@
                               @endif
                             </div>
                             <div class="col-md-2">
-                              <span class="text-muted"><font color="red"><b> Project ID :</b></font> {{ empty($value->projects_id) ? '-' : $value->projects_id }} </span>
+                              <span class="text-muted"><font color="red"><b> Project </b></font> : {{ empty($value->projects_id) ? '-' : $value->projects_id }} </span>
                             </div>
                           </div>
 
@@ -88,7 +92,7 @@
 
                           <div class="form-group row">
                             <label class="col-md-2"> ไฟล์แนบ : </label>
-                            <a href="{{ route('DownloadFile.Notify', [ 'id' => $value->id, 'files' => $value->files ]) }}" title="Download-File"><i class="fas fa-paperclip"></i> {{ empty($value->files) ? '-' : $value->files }} </a>
+                            <a href="{{ route('DownloadFile.Notify', [ 'id' => $value->id, 'files_upload' => $value->files_upload ]) }}" title="Download-File"><i class="fas fa-paperclip"></i> {{ empty($value->files_upload) ? '-' : $value->files_upload }} </a>
                           </div>
 
                         </div>

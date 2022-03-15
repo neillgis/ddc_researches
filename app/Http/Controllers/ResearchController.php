@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use App\CmsHelper;
 use App\research;
 use App\journal;
+use App\NotificationAlert;
 use Storage;
 use File;
 use Auth;
@@ -144,6 +145,8 @@ class ResearchController extends Controller
                                 4 => 'ผ่านการตรวจสอบแล้ว', //process_pass
                               ];
 
+      // USE in Research "VERIFIED"
+      $ref_verified = DB::table('ref_verified')->get();
 
 
 // ---------- COUNT 4 BOX on TOP ----------
@@ -330,47 +333,10 @@ class ResearchController extends Controller
        'Total_departments'  => $Total_departments,
        'verified_list'      => $verified,
        'verified_departments' => $verified_departments,
+       'ref_verified'       => $ref_verified,
       ]);
   }
   //  -- END SELECT --
-
-
-
-
-  //  -- Edit RESEARCH --
-  public function edit_research_form(Request $request){
-    //แสดงข้อมูล Query EDIT
-    $edit = research::where('id' , $request->id)->first();
-
-    $edit2 = [1=> 'ผู้วิจัยหลัก',
-              2=> 'ผู้วิจัยหลัก-ร่วม',
-              3=> 'ผู้ร่วมวิจัย',
-              4=> 'ผู้ช่วยวิจัย',
-              5=> 'ที่ปรึกษาโครงการ'
-             ];
-
-    $edit3 = [0=> '0',
-              1=> '1', 2=> '2', 3=> '3',
-              4=> '4', 5=> '5', 6=> '6',
-              7=> '7', 8=> '8', 9=> '9',
-              10=> '10',
-              11=> 'มากกว่า 10'
-             ];
-
-
-     $edit4 = [1=> 'ใช่',
-               2=> 'ไม่ใช่'
-              ];
-
-     return view('frontend.research_edit',
-       ['data'    => $edit,
-        'data2'   => $edit2,
-        'data3'   => $edit3,
-        'data4'   => $edit4,
-       ]);
-  }
-  //  -- END Edit RESEARCH --
-
 
 
 
@@ -418,6 +384,42 @@ class ResearchController extends Controller
   }
   //  -- END INSERT --
 
+
+
+
+  //  -- Edit RESEARCH --
+  public function edit_research_form(Request $request){
+    //แสดงข้อมูล Query EDIT
+    $edit = research::where('id' , $request->id)->first();
+
+    $edit2 = [1=> 'ผู้วิจัยหลัก',
+              2=> 'ผู้วิจัยหลัก-ร่วม',
+              3=> 'ผู้ร่วมวิจัย',
+              4=> 'ผู้ช่วยวิจัย',
+              5=> 'ที่ปรึกษาโครงการ'
+             ];
+
+    $edit3 = [0=> '0',
+              1=> '1', 2=> '2', 3=> '3',
+              4=> '4', 5=> '5', 6=> '6',
+              7=> '7', 8=> '8', 9=> '9',
+              10=> '10',
+              11=> 'มากกว่า 10'
+             ];
+
+
+     $edit4 = [1=> 'ใช่',
+               2=> 'ไม่ใช่'
+              ];
+
+     return view('frontend.research_edit',
+       ['data'    => $edit,
+        'data2'   => $edit2,
+        'data3'   => $edit3,
+        'data4'   => $edit4,
+       ]);
+  }
+  //  -- END Edit RESEARCH --
 
 
 
@@ -517,14 +519,11 @@ class ResearchController extends Controller
   //  -- END No VERIFIED --
 
 
-
-
-  public function delete_research(Request $request)
-  {
+  //  --- DELETE ---
+  public function delete_research(Request $request) {
 
       $delete = research::where('id', $request->id)
                         ->update(["deleted_at"  =>  date('Y-m-d H:i:s')]);
-
       // dd($delete);
 
     if($delete){
@@ -533,8 +532,99 @@ class ResearchController extends Controller
     }else{
       return redirect()->back()->with('Errorrr');
     }
-
   }
+
+
+
+  //  -- COMMENTS "MANAGER"--
+  public function action_comments_manager(Request $request){
+
+        $insert_comments = [
+            "send_date"     =>  Carbon::today(),
+            "category"      =>  "1",
+            "subject"       =>  $request->subject,
+            "sender_id"     =>  Auth::user()->preferred_username,
+            "sender_name"   =>  Auth::user()->name,
+            "receiver_id"   =>  $request->receiver_id,
+            "receiver_name" =>  $request->receiver_name,
+            "projects_id"   =>  $request->projects_id,
+            "description"   =>  $request->description,
+            "files_upload" =>  $request->files_upload,
+            "url_redirect"  =>  "research_edit/".$request->projects_id,
+        ];
+
+        // UPLOAD Files Table "Notifications_messages"
+        if ($request->file('files_upload')->isValid()) {
+            $file=$request->file('files_upload');
+            $name='file_'.date('dmY_His');
+            $file_name = $name.'.'.$file->getClientOriginalExtension();
+            $path = $file->storeAs('public/file_upload_notify',$file_name);
+            $insert_comments['files_upload'] = $file_name;
+        }
+
+        $notify = NotificationAlert::insertGetId($insert_comments);
+
+
+       if($notify){
+           session()->put('notify_send', 'okayy');
+           return redirect()->route('page.research');
+       }else{
+           return redirect()->back()->with('swl_err', 'บันทึกไม่สำเร็จ');
+       }
+     }
+
+
+
+
+  //  -- COMMENTS "USER"--
+  public function action_comments_users(Request $request){
+
+        $insert_comments = [
+            "send_date"     =>  Carbon::today(),
+            "category"      =>  "1",
+            "subject"       =>  $request->subject,
+            "sender_id"     =>  Auth::user()->preferred_username,
+            "sender_name"   =>  Auth::user()->name,
+            "receiver_id"   =>  "1709700158952",
+            "receiver_name" =>  "อภิสิทธิ์ สนองค์",
+            "projects_id"   =>  $request->projects_id,
+            "description"   =>  $request->description,
+            "files_upload" =>  $request->files_upload,
+            "url_redirect"  =>  "research_edit/".$request->projects_id,
+        ];
+
+        // UPLOAD Files Table "Notifications_messages"
+        if ($request->file('files_upload')->isValid()) {
+            $file=$request->file('files_upload');
+            $name='file_'.date('dmY_His');
+            $file_name = $name.'.'.$file->getClientOriginalExtension();
+            $path = $file->storeAs('public/file_upload_notify',$file_name);
+            $insert_comments['files_upload'] = $file_name;
+        }
+
+        $notify = NotificationAlert::insertGetId($insert_comments);
+
+
+          // UPDATE table "db_research_project"
+           $file = $request->file('files_upload');
+           $name='file_'.date('dmY_His');
+           $clientName = $name.'.'.$file->getClientOriginalExtension();
+           $path = $file->storeAs('public/file_upload', $clientName);
+
+           $aa = DB::table('db_research_project_copy1')
+                   ->where('id', $request->projects_id)
+                   ->update([ "files"  =>  $clientName ]);
+
+
+       if($notify){
+           session()->put('notify_send', 'okayy');
+           return redirect()->route('page.research');
+       }else{
+           return redirect()->back()->with('swl_err', 'บันทึกไม่สำเร็จ');
+       }
+     }
+
+
 
 
 
