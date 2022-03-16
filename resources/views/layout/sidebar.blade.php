@@ -132,16 +132,25 @@
            </li>
 
          @if(Auth::hasRole('manager') || Auth::hasRole('admin'))
-           <li class="nav-header">SETTINGS</li>
+           <li class="nav-header">MANAGES</li>
+             <li class="nav-item">
+               <a class="nav-link {{ Active::check('all.notify') }} " href="{{ route('all.notify') }}">
+                 <i class="nav-icon fas fa-bell"></i>
+                 <p>
+                   การแจ้งเตือนทั้งหมด
+                 </p>
+               </a>
+             </li>
+
              <li class="nav-item">
                <a class="nav-link {{ Active::check('admin.users_manage') }} " href="{{ route('admin.users_manage') }}">
                  <i class="nav-icon fas fa-user-cog"></i>
                  <p>
-                   Users Manage
+                   จัดการผู้ใช้งาน
                  </p>
                </a>
              </li>
-           @endif
+          @endif
 
       </ul>
     </nav>
