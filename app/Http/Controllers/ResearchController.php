@@ -389,6 +389,7 @@ class ResearchController extends Controller
 
   //  -- Edit RESEARCH --
   public function edit_research_form(Request $request){
+
     //แสดงข้อมูล Query EDIT
     $edit = research::where('id' , $request->id)->first();
 
@@ -412,6 +413,7 @@ class ResearchController extends Controller
                2=> 'ไม่ใช่'
               ];
 
+
      return view('frontend.research_edit',
        ['data'    => $edit,
         'data2'   => $edit2,
@@ -425,21 +427,30 @@ class ResearchController extends Controller
 
   //  -- SAVE --
   public function save_research_form(Request $request){
-    // dd($request);
-    $update = DB::table('db_research_project')
-                  ->where('id', $request->id)
-                  ->update([
-                            'pro_name_en'     => $request->pro_name_en,
-                            'pro_name_th'     => $request->pro_name_th,
-                            'pro_position'    => $request->pro_position,
-                            'pro_co_researcher' => $request->pro_co_researcher,
-                            'pro_start_date'  => $request->pro_start_date,
-                            'pro_end_date'    => $request->pro_end_date,
-                            'publish_status'  => $request->publish_status,
-                            'url_research'    => $request->url_research
-                          ]);
 
-    if($update){
+    // UPDATE Files ==> "db_research_project"
+       $file = $request->file('files');
+       $name='file_'.date('dmY_His');
+       $clientName = $name.'.'.$file->getClientOriginalExtension();
+       $path = $file->storeAs('public/file_upload', $clientName);
+
+
+    $update_data = DB::table('db_research_project')
+                      ->where('id', $request->id)
+                      ->update([
+                                'pro_name_en'       => $request->pro_name_en,
+                                'pro_name_th'       => $request->pro_name_th,
+                                'pro_position'      => $request->pro_position,
+                                'pro_co_researcher' => $request->pro_co_researcher,
+                                'pro_start_date'    => $request->pro_start_date,
+                                'pro_end_date'      => $request->pro_end_date,
+                                'publish_status'    => $request->publish_status,
+                                'url_research'      => $request->url_research,
+                                "files"             => $clientName,
+                              ]);
+
+
+    if($update_data){
       //return Sweet Alert
         return redirect()->route('page.research')->with('swl_update', 'แก้ไขข้อมูลสำเร็จแล้ว');
     }else {
@@ -452,24 +463,24 @@ class ResearchController extends Controller
 
   //  -- DOWNLOAD --
   public function DownloadFile(Request $request){
-    $query = DB::table('db_research_project')
+
+      $query = DB::table('db_research_project')
                   ->select('id', 'files')
                   ->where('id', $request->id)
                   ->first();
 
-    if(!$query){
-      return view('error-page.error404');
-    }
+      if(!isset($query)){
+        return view('error-page.error405');
+      }
 
-    $path = $query->files;
+      $path = $query->files;
 
 
-    if(Storage::disk('research')->exists($path)) {
-      return Storage::disk('research')->download($path);
-    }else {
-      return view('error-page.error405');
-    }
-
+      if(Storage::disk('research')->exists($path)) {
+        return Storage::disk('research')->download($path);
+      }else {
+        return view('error-page.error405');
+      }
   }
   //  -- END DOWNLOAD --
 
@@ -562,6 +573,7 @@ class ResearchController extends Controller
             $insert_comments['files_upload'] = $file_name;
         }
 
+        // -- INSERT --
         $notify = NotificationAlert::insertGetId($insert_comments);
 
 
@@ -589,34 +601,35 @@ class ResearchController extends Controller
             "receiver_name" =>  "อภิสิทธิ์ สนองค์",
             "projects_id"   =>  $request->projects_id,
             "description"   =>  $request->description,
-            "files_upload" =>  $request->files_upload,
             "url_redirect"  =>  "research_edit/".$request->projects_id,
+            // "files_upload" =>  $request->files_upload,
         ];
 
         // UPLOAD Files Table "Notifications_messages"
-        if ($request->file('files_upload')->isValid()) {
-            $file=$request->file('files_upload');
-            $name='file_'.date('dmY_His');
-            $file_name = $name.'.'.$file->getClientOriginalExtension();
-            $path = $file->storeAs('public/file_upload_notify',$file_name);
-            $insert_comments['files_upload'] = $file_name;
-        }
+        // if ($request->file('files_upload')->isValid()) {
+        //     $file=$request->file('files_upload');
+        //     $name='file_'.date('dmY_His');
+        //     $file_name = $name.'.'.$file->getClientOriginalExtension();
+        //     $path = $file->storeAs('public/file_upload_notify',$file_name);
+        //     $insert_comments['files_upload'] = $file_name;
+        // }
 
-        $notify = NotificationAlert::insertGetId($insert_comments);
-
-
-          // UPDATE table "db_research_project"
-           $file = $request->file('files_upload');
-           $name='file_'.date('dmY_His');
-           $clientName = $name.'.'.$file->getClientOriginalExtension();
-           $path = $file->storeAs('public/file_upload', $clientName);
-
-           $aa = DB::table('db_research_project_copy1')
-                   ->where('id', $request->projects_id)
-                   ->update([ "files"  =>  $clientName ]);
+        // -- INSERT --
+        $notify_users = NotificationAlert::insertGetId($insert_comments);
 
 
-       if($notify){
+        // UPDATE Files ===> "db_research_project"
+         // $file = $request->file('files_upload');
+         // $name='file_'.date('dmY_His');
+         // $clientName = $name.'.'.$file->getClientOriginalExtension();
+         // $path = $file->storeAs('public/file_upload', $clientName);
+         //
+         // $aa = DB::table('db_research_project')
+         //         ->where('id', $request->projects_id)
+         //         ->update([ "files"  =>  $clientName ]);
+
+
+       if($notify_users){
            session()->put('notify_send', 'okayy');
            return redirect()->route('page.research');
        }else{

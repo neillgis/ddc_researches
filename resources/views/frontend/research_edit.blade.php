@@ -67,7 +67,7 @@
             </div>
 
             <!-- <form role="form"> -->
-            <form action="{{ route('research.save') }}" method="POST">
+            <form action="{{ route('research.save') }}" method="POST" enctype="multipart/form-data" onsubmit="disableButton()">
               @csrf
 
               <div class="card-body">
@@ -160,7 +160,7 @@
                     <label><font color="red"> อัพโหลดไฟล์ **</font></label>
                     <div class="input-group">
                       <div class="custom-file">
-                        <input type="file" class="custom-file-input" name="files_upload">
+                        <input type="file" class="custom-file-input" name="files">
                         <label class="custom-file-label"> Upload File ขนาดไม่เกิน 20 MB </label>
                       </div>
                     </div>
@@ -176,12 +176,10 @@
                     ย้อนกลับ
                 </a>
 
-              <!-- {{-- @if(Auth::hasRole('manager') || Auth::hasRole('user')) --}} -->
-                <button type="submit" class="btn btn-success float-right" value="บันทึกข้อมูล">
+                <button type="submit" class="btn btn-success float-right" value="แก้ไขข้อมูล" id="btn_disabled">
                   <i class="fas fa-save"></i>
-                    &nbsp;บันทึกข้อมูล
+                    &nbsp;แก้ไขข้อมูล
                 </button>
-              <!-- {{-- @endif --}} -->
 
               </div>
             </form>
@@ -202,7 +200,6 @@
 
 
 @section('js-custom-script')
-
 <!-- START ALERT บันทึกข้อมูลสำเร็จ  -->
 <script type="text/javascript">
   $(document).ready(function () {
@@ -213,7 +210,21 @@
     }, 2000);
   });
 </script>
-<!-- END ALERT บันทึกข้อมูลสำเร็จ  -->
+
+<!-- FILE INPUT -->
+<script type="text/javascript">
+  $(document).ready(function () {
+    bsCustomFileInput.init();
+  });
+
+  //OnSubmit Disable Button
+    function disableButton() {
+        var btn = document.getElementById('btn_disabled');
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Loading...'
+    }
+
+</script>
 
 
 <!-- DatePicker Style -->
