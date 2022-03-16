@@ -574,7 +574,7 @@
                             @if(Auth::hasRole('manager'))
                               <div class="col-md-12">
                                 <div class="form-group">
-                                  <label> อัพโหลดไฟล์ <font color="red"> * </font></label>
+                                  <label> อัพโหลดไฟล์ </label>
                                   <div class="input-group">
                                     <div class="custom-file">
                                       <input type="file" class="custom-file-input" name="files_upload">

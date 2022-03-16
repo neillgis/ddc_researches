@@ -553,19 +553,21 @@ class ResearchController extends Controller
         $insert_comments = [
             "send_date"     =>  Carbon::today(),
             "category"      =>  "1",
+            "projects_id"   =>  $request->projects_id,
             "subject"       =>  $request->subject,
             "sender_id"     =>  Auth::user()->preferred_username,
             "sender_name"   =>  Auth::user()->name,
             "receiver_id"   =>  $request->receiver_id,
             "receiver_name" =>  $request->receiver_name,
-            "projects_id"   =>  $request->projects_id,
             "description"   =>  $request->description,
             "files_upload" =>  $request->files_upload,
             "url_redirect"  =>  "research_edit/".$request->projects_id,
         ];
 
-        // UPLOAD Files Table "Notifications_messages"
-        if ($request->file('files_upload')->isValid()) {
+        // UPLOAD Files "Notifications_messages"
+
+        // if ($request->file('files_upload')->isValid()) {
+        if ($request->file('files_upload') != NULL) {
             $file=$request->file('files_upload');
             $name='file_'.date('dmY_His');
             $file_name = $name.'.'.$file->getClientOriginalExtension();
@@ -573,8 +575,8 @@ class ResearchController extends Controller
             $insert_comments['files_upload'] = $file_name;
         }
 
-        // -- INSERT --
-        $notify = NotificationAlert::insertGetId($insert_comments);
+          // -- INSERT --
+          $notify = NotificationAlert::insertGetId($insert_comments);
 
 
        if($notify){
@@ -594,12 +596,12 @@ class ResearchController extends Controller
         $insert_comments = [
             "send_date"     =>  Carbon::today(),
             "category"      =>  "1",
+            "projects_id"   =>  $request->projects_id,
             "subject"       =>  $request->subject,
             "sender_id"     =>  Auth::user()->preferred_username,
             "sender_name"   =>  Auth::user()->name,
             "receiver_id"   =>  "1709700158952",
             "receiver_name" =>  "อภิสิทธิ์ สนองค์",
-            "projects_id"   =>  $request->projects_id,
             "description"   =>  $request->description,
             "url_redirect"  =>  "research_edit/".$request->projects_id,
             // "files_upload" =>  $request->files_upload,

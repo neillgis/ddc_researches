@@ -58,45 +58,46 @@
                       </h3>
                         <div class="timeline-body shadow">
                           <div class="col-md-12">
-                          <div class="form-group row">
-                            <label class="col-md-2"> หมวดหมู่ : </label>
-                            <div class="col-md-8">
-                              @if($value->category != NULL)
-                                  {{ $category [$value->category] }}
-                              @else
-                                  -
-                              @endif
+                            <div class="form-group row">
+                              <label class="col-md-2"> หมวดหมู่ : </label>
+                              <div class="col-md-8">
+                                @if($value->category != NULL)
+                                    {{ $category [$value->category] }}
+                                @else
+                                    -
+                                @endif
+                              </div>
+                              <div class="col-md-2">
+                                <span class="text-muted"><font color="red"><b> Project </b></font> : {{ empty($value->projects_id) ? '-' : $value->projects_id }} </span>
+                              </div>
                             </div>
-                            <div class="col-md-2">
-                              <span class="text-muted"><font color="red"><b> Project </b></font> : {{ empty($value->projects_id) ? '-' : $value->projects_id }} </span>
+
+                            <div class="form-group row">
+                              <label class="col-md-2"> คำอธิบาย : </label>
+                              <div class="col-md-10">
+                                @if($value->description != NULL)
+                                    {{ $value->description }}
+                                @else
+                                    -
+                                @endif
+                              </div>
                             </div>
-                          </div>
 
-                          <div class="form-group row">
-                            <label class="col-md-2"> คำอธิบาย : </label>
-                            <div class="col-md-10">
-                              @if($value->description != NULL)
-                                  {{ $value->description }}
-                              @else
-                                  -
-                              @endif
+                            <div class="form-group row">
+                              <label class="col-md-2"> URL : </label>
+                              <a href="{{ route('redirect.url', ['url_redirect' => $value->url_redirect]) }}" target="_blank"> {{ empty($value->url_redirect) ? '-' : $value->url_redirect }} </a>
                             </div>
+
+                          @if($value->files_upload != NULL)
+                            <hr class="mb-3">
+                            <div class="form-group row">
+                              <label class="col-md-2"> ไฟล์แนบ : </label>
+                              <a href="{{ route('DownloadFile.Notify', [ 'id' => $value->id, 'files_upload' => $value->files_upload ]) }}" title="Download-File"><i class="fas fa-paperclip"></i> {{ empty($value->files_upload) ? '-' : $value->files_upload }} </a>
+                            </div>
+                          @endif
+
                           </div>
-
-                          <div class="form-group row">
-                            <label class="col-md-2"> URL : </label>
-                            <a href="{{ route('redirect.url', ['url_redirect' => $value->url_redirect]) }}" target="_blank"> {{ empty($value->url_redirect) ? '-' : $value->url_redirect }} </a>
-                          </div>
-
-                          <hr class="mb-3">
-
-                          <div class="form-group row">
-                            <label class="col-md-2"> ไฟล์แนบ : </label>
-                            <a href="{{ route('DownloadFile.Notify', [ 'id' => $value->id, 'files_upload' => $value->files_upload ]) }}" title="Download-File"><i class="fas fa-paperclip"></i> {{ empty($value->files_upload) ? '-' : $value->files_upload }} </a>
-                          </div>
-
-                        </div>
-                        </div>
+                        </div> <!-- END Timeline -->
                     </div>
                   </div>
                 @endforeach
