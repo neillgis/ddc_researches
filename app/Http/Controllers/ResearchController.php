@@ -428,26 +428,46 @@ class ResearchController extends Controller
   //  -- SAVE --
   public function save_research_form(Request $request){
 
-    // UPDATE Files ==> "db_research_project"
+    // UPDATE Files ==> "db_research_project" **กรณี "มี" ไฟล์ที่แก้ไข Upload**
+
+    if ($request->file('files') != NULL) {
+
        $file = $request->file('files');
        $name='file_'.date('dmY_His');
        $clientName = $name.'.'.$file->getClientOriginalExtension();
        $path = $file->storeAs('public/file_upload', $clientName);
 
+        $update_data = DB::table('db_research_project')
+                          ->where('id', $request->id)
+                          ->update([
+                                    'pro_name_en'       => $request->pro_name_en,
+                                    'pro_name_th'       => $request->pro_name_th,
+                                    'pro_position'      => $request->pro_position,
+                                    'pro_co_researcher' => $request->pro_co_researcher,
+                                    'pro_start_date'    => $request->pro_start_date,
+                                    'pro_end_date'      => $request->pro_end_date,
+                                    'publish_status'    => $request->publish_status,
+                                    'url_research'      => $request->url_research,
+                                    "files"             => $clientName,
+                                  ]);
 
-    $update_data = DB::table('db_research_project')
-                      ->where('id', $request->id)
-                      ->update([
-                                'pro_name_en'       => $request->pro_name_en,
-                                'pro_name_th'       => $request->pro_name_th,
-                                'pro_position'      => $request->pro_position,
-                                'pro_co_researcher' => $request->pro_co_researcher,
-                                'pro_start_date'    => $request->pro_start_date,
-                                'pro_end_date'      => $request->pro_end_date,
-                                'publish_status'    => $request->publish_status,
-                                'url_research'      => $request->url_research,
-                                "files"             => $clientName,
-                              ]);
+    }else {
+
+        // **กรณี "ไม่มี" ไฟล์ที่แก้ไข Upload**
+        $update_data = DB::table('db_research_project')
+                          ->where('id', $request->id)
+                          ->update([
+                                    'pro_name_en'       => $request->pro_name_en,
+                                    'pro_name_th'       => $request->pro_name_th,
+                                    'pro_position'      => $request->pro_position,
+                                    'pro_co_researcher' => $request->pro_co_researcher,
+                                    'pro_start_date'    => $request->pro_start_date,
+                                    'pro_end_date'      => $request->pro_end_date,
+                                    'publish_status'    => $request->publish_status,
+                                    'url_research'      => $request->url_research,
+                                  ]);
+
+    }
 
 
     if($update_data){
@@ -560,7 +580,7 @@ class ResearchController extends Controller
             "receiver_id"   =>  $request->receiver_id,
             "receiver_name" =>  $request->receiver_name,
             "description"   =>  $request->description,
-            "files_upload" =>  $request->files_upload,
+            "files_upload"  =>  $request->files_upload,
             "url_redirect"  =>  "research_edit/".$request->projects_id,
         ];
 

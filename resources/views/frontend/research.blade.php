@@ -406,7 +406,6 @@
                                 <a class="dropdown-item" href="{{ route('DownloadFile.research', ['id' => $value->id, 'files' => $value->files]) }}" title="Download">
                                   <i class="fas fa-arrow-alt-circle-down"></i>&nbsp; Download
                                 </a>
-                            <!-- END DOWNLOAD -->
 
                                 <div class="dropdown-divider"></div>
 
@@ -414,7 +413,6 @@
                                 <a class="dropdown-item" href="{{ route('research.edit', $value->id) }}" title="Edit">
                                   <i class="fas fa-edit"></i>&nbsp; Edit
                                 </a>
-                            <!-- END EDIT -->
 
                                 <div class="dropdown-divider"></div>
 
@@ -422,7 +420,6 @@
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#modal-default{{ $value->id }}" title="Verfied">
                                   <i class="fas fa-user-check"></i>&nbsp; Verified
                                 </a>
-                            <!-- END VERIFIED -->
 
                                 <div class="dropdown-divider"></div>
 
@@ -430,7 +427,6 @@
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#DeleteModal{{ $value->id }}" title="Delete">
                                   <i class="fas fa-trash-alt"></i>&nbsp; Delete
                                 </a>
-                            <!-- END DELETE -->
 
                             @if($value->verified == "2" || $value->verified == "3" || $value->verified == "9")
 
@@ -440,7 +436,6 @@
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#CommentModal{{ $value->id }}" title="Comments">
                                   <i class="far fa-comment-dots"></i>&nbsp; Comments
                                 </a>
-                            <!-- END COMMENTS -->
                               @endif
 
                             </div>

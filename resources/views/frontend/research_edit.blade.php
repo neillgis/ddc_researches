@@ -187,8 +187,6 @@
           </div> <!-- END Card -->
 
 
-
-
         </div>
       </div>
       <!-- END EDIT RESEARCH PROJECT -------------------------------------------------->
@@ -223,7 +221,6 @@
         btn.disabled = true;
         btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Loading...'
     }
-
 </script>
 
 

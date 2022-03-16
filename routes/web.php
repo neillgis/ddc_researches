@@ -69,7 +69,7 @@ Route::group(['middleware' => 'keycloak-web'], function () {
     Route::post('/journal_insert','JournalController@insert')->name('journal.insert');
     //  -- EDIT --
     Route::get('/journal_edit/{id}/{pro_id}','JournalController@edit_journal_form')->name('journal.edit');
-    //  -- EDIT --
+    //  -- EDIT 2 **NOT PRO_ID --
     Route::get('/journal_edit/{id}','JournalController@edit2_journal_form')->name('journal.edit2');
     //  -- SAVE --
     Route::post('/save_journal_edit','JournalController@save_journal_form')->name('journal.save');
@@ -83,6 +83,10 @@ Route::group(['middleware' => 'keycloak-web'], function () {
     Route::get('/Delete-Journal/{id}', 'JournalController@delete_journal')->name('journal.delete');
     //  -- STATUS --
     Route::post('/journal/status', 'JournalController@status_journal')->name('journal.status');
+    //  -- COMMENTS for "MANAGER" --
+    Route::post('/journal/comments', 'JournalController@action_comments_manager')->name('journal.comments');
+    //  -- COMMENTS for "USER" --
+    Route::post('/journal/comments-users', 'JournalController@action_comments_users')->name('journal.comments_users');
 
 
 

@@ -7,10 +7,12 @@ use Illuminate\Support\Facades\DB;
 use App\CmsHelper;
 use App\research;
 use App\journal;
+use App\NotificationAlert;
 use Storage;
 use File;
 use Auth;
 use Session;
+use Carbon\Carbon;
 use app\Exceptions\Handler;
 use Illuminate\Support\Facades\Route;
 
@@ -71,6 +73,7 @@ class JournalController extends Controller
                 ->join('db_research_project', 'db_research_project.id', '=', 'db_published_journal.pro_id')
                 ->leftjoin('users', 'db_published_journal.users_id', '=', 'users.idCard')
                 ->select('db_research_project.users_name',
+                         'db_research_project.users_id',
                          'db_published_journal.id',
                          'db_published_journal.pro_id',
                          'db_published_journal.article_name_th',
@@ -315,7 +318,7 @@ class JournalController extends Controller
 
 
 
-  //  -- EDIT JOURNAL--
+  //  -- EDIT JOURNAL --
   public function edit_journal_form(Request $request){
 
     //แสดงข้อมูล Query EDIT
@@ -369,7 +372,6 @@ class JournalController extends Controller
         'dataz' => $edit4
      ]);
   }
-  //  -- END EDIT --
 
 
 
@@ -413,8 +415,6 @@ class JournalController extends Controller
         'dataz' => $edit4
      ]);
   }
-  //  -- END EDIT --
-
 
 
 
@@ -470,28 +470,65 @@ class JournalController extends Controller
 
   //  -- SAVE --
   public function save_journal_form(Request $request){
-    // dd($request);
-    $update = DB::table('db_published_journal')
-                  ->where('id', $request->id)
-                  ->update([
-                            // "pro_id"            => $request->pro_id,
-                            "article_name_th"   => $request->article_name_th,
-                            "article_name_en"   => $request->article_name_en,
-                            "journal_name_th"   => $request->journal_name_th,
-                            "journal_name_en"   => $request->journal_name_en,
-                            "publish_years"     => $request->publish_years,
-                            "publish_no"        => $request->publish_no,
-                            "publish_volume"    => $request->publish_volume,
-                            "publish_page"      => $request->publish_page,
-                            "publish_firstpage" => $request->publish_firstpage,
-                            "publish_lastpage"  => $request->publish_lastpage,
-                            "url_journal"       => $request->url_journal,
-                            "doi_number"        => $request->doi_number,
-                            "contribute"        => $request->contribute,
-                            "corres"            => $request->corres,
-                          ]);
 
-    if($update){
+    // UPDATE Files ==> "db_published_journal" **กรณี "มี" ไฟล์ที่แก้ไข Upload**
+
+    if ($request->file('files') != NULL) {
+
+       $file = $request->file('files');
+       $name='file_'.date('dmY_His');
+       $clientName = $name.'.'.$file->getClientOriginalExtension();
+       $path = $file->storeAs('public/file_upload_journal', $clientName);
+
+
+       $update_journal = DB::table('db_published_journal')
+                           ->where('id', $request->id)
+                           ->update([
+                                     // "pro_id"            => $request->pro_id,
+                                     "article_name_th"   => $request->article_name_th,
+                                     "article_name_en"   => $request->article_name_en,
+                                     "journal_name_th"   => $request->journal_name_th,
+                                     "journal_name_en"   => $request->journal_name_en,
+                                     "publish_years"     => $request->publish_years,
+                                     "publish_no"        => $request->publish_no,
+                                     "publish_volume"    => $request->publish_volume,
+                                     "publish_page"      => $request->publish_page,
+                                     "publish_firstpage" => $request->publish_firstpage,
+                                     "publish_lastpage"  => $request->publish_lastpage,
+                                     "url_journal"       => $request->url_journal,
+                                     "doi_number"        => $request->doi_number,
+                                     "contribute"        => $request->contribute,
+                                     "corres"            => $request->corres,
+                                     "files"             => $clientName,
+                                   ]);
+
+     }else {
+
+      // **กรณี "ไม่มี" ไฟล์ที่แก้ไข Upload**
+      $update_journal = DB::table('db_published_journal')
+                          ->where('id', $request->id)
+                          ->update([
+                                    // "pro_id"            => $request->pro_id,
+                                    "article_name_th"   => $request->article_name_th,
+                                    "article_name_en"   => $request->article_name_en,
+                                    "journal_name_th"   => $request->journal_name_th,
+                                    "journal_name_en"   => $request->journal_name_en,
+                                    "publish_years"     => $request->publish_years,
+                                    "publish_no"        => $request->publish_no,
+                                    "publish_volume"    => $request->publish_volume,
+                                    "publish_page"      => $request->publish_page,
+                                    "publish_firstpage" => $request->publish_firstpage,
+                                    "publish_lastpage"  => $request->publish_lastpage,
+                                    "url_journal"       => $request->url_journal,
+                                    "doi_number"        => $request->doi_number,
+                                    "contribute"        => $request->contribute,
+                                    "corres"            => $request->corres,
+                                  ]);
+
+     }
+
+
+    if($update_journal){
       //return Sweet Alert
         return redirect()->route('page.journal')->with('swl_update', 'แก้ไขข้อมูลสำเร็จแล้ว');
     }else {
@@ -505,16 +542,18 @@ class JournalController extends Controller
 
   //  -- DOWNLOAD --
   public function DownloadFile(Request $request){
-    $query2 = DB::table('db_published_journal')
-                  ->select('id', 'files')
-                  ->where('id', $request->id)
-                  ->first();
 
-    if(!$query2) return abort(404);
+    $query2 = DB::table('db_published_journal')
+                ->select('id', 'files')
+                ->where('id', $request->id)
+                ->first();
+
+    if(!isset($query2)){
+      return view('error-page.error405');
+    }
 
     $path = $query2->files;
 
-    // return Storage::disk('journal')->download($path);
 
     if(Storage::disk('journal')->exists($path)){
       return Storage::disk('journal')->download($path);
@@ -571,13 +610,12 @@ class JournalController extends Controller
 
 
 
-
+  //  -- DELETE --
   public function delete_journal(Request $request)
   {
     $delete = journal::where('id', $request->id)
                      ->update(["deleted_at"  =>  date('Y-m-d H:i:s')]);
-
-    // dd($delete);
+                     // dd($delete);
 
     if($delete){
       session()->put('deletejournal', 'okkkkkayyyyy');
@@ -608,6 +646,95 @@ class JournalController extends Controller
        }
      }
   //  -- END STATUS --
+
+
+
+  //  -- COMMENTS "MANAGER"--
+  public function action_comments_manager(Request $request){
+
+        $insert_comments = [
+            "send_date"     =>  Carbon::today(),
+            "category"      =>  "2",
+            "projects_id"   =>  $request->projects_id,
+            "pro_id_journal" =>  $request->pro_id,
+            "subject"       =>  $request->subject,
+            "sender_id"     =>  Auth::user()->preferred_username,
+            "sender_name"   =>  Auth::user()->name,
+            "receiver_id"   =>  $request->receiver_id,
+            "receiver_name" =>  $request->receiver_name,
+            "description"   =>  $request->description,
+            "files_upload"  =>  $request->files_upload,
+            "url_redirect"  =>  "journal_edit/".$request->projects_id."/".$request->pro_id,
+        ];
+
+
+        // UPLOAD Files "Notifications_messages"
+
+        // if ($request->file('files_upload')->isValid()) {
+        if ($request->file('files_upload') != NULL) {
+            $file=$request->file('files_upload');
+            $name='file_'.date('dmY_His');
+            $file_name = $name.'.'.$file->getClientOriginalExtension();
+            $path = $file->storeAs('public/file_upload_notify',$file_name);
+            $insert_comments['files_upload'] = $file_name;
+        }
+
+          // -- INSERT --
+          $notify = NotificationAlert::insertGetId($insert_comments);
+
+
+       if($notify){
+           session()->put('notify_send', 'okayy');
+           return redirect()->route('page.journal');
+       }else{
+           return redirect()->back()->with('swl_err', 'บันทึกไม่สำเร็จ');
+       }
+     }
+
+
+
+
+  //  -- COMMENTS "USER"--
+  public function action_comments_users(Request $request){
+
+        $insert_comments = [
+            "send_date"     =>  Carbon::today(),
+            "category"      =>  "2",
+            "projects_id"   =>  $request->projects_id,
+            "pro_id_journal" =>  $request->pro_id,
+            "subject"       =>  $request->subject,
+            "sender_id"     =>  Auth::user()->preferred_username,
+            "sender_name"   =>  Auth::user()->name,
+            "receiver_id"   =>  "1709700158952",
+            "receiver_name" =>  "อภิสิทธิ์ สนองค์",
+            "description"   =>  $request->description,
+            "url_redirect"  =>  "journal_edit/".$request->projects_id."/".$requeat->pro_id,
+            // "files_upload" =>  $request->files_upload,
+        ];
+
+        dd($insert_comments);
+
+        // UPLOAD Files Table "Notifications_messages"
+        // if ($request->file('files_upload')->isValid()) {
+        //     $file=$request->file('files_upload');
+        //     $name='file_'.date('dmY_His');
+        //     $file_name = $name.'.'.$file->getClientOriginalExtension();
+        //     $path = $file->storeAs('public/file_upload_notify',$file_name);
+        //     $insert_comments['files_upload'] = $file_name;
+        // }
+
+        // -- INSERT --
+        $notify_users = NotificationAlert::insertGetId($insert_comments);
+
+
+       if($notify_users){
+           session()->put('notify_send', 'okayy');
+           return redirect()->route('page.journal');
+       }else{
+           return redirect()->back()->with('swl_err', 'บันทึกไม่สำเร็จ');
+       }
+     }
+
 
 
 }

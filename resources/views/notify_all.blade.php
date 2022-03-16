@@ -67,9 +67,16 @@
                                     -
                                 @endif
                               </div>
-                              <div class="col-md-2">
-                                <span class="text-muted"><font color="red"><b> Project </b></font> : {{ empty($value->projects_id) ? '-' : $value->projects_id }} </span>
-                              </div>
+
+                              @if($value->pro_id_journal != NULL)
+                                  <div class="col-md-2">
+                                    <span class="text-muted"><font color="red"><b> Project </b></font> : {{ empty($value->pro_id_journal) ? '-' : $value->pro_id_journal }} </span>
+                                  </div>
+                              @else
+                                  <div class="col-md-2">
+                                    <span class="text-muted"><font color="red"><b> Project </b></font> : {{ empty($value->projects_id) ? '-' : $value->projects_id }} </span>
+                                  </div>
+                              @endif
                             </div>
 
                             <div class="form-group row">
