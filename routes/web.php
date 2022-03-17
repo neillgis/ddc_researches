@@ -69,7 +69,7 @@ Route::group(['middleware' => 'keycloak-web'], function () {
     Route::post('/journal_insert','JournalController@insert')->name('journal.insert');
     //  -- EDIT --
     Route::get('/journal_edit/{id}/{pro_id}','JournalController@edit_journal_form')->name('journal.edit');
-    //  -- EDIT 2 **NOT PRO_ID --
+    //  -- EDIT_2 **NOT PRO_ID --
     Route::get('/journal_edit/{id}','JournalController@edit2_journal_form')->name('journal.edit2');
     //  -- SAVE --
     Route::post('/save_journal_edit','JournalController@save_journal_form')->name('journal.save');
@@ -109,11 +109,11 @@ Route::group(['middleware' => 'keycloak-web'], function () {
     Route::get('/Delete-Utilization/{id}', 'UtilizationController@delete_util')->name('util.delete');
     //  -- STATUS --
     Route::post('/util/status', 'UtilizationController@status_util')->name('util.status');
+    //  -- COMMENTS for "MANAGER" --
+    Route::post('/util/comments', 'UtilizationController@action_comments_manager')->name('util.comments');
+    //  -- COMMENTS for "USER" --
+    Route::post('/util/comments-users', 'UtilizationController@action_comments_users')->name('util.comments_users');
 
-
-
-    // -- FAQ --
-    Route::get('/faq','FaqController@faq_index')->name('page.faq');
 
 
     // FORM  SUMMARY
@@ -130,6 +130,10 @@ Route::group(['middleware' => 'keycloak-web'], function () {
     //  -- VERIFIED --
     Route::post('/summary/verified', 'SummaryController@auditor_verified')->name('summary.verified');
 
+
+
+    // -- FAQ --
+    Route::get('/faq','FaqController@faq_index')->name('page.faq');
 
 
     // EXPORT File CSV

@@ -53,6 +53,7 @@ class ResearchController extends Controller
                           // )
                           )
                        ->whereNull('db_research_project.deleted_at')
+                       ->whereNull('users.deleted_users')
                        ->ORDERBY('id','DESC')
                        ->get();
 
@@ -83,6 +84,7 @@ class ResearchController extends Controller
                           )
                 ->where('users.deptName', Auth::user()->family_name)
                 ->whereNull('db_research_project.deleted_at')
+                ->whereNull('users.deleted_users')
                 ->ORDERBY('id','DESC')
                 ->get();
 

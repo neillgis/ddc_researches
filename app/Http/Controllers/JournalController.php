@@ -70,55 +70,56 @@ class JournalController extends Controller
     // บทความที่ตีพิมพ์แล้ว ===> pro_id = "Not Null"
     if(Auth::hasRole('manager')){
       $query2 = DB::table('db_published_journal')
-                ->join('db_research_project', 'db_research_project.id', '=', 'db_published_journal.pro_id')
-                ->leftjoin('users', 'db_published_journal.users_id', '=', 'users.idCard')
-                ->select('db_research_project.users_name',
-                         'db_research_project.users_id',
-                         'db_published_journal.id',
-                         'db_published_journal.pro_id',
-                         'db_published_journal.article_name_th',
-                         'db_published_journal.article_name_en',
-                         'db_published_journal.journal_name_th',
-                         'db_published_journal.journal_name_en',
-                         'db_published_journal.publish_years',
-                         'db_published_journal.files',
-                         'db_published_journal.corres',
-                         'db_published_journal.verified',
-                         'db_published_journal.status',
-                         'users.deptName',
-                         'db_published_journal.deleted_at'
-                        )
-                // ->where('db_published_journal.id', $request->id)
-                ->whereNull('db_published_journal.deleted_at')
-                ->orderby('id', 'DESC')
-                ->get();
+                  ->join('db_research_project', 'db_research_project.id', '=', 'db_published_journal.pro_id')
+                  ->leftjoin('users', 'db_published_journal.users_id', '=', 'users.idCard')
+                  ->select('db_research_project.users_name',
+                           'db_research_project.users_id',
+                           'db_published_journal.id',
+                           'db_published_journal.pro_id',
+                           'db_published_journal.article_name_th',
+                           'db_published_journal.article_name_en',
+                           'db_published_journal.journal_name_th',
+                           'db_published_journal.journal_name_en',
+                           'db_published_journal.publish_years',
+                           'db_published_journal.files',
+                           'db_published_journal.corres',
+                           'db_published_journal.verified',
+                           'db_published_journal.status',
+                           'users.deptName',
+                           'db_published_journal.deleted_at'
+                          )
+                  ->whereNull('db_research_project.deleted_at')
+                  ->whereNull('db_published_journal.deleted_at')
+                  ->orderby('db_published_journal.id', 'DESC')
+                  ->get();
          // dd($query2);
 
     }elseif(Auth::hasRole('departments')){
       $query2 = DB::table('db_published_journal')
-                ->leftjoin('users', 'db_published_journal.users_id', '=', 'users.idCard')
-                ->select(
-                         'db_published_journal.id',
-                         'db_published_journal.pro_id',
-                         'db_published_journal.article_name_th',
-                         'db_published_journal.article_name_en',
-                         'db_published_journal.journal_name_th',
-                         'db_published_journal.journal_name_en',
-                         'db_published_journal.publish_years',
-                         'db_published_journal.files',
-                         'db_published_journal.corres',
-                         'db_published_journal.verified',
-                         'db_published_journal.status',
-                         'users.deptName',
-                         'users.idCard',
-                         'users.fname',
-                         'users.lname',
-                         )
-                ->where('users.deptName', Auth::user()->family_name)
-                ->whereNull('db_published_journal.deleted_at')
-                ->orderby('id', 'DESC')
-                ->get();
-        // dd($query2);
+                  ->leftjoin('users', 'db_published_journal.users_id', '=', 'users.idCard')
+                  ->select(
+                           'db_published_journal.id',
+                           'db_published_journal.pro_id',
+                           'db_published_journal.article_name_th',
+                           'db_published_journal.article_name_en',
+                           'db_published_journal.journal_name_th',
+                           'db_published_journal.journal_name_en',
+                           'db_published_journal.publish_years',
+                           'db_published_journal.files',
+                           'db_published_journal.corres',
+                           'db_published_journal.verified',
+                           'db_published_journal.status',
+                           'users.deptName',
+                           'users.idCard',
+                           'users.fname',
+                           'users.lname',
+                           )
+                  ->where('users.deptName', Auth::user()->family_name)
+                  ->whereNull('db_research_project.deleted_at')
+                  ->whereNull('db_published_journal.deleted_at')
+                  ->orderby('db_published_journal.id', 'DESC')
+                  ->get();
+          // dd($query2);
 
     }else {
       $query2 = DB::table('db_published_journal')
@@ -175,6 +176,7 @@ class JournalController extends Controller
                 ->leftjoin('users', 'db_published_journal.users_id', '=', 'users.idCard')
                 ->select('db_published_journal.id',
                          'db_published_journal.pro_id',
+                         'db_published_journal.users_id',
                          'db_published_journal.users_name',
                          'db_published_journal.article_name_th',
                          'db_published_journal.article_name_en',
@@ -191,9 +193,9 @@ class JournalController extends Controller
                 ->whereNull('deleted_at')
                 ->orderby('id', 'DESC')
                 ->get();
-          // dd($query5);
 
       $query6 = DB::table('ref_journal_status')->get();
+
 
 
 // ------ COUNT 3 BOX on TOP ------
@@ -381,9 +383,20 @@ class JournalController extends Controller
     //แสดงข้อมูล Query EDIT 2
      $edit9 = DB::table('db_published_journal')
                ->select(
-                        'db_published_journal.id', 'article_name_th', 'article_name_en', 'journal_name_th',
-                        'journal_name_en', 'publish_years','publish_no', 'publish_volume', 'publish_firstpage',
-                        'publish_lastpage', 'url_journal', 'doi_number', 'contribute', 'corres'
+                        'db_published_journal.id',
+                        'article_name_th',
+                        'article_name_en',
+                        'journal_name_th',
+                        'journal_name_en',
+                        'publish_years',
+                        'publish_no',
+                        'publish_volume',
+                        'publish_firstpage',
+                        'publish_lastpage',
+                        'url_journal',
+                        'doi_number',
+                        'contribute',
+                        'corres',
                         )
                ->where('db_published_journal.id', $request->id)
                ->orderby('id', 'DESC')
@@ -708,11 +721,10 @@ class JournalController extends Controller
             "receiver_id"   =>  "1709700158952",
             "receiver_name" =>  "อภิสิทธิ์ สนองค์",
             "description"   =>  $request->description,
-            "url_redirect"  =>  "journal_edit/".$request->projects_id."/".$requeat->pro_id,
+            "url_redirect"  =>  "journal_edit/".$request->projects_id."/".$request->pro_id,
             // "files_upload" =>  $request->files_upload,
         ];
 
-        dd($insert_comments);
 
         // UPLOAD Files Table "Notifications_messages"
         // if ($request->file('files_upload')->isValid()) {

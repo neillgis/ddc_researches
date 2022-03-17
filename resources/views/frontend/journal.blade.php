@@ -481,7 +481,7 @@
                             </button>
                           @else
                             <a href=" {{ route('DownloadFile.journal', ['id' => $value->id, 'files' => $value->files]) }} ">
-                              <button type="button" class="btn btn-primary btn-md" data-toggle="tooltip" title="Download">
+                              <button type="button" class="btn btn-outline-primary btn-md" data-toggle="tooltip" title="Download">
                                 <i class="fas fa-arrow-alt-circle-down"></i>
                               </button>
                             </a>
@@ -495,19 +495,19 @@
                           @endif
 
                           <!-- Edit -->
-                          @if($value->verified == "1" || $value->verified == "2" || $value->verified == "3" || $value->verified == "9")
+                          @if($value->verified == "1")
                             <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Edit" disabled>
                               <i class="fas fa-edit"></i>
                             </button>
                           @elseif($value->pro_id == NULL)
                             <a href=" {{ route('journal.edit2', ['id' => $value->id]) }} ">
-                              <button type="button" class="btn btn-warning btn-md" data-toggle="tooltip" title="Edit">
+                              <button type="button" class="btn btn-outline-warning btn-md" data-toggle="tooltip" title="Edit">
                                 <i class="fas fa-edit"></i>
                               </button>
                             </a>
                           @else
                             <a href=" {{ route('journal.edit', ['id' => $value->id, 'pro_id' => $value->pro_id]) }} ">
-                              <button type="button" class="btn btn-warning btn-md" data-toggle="tooltip" title="Edit">
+                              <button type="button" class="btn btn-outline-warning btn-md" data-toggle="tooltip" title="Edit">
                                 <i class="fas fa-edit"></i>
                               </button>
                             </a>
@@ -519,7 +519,7 @@
                                 <i class="fas fa-trash-alt"></i>
                               </button>
                           @else
-                              <button type="button" class="btn btn-danger btn-md" title="Delete" data-toggle="modal" data-target="#DeleteJournal{{ $value->id }}">
+                              <button type="button" class="btn btn-outline-danger btn-md" title="Delete" data-toggle="modal" data-target="#DeleteJournal{{ $value->id }}">
                                 <i class="fas fa-trash-alt"></i>
                               </button>
                           @endif
@@ -567,7 +567,11 @@
                         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                           <div class="modal-content">
                             <div class="modal-header">
-                              <h4 class="modal-title"><b><i class="far fa-comment-dots"></i> Comments</b> (Project ID. <font color="red">{{ $value->pro_id }}</font>) </h4>
+                              @if($value->pro_id != NULL)
+                                <h4 class="modal-title"><b><i class="far fa-comment-dots"></i> Comments</b> (Project ID. <font color="red">{{ $value->pro_id }}</font>) </h4>
+                              @else
+                                <h4 class="modal-title"><b><i class="far fa-comment-dots"></i> Comments</b> (Project ID. <font color="red">{{ $value->id }}</font>) </h4>
+                              @endif
                             </div>
 
                         @if(Auth::hasRole('manager'))
@@ -780,39 +784,12 @@
                         <div class="btn-group">
                           <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown"><i class="fas fa-cog"></i></button>
                             <div class="dropdown-menu" role="menu">
-                            <!-- DOWNLOAD old -->
-                          <!-- {{-- @if($value->verified == "1" || $value->verified == "9")
-                                <a class="dropdown-item disabled" href="#" title="Download">
-                                  <i class="fas fa-arrow-alt-circle-down"></i>&nbsp; Download
-                                </a>
-                            @else
+                            <!-- DOWNLOAD new -->
                                 <a class="dropdown-item" href="{{ route('DownloadFile.journal', ['id' => $value->id, 'files' => $value->files]) }}" title="Download">
                                   <i class="fas fa-arrow-alt-circle-down"></i>&nbsp; Download
                                 </a>
-                            @endif --}} -->
-
-                            <!-- DOWNLOAD old -->
-                                <a class="dropdown-item" href="{{ route('DownloadFile.journal', ['id' => $value->id, 'files' => $value->files]) }}" title="Download">
-                                  <i class="fas fa-arrow-alt-circle-down"></i>&nbsp; Download
-                                </a>
-                            <!-- END DOWNLOAD -->
 
                                 <div class="dropdown-divider"></div>
-
-                              <!-- EDIT old For NO-pro_id -->
-                          <!-- {{-- @if($value->verified == "1" || $value->verified == "2" || $value->verified == "3" || $value->verified == "9")
-                                <a class="dropdown-item disabled" href="#" title="Edit">
-                                  <i class="fas fa-edit"></i>&nbsp; Edit
-                                </a>
-                            @elseif($value->pro_id == NULL)
-                                <a class="dropdown-item" href="{{ route('journal.edit2', ['id' => $value->id]) }}" title="Edit">
-                                  <i class="fas fa-edit"></i>&nbsp; Edit
-                                </a>
-                            @else
-                                <a class="dropdown-item" href="{{ route('journal.edit', ['id' => $value->id, 'pro_id' => $value->pro_id]) }}" title="Edit">
-                                  <i class="fas fa-edit"></i>&nbsp; Edit
-                                </a>
-                            @endif --}} -->
 
                             <!-- EDIT new For NO-pro_id -->
                             @if($value->pro_id == NULL)
@@ -824,7 +801,6 @@
                                   <i class="fas fa-edit"></i>&nbsp; Edit
                                 </a>
                             @endif
-                            <!-- END EDIT -->
 
                                 <div class="dropdown-divider"></div>
 
@@ -832,7 +808,6 @@
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#modal-default{{ $value->id }}" title="Status & Verfied">
                                   <i class="fas fa-user-check"></i>&nbsp; Status & Verified
                                 </a>
-                            <!-- END VERIFIED -->
 
                                 <div class="dropdown-divider"></div>
 
@@ -840,55 +815,20 @@
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#DeleteJournal{{ $value->id }}" title="Delete">
                                   <i class="fas fa-trash-alt"></i>&nbsp; Delete
                                 </a>
-                            <!-- END DELETE -->
+
+                            @if($value->verified == "2" || $value->verified == "3" || $value->verified == "9")
+
+                                <div class="dropdown-divider"></div>
+
+                            <!-- COMMENTS -->
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#CommentJournal_2{{ $value->id }}" title="Comments">
+                                  <i class="far fa-comment-dots"></i>&nbsp; Comments
+                                </a>
+                            @endif
+
                             </div>
                         </div>
                       @endif
-
-
-
-                  <!-- Download & Edit -->
-                      @if(Auth::hasRole('manager'))
-                          <!-- NO Show BUTTON For USER ONLY -->
-                      @elseif(Auth::hasRole('departments'))
-                          <!-- NO Show BUTTON For USER ONLY -->
-                      @else
-
-                          <!-- Download button -->
-                              <!-- {{-- @if(Auth::hasRole('manager') || Auth::hasRole('user')) --}} -->
-                          @if($value->verified == "1" || $value->verified == "9")
-                            <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Edit" disabled>
-                              <i class="fas fa-arrow-alt-circle-down"></i>
-                            </button>
-                          @else
-                            <a href=" {{ route('DownloadFile.journal', ['id' => $value->id, 'files' => $value->files]) }} ">
-                              <button type="button" class="btn btn-primary btn-md" data-toggle="tooltip" title="Download">
-                                <i class="fas fa-arrow-alt-circle-down"></i>
-                              </button>
-                            </a>
-                          @endif
-
-
-                          <!-- Edit button -->
-                          @if($value->verified == "1" || $value->verified == "2" || $value->verified == "3" || $value->verified == "9")
-                            <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Edit" disabled>
-                              <i class="fas fa-edit"></i>
-                            </button>
-                          @elseif($value->pro_id == NULL)
-                            <a href=" {{ route('journal.edit2', ['id' => $value->id]) }} ">
-                              <button type="button" class="btn btn-warning btn-md" data-toggle="tooltip" title="Edit2">
-                                <i class="fas fa-edit"></i>
-                              </button>
-                            </a>
-                          @else
-                            <a href=" {{ route('journal.edit', ['id' => $value->id, 'pro_id' => $value->pro_id]) }} ">
-                              <button type="button" class="btn btn-warning btn-md" data-toggle="tooltip" title="Edit">
-                                <i class="fas fa-edit"></i>
-                              </button>
-                            </a>
-                          @endif
-                      @endif
-                  <!-- Download & Edit -->
 
                     </td>
 
@@ -922,6 +862,76 @@
                         </div>
                       </div>
                     <!-- END MODAL Delete not_from_project -->
+
+
+
+                    <!-- MODAL Comments not_from_project -->
+                      <div class="modal fade" id="CommentJournal_2{{ $value->id }}" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h4 class="modal-title"><b><i class="far fa-comment-dots"></i> Comments</b> (Project ID. <font color="red">{{ $value->id }}</font>) </h4>
+                            </div>
+
+                        @if(Auth::hasRole('manager'))
+                          <form action="{{ route('journal.comments') }}" method="POST" enctype="multipart/form-data" onsubmit="disableButtonVerify()">
+                            @csrf
+                                <!-- HIDDEN Data -->
+                                <input type="hidden" name="projects_id" value="{{ $value->id }}">
+                                <input type="hidden" name="pro_id" value="{{ $value->pro_id }}">
+                                <input type="hidden" name="subject" value="{{ $value->verified }}">
+                                <input type="hidden" name="receiver_id" value="{{ $value->users_id }}">
+                                <input type="hidden" name="receiver_name" value="{{ $value->users_name }}">
+
+                        @else <!-- USERS Only -->
+
+                          <form action="{{ route('journal.comments_users') }}" method="POST" enctype="multipart/form-data" onsubmit="disableButtonVerify()">
+                            @csrf
+                                <!-- HIDDEN Data -->
+                                <input type="hidden" name="projects_id" value="{{ $value->id }}">
+                                <input type="hidden" name="pro_id" value="{{ $value->pro_id }}">
+                                <input type="hidden" name="subject" value="{{ $value->verified }}">
+                        @endif
+
+                            <div class="modal-body">
+                              <div class="row">
+                                <div class="col-md-12">
+                                  <div class="form-group">
+                                    <textarea class="form-control" name="description" rows="3" cols="100" placeholder="ข้อเสนอแนะ/คำแนะนำ"></textarea>
+                                  </div>
+                                </div>
+
+                              @if(Auth::hasRole('manager'))
+                                <div class="col-md-12">
+                                  <div class="form-group">
+                                    <label> อัพโหลดไฟล์ </label>
+                                    <div class="input-group">
+                                      <div class="custom-file">
+                                        <input type="file" class="custom-file-input" name="files_upload">
+                                        <label class="custom-file-label"> Upload File ขนาดไม่เกิน 10 MB </label>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              @endif
+
+                              </div> <!-- END Row -->
+                              <br>
+                            </div>
+
+                            <div class="modal-footer justify-content-between">
+                              <button type="button" class="btn btn-default" data-dismiss="modal"> Close </button>
+                              <button type="submit" class="btn_disabled_verify btn btn-success float-right" value="บันทึกข้อมูล">
+                                <i class="fas fa-save"></i> &nbsp;บันทึกข้อมูล
+                              </button>
+                            </div>
+                          </form>
+
+                          </div>
+                        </div>
+                      </div>
+                    <!-- END MODAL Comments not_from_project -->
+
 
 
                     <!-- MODAL Verfied & Status not_from_project -->
@@ -1058,14 +1068,12 @@
       Swal.fire({
           icon: 'warning',
           title: 'รายการนี้ยังไม่ได้ตรวจสอบ',
-          // text: 'รายการนี้ยังไม่ได้ตรวจสอบ',
           showConfirmButton: true,
           confirmButtonColor: '#d33',
           timer: 2500
       })
     </script>
   @endif
-
 
   @if(Session::get('notify_send'))
    <?php Session::forget('notify_send'); ?>
@@ -1090,14 +1098,12 @@
     }, 2000);
   });
 </script>
-<!-- END ALERT บันทึกข้อมูลสำเร็จ  -->
 
 
 <!-- DatePicker YEAR -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.js"></script>
 <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
-
 
 <script>
 //END DatePicker YEAR
@@ -1117,6 +1123,7 @@
   $(document).ready(function() {
     $('#example44').DataTable({
       dom: 'Bfrtip',
+      "ordering": false,
       buttons: [
         'excel', 'print'
       ]
@@ -1127,6 +1134,7 @@
   $(document).ready(function() {
     $('#example55').DataTable({
       dom: 'Bfrtip',
+      "ordering": false,
       buttons: [
         'excel', 'print'
       ]
@@ -1150,15 +1158,12 @@
             }
     }
 
-
 </script>
 
 @stop('js-custom-script')
 
 
-
 @section('js-custom')
-
 <!-- DataTables -->
 <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>

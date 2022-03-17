@@ -1,10 +1,6 @@
 @extends('layout.main')
 
-
 @section('css-custom')
-<!-- <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
-<link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css"> -->
-
 <!-- DatePicker Style -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css">
@@ -72,7 +68,7 @@
             </div>
 
             <!-- <form role="form"> -->
-            <form action="{{ route('journal.save') }}" method="POST">
+            <form action="{{ route('journal.save') }}" method="POST" enctype="multipart/form-data" onsubmit="disableButton()">
               @csrf
 
               <div class="card-body">
@@ -184,24 +180,43 @@
                     </div>
                   </div>
                 </div>
+              </div> <!-- END Card-body -->
+          </div> <!-- END Card -->
+
+
+
+          <div class="card">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <label><font color="red"> อัพโหลดไฟล์ **</font></label>
+                      <div class="input-group">
+                        <div class="custom-file">
+                          <input type="file" class="custom-file-input" name="files">
+                          <label class="custom-file-label"> Upload File ขนาดไม่เกิน 20 MB </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div> <!-- END Row -->
+              </div> <!-- END Card-body -->
+
+              <div class="card-footer">
+                <a class="btn btn-secondary float-left" href="{{ route('page.journal') }}">
+                  <i class="fas fa-arrow-alt-circle-left"></i>
+                    ย้อนกลับ
+                </a>
+                <button type="submit" class="btn btn-success float-right" value="แก้ไขข้อมูล" id="btn_disabled">
+                  <i class="fas fa-save"></i>
+                    &nbsp;แก้ไขข้อมูล
+                </button>
               </div>
 
+            </form>
+          </div> <!-- END Card -->
 
-            <div class="card-footer">
-              <a class="btn btn-danger float-left" href="{{ route('page.journal') }}">
-                <i class="fas fa-arrow-alt-circle-left"></i>
-                  ย้อนกลับ
-              </a>
 
-            <!-- {{-- @if(Auth::hasRole('manager') || Auth::hasRole('user')) --}} -->
-              <button type="submit" class="btn btn-success float-right" value="บันทึกข้อมูล">
-                <i class="fas fa-save"></i> &nbsp;บันทึกข้อมูล
-              </button>
-            <!-- {{-- @endif --}} -->
-
-            </div>
-          </form>
-        </div>
       </div>
     </div>
 
@@ -212,8 +227,20 @@
 @stop('contents')
 
 
-
 @section('js-custom-script')
+<!-- FILE INPUT -->
+<script type="text/javascript">
+  $(document).ready(function () {
+    bsCustomFileInput.init();
+  });
+
+  //OnSubmit Disable Button
+    function disableButton() {
+        var btn = document.getElementById('btn_disabled');
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Loading...'
+    }
+</script>
 
 <!-- START DatePicker Style -->
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>

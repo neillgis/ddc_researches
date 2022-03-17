@@ -776,6 +776,7 @@
   $(document).ready(function() {
     $('#example55').DataTable({
       dom: 'Bfrtip',
+      "ordering": false,
       buttons: [
         'excel', 'print'
       ]

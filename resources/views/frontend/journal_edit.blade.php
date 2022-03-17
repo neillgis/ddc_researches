@@ -200,55 +200,49 @@
                 </div>
 
               </div> <!-- END Card-body -->
-
           </div> <!-- END Card -->
 
 
-        <div class="card">
-          <div class="card-body">
 
-            <div class="row">
-              <div class="col-md-12">
-                <div class="form-group">
-                  <label><font color="red"> อัพโหลดไฟล์ **</font></label>
-                  <div class="input-group">
-                    <div class="custom-file">
-                      <input type="file" class="custom-file-input" name="files">
-                      <label class="custom-file-label"> Upload File ขนาดไม่เกิน 20 MB </label>
+        <div class="card">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label><font color="red"> อัพโหลดไฟล์ **</font></label>
+                    <div class="input-group">
+                      <div class="custom-file">
+                        <input type="file" class="custom-file-input" name="files">
+                        <label class="custom-file-label"> Upload File ขนาดไม่เกิน 20 MB </label>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </div> <!-- END Row -->
-
-          </div> <!-- END Card-body -->
+              </div> <!-- END Row -->
+            </div> <!-- END Card-body -->
 
             <div class="card-footer">
               <a class="btn btn-secondary float-left" href="{{ route('page.journal') }}">
                 <i class="fas fa-arrow-alt-circle-left"></i>
                   ย้อนกลับ
               </a>
-
               <button type="submit" class="btn btn-success float-right" value="แก้ไขข้อมูล" id="btn_disabled">
                 <i class="fas fa-save"></i>
                   &nbsp;แก้ไขข้อมูล
               </button>
-
             </div>
-          </form>
 
+          </form>
         </div> <!-- END Card -->
 
 
       </div>
     </div>
 
-    <!--- END EDIT  --->
 
     </div>
 </section>
 @stop('contents')
-
 
 
 @section('js-custom-script')
