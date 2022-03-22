@@ -31,7 +31,7 @@ class UpdateNotifyController extends Controller
                                           // ->where('send_date', Carbon::today())
                                           // ->Orwhere('send_date', Carbon::yesterday())
                                           ->orderBy('id','DESC')
-                                          ->limit(40)
+                                          ->limit(50)
                                           ->get();
 
           $category = [ 1 => "โครงการวิจัย",
