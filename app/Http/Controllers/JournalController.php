@@ -115,7 +115,7 @@ class JournalController extends Controller
                            'users.lname',
                            )
                   ->where('users.deptName', Auth::user()->family_name)
-                  ->whereNull('db_research_project.deleted_at')
+                  // ->whereNull('db_research_project.deleted_at')
                   ->whereNull('db_published_journal.deleted_at')
                   ->orderby('db_published_journal.id', 'DESC')
                   ->get();
