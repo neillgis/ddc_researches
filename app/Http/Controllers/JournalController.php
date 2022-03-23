@@ -40,11 +40,13 @@ class JournalController extends Controller
 
     }elseif(Auth::hasRole('departments')) {
       $query  = DB::table('db_research_project')
+                    ->leftjoin('users', 'db_research_project.users_id', '=', 'users.idCard')
                      ->select('db_research_project.id',
                               'db_research_project.pro_name_th',
                               'db_research_project.pro_name_en',
                               )
-                     ->where('users_id', Auth::user()->preferred_username)
+                     // ->where('users_id', Auth::user()->preferred_username)
+                     ->where('deptName', Auth::user()->family_name)
                      ->whereNull('deleted_at')
                      // ->whereNotNull('db_research_project.pro_name_en')
                      ->orderby('id', 'DESC')
