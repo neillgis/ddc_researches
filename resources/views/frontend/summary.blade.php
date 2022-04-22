@@ -312,8 +312,12 @@
                                 @endif
                             </td>
                             <td class="text-center ">
-                                @if( isset($value->researcher_level))
-                                    <span class="badge bg-info"> {{ $verified_list [$value->researcher_level] }} </span>
+                                @if($value->researcher_level == 1)
+                                    <span class="badge" style="background-color:#5DADE2;"> {{ $verified_list [$value->researcher_level] }} </span>
+                                @elseif($value->researcher_level == 2)
+                                    <span class="badge" style="background-color:#45B39D;"> {{ $verified_list [$value->researcher_level] }} </span>
+                                @elseif($value->researcher_level == 3)
+                                    <span class="badge" style="background-color:#F5B041;"> {{ $verified_list [$value->researcher_level] }} </span>
                                 @else
                                     <span class="badge bg-danger"> No results </span>
                                 @endif
@@ -422,10 +426,14 @@
   <script type="text/javascript" class="init">
     $(document).ready(function() {
       $('#example1').DataTable({
-        "ordering": false,
         dom: 'Bfrtip',
+        "lengthMenu": [ 10, 25, 50, 75, 100 ],
+        "lengthChange": true,
+        "ordering": false,
+        // "buttons": ["excel"]
         buttons: [
-          // 'excel', 'print'
+          'pageLength',
+          'excel',
         ]
       });
     });
