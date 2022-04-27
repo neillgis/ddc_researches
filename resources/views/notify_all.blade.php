@@ -103,9 +103,54 @@
                             </div>
                           @endif
 
-                          </div>
+                          @if(Auth::hasRole('manager'))
+                            <div class="text-right">
+                                <button type="button" class="btn btn-outline-info rounded-pill" data-toggle="modal" data-target="#ManagerVerify{{ $value->id }}">
+                                  <i class="far fa-check-circle"></i> ตรวจสอบแล้ว
+                                </button>
+                            </div>
+                          @endif
+
+
+                                <!-- MODAL "ManagerVerify" -->
+                                  <div class="modal fade" id="ManagerVerify{{ $value->id }}">
+                                    <div class="modal-dialog">
+                                      <div class="modal-content">
+                                        <div class="modal-body">
+                                          <br>
+                                            <img class="mx-auto d-block mb-4" src="{{ asset('img/exclamation.png') }}" alt="exclamation" style="width:90px;">
+                                            <h5 class="text-center">
+                                                @if($value->pro_id_journal != NULL)
+                                                    <span class="text-muted"><font color="red"><b> Project </b></font> : {{ empty($value->pro_id_journal) ? '-' : $value->pro_id_journal }} </span>
+                                                @else
+                                                    <span class="text-muted"><font color="red"><b> Project </b></font> : {{ empty($value->projects_id) ? '-' : $value->projects_id }} </span>
+                                                @endif
+                                            </h5>
+                                            <h3 class="text-center mb-4"> คุณตรวจสอบรายการนี้แล้วใช่ไหม ? <br> </h3>
+
+                                          <div class="text-center mb-3">
+                                            <!-- Cancel -->
+                                              <button type="button" class="btn btn-secondary" data-dismiss="modal" role="button" aria-disabled="true">
+                                                <i class="far fa-times-circle"></i> Cancel
+                                              </button>
+                                            <!-- Confirms -->
+                                            <a href="{{ route('update.manager-verfiry',[ 'id' => $value->id ]) }}">
+                                              <button type="button" class="btn btn-info" role="button" aria-disabled="true">
+                                                <i class="far fa-check-circle"></i> Confirm
+                                              </button>
+                                            </a>
+
+                                          </div>
+                                        </div> <!-- END modal-body -->
+                                      </div>
+                                    </div>
+                                  </div>
+                                <!-- END MODAL "ManagerVerify" -->
+
+
+                        </div> <!-- END Col -->
                         </div> <!-- END Timeline -->
-                    </div>
+                    </div> <!-- END timeline-item -->
                   </div>
                 @endforeach
               </div>

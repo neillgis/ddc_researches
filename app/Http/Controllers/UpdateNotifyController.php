@@ -17,12 +17,12 @@ class UpdateNotifyController extends Controller
     //
 
     public function notifications_all(){
-      // Update "SEEN"
+      // Update "SEEN" if you Read Messages
       NotificationAlert::where('receiver_id', Auth::user()->preferred_username)
-                                ->update([
-                                          'seen' => 1,
-                                          'updated_at' => Carbon::now(),
-                                        ]);
+                        ->update([
+                                  'seen' => 1,
+                                  'updated_at' => Carbon::now(),
+                                ]);
 
 
       // For "MANAGER" Only
@@ -30,8 +30,9 @@ class UpdateNotifyController extends Controller
           $data_notify = NotificationAlert::where('receiver_id', Auth::user()->preferred_username)
                                           // ->where('send_date', Carbon::today())
                                           // ->Orwhere('send_date', Carbon::yesterday())
+                                          ->whereNull('manager_verify')
                                           ->orderBy('id','DESC')
-                                          ->limit(50)
+                                          ->limit(100)
                                           ->get();
 
           $category = [ 1 => "โครงการวิจัย",
@@ -44,9 +45,11 @@ class UpdateNotifyController extends Controller
       }else {
 
             $data_notify = NotificationAlert::where('receiver_id', Auth::user()->preferred_username)
+                                            // ->whereNull('manager_verify')
                                             ->OrderBy('id','DESC')
-                                            ->limit(20)
+                                            ->limit(30)
                                             ->get();
+                                      // dd($data_notify);
 
             $category = [ 1 => "โครงการวิจัย",
                           2 => "การตีพิมพ์วารสาร",
@@ -77,6 +80,7 @@ class UpdateNotifyController extends Controller
 
 
 
+    // -- REDIRECT --
     public function redirect_url(Request $request){
 
         if($request->url_redirect != NULL){
@@ -85,6 +89,7 @@ class UpdateNotifyController extends Controller
             return view('error-page.error405');
         }
     }
+
 
 
     //  -- DOWNLOAD --
@@ -106,6 +111,21 @@ class UpdateNotifyController extends Controller
         return view('error-page.error405');
       }
 
+    }
+
+
+
+    public function manager_verfiry(Request $request){
+      // dd($request);
+
+      $manager_verify = NotificationAlert::where('id', $request->id)
+                                         ->update([ 'manager_verify' => 1 ]);
+
+      if($manager_verify){
+          return redirect()->route('all.notify');
+      }else {
+          return view('error-page.error405');
+      }
     }
 
 
