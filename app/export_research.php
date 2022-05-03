@@ -34,7 +34,7 @@ class export_research implements FromCollection, WithHeadings
                            'db_research_project.pro_start_date',
                            'db_research_project.pro_end_date',
                            'ref_yes_no.choice',
-                           'ref_verified.verify',
+                           'ref_verified.verify_name',
                           )
                   ->whereNull('db_research_project.deleted_at')
                   ->orderBy('db_research_project.id', 'ASC')

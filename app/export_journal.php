@@ -43,7 +43,7 @@ class export_journal implements FromCollection, WithHeadings
                          'ref_yes_no.choice',
                          'db_published_journal.url_journal',
                          'ref_journal_status.journal_status',
-                         'ref_verified.verify',
+                         'ref_verified.verify_name',
                          )
                 ->whereNull('db_published_journal.deleted_at')
                 ->orderBy('db_published_journal.id', 'ASC')
