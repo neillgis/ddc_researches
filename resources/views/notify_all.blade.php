@@ -106,7 +106,7 @@
                           @if(Auth::hasRole('manager'))
                             <div class="text-right">
                                 <button type="button" class="btn btn-outline-info rounded-pill" data-toggle="modal" data-target="#ManagerVerify{{ $value->id }}">
-                                  <i class="far fa-check-circle"></i> ตรวจสอบแล้ว
+                                  <i class="far fa-check-circle"></i> ตรวจสอบ
                                 </button>
                             </div>
                           @endif
@@ -136,7 +136,7 @@
                                             <!-- Confirms -->
                                             <a href="{{ route('update.manager-verfiry',[ 'id' => $value->id ]) }}">
                                               <button type="button" class="btn btn-info" role="button" aria-disabled="true">
-                                                <i class="far fa-check-circle"></i> Confirm
+                                                <i class="far fa-check-circle"></i> ตรวจสอบแล้ว
                                               </button>
                                             </a>
 
