@@ -147,6 +147,40 @@
                  <p> จัดการผู้ใช้งาน </p>
                </a>
              </li>
+
+         @elseif(Auth::hasRole('departments'))
+            <li class="nav-header">ANNOUNCEMENT</li>
+
+              <li class="nav-item">
+                <a class="nav-link" href="{{ asset('Manual_DIR/announce_researcher_01.pdf') }}" target="_blank">
+                  <i class="far fa-circle nav-icon text-info"></i>
+                  <p> เกณฑ์การแบ่งระดับนักวิจัย </p>
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link" href="{{ asset('Manual_DIR/announce_researcher_02.pdf') }}" target="_blank">
+                  <i class="far fa-circle nav-icon text-info"></i>
+                  <p> วิธีการส่ง & แก้ไขข้อมูล </p>
+                </a>
+              </li>
+
+         @else
+            <li class="nav-header">ANNOUNCEMENT</li>
+
+              <li class="nav-item">
+                <a class="nav-link" href="{{ asset('Manual_DIR/announce_researcher_01.pdf') }}" target="_blank">
+                  <i class="far fa-circle nav-icon text-info"></i>
+                  <p> เกณฑ์การแบ่งระดับนักวิจัย </p>
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a class="nav-link" href="{{ asset('Manual_DIR/announce_researcher_02.pdf') }}" target="_blank">
+                  <i class="far fa-circle nav-icon text-info"></i>
+                  <p> วิธีการส่ง & แก้ไขข้อมูล </p>
+                </a>
+              </li>
           @endif
 
       </ul>
