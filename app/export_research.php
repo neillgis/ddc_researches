@@ -38,7 +38,7 @@ class export_research implements FromCollection, WithHeadings
                            'db_research_project.created_at'
                           )
                   ->whereNull('db_research_project.deleted_at')
-                  ->orderBy('db_research_project.id', 'ASC')
+                  ->orderBy('db_research_project.id', 'DESC')
                   ->get();
 
     }

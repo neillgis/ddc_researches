@@ -35,7 +35,7 @@ class export_util implements FromCollection, WithHeadings
                          'db_utilization.created_at'
                          )
                 ->whereNull('db_utilization.deleted_at')
-                ->orderBy('db_utilization.id', 'ASC')
+                ->orderBy('db_utilization.id', 'DESC')
                 ->get();
 
     }

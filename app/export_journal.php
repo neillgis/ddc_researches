@@ -47,7 +47,7 @@ class export_journal implements FromCollection, WithHeadings
                          'db_published_journal.created_at'
                          )
                 ->whereNull('db_published_journal.deleted_at')
-                ->orderBy('db_published_journal.id', 'ASC')
+                ->orderBy('db_published_journal.id', 'DESC')
                 ->get();
 
     }
