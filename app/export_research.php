@@ -59,7 +59,7 @@ class export_research implements FromCollection, WithHeadings
             'ปีที่สิ้นสุดโครงการ',
             'การตีพิมพ์',
             'การตรวจสอบ',
-            'วันที่ลงข้อมูล',
+            'วันที่ลงข้อมูล'
         ];
     }
 

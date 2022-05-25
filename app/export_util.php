@@ -51,7 +51,8 @@ class export_util implements FromCollection, WithHeadings
             'ประเภท',
             'คำอธิบาย',
             'สถานะของการนำไปใช้ประโยชน์',
-            'การตรวจสอบ'
+            'การตรวจสอบ',
+            'วันที่ลงข้อมูล'
         ];
     }
 

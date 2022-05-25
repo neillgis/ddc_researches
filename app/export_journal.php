@@ -74,7 +74,8 @@ class export_journal implements FromCollection, WithHeadings
             'การเป็นผู้รับผิดชอบบทความ (correspondent)',
             'URL',
             'สถานะของวารสาร',
-            'การตรวจสอบ'
+            'การตรวจสอบ',
+            'วันที่ลงข้อมูล'
         ];
     }
 
