@@ -31,7 +31,8 @@ class export_util implements FromCollection, WithHeadings
                          'util_type',
                          'util_descrip',
                          'ref_util_status.util_status',
-                         'ref_verified.verify_name'
+                         'ref_verified.verify_name',
+                         'db_utilization.created_at'
                          )
                 ->whereNull('db_utilization.deleted_at')
                 ->orderBy('db_utilization.id', 'ASC')

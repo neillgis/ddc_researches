@@ -44,6 +44,7 @@ class export_journal implements FromCollection, WithHeadings
                          'db_published_journal.url_journal',
                          'ref_journal_status.journal_status',
                          'ref_verified.verify_name',
+                         'db_published_journal.created_at'
                          )
                 ->whereNull('db_published_journal.deleted_at')
                 ->orderBy('db_published_journal.id', 'ASC')
