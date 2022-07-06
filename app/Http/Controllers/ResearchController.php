@@ -15,6 +15,8 @@ use Session;
 use Carbon\Carbon;
 use app\Exceptions\Handler;
 use Illuminate\Support\Facades\Route;
+use App\Mail\researcheCommentMail;
+use Illuminate\Support\Facades\Mail;
 // use App\KeycloakUser;
 
 class ResearchController extends Controller
@@ -603,6 +605,9 @@ class ResearchController extends Controller
 
        if($notify){
            session()->put('notify_send', 'okayy');
+           //ส่ง email
+          //  $data = ['research_project_id' => $request->projects_id];
+          //  Mail::send(new researcheCommentMail($data));
            return redirect()->route('page.research');
        }else{
            return redirect()->back()->with('swl_err', 'บันทึกไม่สำเร็จ');
@@ -655,14 +660,17 @@ class ResearchController extends Controller
 
        if($notify_users){
            session()->put('notify_send', 'okayy');
+                      //ส่ง email
+                      // $data = ['research_project_id' => $request->projects_id];
+                      // Mail::send(new researcheCommentMail($data));
            return redirect()->route('page.research');
        }else{
            return redirect()->back()->with('swl_err', 'บันทึกไม่สำเร็จ');
        }
-     }
+  }
 
 
 
 
-
+  
 }
