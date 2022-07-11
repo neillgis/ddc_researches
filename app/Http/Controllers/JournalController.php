@@ -15,6 +15,8 @@ use Session;
 use Carbon\Carbon;
 use app\Exceptions\Handler;
 use Illuminate\Support\Facades\Route;
+use App\Mail\journalCommentMail;
+use Illuminate\Support\Facades\Mail;
 
 
 class JournalController extends Controller
@@ -700,6 +702,9 @@ class JournalController extends Controller
 
        if($notify){
            session()->put('notify_send', 'okayy');
+           //ส่ง email
+           $data = ['published_journal_id' => $request->projects_id];
+           Mail::send(new journalCommentMail($data));
            return redirect()->route('page.journal');
        }else{
            return redirect()->back()->with('swl_err', 'บันทึกไม่สำเร็จ');
