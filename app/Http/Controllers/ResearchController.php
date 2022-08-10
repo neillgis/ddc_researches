@@ -56,7 +56,9 @@ class ResearchController extends Controller
                           )
                        ->whereNull('db_research_project.deleted_at')
                        ->whereNull('users.deleted_users')
+                       ->whereNotIn('db_research_project.verified', ['9'])
                        ->ORDERBY('id','DESC')
+                       ->limit(250)
                        ->get();
 
                         // dd($query);
@@ -574,6 +576,11 @@ class ResearchController extends Controller
   //  -- COMMENTS "MANAGER"--
   public function action_comments_manager(Request $request){
 
+        // -- VALIDATIONS --
+        $request->validate([
+            'files_upload'  => 'mimes:jpg,jpeg,png,doc,docx,xls,xlsx,pdf|max:10240',
+        ]);
+
         $insert_comments = [
             "send_date"     =>  Carbon::today(),
             "category"      =>  "1",
@@ -588,8 +595,8 @@ class ResearchController extends Controller
             "url_redirect"  =>  "research_edit/".$request->projects_id,
         ];
 
-        // UPLOAD Files "Notifications_messages"
 
+      // ======== UPLOAD Files "Notifications_messages" ========
         // if ($request->file('files_upload')->isValid()) {
         if ($request->file('files_upload') != NULL) {
             $file=$request->file('files_upload');
@@ -599,8 +606,8 @@ class ResearchController extends Controller
             $insert_comments['files_upload'] = $file_name;
         }
 
-          // -- INSERT --
-          $notify = NotificationAlert::insertGetId($insert_comments);
+        // -- INSERT --
+        $notify = NotificationAlert::insertGetId($insert_comments);
 
 
        if($notify){
@@ -608,6 +615,7 @@ class ResearchController extends Controller
            //ส่ง email
            $data = ['research_project_id' => $request->projects_id];
            Mail::send(new researcheCommentMail($data));
+
            return redirect()->route('page.research');
        }else{
            return redirect()->back()->with('swl_err', 'บันทึกไม่สำเร็จ');
@@ -669,5 +677,5 @@ class ResearchController extends Controller
 
 
 
-  
+
 }

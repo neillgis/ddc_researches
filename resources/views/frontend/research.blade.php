@@ -569,10 +569,10 @@
                             @if(Auth::hasRole('manager'))
                               <div class="col-md-12">
                                 <div class="form-group">
-                                  <label> อัพโหลดไฟล์ </label>
+                                  <label> อัพโหลดไฟล์ : <font color="red"> (.jpg, .jpeg, .png, .doc, .docx, .xls, .xlsx, .pdf) </font></label>
                                   <div class="input-group">
                                     <div class="custom-file">
-                                      <input type="file" class="custom-file-input" name="files_upload">
+                                      <input type="file" class="custom-file-input" name="files_upload" accept=".jpg,.png,.jpeg,.doc,.docx,.xls,.xlsx,.pdf">
                                       <label class="custom-file-label"> Upload File ขนาดไม่เกิน 10 MB </label>
                                     </div>
                                   </div>
