@@ -56,12 +56,12 @@ class ResearchController extends Controller
                           )
                        ->whereNull('db_research_project.deleted_at')
                        ->whereNull('users.deleted_users')
-                       ->whereNotIn('db_research_project.verified', ['9'])
-                       ->ORDERBY('id','DESC')
+                       // ->whereNotIn('db_research_project.verified', ['9'])
+                       ->orderBy('db_research_project.id','DESC')
                        ->limit(250)
                        ->get();
 
-                        // dd($query);
+                        dd($query);
 
     }elseif(Auth::hasRole('departments')) {
       $query = DB::table('db_research_project')
