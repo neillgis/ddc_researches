@@ -61,7 +61,7 @@ class ResearchController extends Controller
                        ->limit(250)
                        ->get();
 
-                        dd($query);
+                        // dd($query);
 
     }elseif(Auth::hasRole('departments')) {
       $query = DB::table('db_research_project')
