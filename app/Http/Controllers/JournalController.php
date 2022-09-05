@@ -197,7 +197,7 @@ class JournalController extends Controller
                          )
                 ->where('pro_id', null)
                 ->whereNull('deleted_at')
-                ->whereNotIn('db_published_journal.verified', ['9'])
+                // ->whereNotIn('db_published_journal.verified', ['9'])
                 ->orderby('id', 'DESC')
                 ->limit(200)
                 ->get();
