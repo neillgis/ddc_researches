@@ -234,23 +234,27 @@
                       <tr>
                       @if(Auth::hasRole('manager'))
                         <th class="text-center"> ชื่อ-นามสกุล </th>
+                        <th class="text-center"> ตำแหน่ง </th>
                         <th class="text-center"> หน่วยงาน </th>
                         <th class="text-center"> โครงการวิจัย </th>
                         <th class="text-center"> ตำแหน่ง PI & Co-PI </th>
                         <th class="text-center"> วารสาร (ตรวจสอบแล้ว) </th>
                         <th class="text-center"> วารสาร (TCI 1) </th>
                         <th class="text-center"> วารสาร (Q1-Q3) </th>
+                        <th class="text-center"> วารสาร (ไม่ตรงเงื่อนไข) </th>
                         <th class="text-center"> การนำไปใช้ประโยชน์ </th>
                         <th class="text-center"> ระดับนักวิจัย </th>
                         <th class="text-center"> ผู้ตรวจสอบ </th>
                         <th class="text-right"> Actions </th>
                       @elseif(Auth::hasRole('departments'))
                         <th class="text-center"> ชื่อ-นามสกุล </th>
+                        <th class="text-center"> ตำแหน่ง </th>
                         <th class="text-center"> โครงการวิจัย </th>
                         <th class="text-center"> ตำแหน่ง PI & Co-PI </th>
                         <th class="text-center"> วารสาร (ตรวจสอบแล้ว) </th>
                         <th class="text-center"> วารสาร (TCI 1) </th>
                         <th class="text-center"> วารสาร (Q1-Q3) </th>
+                        <th class="text-center"> วารสาร (ไม่ตรงเงื่อนไข) </th>
                         <th class="text-center"> การนำไปใช้ประโยชน์ </th>
                         <th class="text-center"> ระดับนักวิจัย </th>
                       @endif
@@ -259,10 +263,11 @@
                     </thead>
 
                     <tbody>
-
+                      <!-- error_log(summary_list[0]) -->
                       @foreach($summary_list as $value)
                       <tr>
                             <td class="text-nowrap"> {{ $value->fullname }} </td>
+                            <td class="text-nowrap"> {{ $value->position }} </td>
                           @if(Auth::hasRole('manager'))
                             <td class="text-nowrap"> {{ $value->deptName }} </td>
                           @elseif(Auth::hasRole('departments'))
@@ -305,12 +310,30 @@
                                 @endif
                             </td>
                             <td class="text-center">
-                                @if( isset($value->countUtil))
-                                    {{ ($value->countUtil) }}
+                                @if( isset($value->countJour_not))
+                                    {{ ($value->countJour_not) }}
                                 @else
                                     <font color="red"> 0 </font>
                                 @endif
                             </td>
+                            @if(Auth::hasRole('manager'))
+                            <td class="text-center">
+                                @if( isset($value->countUtil_manager))
+                                    {{ ($value->countUtil_manager) }}
+                                @else
+                                    <font color="red"> 0 </font>
+                                @endif
+                            </td>
+                            @elseif(Auth::hasRole('departments'))
+                            <td class="text-center">
+                                @if( isset($value->countUtil_depart))
+                                    {{ ($value->countUtil_depart) }}
+                                @else
+                                    <font color="red"> 0 </font>
+                                @endif
+                            </td>
+                            @endif
+
                             <td class="text-center ">
                                 @if($value->researcher_level == 1)
                                     <span class="badge" style="background-color:#5DADE2;"> {{ $verified_list [$value->researcher_level] }} </span>
@@ -453,3 +476,9 @@
 <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/1.6.4/js/buttons.print.min.js"></script>
 
 @stop('js-custom')
+
+@push('scripts')
+    <script>
+        console.log($summary_list);
+    </script>
+@endpush

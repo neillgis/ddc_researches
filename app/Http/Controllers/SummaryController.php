@@ -326,18 +326,18 @@ class SummaryController extends Controller
       // For "MANAGER"
       if(Auth::hasRole('manager')){
           // DATA SUMMARY TOTAL Table ***IMPORTANT*** and Use Cache
-          $summary_list = Cache::remember('summary_list', '30', function () {
-                return DB::table('summary_list')->get();
+          $summary_list = Cache::remember('summary_list_new', '30', function () {
+                return DB::table('summary_list_new')->get();
                 // dd($summary_list);
           });
 
       // For "DEPARTMEMT"
       }elseif (Auth::hasRole('departments')) {
           // DATA SUMMARY TOTAL Table ***IMPORTANT*** and Use Cache
-          $summary_list = DB::table('summary_list')
-                ->select('fullname', 'countPro', 'countPosition', 'countJour',
-                         'countJour_tci_one', 'countJour_q_one2three', 
-                         'countUtil', 'researcher_level')
+          $summary_list = DB::table('summary_list_new')
+                ->select('fullname', 'position', 'countPro', 'countPosition', 'countJour',
+                         'countJour_tci_one', 'countJour_q_one2three', 'countJour_not',
+                         'countUtil_depart', 'researcher_level')
                 ->where('deptName', Auth::user()->family_name)
                 ->get();
       }
