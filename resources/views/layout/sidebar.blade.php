@@ -128,6 +128,12 @@
                     <p> คำถามที่พบบ่อย (FAQ) </p>
                  </a>
                </li>
+               <li class="nav-item">
+                 <a class="nav-link" href="https://drive.google.com/file/d/1w5bQCErPud_6YIbB6KpVBSJmn5B67SdU/view" target="_blank">
+                   <i class="far fa-circle nav-icon text-warning"></i>
+                   <p> ข้อมูลทั่วไป </p>
+                 </a>
+               </li>
              </ul>
            </li>
 
