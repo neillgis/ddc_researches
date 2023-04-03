@@ -20,14 +20,14 @@ class export_journal implements FromCollection, WithHeadings
 
         return DB::table('db_research_project')
                 ->rightjoin('db_published_journal', 'db_research_project.id', '=', 'db_published_journal.pro_id')
-                ->leftjoin('users', 'db_research_project.users_id', '=', 'users.idCard')
+                ->leftjoin('users', 'db_published_journal.users_id', '=', 'users.idCard')
                 ->leftjoin('ref_contribute', 'db_published_journal.contribute', '=', 'ref_contribute.id')
                 ->leftjoin('ref_yes_no', 'db_published_journal.verified', '=', 'ref_yes_no.id')
                 ->leftjoin('ref_journal_status', 'db_published_journal.status', '=', 'ref_journal_status.id')
                 ->leftjoin('ref_verified', 'db_published_journal.verified', '=', 'ref_verified.id')
                 ->select('db_published_journal.pro_id',
                          'db_published_journal.users_id',
-                         'db_research_project.users_name',
+                         'db_published_journal.users_name',
                          'users.deptName',
                          'db_published_journal.article_name_en',
                          'db_published_journal.article_name_th',
