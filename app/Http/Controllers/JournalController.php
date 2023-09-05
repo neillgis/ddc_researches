@@ -96,7 +96,7 @@ class JournalController extends Controller
                   ->whereNull('db_published_journal.deleted_at')
                   // ->whereNotIn('db_published_journal.verified', ['9'])
                   ->orderby('db_published_journal.id', 'DESC')
-                  // ->limit(250)
+                  ->limit(300)
                   ->get();
          // dd($query2);
 
@@ -199,7 +199,7 @@ class JournalController extends Controller
                 ->whereNull('deleted_at')
                 // ->whereNotIn('db_published_journal.verified', ['9'])
                 ->orderby('id', 'DESC')
-                // ->limit(250)
+                ->limit(300)
                 ->get();
 
       $query6 = DB::table('ref_journal_status')->get();

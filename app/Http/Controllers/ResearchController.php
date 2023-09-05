@@ -58,7 +58,7 @@ class ResearchController extends Controller
                        ->whereNull('users.deleted_users')
                        // ->whereNotIn('db_research_project.verified', ['9'])
                        ->orderBy('db_research_project.id','DESC')
-                       // ->limit()
+                       ->limit(300)
                        ->get();
 
                         // dd($query);
