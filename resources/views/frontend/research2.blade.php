@@ -123,7 +123,7 @@
 
 
     <!-- START From Input RESEARCH PROJECT -------------------------------------------------->
-    <!-- {{-- @if(Auth::hasRole('user')) --}} -->
+    <!-- {{-- @if(Gate::allows('user')) --}} -->
       <div class="row">
         <div class="col-md-12">
           <div class="card">
@@ -277,7 +277,7 @@
                       <th class="text-center"> เริ่มโครงการ </th>
                       <th class="text-center"> เสร็จสิ้นโครงการ </th>
                       <th class="text-center"> ตีพิมพ์ </th>
-                      @if(Auth::hasRole('manager'))
+                      @if(Gate::allows('manager'))
                         <th class="text-center"> ชื่อ/สกุล </th>
                         <th class="text-center"> หน่วยงาน </th>
                       @endif
@@ -298,7 +298,7 @@
                     <td class="text-center"> {{ CmsHelper::DateEnglish($value->pro_start_date) }} </td>
                     <td class="text-center"> {{ CmsHelper::DateEnglish($value->pro_end_date) }} </td>
                     <td class="text-center"> {{ $publish_status [ $value->publish_status ] }} </td>
-                  @if(Auth::hasRole('manager'))
+                  @if(Gate::allows('manager'))
                     <td class="text-center"> {{ $value->users_name }} </td>
                     <td class="text-center"> {{ $value->deptName }} </td>
                   @endif
@@ -316,7 +316,7 @@
                     </td>
 
                     <td class="td-actions text-right text-nowrap" href="#">
-                    <!-- {{-- @if(Auth::hasRole('manager') || Auth::hasRole('user')) --}} -->
+                    <!-- {{-- @if(Gate::allows('manager') || Gate::allows('user')) --}} -->
                         @if($value->verified == "ตรวจสอบแล้ว")
                           <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Download" disabled>
                             <i class="fas fa-arrow-alt-circle-down"></i>
@@ -343,7 +343,7 @@
                         @endif
 
 
-                      @if(Auth::hasRole('manager'))
+                      @if(Gate::allows('manager'))
                           @if($value->verified == "ตรวจสอบแล้ว")
                           <a href=" {{ route('research.waiting', $value->id) }} ">
                             <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Verfied">

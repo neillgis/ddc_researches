@@ -70,7 +70,7 @@
     <br>
 
   <!-- SHOW DATA for "departments" ONLY -->
-  @if(Auth::hasRole('departments'))
+  @if(Gate::allows('departments'))
 
     <div class="row justify-content-center">
       <div class="col-md-6">
@@ -83,9 +83,9 @@
                 <br>
                   <img class="mx-auto d-block" src="{{ asset('img/moph-logo.png') }}" alt="building" style="width:140px;">
                 <br>
-                  <h4 class="text-center" id="fname_th"> </h4>
+                  <h4 class="text-center">{{ Session::get('dep_id') }}</h4>
                 <br>
-                  <h3 class="text-center" id="lname_th"> </h3>
+                  <h3 class="text-center">{{ Session::get('dep_name') }}</h3>
                 <br>
             </div> <!-- end card-body -->
         </div>
@@ -113,9 +113,10 @@
             <div class="card-body">
               <h4 class="profile text-right" id="prefix"></h4>
               <!-- id="k_prefix" from Ajax below Declare for INSERT -->
-              <input type="hidden" class="form-control" name="title" id="k_prefix">
-              <input type="hidden" class="form-control" name="idCard" id="k_cid">
-              <input type="hidden" class="form-control" name="sex" id="k_gender">
+              <input type="hidden" name="title" id="k_prefix">
+              <input type="hidden" name="idCard" id="k_cid">
+              <input type="hidden" name="sex" id="k_gender">
+              <input type="hidden" name="dept_id" id="dept_id">
 
               <ul class="list-group list-group-unbordered mb-3">
                   <li class="list-group-item">
@@ -427,12 +428,12 @@
                     "Authorization": "bearer {{ KeycloakWeb::retrieveToken()['access_token'] }}"
                 },
                 success: function(result) {
-                    //console.log(result)
+                    console.log(result)
 
                     $("#employee_id").text(result.employeeId);
                     $("#cid").text(result.idCard);
                     $("#k_cid").val(result.idCard);
-                    $("#dept_id").text(result.deptName);
+                    $("#dept_id").val(result.workBu1);
                     $("#k_dept_id").val(result.deptName);
                     $("#workBu1Name").text(result.workBu1Name);
                     $('#k_workBu1Name').val(result.workBu1Name);

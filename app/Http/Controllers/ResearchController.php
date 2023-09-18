@@ -10,14 +10,14 @@ use App\journal;
 use App\NotificationAlert;
 use Storage;
 use File;
-use Auth;
-use Session;
 use Carbon\Carbon;
 use app\Exceptions\Handler;
 use Illuminate\Support\Facades\Route;
 use App\Mail\researcheCommentMail;
 use Illuminate\Support\Facades\Mail;
-// use App\KeycloakUser;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Session;
 
 class ResearchController extends Controller
 {
@@ -30,7 +30,7 @@ class ResearchController extends Controller
 
 // -- SELECT DataTables RESEARCH --
   public function table_research(Request $request){
-    if(Auth::hasRole('manager')) {
+    if(Gate::allows('manager')) {
       $query = DB::table('db_research_project')
                  ->leftjoin('users', 'db_research_project.users_id', '=', 'users.idCard')
                  ->select('db_research_project.id',
@@ -63,7 +63,7 @@ class ResearchController extends Controller
 
                         // dd($query);
 
-    }elseif(Auth::hasRole('departments')) {
+    }elseif(Gate::allows('departments')) {
       $query = DB::table('db_research_project')
                 ->leftjoin('users', 'users.idCard', '=', 'db_research_project.users_id')
                 ->select( 'db_research_project.id',
@@ -86,7 +86,9 @@ class ResearchController extends Controller
                           //               END) AS verified'
                           // )
                           )
-                ->where('users.deptName', Auth::user()->family_name)
+                // ->where('users.deptName', Auth::user()->family_name)
+                ->where('users.dept_id', Session::get('dep_id'))
+                
                 ->whereNull('db_research_project.deleted_at')
                 ->whereNull('users.deleted_users')
                 ->ORDERBY('id','DESC')
@@ -158,7 +160,7 @@ class ResearchController extends Controller
 // ---------- COUNT 4 BOX on TOP ----------
 
     // COUNT_Totals PROJECT ====> "โครงการทั้งหมด"
-    if(Auth::hasRole('manager')){
+    if(Gate::allows('manager')){
         $Total_departments = DB::table('db_research_project')
                           ->leftjoin('users', 'users.idCard', '=', 'db_research_project.users_id')
                           ->select( 'users.id',
@@ -173,7 +175,7 @@ class ResearchController extends Controller
                           ->get()
                           ->count();
 
-    }elseif(Auth::hasRole('departments')) {
+    }elseif(Gate::allows('departments')) {
         $Total_departments = DB::table('db_research_project')
                           ->leftjoin('users', 'users.idCard', '=', 'db_research_project.users_id')
                           ->select( 'users.id',
@@ -184,7 +186,8 @@ class ResearchController extends Controller
                                     'db_research_project.pro_name_en',
                                     'db_research_project.publish_status'
                                   )
-                          ->where('deptName', Auth::user()->family_name)
+                          // ->where('deptName', Auth::user()->family_name)
+                          ->where('users.dept_id', Session::get('dep_id'))
                           ->whereNull('deleted_at')
                           ->get()
                           ->count();
@@ -209,7 +212,7 @@ class ResearchController extends Controller
 
 
       // COUNT publish_status = 1 ====> "โครงการที่ตีพิมพ์"
-      if(Auth::hasRole('manager')){
+      if(Gate::allows('manager')){
         $Total_publish_pro = DB::table('db_research_project')
                           -> select('id','pro_name_th','pro_name_en','pro_position',
                                     'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
@@ -218,7 +221,7 @@ class ResearchController extends Controller
                           ->get()
                           ->count();
 
-      }elseif(Auth::hasRole('departments')) {
+      }elseif(Gate::allows('departments')) {
         $Total_publish_pro = DB::table('db_research_project')
                           ->leftjoin('users', 'users.idCard', '=', 'db_research_project.users_id')
                           ->select( 'users.id',
@@ -230,7 +233,8 @@ class ResearchController extends Controller
                                     'db_research_project.publish_status'
                                   )
                           ->whereIn('publish_status', ['1'])
-                          ->where('deptName', Auth::user()->family_name)
+                          // ->where('deptName', Auth::user()->family_name)
+                          ->where('users.dept_id', Session::get('dep_id'))
                           ->whereNull('deleted_at')
                           ->get()
                           ->count();
@@ -249,7 +253,7 @@ class ResearchController extends Controller
 
 
       // COUNT_Prject VERIFY  ====> "โครงการที่ตรวจสอบแล้ว"
-      if(Auth::hasRole('manager')){
+      if(Gate::allows('manager')){
         $Total_research = DB::table('db_research_project')
                         -> select('id','pro_name_th','pro_name_en','pro_position',
                                   'pro_start_date','pro_end_date','pro_co_researcher','publish_status', 'verified')
@@ -258,7 +262,7 @@ class ResearchController extends Controller
                         ->get()
                         ->count();
 
-      }elseif(Auth::hasRole('departments')) {
+      }elseif(Gate::allows('departments')) {
         $Total_research = DB::table('db_research_project')
                           ->leftjoin('users', 'users.idCard', '=', 'db_research_project.users_id')
                           ->select( 'users.id',
@@ -269,7 +273,8 @@ class ResearchController extends Controller
                                     'db_research_project.verified',
                                   )
                           ->whereIn('verified', ['1'])
-                          ->where('deptName', Auth::user()->family_name)
+                          // ->where('deptName', Auth::user()->family_name)
+                          ->where('users.dept_id', Session::get('dep_id'))
                           ->whereNull('deleted_at')
                           ->get()
                           ->count();
@@ -288,7 +293,7 @@ class ResearchController extends Controller
 
 
       // COUNT pro_position = 1 ====> "โครงการที่เป็นผู้วิจัยหลัก"
-      if(Auth::hasRole('manager')){
+      if(Gate::allows('manager')){
           $Total_master_pro = DB::table('db_research_project')
                             -> select('id','pro_name_th','pro_name_en','pro_position',
                                       'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
@@ -297,7 +302,7 @@ class ResearchController extends Controller
                             ->get()
                             ->count();
 
-      }elseif(Auth::hasRole('departments')) {
+      }elseif(Gate::allows('departments')) {
         $Total_master_pro = DB::table('db_research_project')
                           ->leftjoin('users', 'users.idCard', '=', 'db_research_project.users_id')
                           ->select( 'users.id',
@@ -309,7 +314,8 @@ class ResearchController extends Controller
                                   )
                           ->whereIn('pro_position', ['1'])
                           // ->OrwhereIn('pro_position', ['2'])
-                          ->where('deptName', Auth::user()->family_name)
+                          // ->where('deptName', Auth::user()->family_name)
+                          ->where('users.dept_id', Session::get('dep_id'))
                           ->whereNull('deleted_at')
                           ->get()
                           ->count();

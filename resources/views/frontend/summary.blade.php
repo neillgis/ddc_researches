@@ -232,7 +232,7 @@
                   <table class="table table-hover" style="width:100%" id="example1" >
                     <thead>
                       <tr>
-                      @if(Auth::hasRole('manager'))
+                      @if(Gate::allows('manager'))
                         <th class="text-center"> ชื่อ-นามสกุล </th>
                         <th class="text-center"> ตำแหน่ง </th>
                         <th class="text-center"> หน่วยงาน </th>
@@ -246,7 +246,7 @@
                         <th class="text-center"> ระดับนักวิจัย </th>
                         <th class="text-center"> ผู้ตรวจสอบ </th>
                         <th class="text-right"> Actions </th>
-                      @elseif(Auth::hasRole('departments'))
+                      @elseif(Gate::allows('departments'))
                         <th class="text-center"> ชื่อ-นามสกุล </th>
                         <th class="text-center"> ตำแหน่ง </th>
                         <th class="text-center"> โครงการวิจัย </th>
@@ -268,9 +268,9 @@
                       <tr>
                             <td class="text-nowrap"> {{ $value->fullname }} </td>
                             <td class="text-nowrap"> {{ $value->position }} </td>
-                          @if(Auth::hasRole('manager'))
+                          @if(Gate::allows('manager'))
                             <td class="text-nowrap"> {{ $value->deptName }} </td>
-                          @elseif(Auth::hasRole('departments'))
+                          @elseif(Gate::allows('departments'))
                             <!-- No Show BUTTON -->
                           @endif
 
@@ -316,7 +316,7 @@
                                     <font color="red"> 0 </font>
                                 @endif
                             </td>
-                            @if(Auth::hasRole('manager'))
+                            @if(Gate::allows('manager'))
                             <td class="text-center">
                                 @if( isset($value->countUtil_manager))
                                     {{ ($value->countUtil_manager) }}
@@ -324,7 +324,7 @@
                                     <font color="red"> 0 </font>
                                 @endif
                             </td>
-                            @elseif(Auth::hasRole('departments'))
+                            @elseif(Gate::allows('departments'))
                             <td class="text-center">
                                 @if( isset($value->countUtil_depart))
                                     {{ ($value->countUtil_depart) }}
@@ -345,7 +345,7 @@
                                     <span class="badge bg-danger"> No results </span>
                                 @endif
                             </td>
-                          @if(Auth::hasRole('manager'))
+                          @if(Gate::allows('manager'))
                             <td class="text-center text-nowrap">
                                 @if( isset($value->data_auditor))
                                     {{ $value->data_auditor }}
@@ -406,7 +406,7 @@
                               </div>
                             <!-- END MODAL Verify & Status -->
 
-                          @elseif(Auth::hasRole('departments'))
+                          @elseif(Gate::allows('departments'))
 
                               <!-- No Show BUTTON -->
 

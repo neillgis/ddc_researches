@@ -10,11 +10,12 @@ use App\research;
 use App\journal;
 use Storage;
 use File;
-use Auth;
-use Session;
 use app\Exceptions\Handler;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 // use Illuminate\Support\Arr;
 
@@ -33,7 +34,8 @@ class SummaryController extends Controller
 
       // โครงการวิจัยที่ทำเสร็จสิ้นทั้งหมด db_research_project -> โดย count id --------->
       // For "MANAGER"
-      if(Auth::hasRole('manager')){
+      
+      if(Gate::allows('manager')){
           $Total_research = DB::table('db_research_project')
                               ->select('db_research_project.id','pro_name_th','pro_name_en','pro_position',
                                         'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
@@ -78,12 +80,14 @@ class SummaryController extends Controller
                                       ->count();
 
       // For "DEPARTMENT"
-    }elseif (Auth::hasRole('departments')) {
+    }
+    elseif (Gate::allows('departments')) {
           $Total_research = DB::table('db_research_project')
                               ->join('users', 'users.idCard', '=', 'db_research_project.users_id')
                               ->select('db_research_project.id','pro_name_th','pro_name_en','pro_position',
                                         'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
-                              ->where('users.deptName', Auth::user()->family_name)
+                              // ->where('users.deptName', Auth::user()->family_name)
+                              ->where('users.dept_id', Session::get('dep_id'))
                               ->whereNull('db_research_project.deleted_at')
                               ->get()
                               ->count();
@@ -92,7 +96,8 @@ class SummaryController extends Controller
                                     ->join('users', 'users.idCard', '=', 'db_research_project.users_id')
                                     ->select('db_research_project.id','pro_name_th','pro_name_en','pro_position',
                                               'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
-                                    ->where('users.deptName', Auth::user()->family_name)
+                                    // ->where('users.deptName', Auth::user()->family_name)
+                                    ->where('users.dept_id', Session::get('dep_id'))
                                     ->whereNull('deleted_at')
                                     ->whereIn('verified', ['1'])
                                     ->get()
@@ -101,7 +106,8 @@ class SummaryController extends Controller
           $Total_research_position_pi = DB::table('db_research_project')
                                           ->join('users', 'users.idCard', '=', 'db_research_project.users_id')
                                           ->selectRaw('sum(if(db_research_project.pro_position <= 2, 1, 0)) AS position')
-                                          ->where('users.deptName', Auth::user()->family_name)
+                                          // ->where('users.deptName', Auth::user()->family_name)
+                                          ->where('users.dept_id', Session::get('dep_id'))
                                           ->whereNull('deleted_at')
                                           ->whereIn('verified', ['1'])
                                           ->get();
@@ -115,13 +121,14 @@ class SummaryController extends Controller
                                       ->rightjoin('users', 'db_research_project.users_id', '=', 'users.idCard')
                                       ->select('users_id')
                                       ->groupBy('db_research_project.users_id')
-                                      ->where('users.deptName', Auth::user()->family_name)
+                                      // ->where('users.deptName', Auth::user()->family_name)
+                                      ->where('users.dept_id', Session::get('dep_id'))
                                       ->whereNull('db_research_project.deleted_at')
                                       ->where('db_research_project.verified', 1)
                                       ->get()
                                       ->count();
 
-      }elseif(Auth::hasRole('admin')) {
+      }elseif(Gate::allows('admin')) {
           $Total_research = DB::table('db_research_project')
                           -> select('db_research_project.id','pro_name_th','pro_name_en','pro_position',
                                     'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
@@ -133,7 +140,7 @@ class SummaryController extends Controller
 
       // บทความตีพิมพ์ ที่ตรวจสอบแล้ว db_published_journal โดย count id  --------->
       // For "MANAGER"
-      if(Auth::hasRole('manager')){
+      if(Gate::allows('manager')){
           $Total_journal = DB::table('db_published_journal')
                              ->select('id','article_name_th','article_name_en','journal_name_th','journal_name_en',
                                        'publish_years','publish_no','publish_volume','publish_page','doi_number',
@@ -174,13 +181,14 @@ class SummaryController extends Controller
                                   ->count();
 
       // For "DEPARTMEMT"
-    }elseif (Auth::hasRole('departments')) {
+    }elseif (Gate::allows('departments')) {
           $Total_journal = DB::table('db_published_journal')
                              ->join('users', 'users.idCard', '=', 'db_published_journal.users_id')
                              ->select('article_name_th','article_name_en','journal_name_th',
                                       'journal_name_en','publish_years','publish_no','publish_volume','publish_page',
                                       'doi_number','contribute','corres')
-                             ->where('users.deptName', Auth::user()->family_name)
+                            //  ->where('users.deptName', Auth::user()->family_name)
+                             ->where('users.dept_id', Session::get('dep_id'))
                              ->whereNull('deleted_at')
                              ->get()
                              ->count();
@@ -190,7 +198,8 @@ class SummaryController extends Controller
                                     ->select('article_name_th','article_name_en','journal_name_th','journal_name_en',
                                               'publish_years','publish_no','publish_volume','publish_page','doi_number',
                                               'contribute','corres')
-                                    ->where('users.deptName', Auth::user()->family_name)
+                                    // ->where('users.deptName', Auth::user()->family_name)
+                                    ->where('users.dept_id', Session::get('dep_id'))
                                     ->whereNull('deleted_at')
                                     ->whereIn('verified', ['1'])
                                     ->get()
@@ -201,7 +210,8 @@ class SummaryController extends Controller
                                   ->select('article_name_th','article_name_en','journal_name_th','journal_name_en',
                                             'publish_years','publish_no','publish_volume','publish_page','doi_number',
                                             'contribute','corres')
-                                  ->where('users.deptName', Auth::user()->family_name)
+                                  // ->where('users.deptName', Auth::user()->family_name)
+                                  ->where('users.dept_id', Session::get('dep_id'))
                                   ->whereNull('deleted_at')
                                   ->whereIn('verified', ['1'])
                                   ->whereIn('status', ['1'])
@@ -213,7 +223,8 @@ class SummaryController extends Controller
                                   ->select('article_name_th','article_name_en','journal_name_th','journal_name_en',
                                             'publish_years','publish_no','publish_volume','publish_page','doi_number',
                                             'contribute','corres')
-                                  ->where('users.deptName', Auth::user()->family_name)
+                                  // ->where('users.deptName', Auth::user()->family_name)
+                                  ->where('users.dept_id', Session::get('dep_id'))
                                   ->whereNull('deleted_at')
                                   ->whereIn('verified', ['1'])
                                   ->whereIn('status', ['4'])
@@ -222,7 +233,7 @@ class SummaryController extends Controller
                                   ->get()
                                   ->count();
 
-       }elseif(Auth::hasRole('admin')) {
+       }elseif(Gate::allows('admin')) {
          $Total_journal = DB::table('db_published_journal')
                             ->select('db_research_project.id','article_name_th','article_name_en','journal_name_th','journal_name_en',
                                       'publish_years','publish_no','publish_volume','publish_page','doi_number',
@@ -236,7 +247,7 @@ class SummaryController extends Controller
 
       // บทความที่นำไปใช้ประโยชน์เชิงนโยบาย db_utilization -> โดย count id --------->
       // For "MANAGER"
-      if(Auth::hasRole('manager')){
+      if(Gate::allows('manager')){
           $Total_util = DB::table('db_utilization')
                           ->select('pro_id','util_type')
                           ->whereNull('deleted_at')
@@ -259,11 +270,12 @@ class SummaryController extends Controller
                                   ->count();
 
       // For "DEPARTMEMT"
-      }elseif (Auth::hasRole('departments')) {
+      }elseif (Gate::allows('departments')) {
           $Total_util = DB::table('db_utilization')
                           ->join('users', 'users.idCard', '=', 'db_utilization.users_id')
                           ->select('pro_id','util_type')
-                          ->where('users.deptName', Auth::user()->family_name)
+                          // ->where('users.deptName', Auth::user()->family_name)
+                          ->where('users.dept_id', Session::get('dep_id'))
                           ->whereNull('deleted_at')
                           ->get()
                           ->count();
@@ -271,7 +283,8 @@ class SummaryController extends Controller
           $Total_util_verify = DB::table('db_utilization')
                                 ->join('users', 'users.idCard', '=', 'db_utilization.users_id')
                                 ->select('pro_id','util_type')
-                                ->where('users.deptName', Auth::user()->family_name)
+                                // ->where('users.deptName', Auth::user()->family_name)
+                                ->where('users.dept_id', Session::get('dep_id'))
                                 ->whereNull('deleted_at')
                                 ->whereIn('verified', ['1'])
                                 ->get()
@@ -280,14 +293,15 @@ class SummaryController extends Controller
           $Total_util_policies = DB::table('db_utilization')
                                   ->join('users', 'users.idCard', '=', 'db_utilization.users_id')
                                   ->select('pro_id','util_type')
-                                  ->where('users.deptName', Auth::user()->family_name)
+                                  // ->where('users.deptName', Auth::user()->family_name)
+                                  ->where('users.dept_id', Session::get('dep_id'))
                                   ->where('util_type', '=', 'เชิงนโยบาย')
                                   ->whereIn('verified', ['1'])
                                   ->whereNull('deleted_at')
                                   ->get()
                                   ->count();
 
-      }elseif(Auth::hasRole('admin')) {
+      }elseif(Gate::allows('admin')) {
         $Total_policy_util = DB::table('db_utilization')
                               ->select('pro_id','util_type')
                               ->where('util_type', '=', 'เชิงนโยบาย')
@@ -324,7 +338,7 @@ class SummaryController extends Controller
 
 
       // For "MANAGER"
-      if(Auth::hasRole('manager')){
+      if(Gate::allows('manager')){
           // DATA SUMMARY TOTAL Table ***IMPORTANT*** and Use Cache
           $summary_list = Cache::remember('summary_list_new', '30', function () {
                 return DB::table('summary_list_new')->get();
@@ -332,13 +346,14 @@ class SummaryController extends Controller
           });
 
       // For "DEPARTMEMT"
-      }elseif (Auth::hasRole('departments')) {
+      }elseif (Gate::allows('departments')) {
           // DATA SUMMARY TOTAL Table ***IMPORTANT*** and Use Cache
           $summary_list = DB::table('summary_list_new')
                 ->select('fullname', 'position', 'countPro', 'countPosition', 'countJour',
                          'countJour_tci_one', 'countJour_q_one2three', 'countJour_not',
                          'countUtil_depart', 'researcher_level')
-                ->where('deptName', Auth::user()->family_name)
+                // ->where('deptName', Auth::user()->family_name)
+                ->where('users.dept_id', Session::get('dep_id'))
                 ->get();
       }
 

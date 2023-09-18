@@ -293,5 +293,16 @@ use App\member;
           }
 
 
+          public static function fixid($cid, $lastshow=6){
+            $num = 13-$lastshow;
+            $last = substr($cid, $num);
+            $txt = '';
+            for( $i=0 ; $i<$num ; $i++ ) {
+              $txt .= "X";
+            }
+            return $txt . $last;
+          }
+
+
 
 }

@@ -9,13 +9,14 @@ use App\research;
 use App\NotificationAlert;
 use Storage;
 use File;
-use Auth;
-use Session;
 use Carbon\Carbon;
 use app\Exceptions\Handler;
 use Illuminate\Support\Facades\Route;
 use App\Mail\utilizationCommentMail;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 
 class UtilizationController extends Controller
@@ -32,14 +33,14 @@ class UtilizationController extends Controller
     // ----------- SUM BOX ------------>
 
     // โครงการที่นำไปใช้ประโยชน์ทั้งหมด db_utilization -> โดย count id (All Record) --------->
-      if(Auth::hasRole('manager')){
+      if(Gate::allows('manager')){
         $Total_util = DB::table('db_utilization')
                         ->select('pro_id','util_type')
                         ->whereNull('deleted_at')
                         ->get()
                         ->count();
 
-      }elseif(Auth::hasRole('departments')) {
+      }elseif(Gate::allows('departments')) {
         $Total_util = DB::table('db_utilization')
                         ->leftjoin('users', 'db_utilization.users_id', '=', 'users.idCard')
                         ->select( 'db_utilization.pro_id',
@@ -47,7 +48,7 @@ class UtilizationController extends Controller
                                   'users.idCard',
                                   'users.deptName',
                                 )
-                        ->where('deptName', Auth::user()->family_name)
+                        ->where('users.dept_id', Session::get('dep_id'))
                         ->whereNull('deleted_at')
                         ->get()
                         ->count();
@@ -64,7 +65,7 @@ class UtilizationController extends Controller
 
 
     // โครงการที่นำไปใช้ประโยชน์ทั้งหมด ที่ผ่านการตรวจสอบแล้ว db_utilization -> โดย count id (All Record) -> 'verified', ['1'] --------->
-    if(Auth::hasRole('manager')){
+    if(Gate::allows('manager')){
       $Total_util_verify = DB::table('db_utilization')
                             ->select('pro_id','util_type')
                             ->whereIn('verified', ['1'])
@@ -72,7 +73,7 @@ class UtilizationController extends Controller
                             ->get()
                             ->count();
 
-    }elseif(Auth::hasRole('departments')) {
+    }elseif(Gate::allows('departments')) {
       $Total_util_verify = DB::table('db_utilization')
                             ->leftjoin('users', 'db_utilization.users_id', '=', 'users.idCard')
                             ->select( 'db_utilization.pro_id',
@@ -82,7 +83,7 @@ class UtilizationController extends Controller
                                       'users.deptName',
                                     )
                             ->whereIn('verified', ['1'])
-                            ->where('deptName', Auth::user()->family_name)
+                            ->where('users.dept_id', Session::get('dep_id'))
                             ->whereNull('deleted_at')
                             ->get()
                             ->count();
@@ -100,7 +101,7 @@ class UtilizationController extends Controller
 
 
     // โครงการที่นำไปใช้ประโยชน์เชิงนโยบาย db_utilization -> โดย count id -> util_type = เชิงนโยบาย --------->
-    if(Auth::hasRole('manager')){
+    if(Gate::allows('manager')){
       $Total_policy_util = DB::table('db_utilization')
                             -> select('pro_id','util_type')
                             ->where('util_type', '=', 'เชิงนโยบาย')
@@ -109,7 +110,7 @@ class UtilizationController extends Controller
                             ->get()
                             ->count();
 
-    }elseif(Auth::hasRole('departments')) {
+    }elseif(Gate::allows('departments')) {
       $Total_policy_util = DB::table('db_utilization')
                             ->leftjoin('users', 'db_utilization.users_id', '=', 'users.idCard')
                             ->select( 'db_utilization.pro_id',
@@ -120,7 +121,7 @@ class UtilizationController extends Controller
                                     )
                             ->where('util_type', '=', 'เชิงนโยบาย')
                             ->whereIn('verified', ['1'])
-                            ->where('deptName', Auth::user()->family_name)
+                            ->where('users.dept_id', Session::get('dep_id'))
                             ->whereNull('deleted_at')
                             ->get()
                             ->count();
@@ -140,7 +141,7 @@ class UtilizationController extends Controller
 
 
     // โครงการที่นำไปใช้ประโยชน์เชิงวิชาการ db_utilization -> โดย count id -> util_type = เชิงวิชาการ --------->
-      if(Auth::hasRole('manager')){
+      if(Gate::allows('manager')){
         $Total_academic_util = DB::table('db_utilization')
                               -> select('pro_id','util_type')
                               -> where ('util_type', '=', 'เชิงวิชาการ')
@@ -149,7 +150,7 @@ class UtilizationController extends Controller
                               ->get()
                               ->count();
 
-      }elseif(Auth::hasRole('departments')) {
+      }elseif(Gate::allows('departments')) {
         $Total_academic_util = DB::table('db_utilization')
                                   ->leftjoin('users', 'db_utilization.users_id', '=', 'users.idCard')
                                   ->select( 'db_utilization.pro_id',
@@ -160,7 +161,7 @@ class UtilizationController extends Controller
                                           )
                                   ->where('util_type', '=', 'เชิงวิชาการ')
                                   ->whereIn('verified', ['1'])
-                                  ->where('deptName', Auth::user()->family_name)
+                                  ->where('users.dept_id', Session::get('dep_id'))
                                   ->whereNull('deleted_at')
                                   ->get()
                                   ->count();
@@ -179,7 +180,7 @@ class UtilizationController extends Controller
 
 
       // โครงการที่นำไปใช้ประโยชน์เชิงสังคม/ชุมชน db_utilization -> โดย count id -> util_type = เชิงสังคม/ชุมชน --------->
-      if(Auth::hasRole('manager')){
+      if(Gate::allows('manager')){
         $Total_social_util = DB::table('db_utilization')
                               -> select('pro_id','util_type')
                               -> where ('util_type', '=', 'เชิงสังคม/ชุมชน')
@@ -188,7 +189,7 @@ class UtilizationController extends Controller
                               ->get()
                               ->count();
 
-      }elseif(Auth::hasRole('departments')) {
+      }elseif(Gate::allows('departments')) {
         $Total_social_util = DB::table('db_utilization')
                               ->leftjoin('users', 'db_utilization.users_id', '=', 'users.idCard')
                               ->select( 'db_utilization.pro_id',
@@ -199,7 +200,7 @@ class UtilizationController extends Controller
                                       )
                               ->where('util_type', '=', 'เชิงสังคม/ชุมชน')
                               ->whereIn('verified', ['1'])
-                              ->where('deptName', Auth::user()->family_name)
+                              ->where('users.dept_id', Session::get('dep_id'))
                               ->whereNull('deleted_at')
                               ->get()
                               ->count();
@@ -218,7 +219,7 @@ class UtilizationController extends Controller
 
 
       // โครงการที่นำไปใช้ประโยชน์เชิงนโยบาย db_utilization -> โดย count id -> util_type = เชิงพาณิชย์ --------->
-      if(Auth::hasRole('manager')){
+      if(Gate::allows('manager')){
         $Total_commercial_util = DB::table('db_utilization')
                               -> select('pro_id','util_type')
                               -> where ('util_type', '=', 'เชิงพาณิชย์')
@@ -227,7 +228,7 @@ class UtilizationController extends Controller
                               ->get()
                               ->count();
 
-      }elseif(Auth::hasRole('departments')) {
+      }elseif(Gate::allows('departments')) {
         $Total_commercial_util = DB::table('db_utilization')
                                   ->leftjoin('users', 'db_utilization.users_id', '=', 'users.idCard')
                                   ->select( 'db_utilization.pro_id',
@@ -238,7 +239,7 @@ class UtilizationController extends Controller
                                           )
                                   ->where('util_type', '=', 'เชิงพาณิชย์')
                                   ->whereIn('verified', ['1'])
-                                  ->where('deptName', Auth::user()->family_name)
+                                  ->where('users.dept_id', Session::get('dep_id'))
                                   ->whereNull('deleted_at')
                                   ->get()
                                   ->count();
@@ -260,13 +261,13 @@ class UtilizationController extends Controller
 
 
 // ---------------- TABLE LIST ---------------->
-      if(Auth::hasRole('manager')) {
+      if(Gate::allows('manager')) {
         $query_research   = research::select('id','pro_name_th','pro_name_en','users_id','users_name')
                                     ->where('users_id', Auth::user()->preferred_username)
                                     ->whereNull('deleted_at')
                                     ->get();
 
-      }elseif(Auth::hasRole('admin')) {
+      }elseif(Gate::allows('admin')) {
         $query_research   = research::select('id','pro_name_th','pro_name_en','users_id','users_name')
                                     ->whereNull('deleted_at')
                                     ->get();
@@ -298,7 +299,7 @@ class UtilizationController extends Controller
 
 
   // ---------------- SELECT TABLE ---------------->
-    if(Auth::hasRole('manager')){
+    if(Gate::allows('manager')){
         $query_util = DB::table('db_utilization')
                         ->join ('db_research_project', 'db_utilization.pro_id', '=', 'db_research_project.id')
                         ->leftjoin('users', 'db_utilization.users_id', '=', 'users.idCard')
@@ -323,7 +324,7 @@ class UtilizationController extends Controller
                         ->orderBy('id', 'DESC')
                         ->get();
 
-    }elseif(Auth::hasRole('departments')){
+    }elseif(Gate::allows('departments')){
         $query_util = DB::table('db_utilization')
                         ->join ('db_research_project', 'db_utilization.pro_id', '=', 'db_research_project.id')
                         ->leftjoin('users', 'db_utilization.users_id', '=', 'users.idCard')
@@ -346,7 +347,7 @@ class UtilizationController extends Controller
                                    //               END) AS verified'
                                    // )
                                 )
-                        ->where('deptName', Auth::user()->family_name)
+                        ->where('users.dept_id', Session::get('dep_id'))
                         // ->whereNull('db_research_project.deleted_at')
                         ->whereNull('db_utilization.deleted_at')
                         ->orderBy('id', 'DESC')

@@ -13,4 +13,9 @@ class KeycloakDemoController extends Controller
   //   return view('frontend.error404');
   // }
 
+  public function logout() {
+    session()->forget('role');
+    return redirect()->route('keycloak.logout');
+  }
+
 }

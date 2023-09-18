@@ -10,13 +10,14 @@ use App\journal;
 use App\NotificationAlert;
 use Storage;
 use File;
-use Auth;
-use Session;
 use Carbon\Carbon;
 use app\Exceptions\Handler;
 use Illuminate\Support\Facades\Route;
 use App\Mail\journalCommentMail;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 
 class JournalController extends Controller
@@ -28,7 +29,7 @@ class JournalController extends Controller
 
   //  -- Show Dropdown บทความนี้เป็นผลจากโครงการวิจัย --
   public function table_journal(){
-    if(Auth::hasRole('manager')){
+    if(Gate::allows('manager')){
       $query  = DB::table('db_research_project')
                      ->select('db_research_project.id',
                               'db_research_project.pro_name_th',
@@ -40,7 +41,7 @@ class JournalController extends Controller
                      ->orderby('id', 'DESC')
                      ->get();
 
-    }elseif(Auth::hasRole('departments')) {
+    }elseif(Gate::allows('departments')) {
       $query  = DB::table('db_research_project')
                     ->leftjoin('users', 'db_research_project.users_id', '=', 'users.idCard')
                      ->select('db_research_project.id',
@@ -48,7 +49,8 @@ class JournalController extends Controller
                               'db_research_project.pro_name_en',
                               )
                      // ->where('users_id', Auth::user()->preferred_username)
-                     ->where('deptName', Auth::user()->family_name)
+                    //  ->where('deptName', Auth::user()->family_name)
+                     ->where('users.dept_id', Session::get('dep_id'))
                      ->whereNull('deleted_at')
                      // ->whereNotNull('db_research_project.pro_name_en')
                      ->orderby('id', 'DESC')
@@ -72,7 +74,7 @@ class JournalController extends Controller
 
 //  ---- SELECT DataTables PROJECT join JOURNAL -----
     // บทความที่ตีพิมพ์แล้ว ===> pro_id = "Not Null"
-    if(Auth::hasRole('manager')){
+    if(Gate::allows('manager')){
       $query2 = DB::table('db_published_journal')
                   ->join('db_research_project', 'db_research_project.id', '=', 'db_published_journal.pro_id')
                   ->leftjoin('users', 'db_published_journal.users_id', '=', 'users.idCard')
@@ -100,7 +102,7 @@ class JournalController extends Controller
                   ->get();
          // dd($query2);
 
-    }elseif(Auth::hasRole('departments')){
+    }elseif(Gate::allows('departments')){
       $query2 = DB::table('db_published_journal')
                   ->leftjoin('users', 'db_published_journal.users_id', '=', 'users.idCard')
                   ->select(
@@ -120,7 +122,8 @@ class JournalController extends Controller
                            'users.fname',
                            'users.lname',
                            )
-                  ->where('users.deptName', Auth::user()->family_name)
+                  // ->where('users.deptName', Auth::user()->family_name)
+                  ->where('users.dept_id', Session::get('dep_id'))
                   // ->whereNull('db_research_project.deleted_at')
                   ->whereNull('db_published_journal.deleted_at')
                   ->orderby('db_published_journal.id', 'DESC')
@@ -209,13 +212,13 @@ class JournalController extends Controller
 // ------ COUNT 3 BOX on TOP ------
 
       // ตีพิมพ์วารสารทั้งหมด COUNT = All Record
-      if(Auth::hasRole('manager')){
+      if(Gate::allows('manager')){
         $Total_journal = journal::select('id', 'users_id')
                                   ->whereNull('deleted_at')
                                   ->get()
                                   ->count();
 
-      }elseif(Auth::hasRole('departments')) {
+      }elseif(Gate::allows('departments')) {
         $Total_journal = DB::table('db_published_journal')
                           ->leftjoin('users', 'users.idCard', '=', 'db_published_journal.users_id')
                           ->select( 'db_published_journal.id',
@@ -223,7 +226,8 @@ class JournalController extends Controller
                                     'users.idCard',
                                     'users.deptName',
                                   )
-                          ->where('deptName', Auth::user()->family_name)
+                          // ->where('deptName', Auth::user()->family_name)
+                          ->where('users.dept_id', Session::get('dep_id'))
                           ->whereNull('deleted_at')
                           ->get()
                           ->count();
@@ -239,14 +243,14 @@ class JournalController extends Controller
 
 
       // ตีพิมพ์วารสารที่ตรวจสอบแล้ว COUNT = All Record -> 'verified', ['1']
-      if(Auth::hasRole('manager')){
+      if(Gate::allows('manager')){
         $Total_journal_verify = journal::select('id', 'users_id')
                                       ->whereIn('verified', ['1'])
                                       ->whereNull('deleted_at')
                                       ->get()
                                       ->count();
 
-      }elseif(Auth::hasRole('departments')) {
+      }elseif(Gate::allows('departments')) {
         $Total_journal_verify = DB::table('db_published_journal')
                                   ->leftjoin('users', 'users.idCard', '=', 'db_published_journal.users_id')
                                   ->select( 'db_published_journal.id',
@@ -256,7 +260,8 @@ class JournalController extends Controller
                                             'users.deptName',
                                           )
                                   ->whereIn('verified', ['1'])
-                                  ->where('deptName', Auth::user()->family_name)
+                                  // ->where('deptName', Auth::user()->family_name)
+                                  ->where('users.dept_id', Session::get('dep_id'))
                                   ->whereNull('deleted_at')
                                   ->get()
                                   ->count();
@@ -272,7 +277,7 @@ class JournalController extends Controller
 
 
       // วารสารที่เป็นผู้นิพนธ์หลัก ที่ตรวจสอบแล้ว COUNT = contribute = 1 -> 'verified', ['1']
-      if(Auth::hasRole('manager')){
+      if(Gate::allows('manager')){
         $Total_master_jour = journal::select('id', 'contribute')
                                     ->whereIn ('contribute', ['1'])
                                     -> whereIn ('verified', ['1'])
@@ -280,7 +285,7 @@ class JournalController extends Controller
                                     ->get()
                                     ->count();
 
-      }elseif(Auth::hasRole('departments')) {
+      }elseif(Gate::allows('departments')) {
         $Total_master_jour = DB::table('db_published_journal')
                                   ->leftjoin('users', 'users.idCard', '=', 'db_published_journal.users_id')
                                   ->select( 'db_published_journal.id',
@@ -292,7 +297,8 @@ class JournalController extends Controller
                                           )
                                   ->whereIn('contribute', ['1'])
                                   ->whereIn('verified', ['1'])
-                                  ->where('deptName', Auth::user()->family_name)
+                                  // ->where('deptName', Auth::user()->family_name)
+                                  ->where('users.dept_id', Session::get('dep_id'))
                                   ->whereNull('deleted_at')
                                   ->get()
                                   ->count();

@@ -173,7 +173,7 @@
 
 
 <!-- START FORM  INSERT ------------------------------------------------------->
-      @if(Auth::hasRole('departments'))
+      @if(Gate::allows('departments'))
 
       <!-- NO Show BUTTON For Departments ONLY -->
 
@@ -275,12 +275,12 @@
                             <th class="text-center"> ชื่อโครงการ </th>
                             <th class="text-center"> การนำไปใช้ประโยชน์ </th>
                             <th class="text-center"> สถานะ </th>
-                          @if(Auth::hasRole('manager'))
+                          @if(Gate::allows('manager'))
                             <th class="text-center"> ชื่อ/สกุล </th>
                             <th class="text-center"> หน่วยงาน </th>
                           @endif
                             <th class="text-center"> การตรวจสอบ </th>
-                            @if(Auth::hasRole('departments'))
+                            @if(Gate::allows('departments'))
                               <!-- NO Show BUTTON For Departments ONLY -->
                               <th class="text-center"> ชื่อ/สกุล </th>
                               <th class="text-right"> Actions </th>
@@ -308,7 +308,7 @@
                             @endif
                           </td>
 
-                        @if(Auth::hasRole('manager'))
+                        @if(Gate::allows('manager'))
                           <td class="text-center"> {{ $value->users_name }} </td>
                           <td class="text-center"> {{ $value->deptName }} </td>
                         @endif
@@ -326,7 +326,7 @@
                               @endif
                           </td>
 
-                        @if(Auth::hasRole('departments'))
+                        @if(Gate::allows('departments'))
                           <!-- Show SOME_BUTTON For Departments ONLY -->
                           <td class="text-center"> {{ $value->fname." ".$value->lname }} </td>
 
@@ -354,7 +354,7 @@
                           <!-- BUTTON TOTAL -->
                           <td class="td-actions text-right text-nowrap" href="#">
 
-                            @if(Auth::hasRole('manager'))
+                            @if(Gate::allows('manager'))
                               <div class="btn-group">
                                   <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown"><i class="fas fa-cog"></i></button>
                                   <div class="dropdown-menu" role="menu">
@@ -401,9 +401,9 @@
 
 
                         <!-- Download & Edit & Comments & Delete -->
-                            @if(Auth::hasRole('manager'))
+                            @if(Gate::allows('manager'))
                                 <!-- NO Show BUTTON For USER ONLY -->
-                            @elseif(Auth::hasRole('departments'))
+                            @elseif(Gate::allows('departments'))
                                 <!-- NO Show BUTTON For USER ONLY -->
                             @else
 
@@ -497,7 +497,7 @@
                                     <h4 class="modal-title"><b><i class="far fa-comment-dots"></i> Comments</b> (Util ID. <font color="red">{{ $value->id }}</font>) </h4>
                                   </div>
 
-                              @if(Auth::hasRole('manager'))
+                              @if(Gate::allows('manager'))
                                 <form action="{{ route('util.comments') }}" method="POST" enctype="multipart/form-data" onsubmit="disableButtonVerify()">
                                   @csrf
                                       <!-- HIDDEN Data -->
@@ -523,7 +523,7 @@
                                         </div>
                                       </div>
 
-                                    @if(Auth::hasRole('manager'))
+                                    @if(Gate::allows('manager'))
                                       <div class="col-md-12">
                                         <div class="form-group">
                                           <label> อัพโหลดไฟล์ </label>
@@ -572,7 +572,7 @@
                                         <!-- hidden = id -->
                                         <input type="hidden" class="form-control" name="id" value="{{ $value->id }}">
 
-                                        @if(Auth::hasRole('manager'))
+                                        @if(Gate::allows('manager'))
                                             <label> สถานะการนำไปใช้ประโยชน์ </label>
                                               <select class="form-control" name="status">
                                                   <option value="" selected="true" disabled="true"> -- กรุณาเลือก -- </option>
@@ -588,7 +588,7 @@
                                                   <option value="{{ $key }}" {{ $verified_list == $key ? 'selected' : '' }}> {{ $value }} </option>
                                                 @endforeach
                                               </select>
-                                        @elseif(Auth::hasRole('departments'))
+                                        @elseif(Gate::allows('departments'))
                                               <select class="form-control" name="verified" >
                                                   <option value="" selected="true" disabled="true"> -- กรุณาเลือก -- </option>
                                                 @foreach ($verified_departments as $key => $value)

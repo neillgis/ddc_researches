@@ -54,31 +54,27 @@
          <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
             aria-haspopup="true" aria-expanded="false" id="navbarDropdown" v-pre>
              <i class="nav-icon fas fa-user-circle"></i>
-
-                 <b> {{ Auth::user()->name }}</b>
-
-                 <span class="caret"></span>
+              @if(Session::get('curr_role') == "user")
+              <b> {{ Auth::user()->name }} </b>
+              @elseif(Session::get('curr_role') == "departments")
+              <b> {{ Session::get('dep_name') }}</b>
+              @else
+              <b> {{ Session::get('curr_role') }} </b>
+              @endif
+              <span class="caret"></span>
          </a>
 
          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
 
-           <!-- <a class="dropdown-item" href="#"> -->
-             <a class="dropdown-item">
+            @cannot('user')
+            <a class="cursor-pointer dropdown-item {{ ((Session::get('curr_role') != 'user')?'active':'') }}" 
+              onclick="switch_to('{{ Session::get('role') }}')">{{ Session::get('role') }}</a>
+            @endcan
+            <a class="cursor-pointer dropdown-item {{ ((Session::get('curr_role') == 'user')?'active':'') }}" 
+              onclick="switch_to('user')">user</a>
 
-            status :
-            @if(Gate::allows('keycloak-web', ['manager']))
-                <font color="red"><b>MANAGER</b></font>
-            @elseif (Gate::allows('keycloak-web', ['admin']))
-                <b>ADMIN</b>
-            @elseif (Gate::allows('keycloak-web', ['departments']))
-                <font color="#32977e"><b>ADMIN-DEPARTMENT</b></font>
-            @else
-                 <font color="red"><b>USER</b></font>
-            @endif
-             <!-- {{ __('แก้ไขข้อมูลส่วนตัว') }} -->
-           </a>
-
-          @if(Auth::hasRole('departments'))
+            
+          @if(Gate::allows('departments'))
 
              <!-- NO Show BUTTON For Departments ONLY -->
 
@@ -88,7 +84,7 @@
           @endif
 
            <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="{{ route('keycloak.logout') }}"><i class="fas fa-power-off"></i> {{ __('ออกจากระบบ') }}</a>
+              <a class="dropdown-item" href="{{ route('logout') }}"><i class="fas fa-power-off"></i> {{ __('ออกจากระบบ') }}</a>
 
            <form id="logout-form" action="#" method="POST" style="display: none;">
                @csrf

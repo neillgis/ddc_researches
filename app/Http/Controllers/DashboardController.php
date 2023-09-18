@@ -11,10 +11,11 @@ use App\research;
 use App\journal;
 use Storage;
 use File;
-use Auth;
 use Session;
 use app\Exceptions\Handler;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Auth;
 
 
 class DashboardController extends Controller
@@ -29,14 +30,14 @@ class DashboardController extends Controller
     public function table_summary(){
     // SUM BOX ------------------------------------------------------------------------>
       // โครงการวิจัยที่ทำเสร็จสิ้นทั้งหมด db_research_project -> โดย count id --------->
-      if(Auth::hasRole('manager')){
+      if(Gate::allows('manager')){
         $Total_research = DB::table('db_research_project')
                         -> select('db_research_project.id','pro_name_th','pro_name_en','pro_position',
                                   'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
                         ->get()
                         ->count();
 
-      }elseif(Auth::hasRole('admin')) {
+      }elseif(Gate::allows('admin')) {
         $Total_research = DB::table('db_research_project')
                         -> select('db_research_project.id','pro_name_th','pro_name_en','pro_position',
                                   'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
@@ -53,7 +54,7 @@ class DashboardController extends Controller
       }
 
       // โครงการวิจัยที่เป็นผู้วิจัยหลัก ที่ตรวจสอบแล้ว db_research_project -> โดย count id -> pro_position = 1 (เป็นผู้วิจัยหลัก)--------->
-    if(Auth::hasRole('manager')){
+    if(Gate::allows('manager')){
       $Total_master_pro = DB::table('db_research_project')
                         -> select('db_research_project.id','pro_name_th','pro_name_en','pro_position',
                                   'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
@@ -62,7 +63,7 @@ class DashboardController extends Controller
                         ->get()
                         ->count();
 
-    }elseif(Auth::hasRole('admin')) {
+    }elseif(Gate::allows('admin')) {
       $Total_master_pro = DB::table('db_research_project')
                         -> select('db_research_project.id','pro_name_th','pro_name_en','pro_position',
                                   'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
@@ -82,7 +83,7 @@ class DashboardController extends Controller
     }
 
       // โครงการวิจัยที่ตีพิมพ์ ที่ตรวจสอบแล้ว db_research_project -> โดย count id -> publish_status = 1 (ใช่ )--------->
-    if(Auth::hasRole('manager')){
+    if(Gate::allows('manager')){
       $Total_publish_pro = DB::table('db_research_project')
                         -> select('db_research_project.users_id','pro_name_th','pro_name_en','pro_position',
                                   'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
@@ -91,7 +92,7 @@ class DashboardController extends Controller
                         ->get()
                         ->count();
 
-    }elseif(Auth::hasRole('admin')) {
+    }elseif(Gate::allows('admin')) {
       $Total_publish_pro = DB::table('db_research_project')
                         -> select('db_research_project.users_id','pro_name_th','pro_name_en','pro_position',
                                   'pro_start_date','pro_end_date','pro_co_researcher','publish_status')
@@ -121,7 +122,7 @@ class DashboardController extends Controller
       //                       ->get()->count();
 
       // บทความตีพิมพ์ ที่ตรวจสอบแล้ว db_published_journal โดย count id -> verified = '1' (ตรวจสอบแล้ว) --------->
-    if(Auth::hasRole('manager')){
+    if(Gate::allows('manager')){
       $Total_publish_journal = DB::table('db_published_journal')
                              -> select ('id','article_name_th','article_name_en','journal_name_th','journal_name_en',
                                        'publish_years','publish_no','publish_volume','publish_page','doi_number',
@@ -130,7 +131,7 @@ class DashboardController extends Controller
                              ->get()
                              ->count();
 
-     }elseif(Auth::hasRole('admin')) {
+     }elseif(Gate::allows('admin')) {
        $Total_publish_journal = DB::table('db_published_journal')
                               -> select ('id','article_name_th','article_name_en','journal_name_th','journal_name_en',
                                         'publish_years','publish_no','publish_volume','publish_page','doi_number',
@@ -157,7 +158,7 @@ class DashboardController extends Controller
       //                       ->get()->count();
 
       // บทความที่นำไปใช้ประโยชน์เชิงนโยบาย db_utilization -> โดย count id -> util_type = เชิงนโยบาย --------->
-    if(Auth::hasRole('manager')){
+    if(Gate::allows('manager')){
       $Total_policy_util = DB::table('db_utilization')
                             -> select('pro_id','util_type')
                             -> where ('util_type', '=', 'เชิงนโยบาย')
@@ -165,7 +166,7 @@ class DashboardController extends Controller
                             ->get()
                             ->count();
 
-    }elseif(Auth::hasRole('admin')) {
+    }elseif(Gate::allows('admin')) {
       $Total_policy_util = DB::table('db_utilization')
                             -> select('pro_id','util_type')
                             -> where ('util_type', '=', 'เชิงนโยบาย')

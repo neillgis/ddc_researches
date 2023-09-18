@@ -20,13 +20,24 @@
 <!-- Sparkline -->
 <script src="{{ asset('plugins/sparklines/sparkline.js') }}"></script>
 <!-- Tempusdominus Bootstrap 4 -->
-<script src="{{ asset('plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js') }}"></script>
+<!-- <script src="{{ asset('plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js') }}"></script> -->
 <!-- overlayScrollbars -->
 <script src="{{ asset('plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
 <!-- AdminLTE App -->
 <script src="{{ asset('dist/js/adminlte.js') }}"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="{{ asset('dist/js/demo.js') }}"></script>
+<script>
+function switch_to(id) {
+  $.ajax({
+    url: "{{route('user_switch')}}"+"/"+id,
+    success:function(response){
+      location.reload();
+    },
+  });
+}
+</script>
+
 
 <!-- JQVMap -->
 <!-- <script src="{{-- asset('plugins/jqvmap/jquery.vmap.min.js') --}}"></script> -->

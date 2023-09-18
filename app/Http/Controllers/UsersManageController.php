@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\CmsHelper;
 use Carbon\Carbon;
-use Auth;
+use Illuminate\Support\Facades\Gate;
 
 
 class UsersManageController extends Controller
@@ -15,7 +15,7 @@ class UsersManageController extends Controller
     // MANAGMENT Table "USERS" for ADMIN Only
     public function users_manage(Request $request){
 
-      if(Auth::hasRole('manager')){
+      if(Gate::allows('manager') || Gate::allows('admin')){
         $users = DB::table('users')
                   ->whereNull('deleted_users')
                   ->orderBy('id', 'DESC')

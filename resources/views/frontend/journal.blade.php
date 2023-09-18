@@ -122,7 +122,7 @@
 <section class="content">
   <div class="container-fluid">
 
-  @if(Auth::hasRole('departments'))
+  @if(Gate::allows('departments'))
 
     <!-- NO Show BUTTON For Departments ONLY -->
 
@@ -332,12 +332,12 @@
                       <th> ชื่อวารสาร (ENG) </th>
                       <th class="text-center"> ตีพิมพ์ </th>
                       <th class="text-center"> ระดับ </th>
-                    @if(Auth::hasRole('manager'))
+                    @if(Gate::allows('manager'))
                       <th class="text-center"> ชื่อ/สกุล </th>
                       <th class="text-center"> หน่วยงาน </th>
                     @endif
                       <th class="text-center"> การตรวจสอบ </th>
-                    @if(Auth::hasRole('departments'))
+                    @if(Gate::allows('departments'))
                       <!-- NO Show BUTTON For Departments ONLY -->
                       <th class="text-center"> ชื่อ/สกุล </th>
                       <th class="text-right"> Actions </th>
@@ -365,7 +365,7 @@
                         {{ $value->status != "" ? $value->status : '-' }}
                       @endif
                     </td>
-                  @if(Auth::hasRole('manager'))
+                  @if(Gate::allows('manager'))
                     <td class="text-center"> {{ $value->users_name }} </td>
                     <td class="text-center"> {{ $value->deptName }} </td>
                   @endif
@@ -384,7 +384,7 @@
                       @endif
                     </td>
 
-                  @if(Auth::hasRole('departments'))
+                  @if(Gate::allows('departments'))
 
                     <!-- Show SOME_BUTTON For Departments ONLY -->
                     <td class="text-center"> {{ $value->fname." ".$value->lname }} </td>
@@ -413,7 +413,7 @@
                       <!-- BUTTON TOTAL -->
                       <td class="td-actions text-center text-nowrap" href="#">
 
-                        @if(Auth::hasRole('manager'))
+                        @if(Gate::allows('manager'))
                           <div class="btn-group">
                             <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown"><i class="fas fa-cog"></i></button>
                               <div class="dropdown-menu" role="menu">
@@ -468,9 +468,9 @@
 
 
                   <!-- Download & Edit -->
-                      @if(Auth::hasRole('manager'))
+                      @if(Gate::allows('manager'))
                           <!-- NO Show BUTTON For USER ONLY -->
-                      @elseif(Auth::hasRole('departments'))
+                      @elseif(Gate::allows('departments'))
                           <!-- NO Show BUTTON For USER ONLY -->
                       @else
 
@@ -574,7 +574,7 @@
                               @endif
                             </div>
 
-                        @if(Auth::hasRole('manager'))
+                        @if(Gate::allows('manager'))
                           <form action="{{ route('journal.comments') }}" method="POST" enctype="multipart/form-data" onsubmit="disableButtonVerify()">
                             @csrf
                                 <!-- HIDDEN Data -->
@@ -602,7 +602,7 @@
                                   </div>
                                 </div>
 
-                              @if(Auth::hasRole('manager'))
+                              @if(Gate::allows('manager'))
                                 <div class="col-md-12">
                                   <div class="form-group">
                                     <label> อัพโหลดไฟล์ </label>
@@ -652,7 +652,7 @@
                                   <!-- hidden = id -->
                                   <input type="hidden" class="form-control" name="id" value="{{ $value->id }}">
 
-                                  @if(Auth::hasRole('manager'))
+                                  @if(Gate::allows('manager'))
                                       <label> ระดับของวารสาร </label>
                                       <select class="form-control" name="status" >
                                           <option value="" selected="true" disabled="true"> -- กรุณาเลือก -- </option>
@@ -668,7 +668,7 @@
                                           <option value="{{ $key }}" {{ $verified_list == $key ? 'selected' : '' }}> {{ $value }} </option>
                                         @endforeach
                                       </select>
-                                  @elseif(Auth::hasRole('departments'))
+                                  @elseif(Gate::allows('departments'))
                                       <select class="form-control" name="verified">
                                           <option value="" selected="true" disabled="true"> -- กรุณาเลือก -- </option>
                                         @foreach ($verified_departments as $key => $value)
@@ -713,7 +713,7 @@
 <br>
 
 
-  @if(Auth::hasRole('manager'))
+  @if(Gate::allows('manager'))
     <!-- START TABLE -> JOURNAL (** กรณี ไม่ได้มาจากโครงการวิจัย) -------------------------------------------------->
         <div class="card">
           <div class="card card-secondary shadow">
@@ -732,7 +732,7 @@
                       <th> ชื่อวารสาร (ENG) </th>
                       <th class="text-center"> ตีพิมพ์ </th>
                       <th class="text-center"> ระดับ </th>
-                    @if(Auth::hasRole('manager'))
+                    @if(Gate::allows('manager'))
                       <th class="text-center"> ชื่อ/สกุล </th>
                       <th class="text-center"> หน่วยงาน </th>
                     @endif
@@ -758,7 +758,7 @@
                         {{ $value->status != "" ? $value->status : '-' }}
                       @endif
                     </td>
-                  @if(Auth::hasRole('manager'))
+                  @if(Gate::allows('manager'))
                     <td class="text-center"> {{ $value->users_name }} </td>
                     <td class="text-center"> {{ $value->deptName }} </td>
                   @endif
@@ -780,7 +780,7 @@
                     <!-- Download button -->
                     <td class="td-actions text-right text-nowrap" href="#">
 
-                      @if(Auth::hasRole('manager'))
+                      @if(Gate::allows('manager'))
                         <div class="btn-group">
                           <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown"><i class="fas fa-cog"></i></button>
                             <div class="dropdown-menu" role="menu">
@@ -873,7 +873,7 @@
                               <h4 class="modal-title"><b><i class="far fa-comment-dots"></i> Comments</b> (Project ID. <font color="red">{{ $value->id }}</font>) </h4>
                             </div>
 
-                        @if(Auth::hasRole('manager'))
+                        @if(Gate::allows('manager'))
                           <form action="{{ route('journal.comments') }}" method="POST" enctype="multipart/form-data" onsubmit="disableButtonVerify()">
                             @csrf
                                 <!-- HIDDEN Data -->
@@ -901,7 +901,7 @@
                                   </div>
                                 </div>
 
-                              @if(Auth::hasRole('manager'))
+                              @if(Gate::allows('manager'))
                                 <div class="col-md-12">
                                   <div class="form-group">
                                     <label> อัพโหลดไฟล์ </label>

@@ -140,7 +140,7 @@
     <section class="content">
       <div class="container-fluid">
 
-    @if(Auth::hasRole('departments'))
+    @if(Gate::allows('departments'))
 
       <!-- NO Show BUTTON For Departments ONLY -->
 
@@ -318,12 +318,12 @@
                       <th class="text-center"> เริ่มโครงการ </th>
                       <th class="text-center"> เสร็จสิ้นโครงการ </th>
                       <th class="text-center"> ตีพิมพ์ </th>
-                      @if(Auth::hasRole('manager'))
+                      @if(Gate::allows('manager'))
                         <th class="text-center"> ชื่อ/สกุล </th>
                         <th class="text-center"> หน่วยงาน </th>
                       @endif
                         <th class="text-center"> การตรวจสอบ </th>
-                      @if(Auth::hasRole('departments'))
+                      @if(Gate::allows('departments'))
                         <!-- NO Show BUTTON For Departments ONLY -->
                           <th class="text-center"> ชื่อ/สกุล </th>
                           <th class="text-right"> Actions </th>
@@ -345,7 +345,7 @@
                     <td class="text-center"> {{ CmsHelper::DateThai($value->pro_start_date) }} </td>
                     <td class="text-center"> {{ CmsHelper::DateThai($value->pro_end_date) }} </td>
                     <td class="text-center"> {{ $publish_status [ $value->publish_status ] }} </td>
-                  @if(Auth::hasRole('manager'))
+                  @if(Gate::allows('manager'))
                     <td class="text-center"> {{ $value->users_name }} </td>
                     <td class="text-center"> {{ $value->deptName }} </td>
                   @endif
@@ -366,7 +366,7 @@
                         @endif
                     </td>
 
-                  @if(Auth::hasRole('departments'))
+                  @if(Gate::allows('departments'))
 
                     <!--  Show SOME_BUTTON For Departments ONLY -->
                     <td class="text-center"> {{ $value->users_name }} </td>
@@ -397,7 +397,7 @@
                     <!-- ACTIONS Button for MANAGER -->
                     <td class="td-actions text-right text-nowrap" href="#">
 
-                      @if(Auth::hasRole('manager'))
+                      @if(Gate::allows('manager'))
                         <div class="btn-group">
                           <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown"><i class="fas fa-cog"></i></button>
                             <div class="dropdown-menu" role="menu">
@@ -445,9 +445,9 @@
 
 
                   <!-- Download & Edit & Comments -->
-                      @if(Auth::hasRole('manager'))
+                      @if(Gate::allows('manager'))
                           <!-- NO Show BUTTON For USER ONLY -->
-                      @elseif(Auth::hasRole('departments'))
+                      @elseif(Gate::allows('departments'))
                           <!-- NO Show BUTTON For USER ONLY -->
                       @else
 
@@ -540,7 +540,7 @@
                             <h4 class="modal-title"><b><i class="far fa-comment-dots"></i> Comments</b> (Project ID. <font color="red">{{ $value->id }}</font>) </h4>
                           </div>
 
-                      @if(Auth::hasRole('manager'))
+                      @if(Gate::allows('manager'))
                         <form action="{{ route('research.comments') }}" method="POST" enctype="multipart/form-data" onsubmit="disableButtonVerify()">
                           @csrf
                               <!-- HIDDEN Data -->
@@ -566,7 +566,7 @@
                                 </div>
                               </div>
 
-                            @if(Auth::hasRole('manager'))
+                            @if(Gate::allows('manager'))
                               <div class="col-md-12">
                                 <div class="form-group">
                                   <label> อัพโหลดไฟล์ : <font color="red"> (.jpg, .jpeg, .png, .doc, .docx, .xls, .xlsx, .pdf) </font></label>
@@ -616,14 +616,14 @@
                                 <!-- hidden = id -->
                                 <input type="hidden" class="form-control" name="id" value="{{ $value->id }}">
 
-                                @if(Auth::hasRole('manager'))
+                                @if(Gate::allows('manager'))
                                     <select class="form-control" name="verified">
                                         <option value="" selected="true" disabled="true"> -- กรุณาเลือก -- </option>
                                       @foreach ($ref_verified as $verify)
                                         <option value="{{ $verify->id }}" {{ $value->verified == $verify->id ? 'selected' : '' }}> {{ $verify->verify_name }} </option>
                                       @endforeach
                                     </select>
-                                @elseif(Auth::hasRole('departments'))
+                                @elseif(Gate::allows('departments'))
                                     <select class="form-control" name="verified">
                                         <option value="" selected="true" disabled="true"> -- กรุณาเลือก -- </option>
                                       @foreach ($verified_departments as $key => $value)

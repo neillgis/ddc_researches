@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\member;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 
 class ProfileController extends Controller
 
@@ -18,12 +18,10 @@ class ProfileController extends Controller
             ->select('id', 'idCard', 'nriis_id', 'orcid_id')
             ->where('idCard', Auth::user()->preferred_username)
             ->get();
-
+  
       $edit_profile = DB::table('users')
                     ->where('idCard', Auth::user()->preferred_username)
                     ->first();
-                // dd($edit_profile);
-
 
       return view('frontend.profile',
         [
@@ -64,6 +62,7 @@ class ProfileController extends Controller
         "mobile"        => $request->mobile,
         "email"         => $request->email,
         "educationLevel" => $request->educationLevel,
+        "dept_id"       => $request->dept_id,
         "deptName"      => $request->deptName,
         "position"      => $request->position,
         "positionLevel" => $request->positionLevel,

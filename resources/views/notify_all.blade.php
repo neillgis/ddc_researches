@@ -103,7 +103,7 @@
                             </div>
                           @endif
 
-                          @if(Auth::hasRole('manager'))
+                          @if(Gate::allows('manager'))
                             <div class="text-right">
                                 <button type="button" class="btn btn-outline-info rounded-pill" data-toggle="modal" data-target="#ManagerVerify{{ $value->id }}">
                                   <i class="far fa-check-circle"></i> ตรวจสอบ

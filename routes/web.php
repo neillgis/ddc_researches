@@ -23,6 +23,8 @@ Route::get('/', function () {
 });
 
 Route::group(['middleware' => 'keycloak-web'], function () {
+    Route::get('/logout', 'KeycloakDemoController@logout')->name('logout');
+
     // -- Log Viewer --
     Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index') -> name('page.logs');
     // -- keycloak/demo --
@@ -117,7 +119,6 @@ Route::group(['middleware' => 'keycloak-web'], function () {
 
 
     // FORM  SUMMARY
-    // Route::get('/summary_form','SummaryController@summary') -> name('page.summary');
     Route::get('/summary_form','SummaryController@table_summary') -> name('page.summary');
     //  -- INSERT --
     Route::post('/summary_insert','SummaryController@insert_summary') -> name('summary.insert');
@@ -143,6 +144,19 @@ Route::group(['middleware' => 'keycloak-web'], function () {
 
     Route::get('export_util', 'ExportController@export_util')->name('export_util');
 
+
+    // Users-ManageUser-Role for "ADMIN"
+    Route::get('/manuser_home', 'UsersManageRoleController@home')->name('manuser.home');
+    Route::post('/manuser_insert', 'UsersManageRoleController@insert')->name('manuser.insert');
+    Route::post('/manuser_update/{cid?}', 'UsersManageRoleController@update')->name('manuser.update');
+    Route::get('/manuser_del/{cid?}', 'UsersManageRoleController@delete')->name('manuser.delete');
+    Route::get('/user_detail/{cid?}', 'UsersManageRoleController@user_detail')->name('user_detail');
+    Route::get('/user_switch/{id?}', 'UsersManageRoleController@user_switch')->name('user_switch');
+
+    // User-Admin-Setting-Department
+    Route::get('/setdep_home', 'SettingRefController@setdep_home')->name('setdep.home');
+    Route::post('/setdep_insert', 'SettingRefController@setdep_insert')->name('setdep.insert');
+    Route::post('/setdep_update/{id?}', 'SettingRefController@setdep_update')->name('setdep.update');
 
 
     // Users-Manage for "ADMIN"

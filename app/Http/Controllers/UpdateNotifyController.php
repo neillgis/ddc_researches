@@ -7,7 +7,7 @@ use App\NotificationAlert;
 use Carbon\Carbon;
 use Storage;
 use File;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use app\Exceptions\Handler;
 use Illuminate\Support\Facades\Route;
 
