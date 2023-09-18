@@ -63,7 +63,7 @@
               @foreach($users as $col)
                   <tr>
                     <td class="text-center"> {{ CmsHelper::fixid($col->cid) }} </td>
-                    <td> {{ $col->name }} </td>
+                    <td><div align="left">{{ $col->name }}</div></td>
                     <td><div align="left">{{ empty($dep[$col->dep_id])?"-":$dep[$col->dep_id] }}</div></td>
                     <td>{{ $col->role }}</td>
 
