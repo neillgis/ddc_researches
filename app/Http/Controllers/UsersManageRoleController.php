@@ -13,7 +13,7 @@ class UsersManageRoleController extends Controller
 {
     public function home(){
        
-        if(Gate::allows('admin')){
+        if(Gate::allows('admin') || Gate::allows('manager')){
             $users = DB::table("user_role")->get();
         }
     

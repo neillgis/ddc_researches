@@ -353,7 +353,7 @@ class SummaryController extends Controller
                          'countJour_tci_one', 'countJour_q_one2three', 'countJour_not',
                          'countUtil_depart', 'researcher_level')
                 // ->where('deptName', Auth::user()->family_name)
-                ->where('users.dept_id', Session::get('dep_id'))
+                ->where('dept_id', Session::get('dep_id'))
                 ->get();
       }
 
