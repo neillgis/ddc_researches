@@ -12,6 +12,7 @@ class SSOController extends Controller
         $token = KeycloakWeb::retrieveToken()['access_token'];
 
         $client = new \GuzzleHttp\Client();
+        //ดูได้แต่ของตัวเอง $response = $client->request('GET', 'https://hr-ddc.moph.go.th/api/v2/employee/'.$idcard, [
         $response = $client->request('GET', 'https://hr-ddc.moph.go.th/api/employee/'.$idcard, [
             'headers'=>[
                 'Content-Type'=>'application/json',
@@ -28,12 +29,18 @@ class SSOController extends Controller
             if( $data['status_id'] == 1 ) {
                 $arr['user_id'] = $data['employee_id'];
                 $arr['dep_id'] = $data['work_bu1'];
-                $arr['user_name'] = trim($data['fname']) . " " . trim($data['lname']);;
+                $arr['user_name'] = trim($data['fname']) . " " . trim($data['lname']);
+                //--------------------------------------------------------------------------
+                $arr['fname'] = $data['fname'];
+                $arr['lname'] = $data['lname'];
+                $arr['position'] = $data['position_type'];
+                $arr['positionLevel'] = $data['job_id'];
+                $arr['email'] = $data['email'];
+                
             }
         }
         return $arr;
     }
-
 
     public function avatar($idcard) {
         $token = KeycloakWeb::retrieveToken()['access_token'];

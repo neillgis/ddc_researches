@@ -91,7 +91,11 @@
                         @foreach($users as $value)
                           <tr>
                             <td class="text-center"> {{ $i }} </td>
-                            <td> {{ $value->title.''.$value->fname.' '.$value->lname }} </td>
+                            <td> {{ $value->title.''.$value->fname.' '.$value->lname }} 
+                              @if( !is_null($value->deleted_users) )
+                              <span class="small text-danger"> (ลาออก)</span>
+                              @endif
+                            </td>
                             <td>
                               @if($value->deptName != NULL)
                                   {{ $value->deptName }}
@@ -107,10 +111,26 @@
                               @endif
                             </td>
                             <td class="text-center">
+                                @if( is_null($value->deleted_users) )
                                 <!-- DELETE -->
                                 <button type="button" class="btn btn-outline-danger btn-sm" title="Delete" data-toggle="modal" data-target="#DeleteEmployee{{ $value->id }}">
                                   <i class="fas fa-trash-alt"></i>
                                 </button>
+
+                                <button type="button" class="btn btn-outline-primary btn-sm" title="อัพเดทสถานะ" onclick="updatemem('{{ $value->id }}','<?=($value->title.$value->fname.' '.$value->lname)?>')">
+                                <i class="fas fa-link"></i>
+                                </button>
+                                
+                                @else
+                                  <button type="button" class="btn btn-primary btn-sm" title="คืนสถานะ" onclick="backtomem('{{ $value->id }}','<?=($value->title.$value->fname.' '.$value->lname)?>')">
+                                    <i class="fas fa-reply-all"></i>
+                                  </button>
+                                  @can('manager')
+                                  <!-- <button type="button" class="btn btn-danger btn-sm" title="ลบยันดาต้าเบส" onclick="outdb('{{ $value->id }}','<?=($value->title.$value->fname.' '.$value->lname)?>')">
+                                    <i class="fas fa-trash-alt"></i>
+                                  </button> -->
+                                  @endcan
+                                @endif
                             </td>
 
                               <!-- MODAL Delete -->
@@ -182,6 +202,47 @@
       ]
     });
   });
+
+
+  function backtomem(id, name) {
+    Swal.fire({
+      title: 'ยืนยันการคืนสภาพสมาชิก',
+      text: name,
+      confirmButtonText: 'ยืนยัน',
+      confirmButtonColor: '#dc3545',
+      showCancelButton: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.href = "{{ Route('admin.users_manage_backtomem') }}"+"/"+id;
+      }
+    })
+  }
+  function updatemem(id, name) {
+    Swal.fire({
+      title: 'ยืนยันการอัพเดทสถานะสมาชิก',
+      text: name,
+      confirmButtonText: 'ยืนยัน',
+      confirmButtonColor: '#dc3545',
+      showCancelButton: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.href = "{{ Route('admin.users_manage_update') }}"+"/"+id;
+      }
+    })
+  }
+  function outdb(id, name) {
+    // Swal.fire({
+    //   title: 'ยืนยันการลบออกจากดาต้าเบส',
+    //   text: name,
+    //   confirmButtonText: 'ยืนยันการลบ',
+    //   confirmButtonColor: '#dc3545',
+    //   showCancelButton: true,
+    // }).then((result) => {
+    //   if (result.isConfirmed) {
+    //     window.location.href = "{{ Route('admin.users_manage_outdb') }}"+"/"+id;
+    //   }
+    // })
+  }
 </script>
 
   @if(Session::get('deleted_msg'))

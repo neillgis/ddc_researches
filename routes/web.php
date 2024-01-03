@@ -164,7 +164,9 @@ Route::group(['middleware' => 'keycloak-web'], function () {
     Route::get('/users-manage', 'UsersManageController@users_manage')->name('admin.users_manage');
     // Delete-users
     Route::get('/users-manage-delete/{users_id}', 'UsersManageController@users_manage_delete')->name('admin.users_manage_delete');
-
+    Route::get('/users-manage-backtomem/{users_id?}', 'UsersManageController@users_manage_backtomem')->name('admin.users_manage_backtomem');
+    Route::get('/users-manage-outdb/{users_id?}', 'UsersManageController@users_manage_outdb')->name('admin.users_manage_outdb');
+    Route::get('/users-manage-update/{users_id?}', 'UsersManageController@users_manage_update')->name('admin.users_manage_update');
 
 
     // ------- ALERT Notifications -------
