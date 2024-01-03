@@ -23,6 +23,10 @@ use Illuminate\Support\Facades\Session;
 class SummaryController extends Controller
 {
   public function table_summary(){
+    if(Gate::allows('user')){
+      return redirect()->route('page.profile');
+    }
+
     $total = [
       "all" => 0,
       "verify" => 0,
@@ -229,17 +233,39 @@ class SummaryController extends Controller
     else if(Gate::allows('departments')) {
       //หาสมัครที่ยังอยู่ และ ออกไปแล้ว --------------------------------------------
       $data_users = DB::table('users')
-      ->where('idCard','!=','00000000000')
-      ->where('idCard','not like','u%')
-      ->where('dept_id', Session::get('dep_id'))
-      ->get();
+              ->where('idCard','!=','00000000000')
+              ->where('idCard','not like','u%')
+              ->where('dept_id', Session::get('dep_id'))
+              ->get();
       $users_active = [];
       foreach($data_users as $item) {
         if( is_null($item->deleted_users) ) {
           $users_active[] = $item->idCard;
+          //-------------------------------------------------
+          if($item->researcher_level == 1) {
+            $tbtemp['relv'][$item->idCard] = "<span class='badge' style='background-color:#5DADE2;'>".$verified_list[$item->researcher_level]."</span>";
+          }
+          else if($item->researcher_level == 2) {
+            $tbtemp['relv'][$item->idCard] = "<span class='badge' style='background-color:#45B39D;'>".$verified_list[$item->researcher_level]."</span>";
+          }
+          else if($item->researcher_level == 3) {
+            $tbtemp['relv'][$item->idCard] = "<span class='badge' style='background-color:#F5B041;'>".$verified_list[$item->researcher_level]."</span>";
+          }
+          else {
+            $tbtemp['relv'][$item->idCard] = "<span class='badge bg-danger'> No results </span>";
+          }
+          //-------------------------------------------------
+          if( is_null($item->idCard) ) {
+            $tbtemp['data_auditor'][$item->idCard] = "<span class='badge bg-danger'> No results </span>";
+          }else{
+            $tbtemp['data_auditor'][$item->idCard] =  $item->data_auditor.
+            "<br><small><font color='red'>(".CmsHelper::DateThai($item->updated_at).")</font></small>";
+          }
+          //-------------------------------------------------
+
         }
       }
-      //-----------------------------------------------------------------------
+      //ข้อมูลโครงการวิจัย-----------------------------------------------------------------------
       $data_research = DB::table('db_research_project')
               ->select("users_id","verified", "pro_position")
               ->whereNull('deleted_at')
@@ -247,46 +273,73 @@ class SummaryController extends Controller
               ->get();
       $temp = [];
       foreach($data_research as $item) {
+        if( empty($tbtemp['research'][$item->users_id]) ) {
+          $tbtemp['research'][$item->users_id] = 0;
+          $tbtemp['research_pi'][$item->users_id] = 0;
+        }
+        //............................................
         $total['all']++;
         if($item->verified == 1) {
           $total['verify']++;
+          $tbtemp['research'][$item->users_id]++;
+
           if($item->pro_position <= 2) {
             $total['pi']++;
+            $tbtemp['research_pi'][$item->users_id]++;
           }
           if( in_array($item->users_id, $users_active) ) {
             $temp[] = $item->users_id;
           }
-        }
+        } 
       }
       $total['users'] = count(array_unique($temp));
       //การตีพิมพ์วารสาร-----------------------------------------------------------------------
       $data_journal = DB::table('db_published_journal')
-              ->select("id","verified", "status")
+              ->select("users_id","verified", "status")
               ->whereNull('deleted_at')
               ->whereIn('users_id', $users_active)
               ->get();
       foreach($data_journal as $item) {
+        if( empty($tbtemp['journal_verify'][$item->users_id]) ) {
+          $tbtemp['journal_verify'][$item->users_id] = 0;
+          $tbtemp['journal_tci1'][$item->users_id] = 0;
+          $tbtemp['journal_q1q3'][$item->users_id] = 0;
+          $tbtemp['journal_not'][$item->users_id] = 0;
+        }
+        //............................................
         $journal['all']++;
         if($item->verified == 1) {
           $journal['verify']++;
+          $tbtemp['journal_verify'][$item->users_id]++;
+
           if($item->status == 1) {
             $journal['tci1']++;
+            $tbtemp['journal_tci1'][$item->users_id]++;
           }
           else if($item->status == 4 || $item->status == 5 || $item->status == 6) {
             $journal['q1q3']++;
+            $tbtemp['journal_q1q3'][$item->users_id]++;
           }
         }
+        else if($item->verified == 9) {
+          $tbtemp['journal_not'][$item->users_id]++;
+        }
       }
-     //การนำไปใช้ประโยชน์-----------------------------------------------------------------------
-     $data_util = DB::table('db_utilization')
-          ->select("id","verified", "util_type")
-          ->whereNull('deleted_at')
-          ->whereIn('users_id', $users_active)
-          ->get();
+      //การนำไปใช้ประโยชน์-----------------------------------------------------------------------
+      $data_util = DB::table('db_utilization')
+            ->select("users_id","verified", "util_type")
+            ->whereNull('deleted_at')
+            ->whereIn('users_id', $users_active)
+            ->get();
       foreach($data_util as $item) {
+        if( empty($tbtemp['util'][$item->users_id]) ) {
+          $tbtemp['util'][$item->users_id] = 0;
+        }
+        //............................................
         $util['all']++;
         if($item->verified == 1) {
           $util['verify']++;
+          $tbtemp['util'][$item->users_id]++;
           if($item->util_type == 'เชิงนโยบาย') {
             $util['policy']++;
           }
@@ -303,6 +356,25 @@ class SummaryController extends Controller
       $tbheader[] = "วารสาร (ไม่ตรงเงื่อนไข)";
       $tbheader[] = "การนำไปใช้ประโยชน์";
       $tbheader[] = "ระดับนักวิจัย";
+      foreach($data_users as $item) {
+        $cid = $item->idCard;
+
+        if( !empty($tbtemp['research'][$cid]) ) {
+          $temp = [
+            "<div align='left'>".$item->title.$item->fname." ".$item->lname."</div>",
+            "<div align='left'>".$item->position."</div>",
+            box($tbtemp,'research',$cid),
+            box($tbtemp,'research_pi',$cid),
+            box($tbtemp,'journal_verify',$cid),
+            box($tbtemp,'journal_tci1',$cid),
+            box($tbtemp,'journal_q1q3',$cid),
+            box($tbtemp,'journal_not',$cid),
+            box($tbtemp,'util',$cid),
+            empty($tbtemp['data_auditor'][$cid])?"<span class='badge bg-danger'> No results </span>":$tbtemp['data_auditor'][$cid]
+          ];
+          $tbbody[] = $temp;
+        }
+      }
     }
 
 
