@@ -29,14 +29,16 @@
     <nav class="mt-2">
       <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
         <!-- พื้นฐาน -->
-          @cannot('departments')
+          @can('user')
           <li class="nav-item ">
             <a class="nav-link {{ Active::check('profile') }} " href="{{ route('page.profile') }}" >
               <i class="nav-icon fas fa-user-alt"></i>
               <p> ข้อมูลบุคคล / นักวิจัย </p>
             </a>
           </li>
-          @elsecan('manager')
+          @endcan
+
+          @canany(['admin','manager'])
           <li class="nav-item">
             <a class="nav-link {{ Active::check('summary_form') }}" href="{{ route('page.summary') }}" >
               <i class="nav-icon far fas fa-chart-line"></i>
@@ -44,6 +46,9 @@
             </a>
           </li>
           @endcan
+
+          
+          
           @can('departments')
           <li class="nav-item">
             <a class="nav-link {{ Active::check('summary_form') }}" href="{{ route('page.summary') }}" >

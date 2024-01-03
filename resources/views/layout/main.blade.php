@@ -1,12 +1,12 @@
 
 <?php
-$is_https=false;
-if (isset($_SERVER['HTTPS'])) $is_https=$_SERVER['HTTPS'];
-if ($is_https !== "on")
-{
-    header("Location: https://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
-    exit(1);
-}
+// $is_https=false;
+// if (isset($_SERVER['HTTPS'])) $is_https=$_SERVER['HTTPS'];
+// if ($is_https !== "on")
+// {
+//     header("Location: https://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
+//     exit(1);
+// }
 ?>
 <!DOCTYPE html>
 <html>
@@ -35,6 +35,7 @@ if ($is_https !== "on")
 
 <!-- <body class="hold-transition sidebar-mini layout-fixed"> -->
 <body class="hold-transition sidebar-mini sidebar-collapse">
+<!-- <body class="hold-transition sidebar-mini"> -->
   <div class="wrapper">
 
 

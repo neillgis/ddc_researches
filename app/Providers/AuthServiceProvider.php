@@ -54,7 +54,7 @@ class AuthServiceProvider extends ServiceProvider
 
             return $role;
         }else{
-            return Session::get('role');
+            return Session::get('curr_role');
         }
     }
 
@@ -63,10 +63,15 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         Gate::define('admin', function ($user) {
-            if (Auth::hasRole('admin')) {
-                return true;
-            }else{
+            if( Session::get('curr_role') == "user" ) {
                 return false;
+            }else{
+                $curr_role = $this->putSession($user);
+                if ($curr_role == 'admin') {
+                    return true;
+                }else{
+                    return false;
+                }
             }
         });
 

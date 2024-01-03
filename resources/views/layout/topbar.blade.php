@@ -65,11 +65,10 @@
          </a>
 
          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-
-            @cannot('user')
+            @if( Session::get('role') != 'user' )
             <a class="cursor-pointer dropdown-item {{ ((Session::get('curr_role') != 'user')?'active':'') }}" 
               onclick="switch_to('{{ Session::get('role') }}')">{{ Session::get('role') }}</a>
-            @endcan
+            @endif
             <a class="cursor-pointer dropdown-item {{ ((Session::get('curr_role') == 'user')?'active':'') }}" 
               onclick="switch_to('user')">user</a>
 
