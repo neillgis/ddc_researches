@@ -271,6 +271,7 @@ class SummaryController extends Controller
               ->whereNull('deleted_at')
               ->whereIn('users_id', $users_active)
               ->get();
+              
       $temp = [];
       foreach($data_research as $item) {
         if( empty($tbtemp['research'][$item->users_id]) ) {
@@ -292,6 +293,7 @@ class SummaryController extends Controller
           }
         } 
       }
+
       $total['users'] = count(array_unique($temp));
       //การตีพิมพ์วารสาร-----------------------------------------------------------------------
       $data_journal = DB::table('db_published_journal')
