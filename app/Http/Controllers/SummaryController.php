@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Session;
 
 class SummaryController extends Controller
 {
-  public function table_summary(){
+  public function table_summary($status=1){
     if(Gate::allows('user')){
       return redirect()->route('page.profile');
     }
@@ -207,7 +207,13 @@ class SummaryController extends Controller
                 <i class='fas fa-bars'></i>
                 </button>";
 
-        if( !empty($tbtemp['research'][$cid]) ) {
+    
+        if( $status==1 ) {
+          $addrow =!empty($tbtemp['research'][$cid]);
+        }else{
+          $addrow =empty($tbtemp['research'][$cid]);
+        }
+        if( $addrow ) {
           $temp = [
             "<div align='left'>".$item->title.$item->fname." ".$item->lname."</div>",
             "<div align='left'>".$item->position."</div>",
@@ -364,7 +370,12 @@ class SummaryController extends Controller
       foreach($data_users as $item) {
         $cid = $item->idCard;
 
-        if( !empty($tbtemp['research'][$cid]) ) {
+        if( $status==1 ) {
+          $addrow =!empty($tbtemp['research'][$cid]);
+        }else{
+          $addrow =empty($tbtemp['research'][$cid]);
+        }
+        if( $addrow ) {
           $temp = [
             "<div align='left'>".$item->title.$item->fname." ".$item->lname."</div>",
             "<div align='left'>".$item->position."</div>",
@@ -384,6 +395,7 @@ class SummaryController extends Controller
 
 
     return view('frontend.summary',[
+      "status" => $status,
       "research" => $research,
       "journal" => $journal,
       "util" => $util,

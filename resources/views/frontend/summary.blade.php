@@ -63,10 +63,16 @@
   <div class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
-          <div class="col-sm-12">
+          <div class="col-md-10">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item active"> สรุปข้อมูลสำหรับ (กนว.) </li>
             </ol>
+          </div>
+          <div class="col-md-2">
+            <select class="form-control" onchange="sel_status(this)">
+              <option value="1" <?=( $status==1?'selected':'' )?>>มีโครงการ</option>
+              <option value="0" <?=( $status==0?'selected':'' )?>>ยังไม่มีโครงการ</option>
+            </select>
           </div>
         </div>
       </div>
@@ -119,7 +125,7 @@
 
         <div class="card-body">
           <div class="table-responsive">
-            <table class="table table-hover" style="width:100%" id="example1" >
+            <table class="table table-hover table-sm small" style="width:100%" id="example1" >
               <thead>
                 <tr>{!!  "<th>".implode("</th><th>",$tbheader)."</th>"  !!}</tr>
               </thead>
@@ -243,11 +249,10 @@
       }
     }
   }
+
+  function sel_status(node) {
+    let id = $(node).val();
+    window.location.replace("{{ Route('page.summary') }}"+"/"+id);
+  }
 </script>
 @stop('js-custom')
-
-@push('scripts')
-    <script>
-        // console.log($summary_list);
-    </script>
-@endpush

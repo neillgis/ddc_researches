@@ -119,8 +119,7 @@ Route::group(['middleware' => 'keycloak-web'], function () {
 
 
     // FORM  SUMMARY
-    Route::get('/summary_form','SummaryController@table_summary') -> name('page.summary');
-    // Route::get('/summary_form_old','SummaryController@table_summary_old') -> name('page.summary_old');
+    Route::get('/summary_form/{status?}','SummaryController@table_summary') -> name('page.summary');
     //  -- INSERT --
     Route::post('/summary_insert','SummaryController@insert_summary') -> name('summary.insert');
     //  -- EDIT --
