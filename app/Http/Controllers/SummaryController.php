@@ -82,13 +82,13 @@ class SummaryController extends Controller
           $users_active[] = $item->idCard;
           //-------------------------------------------------
           if($item->researcher_level == 1) {
-            $tbtemp['relv'][$item->idCard] = "<span class='badge' style='background-color:#5DADE2;'>".$verified_list[$item->researcher_level]."</span>";
+            $tbtemp['relv'][$item->idCard] = "<span class='badge text-white' style='background-color:#5DADE2; font-size: 14px;'>".$verified_list[$item->researcher_level]."</span>";
           }
           else if($item->researcher_level == 2) {
-            $tbtemp['relv'][$item->idCard] = "<span class='badge' style='background-color:#45B39D;'>".$verified_list[$item->researcher_level]."</span>";
+            $tbtemp['relv'][$item->idCard] = "<span class='badge text-white' style='background-color:#45B39D; font-size: 14px;'>".$verified_list[$item->researcher_level]."</span>";
           }
           else if($item->researcher_level == 3) {
-            $tbtemp['relv'][$item->idCard] = "<span class='badge' style='background-color:#F5B041;'>".$verified_list[$item->researcher_level]."</span>";
+            $tbtemp['relv'][$item->idCard] = "<span class='badge text-white' style='background-color:#F5B041; font-size: 14px;'>".$verified_list[$item->researcher_level]."</span>";
           }
           else {
             $tbtemp['relv'][$item->idCard] = "<span class='badge bg-danger'> No results </span>";
@@ -97,8 +97,11 @@ class SummaryController extends Controller
           if( is_null($item->idCard) ) {
             $tbtemp['data_auditor'][$item->idCard] = "<span class='badge bg-danger'> No results </span>";
           }else{
-            $tbtemp['data_auditor'][$item->idCard] =  $item->data_auditor.
-            "<br><small><font color='red'>(".CmsHelper::DateThai($item->updated_at).")</font></small>";
+            if( !empty($item->data_auditor) ) {
+              $tbtemp['data_auditor'][$item->idCard] =  $item->data_auditor.
+              "<br><small><font color='red'>(".CmsHelper::DateThai($item->updated_at).")</font></small>";
+            }
+            
           }
           //-------------------------------------------------
 

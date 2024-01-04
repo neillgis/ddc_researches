@@ -63,16 +63,10 @@
   <div class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
-          <div class="col-md-10">
+          <div class="col-md-12">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item active"> สรุปข้อมูลสำหรับ (กนว.) </li>
             </ol>
-          </div>
-          <div class="col-md-2">
-            <select class="form-control" onchange="sel_status(this)">
-              <option value="1" <?=( $status==1?'selected':'' )?>>มีโครงการ</option>
-              <option value="0" <?=( $status==0?'selected':'' )?>>ยังไม่มีโครงการ</option>
-            </select>
           </div>
         </div>
       </div>
@@ -119,7 +113,19 @@
       <div class="card">
         <div class="card card-gray">
           <div class="card-header">
-              <h3 class="card-title"> สรุปข้อมูลนักวิจัย </h3>
+              
+              <div class="row">
+                <div class="col-md-10">
+                  <h3 class="card-title"> สรุปข้อมูลนักวิจัย </h3>
+                </div>
+                <div class="col-md-2">
+                  <select class="form-control" onchange="sel_status(this)">
+                    <option value="1" <?=( $status==1?'selected':'' )?>>มีโครงการวิจัย</option>
+                    <option value="0" <?=( $status==0?'selected':'' )?>>ยังไม่มีโครงการวิจัย</option>
+                  </select>
+                </div>
+              </div>
+
           </div>
         </div>
 
