@@ -371,6 +371,8 @@
           console.log(response);
           if( response['msg'] == "ok" ) {
             $("#edit_date_"+user_id).text(response['data']);
+          }else{
+            page_reload();
           }
         }
       },

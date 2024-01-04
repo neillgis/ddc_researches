@@ -188,7 +188,7 @@
           @else
             <li class="nav-header">ANNOUNCEMENT</li>
             <li class="nav-item">
-              <a class="nav-link" href="{{ asset('Manual_DIR/announce_researcher_01.pdf') }}" target="_blank">
+              <a class="nav-link" href="{{ asset('Manual_DIR/announce_researcher_01_231017.pdf') }}" target="_blank">
                 <i class="far fa-circle nav-icon text-info"></i>
                 <p> เกณฑ์การแบ่งระดับนักวิจัย </p>
               </a>
