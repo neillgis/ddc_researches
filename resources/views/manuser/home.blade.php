@@ -44,7 +44,7 @@
 
     <div class="card shadow card-success">
       <div class="card-header" style="background-color: #54BEAE;">
-        <h4><i class="fas fa-users"></i>&nbsp; <b>สิทธิ์ผู้ใช้งาน</b> </h4>
+        <h4><i class="fas fa-users"></i>&nbsp; <b>สิทธิ์ผู้ใช้งาน ({{number_format(count($users)) }} คน)</b> </h4>
       </div>
       <div class="card-body">
         <div class="table-responsive hover">
@@ -62,7 +62,7 @@
             <tbody>
               @foreach($users as $col)
                   <tr>
-                    <td class="text-center"> {{ CmsHelper::fixid($col->cid) }} </td>
+                    <td>{{ CmsHelper::fixid($col->cid) }}</td>
                     <td><div align="left">{{ $col->name }}</div></td>
                     <td><div align="left">{{ empty($dep[$col->dep_id])?"-":$dep[$col->dep_id] }}</div></td>
                     <td>{{ $col->role }}</td>
@@ -163,7 +163,7 @@
     $('#example55').DataTable({
       dom: 'Bfrtip',
       buttons: [
-        // 'excel', 'print'
+        'pageLength','excel'
       ]
     });
   });

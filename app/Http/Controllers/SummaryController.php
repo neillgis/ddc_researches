@@ -27,7 +27,7 @@ class SummaryController extends Controller
       return redirect()->route('page.profile');
     }
 
-    $total = [
+    $research = [
       "all" => 0,
       "verify" => 0,
       "pi" => 0,
@@ -74,10 +74,11 @@ class SummaryController extends Controller
       $data_users = DB::table('users')
               ->where('idCard','!=','00000000000')
               ->where('idCard','not like','u%')
+              ->whereNull("deleted_users")
               ->get();
       $users_active = [];
       foreach($data_users as $item) {
-        if( is_null($item->deleted_users) ) {
+       
           $users_active[] = $item->idCard;
           //-------------------------------------------------
           if($item->researcher_level == 1) {
@@ -101,12 +102,14 @@ class SummaryController extends Controller
           }
           //-------------------------------------------------
 
-        }
       }
+      $users_active = array_unique($users_active);
+
       //ข้อมูลโครงการวิจัย-----------------------------------------------------------------------
       $data_research = DB::table('db_research_project')
               ->select("users_id","verified", "pro_position")
               ->whereNull('deleted_at')
+              // ->whereIn('users_id', $users_active)
               ->get();
       $temp = [];
       foreach($data_research as $item) {
@@ -115,13 +118,13 @@ class SummaryController extends Controller
           $tbtemp['research_pi'][$item->users_id] = 0;
         }
         //............................................
-        $total['all']++;
+        $research['all']++;
         if($item->verified == 1) {
-          $total['verify']++;
+          $research['verify']++;
           $tbtemp['research'][$item->users_id]++;
 
           if($item->pro_position <= 2) {
-            $total['pi']++;
+            $research['pi']++;
             $tbtemp['research_pi'][$item->users_id]++;
           }
           if( in_array($item->users_id, $users_active) ) {
@@ -129,11 +132,12 @@ class SummaryController extends Controller
           }
         } 
       }
-      $total['users'] = count(array_unique($temp));
+      $research['users'] = count(array_unique($temp));
       //การตีพิมพ์วารสาร-----------------------------------------------------------------------
       $data_journal = DB::table('db_published_journal')
               ->select("users_id","verified", "status")
               ->whereNull('deleted_at')
+              // ->whereIn('users_id', $users_active)
               ->get();
       foreach($data_journal as $item) {
         if( empty($tbtemp['journal_verify'][$item->users_id]) ) {
@@ -165,6 +169,7 @@ class SummaryController extends Controller
       $data_util = DB::table('db_utilization')
             ->select("users_id","verified", "util_type")
             ->whereNull('deleted_at')
+            // ->whereIn('users_id', $users_active)
             ->get();
       foreach($data_util as $item) {
         if( empty($tbtemp['util'][$item->users_id]) ) {
@@ -235,11 +240,11 @@ class SummaryController extends Controller
       $data_users = DB::table('users')
               ->where('idCard','!=','00000000000')
               ->where('idCard','not like','u%')
+              ->whereNull("deleted_users")
               ->where('dept_id', Session::get('dep_id'))
               ->get();
       $users_active = [];
       foreach($data_users as $item) {
-        if( is_null($item->deleted_users) ) {
           $users_active[] = $item->idCard;
           //-------------------------------------------------
           if($item->researcher_level == 1) {
@@ -262,8 +267,6 @@ class SummaryController extends Controller
             "<br><small><font color='red'>(".CmsHelper::DateThai($item->updated_at).")</font></small>";
           }
           //-------------------------------------------------
-
-        }
       }
       //ข้อมูลโครงการวิจัย-----------------------------------------------------------------------
       $data_research = DB::table('db_research_project')
@@ -279,13 +282,13 @@ class SummaryController extends Controller
           $tbtemp['research_pi'][$item->users_id] = 0;
         }
         //............................................
-        $total['all']++;
+        $research['all']++;
         if($item->verified == 1) {
-          $total['verify']++;
+          $research['verify']++;
           $tbtemp['research'][$item->users_id]++;
 
           if($item->pro_position <= 2) {
-            $total['pi']++;
+            $research['pi']++;
             $tbtemp['research_pi'][$item->users_id]++;
           }
           if( in_array($item->users_id, $users_active) ) {
@@ -294,7 +297,7 @@ class SummaryController extends Controller
         } 
       }
 
-      $total['users'] = count(array_unique($temp));
+      $research['users'] = count(array_unique($temp));
       //การตีพิมพ์วารสาร-----------------------------------------------------------------------
       $data_journal = DB::table('db_published_journal')
               ->select("users_id","verified", "status")
@@ -381,7 +384,7 @@ class SummaryController extends Controller
 
 
     return view('frontend.summary',[
-      "total" => $total,
+      "research" => $research,
       "journal" => $journal,
       "util" => $util,
       "verified_list" => $verified_list,
@@ -391,8 +394,10 @@ class SummaryController extends Controller
       "data_users" => $data_users
     ]);
   }
-    public function table_summary_old(){
-//---------- SUM BOX ------------------------------------------------------------------------>
+
+/*
+  public function table_summary_old(){
+      //---------- SUM BOX ------------------------------------------------------------------------>
 
       // โครงการวิจัยที่ทำเสร็จสิ้นทั้งหมด db_research_project -> โดย count id --------->
       // For "MANAGER"
@@ -672,11 +677,11 @@ class SummaryController extends Controller
                               ->get()
                               ->count();
       }
-// --------------- END SUM BOX ------------------------------------------------------------------------>
+      // --------------- END SUM BOX ------------------------------------------------------------------------>
 
 
 
-// --------------- TABLE LIST ------------------------------------------------------------------------>
+      // --------------- TABLE LIST ------------------------------------------------------------------------>
 
       $data_table_total = DB::table('db_research_project')
 
@@ -758,7 +763,7 @@ class SummaryController extends Controller
                               // dd($users_total_journal);
 
 
-// -------------------------------------------------------------------------------------
+        // -------------------------------------------------------------------------------------
         // TOTAL 190 users
         $users = DB::table('users')
                     ->select('idCard')
@@ -789,7 +794,7 @@ class SummaryController extends Controller
                     ->groupBy('users_id')
                     ->orderBy('id')
                     ->get();
-// -------------------------------------------------------------------------------------
+      // -------------------------------------------------------------------------------------
 
         $verified_list = [  1   => 'นักวิจัยฝึกหัด',
                             2   => 'นักวิจัยรุ่นใหม่',
@@ -823,7 +828,7 @@ class SummaryController extends Controller
 
     }
 // ------ END TABLE LIST ----------------------------------------------------------------->
-
+*/
 
 
     //  -- VERIFIED --

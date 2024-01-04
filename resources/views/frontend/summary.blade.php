@@ -78,10 +78,10 @@
       <h4 class="badge badge-secondary badge-pill text-lg"> ข้อมูลโครงการวิจัย </h4>
       <div class="row">
         <?php
-        gen("fas fa-chart-line", "bg-info", "โครงการวิจัยทั้งหมด", $total['all']);
-        gen("fas fa-user-check", "bg-danger", "ตรวจสอบแล้ว", $total['verify']);
-        gen("fas fa-id-card-alt", "bg-success", "ตำแหน่ง PI & Co-PI", $total['pi']);
-        gen("fas fa-users", "bg-warning", "จำนวนนักวิจัยโครงการ", $total['users']);
+        gen("fas fa-chart-line", "bg-info", "โครงการวิจัยทั้งหมด", $research['all']);
+        gen("fas fa-user-check", "bg-danger", "ตรวจสอบแล้ว", $research['verify']);
+        gen("fas fa-id-card-alt", "bg-success", "ตำแหน่ง PI & Co-PI", $research['pi']);
+        gen("fas fa-users", "bg-warning", "จำนวนนักวิจัยโครงการ", $research['users']);
         ?>
     </div>
 

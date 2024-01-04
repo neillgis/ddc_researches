@@ -31,12 +31,16 @@ class SSOController extends Controller
                 $arr['dep_id'] = $data['work_bu1'];
                 $arr['user_name'] = trim($data['fname']) . " " . trim($data['lname']);
                 //--------------------------------------------------------------------------
+                $title = [
+                    1=>'นาย',
+                    2=>'นาง',
+                    3=>'นางสาว'
+                ];
+                
+                $arr['title'] = empty( $title[$data['title_id']]) ? "" :  $title[$data['title_id']];
                 $arr['fname'] = $data['fname'];
                 $arr['lname'] = $data['lname'];
-                $arr['position'] = $data['position_type'];
-                $arr['positionLevel'] = $data['job_id'];
-                $arr['email'] = $data['email'];
-                
+                $arr['position'] = $data['emp_position'];                
             }
         }
         return $arr;

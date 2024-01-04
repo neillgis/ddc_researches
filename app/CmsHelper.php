@@ -107,6 +107,22 @@ use App\member;
             return "$strDay $strMonthThai $strYear เวลา $strHour:$strMinute";
         }
 
+        public static function toArray($tb, $index = 'id', $val = 'name', $orderBy = NULL)
+        {
+            //query table เป็น array
+            //$arr = cms::toArray('ref_table');
+            $arr = array();
+            $query = DB::table($tb);
+            if (!is_null($orderBy)) {
+                $query->orderBy($orderBy);
+            }
+            $data = $query->get();
+            foreach ($data as $item) {
+                $arr[$item->$index] = $item->$val;
+            }
+            return $arr;
+        }
+
         public static function Date_Format_BC_To_AD($strDate){
           if(empty($strDate)) return false;
             $bc_year = explode("-",$strDate);

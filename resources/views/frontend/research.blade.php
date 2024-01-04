@@ -75,7 +75,7 @@
         <div class="col-lg-3 col-md-6 mx-auto">
           <div class="small-box bg-blue mx-auto shadow">
             <div class="inner">
-              <h3> {{ empty($Total_departments)?'0': $Total_departments }} โครงการ</h3>
+              <h3> {{ $research['all'] }} โครงการ</h3>
               <br>
               <p><b>โครงการทั้งหมด</b></p>
             </div>
@@ -89,7 +89,7 @@
         <div class="col-lg-3 col-md-6 mx-auto">
           <div class="small-box bg-danger mx-auto shadow">
             <div class="inner">
-              <h3> {{ empty($Total_publish_pro)?'0': $Total_publish_pro }} โครงการ</h3>
+              <h3>{{ $research['publish'] }} โครงการ</h3>
               <br>
               <p> โครงการที่ตีพิมพ์ </p>
             </div>
@@ -103,7 +103,7 @@
         <div class="col-lg-3 col-md-6 mx-auto">
           <div class="small-box bg-success mx-auto shadow">
             <div class="inner">
-              <h3> {{ empty($Total_research)?'0': $Total_research }} โครงการ</h3>
+              <h3> {{ $research['verify'] }} โครงการ</h3>
               <br>
               <p> โครงการที่ตรวจสอบแล้ว </p>
             </div>
@@ -117,7 +117,7 @@
         <div class="col-lg-3 col-md-6 mx-auto">
           <div class="small-box bg-info mx-auto shadow">
             <div class="inner">
-              <h3> {{ empty($Total_master_pro)?'0': $Total_master_pro }} โครงการ</h3>
+              <h3> {{ $research['pi'] }} โครงการ</h3>
               <br>
               <p> โครงการที่เป็นผู้วิจัยหลัก</p>
             </div>
@@ -337,7 +337,7 @@
                   @php
                       $i = 1;
                   @endphp
-                  @foreach ($research as $value)
+                  @foreach ($data_research as $value)
                   <tr>
                     <td class="text-center"> {{ $i }} </td>
                     <td class="text-center"> {{ $value->id }} </td>
@@ -347,7 +347,7 @@
                     <td class="text-center"> {{ $publish_status [ $value->publish_status ] }} </td>
                   @if(Gate::allows('manager'))
                     <td class="text-center"> {{ $value->users_name }} </td>
-                    <td class="text-center"> {{ $value->deptName }} </td>
+                    <td class="text-center"> {{ $user_dep_name[$value->users_id] }} </td>
                   @endif
 
                     <td class="text-center">

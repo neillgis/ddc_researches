@@ -161,12 +161,15 @@ Route::group(['middleware' => 'keycloak-web'], function () {
 
 
     // Users-Manage for "ADMIN"
-    Route::get('/users-manage', 'UsersManageController@users_manage')->name('admin.users_manage');
+    Route::get('/users-manage/{status?}', 'UsersManageController@users_manage')->name('admin.users_manage');
     // Delete-users
-    Route::get('/users-manage-delete/{users_id}', 'UsersManageController@users_manage_delete')->name('admin.users_manage_delete');
+    Route::get('/users-manage-delete/{users_id?}', 'UsersManageController@users_manage_delete')->name('admin.users_manage_delete');
     Route::get('/users-manage-backtomem/{users_id?}', 'UsersManageController@users_manage_backtomem')->name('admin.users_manage_backtomem');
     Route::get('/users-manage-outdb/{users_id?}', 'UsersManageController@users_manage_outdb')->name('admin.users_manage_outdb');
-    Route::get('/users-manage-update/{users_id?}', 'UsersManageController@users_manage_update')->name('admin.users_manage_update');
+    Route::post('/users-manage-update/{users_id?}', 'UsersManageController@users_manage_update')->name('admin.users_manage_update');
+
+    Route::get('/ajax-users-manage-delete/{users_id?}', 'UsersManageController@ajax_users_manage_delete')->name('ajax.users_manage_delete');
+    Route::get('/ajax-users-manage-update/{users_id?}', 'UsersManageController@ajax_users_manage_update')->name('ajax.users_manage_update');
 
 
     // ------- ALERT Notifications -------
