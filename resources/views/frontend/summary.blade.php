@@ -115,13 +115,17 @@
           <div class="card-header">
               
               <div class="row">
-                <div class="col-md-10">
+                <div class="col-md-8">
                   <h3 class="card-title"> สรุปข้อมูลนักวิจัย </h3>
+                </div>
+                <div class="col-md-2 my-1" align="right">
+                  <button type="button" class="btn-outline-light" onclick="fn_front(0)">a</button>
+                  <button type="button" class="btn-outline-light" onclick="fn_front(1)">A</button>
                 </div>
                 <div class="col-md-2">
                   <select class="form-control" onchange="sel_status(this)">
-                    <option value="1" <?=( $status==1?'selected':'' )?>>มีโครงการวิจัย</option>
-                    <option value="0" <?=( $status==0?'selected':'' )?>>ยังไม่มีโครงการวิจัย</option>
+                    <option value="1" <?=( $status==1?'selected':'' )?>>มีโครงการวิจัยหรือวารสาร</option>
+                    <option value="0" <?=( $status==0?'selected':'' )?>>ไม่มีโครงการวิจัยหรือวารสาร</option>
                   </select>
                 </div>
               </div>
@@ -259,6 +263,13 @@
   function sel_status(node) {
     let id = $(node).val();
     window.location.replace("{{ Route('page.summary') }}"+"/"+id);
+  }
+
+  function fn_front(id) {
+    $("#example1").removeClass("small");
+    if(id==0) {
+      $("#example1").addClass("small");
+    }
   }
 </script>
 @stop('js-custom')

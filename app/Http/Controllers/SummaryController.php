@@ -218,9 +218,9 @@ class SummaryController extends Controller
 
     
         if( $status==1 ) {
-          $addrow =!empty($tbtemp['research'][$cid]);
+          $addrow = (!empty($tbtemp['research'][$cid]) || !empty($tbtemp['journal_verify'][$cid]));
         }else{
-          $addrow =empty($tbtemp['research'][$cid]);
+          $addrow = !(!empty($tbtemp['research'][$cid]) || !empty($tbtemp['journal_verify'][$cid]));
         }
         if( $addrow ) {
           $temp = [
@@ -380,9 +380,9 @@ class SummaryController extends Controller
         $cid = $item->idCard;
 
         if( $status==1 ) {
-          $addrow =!empty($tbtemp['research'][$cid]);
+          $addrow = (!empty($tbtemp['research'][$cid]) || !empty($tbtemp['journal_verify'][$cid]));
         }else{
-          $addrow =empty($tbtemp['research'][$cid]);
+          $addrow = !(!empty($tbtemp['research'][$cid]) || !empty($tbtemp['journal_verify'][$cid]));
         }
         if( $addrow ) {
           $temp = [
@@ -395,7 +395,7 @@ class SummaryController extends Controller
             box($tbtemp,'journal_q1q3',$cid),
             box($tbtemp,'journal_not',$cid),
             box($tbtemp,'util',$cid),
-            empty($tbtemp['data_auditor'][$cid])?"<span class='badge bg-danger'> No results </span>":$tbtemp['data_auditor'][$cid]
+            empty($tbtemp['relv'][$cid])?"<span class='badge bg-danger'> No results </span>":$tbtemp['relv'][$cid],
           ];
           $tbbody[] = $temp;
         }
