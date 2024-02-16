@@ -22,11 +22,13 @@ class UsersManageController extends Controller
         if( $status == 1 ) {
           $users = DB::table('users')
                 ->whereNull('deleted_users')
+                ->orderBy('edit_date', 'ASC')
                 ->orderBy('id', 'DESC')
                 ->get();
         }else{
           $users = DB::table('users')
                 ->whereNotNull('deleted_users')
+                ->orderBy('edit_date', 'ASC')
                 ->orderBy('id', 'DESC')
                 ->get();
         }

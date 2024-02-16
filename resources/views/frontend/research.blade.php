@@ -778,7 +778,7 @@
       dom: 'Bfrtip',
       "ordering": false,
       buttons: [
-        'excel', 'print'
+        'pageLength','excel', 'print'
       ]
     });
   });

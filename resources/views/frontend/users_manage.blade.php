@@ -315,11 +315,12 @@
     }
   }
 
+  var i=0;
+  var count_err=0;
   function update_all() {
     let myModal = new bootstrap.Modal(document.getElementById('popup_update'));
     myModal.show();
-
-    let i=0;
+    
     let num=0;
     let curr_date = "{{ date('Y-m-d') }}";
     for (const [key, value] of Object.entries(users)) {
@@ -371,8 +372,13 @@
           console.log(response);
           if( response['msg'] == "ok" ) {
             $("#edit_date_"+user_id).text(response['data']);
+            count_err=0;
           }else{
-            page_reload();
+            count_err++;
+            i=i+3;
+            if( count_err >= 5 ) {
+              page_reload();
+            }
           }
         }
       },
