@@ -219,6 +219,13 @@
                   </button>
                 @endif
 
+                <a href="{{ url('https://hr-ddc.moph.go.th/admin-personnel-infomation') }}" \
+                    target="_blank"
+                    class="btn btn-primary shadow">
+                    <i class="fas fa-user-edit"></i>
+                    &nbsp; HR
+                </a>
+
               </div>
             </div>
             <br>
