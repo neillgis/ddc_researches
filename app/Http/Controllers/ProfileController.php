@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\member;
+use Exception;
 use Illuminate\Support\Facades\Auth;
 
 class ProfileController extends Controller
@@ -83,4 +84,17 @@ class ProfileController extends Controller
     }
     //  -- END INSERT --
 
+    public function chk_update($obj){
+      try {
+          $data = json_decode($obj, true);
+          $id=$data['id'];
+          unset($data['id']);
+          DB::table('users')->where("id", $id)->update($data);
+
+          return response()->json(['msg'=>'ok']);
+      }catch (Exception $e) {
+          return response()->json(['msg'=>'error']);
+      } 
+    }
+    
 }

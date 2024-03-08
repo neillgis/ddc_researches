@@ -38,6 +38,8 @@ Route::group(['middleware' => 'keycloak-web'], function () {
     Route::post('/profile_insert','ProfileController@insert')->name('profile.insert');
     //  -- UPDATE PROFILE --
     Route::post('profile/update', 'ProfileController@save_update_profile')->name('profile.save');
+    // update ajax
+    Route::get('profile/chk_update/{obj?}', 'ProfileController@chk_update')->name('profile.chk_update');
 
 
     // FORM  RESEARCH  PROJECT
