@@ -515,9 +515,9 @@
               chk = true;
               update['email'] = sso.email;
             }
-            if( profile['mobile'].trim != sso.mobile.trim ) {
+            if( profile['mobile'] != sso.mobile ) {
               chk = true;
-              update['mobile'] = sso.mobile.trim;
+              update['mobile'] = sso.mobile;
             }
             if( profile['dept_id'] != sso.workBu1 ) {
               chk = true;
