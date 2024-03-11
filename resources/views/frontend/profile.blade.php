@@ -495,73 +495,67 @@
         function chk_update(sso) {
             let chk = false;
             let update = {};
-            
-            if(profile['title']) {
+            if(profile) {
               if( profile['title'] != sso.title ) {
                 chk = true;
                 update['title'] = sso.title;
               }
-            }
-            if( profile['fname'] != sso.fname ) {
-              chk = true;
-              update['fname'] = sso.fname;
-            }
-            if( profile['lname'] != sso.lname ) {
-              chk = true;
-              update['lname'] = sso.lname;
-            }
+              if( profile['fname'] != sso.fname ) {
+                chk = true;
+                update['fname'] = sso.fname;
+              }
+              if( profile['lname'] != sso.lname ) {
+                chk = true;
+                update['lname'] = sso.lname;
+              }
+              if( profile['educationLevel'] != sso.educationLevel ) {
+                chk = true;
+                update['educationLevel'] = sso.educationLevel;
+              }
 
-            profile['educationLevel'] = (profile['educationLevel'])?profile['educationLevel']:"";
-            if( profile['educationLevel'] != sso.educationLevel ) {
-              chk = true;
-              update['educationLevel'] = sso.educationLevel;
-            }
+              if( profile['email'] != sso.email ) {
+                chk = true;
+                update['email'] = sso.email;
+              }
+              if( profile['mobile'] != sso.mobile ) {
+                chk = true;
+                update['mobile'] = sso.mobile;
+              }
 
-            if( profile['email'] != sso.email ) {
-              chk = true;
-              update['email'] = sso.email;
-            }
-            profile['mobile'] = (profile['mobile'])?profile['mobile']:"";
-            if( profile['mobile'] != sso.mobile ) {
-              chk = true;
-              update['mobile'] = sso.mobile;
-            }
+              if( profile['dept_id'] != sso.workBu1 ) {
+                chk = true;
+                update['dept_id'] = sso.dept_id;
+              }
+              if( profile['deptName'] != sso.deptName ) {
+                chk = true;
+                update['deptName'] = sso.deptName;
+              }
+              if( profile['position'] != sso.position ) {
+                chk = true;
+                update['position'] = sso.position;
+              }
+              if( profile['positionLevel'] != sso.positionLevel ) {
+                chk = true;
+                update['positionLevel'] = sso.positionLevel;
+              }
 
-            if( profile['dept_id'] != sso.workBu1 ) {
-              chk = true;
-              update['dept_id'] = sso.dept_id;
+              if( chk ) {
+                update['id'] = profile['id'];
+                let json_data = JSON.stringify(update);
+                $.ajax({
+                  url: "{{Route('profile.chk_update')}}"+"/"+json_data,
+                  headers: {
+                      "Content-Type": "application/json",
+                  },
+                  xhrFields: {
+                      responseType: 'blob'
+                  },
+                  success (msg) {
+                    console.log(msg);
+                  }
+              });
+              }
             }
-            if( profile['deptName'] != sso.deptName ) {
-              chk = true;
-              update['deptName'] = sso.deptName;
-            }
-            if( profile['position'] != sso.position ) {
-              chk = true;
-              update['position'] = sso.position;
-            }
-            profile['positionLevel'] = (profile['positionLevel'])?profile['positionLevel']:"";
-            if( profile['positionLevel'] != sso.positionLevel ) {
-              chk = true;
-              update['positionLevel'] = sso.positionLevel;
-            }
-
-            if( chk ) {
-              update['id'] = profile['id'];
-              let json_data = JSON.stringify(update);
-              $.ajax({
-                url: "{{Route('profile.chk_update')}}"+"/"+json_data,
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                xhrFields: {
-                    responseType: 'blob'
-                },
-                success (msg) {
-                  console.log(msg);
-                }
-            });
-            }
-          
         }
     </script>
 @stop('js-custom')
