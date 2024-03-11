@@ -496,12 +496,12 @@
             let chk = false;
             let update = {};
             
-            profile['title'] = (profile['title'])?profile['title']:"";
-            if( profile['title'] != sso.title ) {
-              chk = true;
-              update['title'] = sso.title;
+            if(profile['title']) {
+              if( profile['title'] != sso.title ) {
+                chk = true;
+                update['title'] = sso.title;
+              }
             }
-            
             if( profile['fname'] != sso.fname ) {
               chk = true;
               update['fname'] = sso.fname;
