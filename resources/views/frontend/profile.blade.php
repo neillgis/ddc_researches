@@ -495,10 +495,13 @@
         function chk_update(sso) {
             let chk = false;
             let update = {};
-            if( profile['title'] != sso.title ) {
-              chk = true;
-              update['title'] = sso.title;
+            if( sso.title ) {
+              if( profile['title'] != sso.title ) {
+                chk = true;
+                update['title'] = sso.title;
+              }
             }
+            
             if( profile['fname'] != sso.fname ) {
               chk = true;
               update['fname'] = sso.fname;
@@ -507,17 +510,21 @@
               chk = true;
               update['lname'] = sso.lname;
             }
-            if( profile['educationLevel'] != sso.educationLevel ) {
-              chk = true;
-              update['educationLevel'] = sso.educationLevel;
+            if( sso.educationLevel ) {
+              if( profile['educationLevel'] != sso.educationLevel ) {
+                chk = true;
+                update['educationLevel'] = sso.educationLevel;
+              }
             }
             if( profile['email'] != sso.email ) {
               chk = true;
               update['email'] = sso.email;
             }
-            if( profile['mobile'] != sso.mobile ) {
-              chk = true;
-              update['mobile'] = sso.mobile;
+            if( sso.mobile ) {
+              if( profile['mobile'] != sso.mobile ) {
+                chk = true;
+                update['mobile'] = sso.mobile;
+              }
             }
             if( profile['dept_id'] != sso.workBu1 ) {
               chk = true;
@@ -531,10 +538,13 @@
               chk = true;
               update['position'] = sso.position;
             }
-            if( profile['positionLevel'] != sso.positionLevel ) {
-              chk = true;
-              update['positionLevel'] = sso.positionLevel;
+            if( sso.positionLevel ) {
+              if( profile['positionLevel'] != sso.positionLevel ) {
+                chk = true;
+                update['positionLevel'] = sso.positionLevel;
+              }
             }
+            
             
             if( chk ) {
               update['id'] = profile['id'];
