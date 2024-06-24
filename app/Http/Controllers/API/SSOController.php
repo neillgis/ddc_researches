@@ -23,12 +23,13 @@ class SSOController extends Controller
         ]);
         $data = json_decode($response->getBody(),true);
         $data = $data['data'];
-
+// dd($data);
         $arr = array();
         if (!empty($data)) {
             if( $data['status_id'] == 1 ) {
                 $arr['user_id'] = $data['employee_id'];
                 $arr['dep_id'] = $data['work_bu1'];
+                // $arr['dep_name'] = $data['workBu1Name'];
                 $arr['user_name'] = trim($data['fname']) . " " . trim($data['lname']);
                 //--------------------------------------------------------------------------
                 $title = [

@@ -324,30 +324,69 @@
     let num=0;
     let curr_date = "{{ date('Y-m-d') }}";
     for (const [key, value] of Object.entries(users)) {
-      if( curr_date != value['edit_date'] ) {
-        i++;
-        setTimeout(function timer() {
+      let chk = false;
+      // if( value['id'] == 334 ) {
+      //   chk = true;
+      // }
+      // let chk_arr = [334,359,360,714,862,892,1017,1019,1070,1156,1158,1222,1235,1257,1258,1259,1737]
+      // if( chk_arr.includes(value['id'])) {
+      //   chk = true;
+      // }
+
+
+      //------------ดูว่าไม่ใช่ กอง หรือ สำนัก นำหน้า---------
+      let result = value['deptName'].substring(0, 3);
+      if( chk ) {
+        if(result == "กอง" || result == "สำน" || result == "สถา") {
+          chk = false;
           $("#run_number").text(num);
           num++;
-            let cid =  value['idCard'];
-            $.ajax({
-              url: "{{route('user_detail')}}"+"/"+cid,
-              success:function(response){
-                if(response) {
-                  if( response['data'] != "[]" ) {
-                    let obj = JSON.stringify(response['data']);
-                    ajax_update(value['id'], obj);
-                  }else{
-                    ajax_del(value['id']);
-                  }
-                }
-              },
-            });
-        }, i * 500);
-      }else{
-        num++;
+        }else{
+          chk = true;
+        }
       }
-
+      //------------กลุ่มที่มีสิทธิ์เท่า กอง---------
+      if( chk ) {
+        if( value['dept_id'] == 5039 || value['dept_id'] == 1039 || value['dept_id'] == 1015 || value['dept_id'] == 1016 ) {
+          chk = false;
+          $("#run_number").text(num);
+          num++;
+        }else{
+          chk = true;
+        }
+      }
+      //------------ดูว่าวันนี้อัพเดทไปแล้วหรือยัง--------------
+      // if( chk ) {
+      //   if( curr_date != value['edit_date'] ) {
+      //     chk = true;
+      //   }else{
+      //     chk = false;
+      //     num++;
+      //   }
+      // }
+      //-----------------------------------------
+      if( chk ) {
+        console.log(value);
+          i++;
+          setTimeout(function timer() {
+            $("#run_number").text(num);
+            num++;
+              let cid =  value['idCard'];
+              $.ajax({
+                url: "{{route('user_detail')}}"+"/"+cid,
+                success:function(response){
+                  if(response) {
+                    if( response['data'] != "[]" ) {
+                      let obj = JSON.stringify(response['data']);
+                      ajax_update(value['id'], obj);
+                    }else{
+                      ajax_del(value['id']);
+                    }
+                  }
+                },
+              });
+          }, i * 1000);
+      }
     }
   }
 

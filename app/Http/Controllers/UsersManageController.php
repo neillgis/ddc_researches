@@ -151,7 +151,11 @@ class UsersManageController extends Controller
             ->where('id', $user_id)
             ->update($data);
 
-        return response()->json(['msg'=>'ok', 'data'=>CmsHelper::DateThai(date('Y-m-d'))]);
+        return response()->json([
+          "user_id" => $user_id,
+          'msg'=>'ok', 
+          'data'=>CmsHelper::DateThai(date('Y-m-d'))
+        ]);
       }catch (Exception $e) {
         return response()->json(['msg'=>'err']);
       } 
