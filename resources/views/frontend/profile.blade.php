@@ -493,6 +493,7 @@
 
 
         function chk_update(sso) {
+          // console.log(sso);
             let chk = false;
             let update = {};
             if(profile) {
@@ -526,10 +527,14 @@
                 chk = true;
                 update['dept_id'] = sso.dept_id;
               }
-              if( profile['deptName'] != sso.deptName ) {
+              if( profile['deptName'] != sso.workBu1Name ) {
                 chk = true;
-                update['deptName'] = sso.deptName;
+                update['deptName'] = sso.workBu1Name;
               }
+              // if( profile['deptName'] != sso.deptName ) {
+              //   chk = true;
+              //   update['deptName'] = sso.deptName;
+              // }
               if( profile['position'] != sso.position ) {
                 chk = true;
                 update['position'] = sso.position;
