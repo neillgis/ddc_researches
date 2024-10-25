@@ -98,7 +98,7 @@ class JournalController extends Controller
                   ->whereNull('db_published_journal.deleted_at')
                   // ->whereNotIn('db_published_journal.verified', ['9'])
                   ->orderby('db_published_journal.id', 'DESC')
-                  ->limit(300)
+                  ->limit(2000)
                   ->get();
          // dd($query2);
 
@@ -170,7 +170,8 @@ class JournalController extends Controller
 
       $verified = [ 1 => 'ตรวจสอบแล้ว', //verify
                     2 => 'อยู่ระหว่างตรวจสอบ', //process_checked
-                    3 => 'อยู่ระหว่างแก้ไข', //process_editing
+                    3 => 'อยู่ระหว่างแก้ไข', //process_editing'
+                    4 => 'ผู้นิพนธ์ร่วม', // coordinator
                     9 => 'ไม่ตรงเงื่อนไข', //no_conditions
                   ];
 
@@ -202,7 +203,7 @@ class JournalController extends Controller
                 ->whereNull('deleted_at')
                 // ->whereNotIn('db_published_journal.verified', ['9'])
                 ->orderby('id', 'DESC')
-                ->limit(300)
+                ->limit(2000)
                 ->get();
 
       $query6 = DB::table('ref_journal_status')->get();

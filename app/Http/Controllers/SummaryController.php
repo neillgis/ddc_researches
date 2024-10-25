@@ -44,13 +44,13 @@ class SummaryController extends Controller
       "verify" => 0,
       "policy" => 0,
     ];
-    // $verified_list = [  
+    // $verified_list = [
     //   1   => 'นักวิจัยฝึกหัด',
     //   2   => 'นักวิจัยรุ่นใหม่',
     //   3   => 'นักวิจัยรุ่นกลาง',
     //   4   => 'นักวิจัยอาวุโส'
     // ];
-    $verified_list = [  
+    $verified_list = [
       1   => 'ระดับฝึกหัด',
       2   => 'ระดับต้น',
       3   => 'ระดับกลาง',
@@ -68,7 +68,7 @@ class SummaryController extends Controller
       }
       return $temp;
     }
-    
+
     $arrlv = [];
     $query = DB::table("ref_research")->get();
     foreach($query as $item) {
@@ -84,7 +84,7 @@ class SummaryController extends Controller
               ->get();
       $users_active = [];
       foreach($data_users as $item) {
-       
+
           $users_active[] = $item->idCard;
           //-------------------------------------------------
           if($item->researcher_level == 1) {
@@ -107,7 +107,7 @@ class SummaryController extends Controller
               $tbtemp['data_auditor'][$item->idCard] =  $item->data_auditor.
               "<br><small><font color='red'>(".CmsHelper::DateThai($item->updated_at).")</font></small>";
             }
-            
+
           }
           //-------------------------------------------------
 
@@ -139,7 +139,7 @@ class SummaryController extends Controller
           if( in_array($item->users_id, $users_active) ) {
             $temp[] = $item->users_id;
           }
-        } 
+        }
       }
       $research['users'] = count(array_unique($temp));
       //การตีพิมพ์วารสาร-----------------------------------------------------------------------
@@ -200,10 +200,10 @@ class SummaryController extends Controller
       $tbheader[] = "หน่วยงาน";
       $tbheader[] = "โครงการวิจัย";
       $tbheader[] = "ตำแหน่ง PI & Co-PI";
-      $tbheader[] = "วารสาร (ตรวจสอบแล้ว)";
+      $tbheader[] = "วารสาร (ผู้นิพนธ์หลัก)";
       $tbheader[] = "วารสาร (TCI 1)";
       $tbheader[] = "วารสาร (Q1-Q3)";
-      $tbheader[] = "วารสาร (ไม่ตรงเงื่อนไข)";
+      $tbheader[] = "วารสาร (ผู้นิพนธ์ร่วม)";
       $tbheader[] = "การนำไปใช้ประโยชน์";
       $tbheader[] = "ระดับนักวิจัย";
       $tbheader[] = "ผู้ตรวจสอบ";
@@ -211,12 +211,12 @@ class SummaryController extends Controller
 
       foreach($data_users as $item) {
         $cid = $item->idCard;
-        $btn = "<button type='button' class='btn btn-primary btn-md' title='Auditor' 
+        $btn = "<button type='button' class='btn btn-primary btn-md' title='Auditor'
                 onclick=\"popup('$cid')\">
                 <i class='fas fa-bars'></i>
                 </button>";
 
-    
+
         if( $status==1 ) {
           $addrow = (!empty($tbtemp['research'][$cid]) || !empty($tbtemp['journal_verify'][$cid]));
         }else{
@@ -244,7 +244,7 @@ class SummaryController extends Controller
     }
 
 
-    
+
 
 
 
@@ -289,7 +289,7 @@ class SummaryController extends Controller
               ->whereNull('deleted_at')
               ->whereIn('users_id', $users_active)
               ->get();
-              
+
       $temp = [];
       foreach($data_research as $item) {
         if( empty($tbtemp['research'][$item->users_id]) ) {
@@ -309,7 +309,7 @@ class SummaryController extends Controller
           if( in_array($item->users_id, $users_active) ) {
             $temp[] = $item->users_id;
           }
-        } 
+        }
       }
 
       $research['users'] = count(array_unique($temp));
@@ -422,7 +422,7 @@ class SummaryController extends Controller
 
       // โครงการวิจัยที่ทำเสร็จสิ้นทั้งหมด db_research_project -> โดย count id --------->
       // For "MANAGER"
-      
+
       if(Gate::allows('manager')){
           $Total_research = DB::table('db_research_project')
                               ->select('db_research_project.id','pro_name_th','pro_name_en','pro_position',

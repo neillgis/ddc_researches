@@ -42,10 +42,10 @@ class ResearchController extends Controller
       $pro_co_researcher[$i] = $i;
     }
     $pro_co_researcher[11] = 'มากกว่า 10';
-    
+
     $publish_status = [1=> 'ใช่',2=> 'ไม่ใช่'];
 
-    $verified = [ 
+    $verified = [
       1 => 'ตรวจสอบแล้ว', //verify
       2 => 'อยู่ระหว่างตรวจสอบ', //process_checked
       3 => 'อยู่ระหว่างแก้ไข', //process_editing
@@ -107,7 +107,7 @@ class ResearchController extends Controller
             ->whereIn('users_id', $users_active)
             ->get();
     }
-    
+
 
     foreach($query as $item) {
       $research['all']++;
@@ -119,7 +119,7 @@ class ResearchController extends Controller
         if( $item->publish_status ==1 ) {
           $research['publish']++;
         }
-      } 
+      }
     }
     //====================================================
     return view('frontend.research',
