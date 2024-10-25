@@ -92,7 +92,7 @@ class ResearchController extends Controller
                   ->whereNull('deleted_at')
                   ->whereIn('users_id', $users_active)
                   ->orderBy('id','DESC')
-                  ->limit(300)
+                  ->limit(2200)
                   ->get();
 
     if(Gate::allows('admin') || Gate::allows('manager')){
