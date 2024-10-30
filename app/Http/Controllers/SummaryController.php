@@ -153,7 +153,7 @@ class SummaryController extends Controller
           $tbtemp['journal_verify'][$item->users_id] = 0;
           $tbtemp['journal_tci1'][$item->users_id] = 0;
           $tbtemp['journal_q1q3'][$item->users_id] = 0;
-          $tbtemp['journal_not'][$item->users_id] = 0;
+          $tbtemp['journal_co-author'][$item->users_id] = 0;
         }
         //............................................
         $journal['all']++;
@@ -170,8 +170,8 @@ class SummaryController extends Controller
             $tbtemp['journal_q1q3'][$item->users_id]++;
           }
         }
-        else if($item->verified == 9) {
-          $tbtemp['journal_not'][$item->users_id]++;
+        else if($item->verified == 4) {
+          $tbtemp['journal_co-author'][$item->users_id]++;
         }
       }
       //การนำไปใช้ประโยชน์-----------------------------------------------------------------------
@@ -232,7 +232,7 @@ class SummaryController extends Controller
             box($tbtemp,'journal_verify',$cid),
             box($tbtemp,'journal_tci1',$cid),
             box($tbtemp,'journal_q1q3',$cid),
-            box($tbtemp,'journal_not',$cid),
+            box($tbtemp,'journal_co-author',$cid),
             box($tbtemp,'util',$cid),
             empty($tbtemp['relv'][$cid])?"<span class='badge bg-danger'> No results </span>":$tbtemp['relv'][$cid],
             empty($tbtemp['data_auditor'][$cid])?"<span class='badge bg-danger'> No results </span>":$tbtemp['data_auditor'][$cid],
@@ -324,7 +324,7 @@ class SummaryController extends Controller
           $tbtemp['journal_verify'][$item->users_id] = 0;
           $tbtemp['journal_tci1'][$item->users_id] = 0;
           $tbtemp['journal_q1q3'][$item->users_id] = 0;
-          $tbtemp['journal_not'][$item->users_id] = 0;
+          $tbtemp['journal_co-author'][$item->users_id] = 0;
         }
         //............................................
         $journal['all']++;
@@ -341,8 +341,8 @@ class SummaryController extends Controller
             $tbtemp['journal_q1q3'][$item->users_id]++;
           }
         }
-        else if($item->verified == 9) {
-          $tbtemp['journal_not'][$item->users_id]++;
+        else if($item->verified == 4) {
+          $tbtemp['journal_co-author'][$item->users_id]++;
         }
       }
       //การนำไปใช้ประโยชน์-----------------------------------------------------------------------
@@ -393,7 +393,7 @@ class SummaryController extends Controller
             box($tbtemp,'journal_verify',$cid),
             box($tbtemp,'journal_tci1',$cid),
             box($tbtemp,'journal_q1q3',$cid),
-            box($tbtemp,'journal_not',$cid),
+            box($tbtemp,'journal_co-author',$cid),
             box($tbtemp,'util',$cid),
             empty($tbtemp['relv'][$cid])?"<span class='badge bg-danger'> No results </span>":$tbtemp['relv'][$cid],
           ];
