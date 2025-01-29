@@ -75,11 +75,11 @@
 
   <section class="content">
     <div class="container-fluid">
-      <h4 class="badge badge-secondary badge-pill text-lg"> ข้อมูลโครงการวิจัย </h4>
+      <h4 class="badge badge-secondary badge-pill text-lg"> โครงการวิจัย </h4>
       <div class="row">
         <?php
         gen("fas fa-chart-line", "bg-info", "โครงการวิจัยทั้งหมด", $research['all']);
-        gen("fas fa-user-check", "bg-danger", "ตรวจสอบแล้ว", $research['verify']);
+        gen("fas fa-user-check", "bg-danger", "ตรงเงื่อนไข", $research['verify']);
         gen("fas fa-id-card-alt", "bg-success", "ตำแหน่ง PI & Co-PI", $research['pi']);
         gen("fas fa-users", "bg-warning", "จำนวนนักวิจัยโครงการ", $research['users']);
         ?>
@@ -88,9 +88,9 @@
     <h4 class="badge badge-secondary badge-pill text-lg"> การตีพิมพ์วารสาร </h4>
     <div class="row">
     <?php
-        gen("fas fa-chart-line", "bg-info", "ตีพิมพ์วารสารทั้งหมด", $journal['all']);
-        gen("fas fa-user-check", "bg-danger", "ตรวจสอบแล้ว", $journal['verify']);
-        gen("fas fa-book-reader", "bg-warning", "ระดับวารสาร (TCI 1)", $journal['tci1']);
+        gen("fas fa-chart-line", "bg-info", "บทความตีพิมพ์ทั้งหมด", $journal['all']);
+        gen("fas fa-user-check", "bg-danger", "ตรงเงื่อนไข", $journal['verify']);
+        gen("fas fa-book-reader", "bg-warning", "วารสารระดับชาติ (TCI 1)", $journal['tci1']);
         gen("fas fa-book-open", "bg-warning", "ระดับวารสาร (Q1 - Q3)", $journal['q1q3']);
         ?>
     </div>
@@ -99,8 +99,9 @@
     <div class="row">
     <?php
         gen("fas fa-chart-line", "bg-info", "การนำไปใช้ประโยชน์ทั้งหมด", $util['all']);
-        gen("fas fa-user-check", "bg-danger", "ตรวจสอบแล้ว", $util['verify']);
+        gen("fas fa-user-check", "bg-danger", "ตรงเงื่อนไข", $util['verify']);
         gen("fas fa-file-signature", "bg-success", "เชิงนโยบาย", $util['policy']);
+        gen("fas fa-chart-line", "bg-success", "เชิงวิชาการ", $util['academic']);
         ?>
     </div>
 
@@ -113,7 +114,7 @@
       <div class="card">
         <div class="card card-gray">
           <div class="card-header">
-              
+
               <div class="row">
                 <div class="col-md-8">
                   <h3 class="card-title"> สรุปข้อมูลนักวิจัย </h3>

@@ -81,7 +81,7 @@ class UsersManageController extends Controller
           return response()->json(['msg'=>'ok', 'data'=>CmsHelper::DateThai(date('Y-m-d'))]);
       }catch (Exception $e) {
           return response()->json(['msg'=>'err']);
-      }   
+      }
     }
 
     public function users_manage_backtomem($id){
@@ -96,7 +96,7 @@ class UsersManageController extends Controller
           return redirect()->route('admin.users_manage');
       }catch (Exception $e) {
           return redirect()->back()->with(['error'=>'ลบไม่สำเร็จ']);
-      } 
+      }
     }
 
     public function users_manage_outdb($id){
@@ -107,7 +107,7 @@ class UsersManageController extends Controller
       //   return redirect()->route('admin.users_manage');
       // }catch (Exception $e) {
       //     return redirect()->back()->with(['error'=>'ลบไม่สำเร็จ']);
-      // } 
+      // }
     }
 
     public function users_manage_update(Request $request, $user_id){
@@ -128,7 +128,7 @@ class UsersManageController extends Controller
           return redirect()->route('admin.users_manage');
         }catch (Exception $e) {
             return redirect()->back()->with(['error'=>'ลบไม่สำเร็จ']);
-        } 
+        }
     }
 
     public function ajax_users_manage_update($user_id){
@@ -153,11 +153,11 @@ class UsersManageController extends Controller
 
         return response()->json([
           "user_id" => $user_id,
-          'msg'=>'ok', 
+          'msg'=>'ok',
           'data'=>CmsHelper::DateThai(date('Y-m-d'))
         ]);
       }catch (Exception $e) {
         return response()->json(['msg'=>'err']);
-      } 
+      }
   }
 }

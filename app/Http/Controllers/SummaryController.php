@@ -43,6 +43,7 @@ class SummaryController extends Controller
       "all" => 0,
       "verify" => 0,
       "policy" => 0,
+      "academic" => 0,
     ];
     // $verified_list = [
     //   1   => 'นักวิจัยฝึกหัด',
@@ -192,6 +193,9 @@ class SummaryController extends Controller
           if($item->util_type == 'เชิงนโยบาย') {
             $util['policy']++;
           }
+          if($item->util_type == 'เชิงวิชาการ') {
+            $util['academic']++;
+          }
         }
       }
 
@@ -218,9 +222,9 @@ class SummaryController extends Controller
 
 
         if( $status==1 ) {
-          $addrow = (!empty($tbtemp['research'][$cid]) || !empty($tbtemp['journal_verify'][$cid]));
+            $addrow = (!empty($tbtemp['research'][$cid]) || !empty($tbtemp['journal_verify'][$cid]) || !empty($tbtemp['journal_co-author'][$cid]));
         }else{
-          $addrow = !(!empty($tbtemp['research'][$cid]) || !empty($tbtemp['journal_verify'][$cid]));
+            $addrow = (empty($tbtemp['research'][$cid]) && empty($tbtemp['journal_verify'][$cid]) && empty($tbtemp['journal_co-author'][$cid]));
         }
         if( $addrow ) {
           $temp = [
@@ -370,19 +374,19 @@ class SummaryController extends Controller
       $tbheader[] = "ตำแหน่ง";
       $tbheader[] = "โครงการวิจัย";
       $tbheader[] = "ตำแหน่ง PI & Co-PI";
-      $tbheader[] = "วารสาร (ตรวจสอบแล้ว)";
+      $tbheader[] = "วารสาร (ผู้นิพนธ์หลัก)";
       $tbheader[] = "วารสาร (TCI 1)";
       $tbheader[] = "วารสาร (Q1-Q3)";
-      $tbheader[] = "วารสาร (ไม่ตรงเงื่อนไข)";
+      $tbheader[] = "วารสาร (ผู้นิพนธ์ร่วม)";
       $tbheader[] = "การนำไปใช้ประโยชน์";
       $tbheader[] = "ระดับนักวิจัย";
       foreach($data_users as $item) {
         $cid = $item->idCard;
 
         if( $status==1 ) {
-          $addrow = (!empty($tbtemp['research'][$cid]) || !empty($tbtemp['journal_verify'][$cid]));
+            $addrow = (!empty($tbtemp['research'][$cid]) || !empty($tbtemp['journal_verify'][$cid]) || !empty($tbtemp['journal_co-author'][$cid]));
         }else{
-          $addrow = !(!empty($tbtemp['research'][$cid]) || !empty($tbtemp['journal_verify'][$cid]));
+            $addrow = (empty($tbtemp['research'][$cid]) && empty($tbtemp['journal_verify'][$cid]) && empty($tbtemp['journal_co-author'][$cid]));
         }
         if( $addrow ) {
           $temp = [

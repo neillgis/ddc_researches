@@ -54,7 +54,7 @@
             </select>
           </div>
         </div>
-        
+
       </div>
       <div class="card-body">
         <div class="table-responsive hover">
@@ -159,7 +159,7 @@
 
           <label>ตำแหน่ง</label><span class="ml-2 text-danger" id="err_position"></span>
           <input type="text" class="form-control" name='position' id='position'>
-          
+
 
           <br>
           <button type="submit" class="btn btn-block btn-primary" id="btn_submit">ยืนยัน</button>
@@ -290,8 +290,8 @@
                 $("#dep_name").val(dep_name.trim());
                 $("#position").val(obj['position'].trim());
 
-                if( value['title'].trim() != obj['title'].trim() || 
-                    value['fname'].trim() != obj['fname'].trim() || 
+                if( value['title'].trim() != obj['title'].trim() ||
+                    value['fname'].trim() != obj['fname'].trim() ||
                     value['lname'].trim() != obj['lname'].trim() ) {
                   $("#err_name").text("update");
                 }
@@ -302,7 +302,7 @@
                 if( value['position'].trim() != obj['position'].trim() ) {
                   $("#err_position").text("update");
                 }
-                
+
                 let myModal = new bootstrap.Modal(document.getElementById('popup'));
                 myModal.show();
               }else{
@@ -320,7 +320,6 @@
   function update_all() {
     let myModal = new bootstrap.Modal(document.getElementById('popup_update'));
     myModal.show();
-    
     let num=0;
     let curr_date = "{{ date('Y-m-d') }}";
     for (const [key, value] of Object.entries(users)) {
@@ -335,6 +334,7 @@
 
 
       //------------ดูว่าไม่ใช่ กอง หรือ สำนัก นำหน้า---------
+      value['deptName'] = value && value.deptName ? value.deptName : "No Department";
       let result = value['deptName'].substring(0, 3);
       if( chk ) {
         if(result == "กอง" || result == "สำน" || result == "สถา") {
@@ -366,7 +366,6 @@
       // }
       //-----------------------------------------
       if( chk ) {
-        console.log(value);
           i++;
           setTimeout(function timer() {
             $("#run_number").text(num);
@@ -408,7 +407,6 @@
       url: "{{route('ajax.users_manage_update')}}"+"/"+user_id+"?obj="+obj,
       success:function(response){
         if(response) {
-          console.log(response);
           if( response['msg'] == "ok" ) {
             $("#edit_date_"+user_id).text(response['data']);
             count_err=0;
