@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use DateTime;
 
 
 class UtilizationController extends Controller
@@ -279,6 +280,24 @@ class UtilizationController extends Controller
                                     ->get();
       }
 
+      $util_year = [];
+
+      // Create a DateTime object for the current date/time
+      $currentDate = new DateTime();
+
+      // Get the current Gregorian year
+      $currentGregorianYear = (int)$currentDate->format('Y');
+
+      // Convert to Thai year by adding 543
+      $currentThaiYear = $currentGregorianYear + 543;
+
+      // Define a range: for example, 10 years back to 10 years ahead
+      $startThaiYear = $currentThaiYear - 30;
+      $endThaiYear   = $currentThaiYear;
+
+      for ($year = $startThaiYear; $year <= $endThaiYear; $year++){
+        $util_year[] = $year;
+      };
 
       $query_util_type = ['เชิงนโยบาย'      => 'เชิงนโยบาย',
                           'เชิงวิชาการ'      => 'เชิงวิชาการ',
@@ -309,9 +328,11 @@ class UtilizationController extends Controller
                                    'db_utilization.files',
                                    'db_utilization.verified',
                                    'db_utilization.status',
+                                   'db_utilization.util_year',
                                    'db_research_project.pro_name_th',
                                    'db_research_project.pro_name_en',
                                    'db_research_project.users_name',
+                                   'db_research_project.pro_end_date',
                                    'users.deptName',
                                    // \DB::raw('(CASE
                                    //               WHEN db_utilization.verified = "1" THEN "ตรวจสอบแล้ว"
@@ -334,9 +355,11 @@ class UtilizationController extends Controller
                                    'db_utilization.files',
                                    'db_utilization.verified',
                                    'db_utilization.status',
+                                   'db_utilization.util_year',
                                    'db_research_project.pro_name_th',
                                    'db_research_project.pro_name_en',
                                    'db_research_project.users_name',
+                                   'db_research_project.pro_end_date',
                                    'users.idCard',
                                    'users.deptName',
                                    'users.fname',
@@ -361,9 +384,11 @@ class UtilizationController extends Controller
                                    'db_utilization.files',
                                    'db_utilization.verified',
                                    'db_utilization.status',
+                                   'db_utilization.util_year',
                                    'db_research_project.pro_name_th',
                                    'db_research_project.pro_name_en',
                                    'db_research_project.users_name',
+                                   'db_research_project.pro_end_date',
                                    // \DB::raw('(CASE
                                    //               WHEN db_utilization.verified = "1" THEN "ตรวจสอบแล้ว"
                                    //               ELSE "รอการตรวจสอบ"
@@ -392,6 +417,7 @@ class UtilizationController extends Controller
         // --- SELECT FORM ---
         'form_research'          => $query_research,
         'form_util_type'         => $query_util_type,
+        'form_year_util'         => $util_year,
         // --- SELECT TABLE ---
         'table_util'             => $query_util,
         'verified_list'          => $verified,
@@ -408,6 +434,7 @@ class UtilizationController extends Controller
        $data_post = [
          "users_id"          => Auth::user()->preferred_username,
          "pro_id"            => $request->pro_id,
+         "util_year"         => $request->util_year - 543,
          "util_type"         => $request->util_type,
          "util_descrip"      => $request->util_descrip,
          "files"             => $request->files,
@@ -451,6 +478,7 @@ class UtilizationController extends Controller
                            'db_utilization.files',
                            'db_utilization.verified',
                            'db_utilization.util_descrip',
+                           'db_utilization.util_year',
                            'db_research_project.pro_name_th',
                            'db_research_project.pro_name_en',
                            'db_research_project.users_id',
@@ -460,18 +488,37 @@ class UtilizationController extends Controller
                   ->first();
 
 
-      $edit_2 = ['เชิงนโยบาย'       => 'เชิงนโยบาย',
-                 'เชิงวิชาการ'        => 'เชิงวิชาการ',
-                 'เชิงสังคม/ชุมชน'    => 'เชิงสังคม/ชุมชน',
-                 'เชิงพาณิชย์'        => 'เชิงพาณิชย์'
-                 ];
+        $edit_2 = ['เชิงนโยบาย'       => 'เชิงนโยบาย',
+                    'เชิงวิชาการ'        => 'เชิงวิชาการ',
+                    'เชิงสังคม/ชุมชน'    => 'เชิงสังคม/ชุมชน',
+                    'เชิงพาณิชย์'        => 'เชิงพาณิชย์'
+                    ];
 
+        $edit_util_year = [];
+
+        // Create a DateTime object for the current date/time
+        $currentDate = new DateTime();
+
+        // Get the current Gregorian year
+        $currentGregorianYear = (int)$currentDate->format('Y');
+
+        // Convert to Thai year by adding 543
+        $currentThaiYear = $currentGregorianYear + 543;
+
+        // Define a range: for example, 10 years back to 10 years ahead
+        $startThaiYear = $currentThaiYear - 30;
+        $endThaiYear   = $currentThaiYear;
+
+        for ($year = $startThaiYear; $year <= $endThaiYear; $year++){
+        $edit_util_year[] = $year;
+        };
 
      return view('frontend.util_edit',
        [
         'edit_util'       => $edit,
         'edit_data'       => $edit_1,
-        'edit_utiltype'   => $edit_2
+        'edit_utiltype'   => $edit_2,
+        'edit_util_year'  => $edit_util_year
        ]);
   }
 
@@ -494,6 +541,7 @@ class UtilizationController extends Controller
                         ->update([
                                     "util_type"    => $request->util_type,
                                     "util_descrip" => $request->util_descrip,
+                                    "util_year"    => $request->util_year - 543,
                                     "files"        => $clientName,
                                   ]);
 
@@ -505,6 +553,7 @@ class UtilizationController extends Controller
                         ->update([
                                     "util_type"    => $request->util_type,
                                     "util_descrip" => $request->util_descrip,
+                                    "util_year"    => $request->util_year - 543,
                                   ]);
 
     }

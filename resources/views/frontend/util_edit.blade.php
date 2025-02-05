@@ -88,6 +88,21 @@
                 </div>
 
                 <div class="row">
+                    <div class="col-md-11 mx-auto">
+                        <div class="form-group">
+                            <label for="exampleSelect1"> ปีที่ใช้ประโยชน์ </label>
+                              <!-- Query Array เพื่อมา UPDATE users -->
+                              <select class="form-control" name="util_year">
+                                @foreach ($edit_util_year as $key => $value)
+                                  <option value="{{ $value }}" {{ $edit_util->util_year + 543 == $value ? 'selected' : '' }}> {{ $value }}
+                                  </option>
+                                @endforeach
+                              </select>
+                          </div>
+                    </div>
+                </div>
+
+                <div class="row">
                   <div class="col-md-11 mx-auto">
                     <div class="form-group">
                       <label for="exampleSelect1"> ประเภทการนำไปใช้ประโยชน์ </label>

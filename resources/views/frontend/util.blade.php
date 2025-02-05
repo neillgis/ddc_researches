@@ -193,7 +193,7 @@
 
                     <div class="card-body">
                       <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                           <div class="form-group">
                             <b><lebel for="exampleSelect1"> ชื่อโครงการ (TH-ENG) <font color="red"> * </font></lebel></b>
                             <!-- SELECT ดึงข้อมูลชื่อโครงการมาจาก -> db_research_project Table -->
@@ -205,16 +205,30 @@
                             </select>
                           </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="form-group">
-                            <b><lebel for="util_type"> ประเภทการนำไปใช้ประโยชน์ <font color="red"> * </font></lebel></b>
-                            <select class="form-control" name="util_type" required>
-                              <option value="" disabled="true" selected="true" > กรุณาเลือก </option>
-                              @foreach ($form_util_type as $key => $value)
-                                <option value="{{ $value }}"> {{ $value }} </option>
-                              @endforeach
-                            </select>
-                          </div>
+                      </div>
+
+                      <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <b><lebel for="util_type"> ปีที่ใช้ประโยชน์ <font color="red"> * </font></lebel></b>
+                                <select class="form-control" name="util_type" required>
+                                    <option value="" disabled="true" selected="true" > กรุณาเลือกปีที่ใช้ประโยชน์ </option>
+                                    @foreach ($form_year_util as $key => $value)
+                                        <option value="{{ $value }}"> {{ $value }} </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <b><lebel for="util_type"> ประเภทการนำไปใช้ประโยชน์ <font color="red"> * </font></lebel></b>
+                                <select class="form-control" name="util_type" required>
+                                <option value="" disabled="true" selected="true" > กรุณาเลือก </option>
+                                @foreach ($form_util_type as $key => $value)
+                                    <option value="{{ $value }}"> {{ $value }} </option>
+                                @endforeach
+                                </select>
+                            </div>
                         </div>
                       </div>
 
@@ -273,6 +287,8 @@
                           <th class="text-center"> ลำดับ </th>
                             <th class="text-center"> Util ID </th>
                             <th class="text-center"> ชื่อโครงการ </th>
+                            <th class="text-center"> ปีที่เสร็จสิ้น </th>
+                            <th class="text-center"> ปีที่นำไปใช้ประโยชน์ </th>
                             <th class="text-center"> การนำไปใช้ประโยชน์ </th>
                             <th class="text-center"> สถานะ </th>
                           @if(Gate::allows('manager'))
@@ -299,6 +315,14 @@
                           <td class="text-center"> {{ $i }} </td>
                           <td class="text-center"> {{ $value->id }} </td>
                           <td class="text-left"> {{ $value->pro_name_th." ".$value->pro_name_en }} </td>
+                          <td class="text-center"> {{ CmsHelper::DateThai($value->pro_end_date, 'Y') }} </td>
+                          <td class="text-center">
+                            @if($value->util_year != NULL)
+                                {{ CmsHelper::DateThai($value->util_year, 'Y')}}
+                            @else
+                                {{ $value->util_year != "" ? $value->util_year : '-' }}
+                            @endif
+                          </td>
                           <td class="text-center"> {{ $value->util_type }} </td>
                           <td class="text-center">
                             @if($value->status != NULL)
@@ -792,6 +816,11 @@
                 // alert(theOddOnes[i].innerHTML);
             }
     }
+
+    //Date Input
+    var CurrentDate = new Date();
+    CurrentDate.setYear(CurrentDate.getFullYear() + 543);
+
 </script>
 @stop('js-custom-script')
 

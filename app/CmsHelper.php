@@ -15,18 +15,25 @@ use App\member;
             //echo 'test';
         }
 
-        public static function DateThai($strDate){
-          if($strDate=='0000-00-00' || $strDate=='' || $strDate==null) return '-';
-              $strYear = date("Y",strtotime($strDate))+543;
-              $strMonth= date("n",strtotime($strDate));
-              $strDay= date("j",strtotime($strDate));
-              $strHour= date("H",strtotime($strDate));
-              $strMinute= date("i",strtotime($strDate));
-              $strSeconds= date("s",strtotime($strDate));
-              $strMonthCut = Array("","ม.ค.","ก.พ.","มี.ค.","เม.ย.","พ.ค.","มิ.ย.","ก.ค.","ส.ค.","ก.ย.","ต.ค.","พ.ย.","ธ.ค.");
-              $strMonthThai=$strMonthCut[$strMonth];
-          return "$strDay $strMonthThai $strYear";
-        }
+        public static function DateThai($strDate,$refYear = false){
+            if($strDate=='0000-00-00' || $strDate=='' || $strDate==null) return '-';
+            if (preg_match('/^\d{4}$/', $strDate) && $refYear){
+              $strYear = $strDate + 543;
+              return "$strYear";
+            }
+                $strYear = date("Y",strtotime($strDate))+543;
+                $strMonth= date("n",strtotime($strDate));
+                $strDay= date("j",strtotime($strDate));
+                $strHour= date("H",strtotime($strDate));
+                $strMinute= date("i",strtotime($strDate));
+                $strSeconds= date("s",strtotime($strDate));
+                $strMonthCut = Array("","ม.ค.","ก.พ.","มี.ค.","เม.ย.","พ.ค.","มิ.ย.","ก.ค.","ส.ค.","ก.ย.","ต.ค.","พ.ย.","ธ.ค.");
+                $strMonthThai=$strMonthCut[$strMonth];
+            if($refYear){
+              return "$strYear";
+            }
+            return "$strDay $strMonthThai $strYear";
+          }
 
 
         public static function DateEnglish($strDate){
