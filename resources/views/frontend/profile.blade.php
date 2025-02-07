@@ -235,7 +235,8 @@
 
             <div class="row">
                 <div class="col-md-6">
-                  <label for="exampleInput1"> รหัสนักวิจัย </label>
+                    <label for="exampleInput1"> รหัสนักวิจัยจาก NRIIS </label>
+                    <span></br>ลิงค์ไปยังเว็บไซต์ <a href="https://nriis.go.th/Login.aspx">NRIIS</a></span>
                     @foreach($data as $value)
                         @if($value->orcid_id != "")
                           <div class="border p-2" style="background-color: #e9ecef;opacity: 1; font-size: 16px;">
@@ -250,7 +251,8 @@
                 </div>
 
                 <div class="col-md-6">
-                  <label for="exampleInput1"> เลขประจำตัวนักวิจัย </label>
+                    <label for="exampleInput1"> เลขประจำตัวนักวิจัยจาก ORCID ID </label>
+                    <span></br>ลิงค์ไปยังเว็บไซต์ <a href="https://orcid.org/signin">ORCID ID</a></span>
                     @foreach($data as $value)
                         @if($value->orcid_id != "")
                           <div class="border p-2" style="background-color: #e9ecef;opacity: 1; font-size: 16px;">
