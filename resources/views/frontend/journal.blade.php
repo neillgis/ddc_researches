@@ -243,6 +243,7 @@
                   <div class="col-md-4">
                     <div class="form-group">
                       <label for="exampleSelect1"> ท่านเป็นผู้รับผิดชอบบทความ (Correspondence) <font color="red"> * </font></label>
+                        <a class="one form-group" href="#" id="modal"> <b> (คำอธิบายเพิ่มเติม) </b></a>
                       <!-- SELECT option ดึงมาจาก ARRAY->corres -->
                       <select class="form-control" name="corres" required>
                         <option value="" disabled="true" selected="true" >กรุณาเลือก</option>
@@ -1011,6 +1012,14 @@
 @section('js-custom-script')
 <!-- SweetAlert2 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script>
+    document.querySelector(".one").addEventListener('click', function(){
+      Swal.fire(
+      "ผู้รับผิดชอบบทความ (Correspondence)",
+      "• ผู้ที่มีส่วนร่วมอย่างสำคัญในผลงาน ทำหน้าที่ดูแลให้คำแนะนำ ตรวจสอบต้นฉบับ และประสานงานกับผู้ร่วมนิพนธ์อื่น ๆ ในการเตรียมต้นฉบับบทความหรือส่งบทความเพื่อตีพิมพ์เผยแพร่ รวมทั้งการติดต่อใด ๆ ที่เกี่ยวข้องกับผลงานนี้ที่เกิดขึ้น ในอนาคต"
+      );
+    });
+</script>
 
   <!-- INSERT -->
   @if(Session::get('message'))
