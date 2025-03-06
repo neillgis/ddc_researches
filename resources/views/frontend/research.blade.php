@@ -261,7 +261,7 @@
                 <div class="row">
                   <div class="col-md-12">
                     <div class="form-group">
-                      <label for="expInputFile"> อัพโหลดไฟล์ : รายงานวิจัยฉบับสมบูรณ์.pdf <font color="red"> * </font></label>
+                      <label for="expInputFile"> อัพโหลดไฟล์ : รายงานวิจัยฉบับสมบูรณ์/บทคัดย่อ (Abstracts).pdf <font color="red"> * </font></label>
                       <div class="input-group">
                         <div class="custom-file">
                           <input type="file" class="custom-file-input" name="files" required>
