@@ -433,7 +433,7 @@
 
                                 <!-- Download -->
                                 @if($value->verified == "1")
-                                  <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Download" disabled>
+                                  <button type="button" class="btn btn-secondary btn-md" data-toggle="tooltip" title="Download">
                                     <i class="fas fa-arrow-alt-circle-down"></i>
                                   </button>
                                 @else
