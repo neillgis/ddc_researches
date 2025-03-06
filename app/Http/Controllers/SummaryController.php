@@ -45,6 +45,12 @@ class SummaryController extends Controller
       "policy" => 0,
       "academic" => 0,
     ];
+    $research_level = [
+        "training_level" => 0,
+        "beginner_level" => 0,
+        "intermediate_level" => 0,
+        "advanced_level" => 0,
+    ];
     // $verified_list = [
     //   1   => 'นักวิจัยฝึกหัด',
     //   2   => 'นักวิจัยรุ่นใหม่',
@@ -90,12 +96,19 @@ class SummaryController extends Controller
           //-------------------------------------------------
           if($item->researcher_level == 1) {
             $tbtemp['relv'][$item->idCard] = "<span class='badge text-white' style='background-color:#5DADE2; font-size: 14px;'>".$verified_list[$item->researcher_level]."</span>";
+            $research_level['training_level']++;
           }
           else if($item->researcher_level == 2) {
             $tbtemp['relv'][$item->idCard] = "<span class='badge text-white' style='background-color:#45B39D; font-size: 14px;'>".$verified_list[$item->researcher_level]."</span>";
+            $research_level['beginner_level']++;
           }
           else if($item->researcher_level == 3) {
             $tbtemp['relv'][$item->idCard] = "<span class='badge text-white' style='background-color:#F5B041; font-size: 14px;'>".$verified_list[$item->researcher_level]."</span>";
+            $research_level['intermediate_level']++;
+          }
+          else if($item->researcher_level == 4) {
+            $tbtemp['relv'][$item->idCard] = "<span class='badge text-white' style='background-color:#DAA520; font-size: 14px;'>".$verified_list[$item->researcher_level]."</span>";
+            $research_level['advanced_level']++;
           }
           else {
             $tbtemp['relv'][$item->idCard] = "<span class='badge bg-danger'> No results </span>";
@@ -114,6 +127,8 @@ class SummaryController extends Controller
 
       }
       $users_active = array_unique($users_active);
+      //count total researcher that have a research level.
+      $research_level['total_researcher'] = array_sum($research_level);
 
       //ข้อมูลโครงการวิจัย-----------------------------------------------------------------------
       $data_research = DB::table('db_research_project')
@@ -267,13 +282,20 @@ class SummaryController extends Controller
           $users_active[] = $item->idCard;
           //-------------------------------------------------
           if($item->researcher_level == 1) {
-            $tbtemp['relv'][$item->idCard] = "<span class='badge' style='background-color:#5DADE2;'>".$verified_list[$item->researcher_level]."</span>";
+            $tbtemp['relv'][$item->idCard] = "<span class='badge text-white' style='background-color:#5DADE2; font-size: 14px;'>".$verified_list[$item->researcher_level]."</span>";
+            $research_level['training_level']++;
           }
           else if($item->researcher_level == 2) {
-            $tbtemp['relv'][$item->idCard] = "<span class='badge' style='background-color:#45B39D;'>".$verified_list[$item->researcher_level]."</span>";
+            $tbtemp['relv'][$item->idCard] = "<span class='badge text-white' style='background-color:#45B39D; font-size: 14px;'>".$verified_list[$item->researcher_level]."</span>";
+            $research_level['beginner_level']++;
           }
           else if($item->researcher_level == 3) {
-            $tbtemp['relv'][$item->idCard] = "<span class='badge' style='background-color:#F5B041;'>".$verified_list[$item->researcher_level]."</span>";
+            $tbtemp['relv'][$item->idCard] = "<span class='badge text-white' style='background-color:#F5B041; font-size: 14px;'>".$verified_list[$item->researcher_level]."</span>";
+            $research_level['intermediate_level']++;
+          }
+          else if($item->researcher_level == 4) {
+            $tbtemp['relv'][$item->idCard] = "<span class='badge text-white' style='background-color:#DAA520; font-size: 14px;'>".$verified_list[$item->researcher_level]."</span>";
+            $research_level['advanced_level']++;
           }
           else {
             $tbtemp['relv'][$item->idCard] = "<span class='badge bg-danger'> No results </span>";
@@ -287,6 +309,8 @@ class SummaryController extends Controller
           }
           //-------------------------------------------------
       }
+      //count total researcher that have a research level.
+      $research_level['total_researcher'] = array_sum($research_level);
       //ข้อมูลโครงการวิจัย-----------------------------------------------------------------------
       $data_research = DB::table('db_research_project')
               ->select("users_id","verified", "pro_position")
@@ -413,6 +437,7 @@ class SummaryController extends Controller
       "journal" => $journal,
       "util" => $util,
       "verified_list" => $verified_list,
+      "research_level" => $research_level,
 
       "tbheader" => $tbheader,
       "tbbody" => $tbbody,
