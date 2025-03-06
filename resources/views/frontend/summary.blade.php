@@ -81,7 +81,7 @@
         gen("fas fa-chart-line", "bg-info", "โครงการวิจัยทั้งหมด", $research['all']);
         gen("fas fa-user-check", "bg-danger", "ตรงเงื่อนไข", $research['verify']);
         gen("fas fa-id-card-alt", "bg-success", "ตำแหน่ง PI & Co-PI", $research['pi']);
-        gen("fas fa-users", "bg-warning", "จำนวนนักวิจัยโครงการ", $research['users']);
+        gen("fas fa-users", "bg-warning", "ตำแหน่งผู้ร่วมวิจัย", $research['users']);
         ?>
     </div>
 
@@ -91,7 +91,7 @@
         gen("fas fa-chart-line", "bg-info", "บทความตีพิมพ์ทั้งหมด", $journal['all']);
         gen("fas fa-user-check", "bg-danger", "ตรงเงื่อนไข", $journal['verify']);
         gen("fas fa-book-reader", "bg-warning", "วารสารระดับชาติ (TCI 1)", $journal['tci1']);
-        gen("fas fa-book-open", "bg-warning", "ระดับวารสาร (Q1 - Q3)", $journal['q1q3']);
+        gen("fas fa-book-open", "bg-warning", "วารสารระดับนานาชาติ (Q1 - Q3)", $journal['q1q3']);
         ?>
     </div>
 
