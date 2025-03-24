@@ -17,17 +17,41 @@ class ProfileController extends Controller
 
       $data = DB::table('users')
             ->select('id', 'idCard', 'nriis_id', 'orcid_id')
+            ->selectRaw("COALESCE(researcher_level, '0') as researcher_level")
             ->where('idCard', Auth::user()->preferred_username)
             ->get();
-  
+
       $edit_profile = DB::table('users')
                     ->where('idCard', Auth::user()->preferred_username)
                     ->first();
 
+      // Mapping ระดับกับ Icon
+            $levelIcons = [
+            0 => ["icon" => "👤", "text" => "ยังไม่มีระดับ"], // ไม่มีระดับ
+            1 => ["icon" => "🧑‍🏫", "text" => "นักวิจัยฝึกหัด"], // คนธรรมดา
+            2 => ["icon" => "🧑‍🎓", "text" => "นักวิจัยระดับต้น"], // นักศึกษา
+            3 => ["icon" => "🧑‍💼", "text" => "นักวิจัยระดับกลาง"], // คนทำงาน
+            4 => ["icon" => "🧑‍🔬", "text" => "นักวิจัยอาวุโส"], // นักวิทยาศาสตร์
+        ];
+
+        $researcherLevel = [];
+
+        if($data[0]->researcher_level == 0){
+            $researcherLevel = $levelIcons['0'];
+        }elseif($data[0]->researcher_level == 1){
+            $researcherLevel = $levelIcons['1'];
+        }elseif($data[0]->researcher_level == 2){
+            $researcherLevel = $levelIcons['2'];
+        }elseif($data[0]->researcher_level == 3){
+            $researcherLevel = $levelIcons['3'];
+        }elseif($data[0]->researcher_level == 4){
+            $researcherLevel = $levelIcons['4'];
+        }
       return view('frontend.profile',
         [
            'data'          => $data,
            'edit_profile'  => $edit_profile,
+           'researcherLevel' => $researcherLevel,
         ]);
     }
 
@@ -94,7 +118,7 @@ class ProfileController extends Controller
           return response()->json(['msg'=>'ok']);
       }catch (Exception $e) {
           return response()->json(['msg'=>'error']);
-      } 
+      }
     }
-    
+
 }

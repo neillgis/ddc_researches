@@ -38,6 +38,18 @@
         box-shadow: 0 3px 0 #1D9AF2;
         top: 3px;
       }
+
+      .green-btn {
+        background: #5dd982;
+        color: black;
+        pointer-events: none;
+      }
+
+      .green-btn::hover {
+        background: inherit;
+        box-shadow: none;
+        transform: none;
+      }
   </style>
 
   <style>
@@ -225,6 +237,10 @@
                     <i class="fas fa-user-edit"></i>
                     &nbsp; HR
                 </a>
+
+                <div class="btn green-btn shadow">
+                    {{$researcherLevel['icon']}}{{$researcherLevel['text']}}
+                </div>
 
               </div>
             </div>
