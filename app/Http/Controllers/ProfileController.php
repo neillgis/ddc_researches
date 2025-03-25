@@ -26,7 +26,7 @@ class ProfileController extends Controller
                     ->first();
 
       // Mapping ระดับกับ Icon
-            $levelIcons = [
+        $levelIcons = [
             0 => ["icon" => "👤", "text" => "ยังไม่มีระดับ"], // ไม่มีระดับ
             1 => ["icon" => "🧑‍🏫", "text" => "นักวิจัยฝึกหัด"], // คนธรรมดา
             2 => ["icon" => "🧑‍🎓", "text" => "นักวิจัยระดับต้น"], // นักศึกษา
@@ -36,17 +36,20 @@ class ProfileController extends Controller
 
         $researcherLevel = [];
 
-        if($data[0]->researcher_level == 0){
-            $researcherLevel = $levelIcons['0'];
-        }elseif($data[0]->researcher_level == 1){
-            $researcherLevel = $levelIcons['1'];
-        }elseif($data[0]->researcher_level == 2){
-            $researcherLevel = $levelIcons['2'];
-        }elseif($data[0]->researcher_level == 3){
-            $researcherLevel = $levelIcons['3'];
-        }elseif($data[0]->researcher_level == 4){
-            $researcherLevel = $levelIcons['4'];
+        if($data->isNotEmpty()){
+            if($data[0]->researcher_level == 0){
+                $researcherLevel = $levelIcons['0'];
+            }elseif($data[0]->researcher_level == 1){
+                $researcherLevel = $levelIcons['1'];
+            }elseif($data[0]->researcher_level == 2){
+                $researcherLevel = $levelIcons['2'];
+            }elseif($data[0]->researcher_level == 3){
+                $researcherLevel = $levelIcons['3'];
+            }elseif($data[0]->researcher_level == 4){
+                $researcherLevel = $levelIcons['4'];
+            }
         }
+
       return view('frontend.profile',
         [
            'data'          => $data,

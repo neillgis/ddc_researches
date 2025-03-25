@@ -238,9 +238,11 @@
                     &nbsp; HR
                 </a>
 
-                <div class="btn green-btn shadow">
-                    {{$researcherLevel['icon']}}{{$researcherLevel['text']}}
-                </div>
+                @if((count($data)>0)?'disabled':'')
+                    <div class="btn green-btn shadow">
+                        {{$researcherLevel['icon']}}{{$researcherLevel['text']}}
+                    </div>
+                @endif
 
               </div>
             </div>
