@@ -263,23 +263,60 @@ class UtilizationController extends Controller
 
 // ---------------- TABLE LIST ---------------->
       if(Gate::allows('manager')) {
-        $query_research   = research::select('id','pro_name_th','pro_name_en','users_id','users_name')
-                                    ->where('users_id', Auth::user()->preferred_username)
-                                    ->whereNull('deleted_at')
-                                    ->get();
+        $query_research_proj   =  DB::table('db_research_project')
+                                            ->select('id as pro_id','pro_name_th','pro_name_en','users_id','users_name', DB::raw("'research' as source_table"), DB::raw("NULL as journal_id"))
+                                            ->where('users_id', Auth::user()->preferred_username)
+                                            ->whereNull('deleted_at');
+
+        $query_research_jour   =  DB::table('db_published_journal as pj')
+                                            ->select('pro_id','article_name_th as pro_name_th','article_name_en as pro_name_en','users_id','users_name',DB::raw("'journal' as source_table"), 'id as journal_id')
+                                            ->where('users_id', Auth::user()->preferred_username)
+                                            ->whereNull('deleted_at');
+
+        $query_researchU = $query_research_proj->union($query_research_jour)
+                                            ->get();
+
+        $prep_query_researchU = collect($query_researchU)->values()->map(function ($item, $index) {
+            $item->temp_index = $index + 1;
+            return $item;
+        });
 
       }elseif(Gate::allows('admin')) {
-        $query_research   = research::select('id','pro_name_th','pro_name_en','users_id','users_name')
-                                    ->whereNull('deleted_at')
-                                    ->get();
+        $query_research_proj   =  DB::table('db_research_project')
+                                            ->select('id as pro_id','pro_name_th','pro_name_en','users_id','users_name', DB::raw("'research' as source_table"), DB::raw("NULL as journal_id"))
+                                            ->whereNull('deleted_at');
+
+        $query_research_jour   =  DB::table('db_published_journal as pj')
+                                            ->select('pro_id','article_name_th as pro_name_th','article_name_en as pro_name_en','users_id','users_name',DB::raw("'journal' as source_table"), 'id as journal_id')
+                                            ->whereNull('deleted_at');
+
+        $query_researchU = $query_research_proj->union($query_research_jour)
+                                            ->get();
+
+        $prep_query_researchU = collect($query_researchU)->values()->map(function ($item, $index) {
+            $item->temp_index = $index + 1;
+            return $item;
+        });
 
       }else {
-        $query_research   = research::select('id','pro_name_th','pro_name_en','users_id','users_name')
-                                    ->where('users_id', Auth::user()->preferred_username)
-                                    ->whereNull('deleted_at')
-                                    ->get();
-      }
+        $query_research_proj   =  DB::table('db_research_project')
+                                            ->select('id as pro_id','pro_name_th','pro_name_en','users_id','users_name', DB::raw("'research' as source_table"), DB::raw("NULL as journal_id"))
+                                            ->where('users_id', Auth::user()->preferred_username)
+                                            ->whereNull('deleted_at');
 
+        $query_research_jour   =  DB::table('db_published_journal as pj')
+                                            ->select('pro_id','article_name_th as pro_name_th','article_name_en as pro_name_en','users_id','users_name',DB::raw("'journal' as source_table"), 'id as journal_id')
+                                            ->where('users_id', Auth::user()->preferred_username)
+                                            ->whereNull('deleted_at');
+
+        $query_researchU = $query_research_proj->union($query_research_jour)
+                                            ->get();
+
+        $prep_query_researchU = collect($query_researchU)->values()->map(function ($item, $index) {
+            $item->temp_index = $index + 1;
+            return $item;
+        });
+    }
       $util_year = [];
 
       // Create a DateTime object for the current date/time
@@ -319,36 +356,54 @@ class UtilizationController extends Controller
 
   // ---------------- SELECT TABLE ---------------->
     if(Gate::allows('manager')){
-        $query_util = DB::table('db_utilization')
-                        ->join ('db_research_project', 'db_utilization.pro_id', '=', 'db_research_project.id')
-                        ->leftjoin('users', 'db_utilization.users_id', '=', 'users.idCard')
-                        ->select ( 'db_utilization.id',
-                                   'db_utilization.users_id',
-                                   'db_utilization.util_type',
-                                   'db_utilization.files',
-                                   'db_utilization.verified',
-                                   'db_utilization.status',
-                                   'db_utilization.util_year',
-                                   'db_research_project.pro_name_th',
-                                   'db_research_project.pro_name_en',
-                                   'db_research_project.users_name',
-                                   'db_research_project.pro_end_date',
-                                   'users.deptName',
-                                   // \DB::raw('(CASE
-                                   //               WHEN db_utilization.verified = "1" THEN "ตรวจสอบแล้ว"
-                                   //               ELSE "รอการตรวจสอบ"
-                                   //               END) AS verified'
-                                   // )
-                                )
-                        // ->whereNull('db_research_project.deleted_at')
+        $query_util =   DB::table('db_utilization')
+                        ->leftJoin('db_research_project', 'db_utilization.pro_id', '=', 'db_research_project.id')
+                        ->leftJoin('db_published_journal', 'db_utilization.journal_id', '=', 'db_published_journal.id')
+                        ->leftJoin('users', 'db_utilization.users_id', '=', 'users.idCard')
+                        ->select(
+                            'db_utilization.id',
+                            'db_utilization.users_id',
+                            'db_utilization.util_type',
+                            'db_utilization.files',
+                            'db_utilization.verified',
+                            'db_utilization.status',
+                            'db_utilization.util_year',
+                            // ชื่อภาษาไทย
+                            DB::raw('CASE
+                                WHEN db_utilization.journal_id IS NOT NULL THEN db_published_journal.article_name_th
+                                ELSE db_research_project.pro_name_th
+                                END as pro_name_th'),
+                            // ชื่อภาษาอังกฤษ
+                            DB::raw('CASE
+                                WHEN db_utilization.journal_id IS NOT NULL THEN db_published_journal.article_name_en
+                                ELSE db_research_project.pro_name_en
+                                END as pro_name_en'),
+                            // วันที่สิ้นสุด/ปีที่ตีพิมพ์
+                            DB::raw('CASE
+                                WHEN db_utilization.journal_id IS NOT NULL THEN db_published_journal.publish_years
+                                ELSE db_research_project.pro_end_date
+                                END as pro_end_date'),
+                            // ชื่อผู้ทำวิจัย/ผู้เขียนบทความ
+                            DB::raw('CASE
+                            WHEN db_utilization.journal_id IS NOT NULL THEN db_published_journal.users_name
+                            ELSE db_research_project.users_name
+                            END as users_name'),
+                            'users.deptName',
+                            // เพิ่มคอลัมน์ระบุประเภท
+                            DB::raw('CASE
+                                WHEN db_utilization.journal_id IS NOT NULL THEN "บทความ"
+                                ELSE "โครงการวิจัย"
+                                END as source_type')
+                        )
                         ->whereNull('db_utilization.deleted_at')
-                        ->orderBy('id', 'DESC')
+                        ->orderBy('db_utilization.id', 'DESC')
                         ->get();
 
     }elseif(Gate::allows('departments')){
         $query_util = DB::table('db_utilization')
-                        ->join ('db_research_project', 'db_utilization.pro_id', '=', 'db_research_project.id')
-                        ->leftjoin('users', 'db_utilization.users_id', '=', 'users.idCard')
+                        ->leftJoin('db_research_project', 'db_utilization.pro_id', '=', 'db_research_project.id')
+                        ->leftJoin('db_published_journal', 'db_utilization.journal_id', '=', 'db_published_journal.id')
+                        ->leftJoin('users', 'db_utilization.users_id', '=', 'users.idCard')
                         ->select ( 'db_utilization.id',
                                    'db_utilization.users_id',
                                    'db_utilization.util_type',
@@ -356,10 +411,26 @@ class UtilizationController extends Controller
                                    'db_utilization.verified',
                                    'db_utilization.status',
                                    'db_utilization.util_year',
-                                   'db_research_project.pro_name_th',
-                                   'db_research_project.pro_name_en',
-                                   'db_research_project.users_name',
-                                   'db_research_project.pro_end_date',
+                                    // ชื่อภาษาไทย
+                                    DB::raw('CASE
+                                    WHEN db_utilization.journal_id IS NOT NULL THEN db_published_journal.article_name_th
+                                    ELSE db_research_project.pro_name_th
+                                    END as pro_name_th'),
+                                    // ชื่อภาษาอังกฤษ
+                                    DB::raw('CASE
+                                        WHEN db_utilization.journal_id IS NOT NULL THEN db_published_journal.article_name_en
+                                        ELSE db_research_project.pro_name_en
+                                        END as pro_name_en'),
+                                    // วันที่สิ้นสุด/ปีที่ตีพิมพ์
+                                    DB::raw('CASE
+                                        WHEN db_utilization.journal_id IS NOT NULL THEN db_published_journal.publish_years
+                                        ELSE db_research_project.pro_end_date
+                                        END as pro_end_date'),
+                                    // ชื่อผู้ทำวิจัย/ผู้เขียนบทความ
+                                    DB::raw('CASE
+                                    WHEN db_utilization.journal_id IS NOT NULL THEN db_published_journal.users_name
+                                    ELSE db_research_project.users_name
+                                    END as users_name'),
                                    'users.idCard',
                                    'users.deptName',
                                    'users.fname',
@@ -378,17 +449,34 @@ class UtilizationController extends Controller
 
     }else {
         $query_util = DB::table('db_utilization')
-                        ->join ('db_research_project', 'db_utilization.pro_id', '=', 'db_research_project.id')
+                        ->leftJoin('db_research_project', 'db_utilization.pro_id', '=', 'db_research_project.id')
+                        ->leftJoin('db_published_journal', 'db_utilization.journal_id', '=', 'db_published_journal.id')
                         ->select ( 'db_utilization.id',
                                    'db_utilization.util_type',
                                    'db_utilization.files',
                                    'db_utilization.verified',
                                    'db_utilization.status',
                                    'db_utilization.util_year',
-                                   'db_research_project.pro_name_th',
-                                   'db_research_project.pro_name_en',
-                                   'db_research_project.users_name',
-                                   'db_research_project.pro_end_date',
+                                   // ชื่อภาษาไทย
+                                   DB::raw('CASE
+                                   WHEN db_utilization.journal_id IS NOT NULL THEN db_published_journal.article_name_th
+                                   ELSE db_research_project.pro_name_th
+                                   END as pro_name_th'),
+                                   // ชื่อภาษาอังกฤษ
+                                   DB::raw('CASE
+                                       WHEN db_utilization.journal_id IS NOT NULL THEN db_published_journal.article_name_en
+                                       ELSE db_research_project.pro_name_en
+                                       END as pro_name_en'),
+                                   // วันที่สิ้นสุด/ปีที่ตีพิมพ์
+                                   DB::raw('CASE
+                                       WHEN db_utilization.journal_id IS NOT NULL THEN db_published_journal.publish_years
+                                       ELSE db_research_project.pro_end_date
+                                       END as pro_end_date'),
+                                   // ชื่อผู้ทำวิจัย/ผู้เขียนบทความ
+                                   DB::raw('CASE
+                                   WHEN db_utilization.journal_id IS NOT NULL THEN db_published_journal.users_name
+                                   ELSE db_research_project.users_name
+                                   END as users_name'),
                                    // \DB::raw('(CASE
                                    //               WHEN db_utilization.verified = "1" THEN "ตรวจสอบแล้ว"
                                    //               ELSE "รอการตรวจสอบ"
@@ -415,7 +503,7 @@ class UtilizationController extends Controller
         'Total_policy_util'      => $Total_policy_util,
         'Total_commercial_util'  => $Total_commercial_util,
         // --- SELECT FORM ---
-        'form_research'          => $query_research,
+        'form_research'          => $prep_query_researchU,
         'form_util_type'         => $query_util_type,
         'form_year_util'         => $util_year,
         // --- SELECT TABLE ---
@@ -434,6 +522,7 @@ class UtilizationController extends Controller
        $data_post = [
          "users_id"          => Auth::user()->preferred_username,
          "pro_id"            => $request->pro_id,
+         "journal_id"        => $request->journal_id,
          "util_year"         => $request->util_year - 543,
          "util_type"         => $request->util_type,
          "util_descrip"      => $request->util_descrip,
