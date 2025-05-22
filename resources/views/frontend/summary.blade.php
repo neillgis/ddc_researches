@@ -115,7 +115,7 @@
         gen("fas fa-baby", "bg-light", "ระดับฝึกหัด", $research_level['training_level']);
         gen("fas fa-child", "bg-light", "ระดับต้น", $research_level['beginner_level']);
         gen("fas fa-walking", "bg-light", "ระดับกลาง", $research_level['intermediate_level']);
-        gen("fas fa-running", "bg-light", "ระดับอาวุโส", $research_level['advanced_level']);
+        gen("fas fa-running", "bg-light", "ระดับสูง", $research_level['advanced_level']);
         ?>
     </div>
 

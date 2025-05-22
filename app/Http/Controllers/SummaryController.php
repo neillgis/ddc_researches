@@ -51,17 +51,12 @@ class SummaryController extends Controller
         "intermediate_level" => 0,
         "advanced_level" => 0,
     ];
-    // $verified_list = [
-    //   1   => 'นักวิจัยฝึกหัด',
-    //   2   => 'นักวิจัยรุ่นใหม่',
-    //   3   => 'นักวิจัยรุ่นกลาง',
-    //   4   => 'นักวิจัยอาวุโส'
-    // ];
+
     $verified_list = [
       1   => 'ระดับฝึกหัด',
       2   => 'ระดับต้น',
       3   => 'ระดับกลาง',
-      4   => 'ระดับอาวุโส'
+      4   => 'ระดับสูง'
     ];
 
     $tbheader = [];
