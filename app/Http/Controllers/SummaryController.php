@@ -102,7 +102,7 @@ class SummaryController extends Controller
             $research_level['intermediate_level']++;
           }
           else if($item->researcher_level == 4) {
-            $tbtemp['relv'][$item->idCard] = "<span class='badge text-white' style='background-color:#DAA520; font-size: 14px;'>".$verified_list[$item->researcher_level]."</span>";
+            $tbtemp['relv'][$item->idCard] = "<span class='badge text-white' style='background-color:#ee73c4; font-size: 14px;'>".$verified_list[$item->researcher_level]."</span>";
             $research_level['advanced_level']++;
           }
           else {
@@ -289,7 +289,7 @@ class SummaryController extends Controller
             $research_level['intermediate_level']++;
           }
           else if($item->researcher_level == 4) {
-            $tbtemp['relv'][$item->idCard] = "<span class='badge text-white' style='background-color:#DAA520; font-size: 14px;'>".$verified_list[$item->researcher_level]."</span>";
+            $tbtemp['relv'][$item->idCard] = "<span class='badge text-white' style='background-color:#ee73c4; font-size: 14px;'>".$verified_list[$item->researcher_level]."</span>";
             $research_level['advanced_level']++;
           }
           else {
