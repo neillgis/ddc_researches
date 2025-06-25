@@ -20,6 +20,110 @@
     </style>
   <!-- END Fonts Style : Kanit -->
 
+  <!-- ModalCard Style -->
+  <style>
+    .session-card {
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .session-card:hover {
+            border-color: #007bff;
+            box-shadow: 0 4px 12px rgba(0,123,255,0.15);
+        }
+
+        .session-header {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-bottom: 1px solid #dee2e6;
+            padding: 15px 20px;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .session-title {
+            margin: 0;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #495057;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .session-body {
+            padding: 20px;
+        }
+
+        .scopus-card .session-header {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+            border-bottom-color: #f39c12;
+        }
+
+        .scopus-card .session-title {
+            color: #d68910;
+        }
+
+        .scopus-card:hover {
+            border-color: #f39c12;
+            box-shadow: 0 4px 12px rgba(243,156,18,0.15);
+        }
+
+        .wos-card .session-header {
+            background: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%);
+            border-bottom-color: #17a2b8;
+        }
+
+        .wos-card .session-title {
+            color: #138496;
+        }
+
+        .wos-card:hover {
+            border-color: #17a2b8;
+            box-shadow: 0 4px 12px rgba(23,162,184,0.15);
+        }
+
+        .scholar-card .session-header {
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+            border-bottom-color: #28a745;
+        }
+
+        .scholar-card .session-title {
+            color: #1e7e34;
+        }
+
+        .scholar-card:hover {
+            border-color: #28a745;
+            box-shadow: 0 4px 12px rgba(40,167,69,0.15);
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: #495057;
+            margin-bottom: 8px;
+        }
+
+        .form-control {
+            border-radius: 6px;
+            border: 1px solid #ced4da;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.2rem rgba(0,123,255,0.25);
+        }
+
+        .session-icon {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+  </style>
+  <!--END ModalCard Style -->
+
   <style>
        button {
         display: inline-block;
@@ -38,7 +142,6 @@
         box-shadow: 0 3px 0 #1D9AF2;
         top: 3px;
       }
-
       .green-btn {
         background: #5dd982;
         color: black;
@@ -50,6 +153,28 @@
         box-shadow: none;
         transform: none;
       }
+
+      .btn-blue-dark {
+        background-color: #0056b3;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.2s ease, transform 0.1s ease;
+      }
+
+      .btn-blue-dark:hover {
+        background-color: #004494;
+      }
+
+      .btn-blue-dark:active {
+        background-color: #003370;
+        transform: translateY(1px);
+      }
+
   </style>
 
   <style>
@@ -231,12 +356,11 @@
                   </button>
                 @endif
 
-                <a href="{{ url('https://hr-ddc.moph.go.th/admin-personnel-infomation') }}" \
-                    target="_blank"
-                    class="btn btn-primary shadow">
-                    <i class="fas fa-user-edit"></i>
-                    &nbsp; HR
-                </a>
+                @if (($h_index_data['0']->spIndex != null || $h_index_data['0']->wosIndex != null || $h_index_data['0']->gsIndex != null) ? 'disabled' : '')
+                    <button type="button" class="btn btn-blue-dark shadow" data-toggle="modal" data-target="#modal-edit-hindex">แก้ไขข้อมูล H-index</button>
+                @else
+                    <button type="button" class="btn btn-blue-dark shadow" data-toggle="modal" data-target="#modal-edit-hindex">เพิ่มข้อมูล H-index</button>
+                @endif
 
                 @if((count($data)>0)?'disabled':'')
                     <div class="btn green-btn shadow">
@@ -253,10 +377,10 @@
 
             <div class="row">
                 <div class="col-md-6">
-                    <label for="exampleInput1"> รหัสนักวิจัยจาก NRIIS </label>
-                    <span></br>ลิงก์ไปยังเว็บไซต์ <a href="https://nriis.go.th/Login.aspx">NRIIS</a></span>
+                  <label for="exampleInput1"> รหัสนักวิจัยจาก NRIIS </label>
+                  <span></br>ลิงก์ไปยังเว็บไซต์ <a href="https://nriis.go.th/Login.aspx">NRIIS</a></span>
                     @foreach($data as $value)
-                        @if($value->orcid_id != "")
+                        @if($value->nriis_id != "")
                           <div class="border p-2" style="background-color: #e9ecef;opacity: 1; font-size: 16px;">
                             {{ $value->nriis_id }}
                           </div>
@@ -269,8 +393,8 @@
                 </div>
 
                 <div class="col-md-6">
-                    <label for="exampleInput1"> เลขประจำตัวนักวิจัยจาก ORCID ID </label>
-                    <span></br>ลิงก์ไปยังเว็บไซต์ <a href="https://orcid.org/signin">ORCID ID</a></span>
+                  <label for="exampleInput1"> เลขประจำตัวนักวิจัยจาก ORCID ID </label>
+                  <span></br>ลิงก์ไปยังเว็บไซต์ <a href="https://orcid.org/signin">ORCID ID</a></span>
                     @foreach($data as $value)
                         @if($value->orcid_id != "")
                           <div class="border p-2" style="background-color: #e9ecef;opacity: 1; font-size: 16px;">
@@ -290,6 +414,57 @@
             <!-- No Show BUTTON -->
 
           @endif
+
+            @if ((($h_index_data['0']->spIndex != null || $h_index_data['0']->wosIndex != null || $h_index_data['0']->gsIndex != null) ? 'disabled' : ''))
+                <div class="row mt-2">
+                    <div class="col-md-4">
+                        <label for="exampleInput1"> ฐานข้อมูล <br>Scopus </label>
+                        <span></br>ลิงก์ไปยังเว็บไซต์ <br><a href="https://www.scopus.com/freelookup/form/author.uri">Scopus</a></span>
+                        @foreach($h_index_data as $value)
+                            @if($value->spIndex != "")
+                            <div class="border p-2" style="background-color: #e9ecef;opacity: 1; font-size: 16px;">
+                                {{ $value->spIndex }}
+                            </div>
+                            @else
+                            <div class="border p-2" style="background-color: #e9ecef;opacity: 1; font-size: 16px;">
+                                -
+                            </div>
+                            @endif
+                        @endforeach
+                    </div>
+                    <div class="col-md-4">
+                        <label for="exampleInput1"> ฐานข้อมูล <br>Web Of Science </label>
+                        <span></br>ลิงก์ไปยังเว็บไซต์ <br><a href="https://shorturl-ddc.moph.go.th/SsVzx">Web Of Science</a></span>
+                        @foreach($h_index_data as $value)
+                            @if($value->wosIndex != "")
+                            <div class="border p-2" style="background-color: #e9ecef;opacity: 1; font-size: 16px;">
+                                {{ $value->wosIndex }}
+                            </div>
+                            @else
+                            <div class="border p-2" style="background-color: #e9ecef;opacity: 1; font-size: 16px;">
+                                -
+                            </div>
+                            @endif
+                        @endforeach
+                    </div>
+                    <div class="col-md-4">
+                        <label for="exampleInput1"> ฐานข้อมูล <br>Google Scholar </label>
+                        <span></br>ลิงก์ไปยังเว็บไซต์ <br><a href="https://scholar.google.com/">Google Scholar</a></span>
+                        @foreach($h_index_data as $value)
+                            @if($value->gsIndex != "")
+                            <div class="border p-2" style="background-color: #e9ecef;opacity: 1; font-size: 16px;">
+                                {{ $value->gsIndex }}
+                            </div>
+                            @else
+                            <div class="border p-2" style="background-color: #e9ecef;opacity: 1; font-size: 16px;">
+                                -
+                            </div>
+                            @endif
+                        @endforeach
+                    </div>
+                </div>
+            @endif
+
           </div> <!-- card-body -->
         </div>
 
@@ -368,12 +543,155 @@
   </form>
 
 
+      <!-- MODAL EDIT [modal-edit-hindex] -->
+        <div class="modal fade" id="modal-edit-hindex">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                @if (($h_index_data['0']->spIndex != null || $h_index_data['0']->wosIndex != null || $h_index_data['0']->gsIndex != null) ? 'disabled' : '')
+                    <h4 class="modal-title"><i class="fas fa-user-edit"></i><b> แก้ไขข้อมูล H-index </b></h4>
+                @else
+                    <h4 class="modal-title"><i class="fas fa-user-edit"></i><b> เพิ่มข้อมูล H-index </b></h4>
+                @endif
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <form action="{{ route('profile.h_index') }}" method="POST">
+                @csrf
+
+                <div class="modal-body">
+                  <div class="row">
+                    <div class="col-md-12">
+                        <!-- Scopus Session -->
+                            <div class="session-card scopus-card">
+                                <div class="session-header">
+                                    <h6 class="session-title">
+                                        <div class="session-icon">
+                                            <i class="fas fa-microscope"></i>
+                                        </div>
+                                        Scopus
+                                    </h6>
+                                </div>
+                                <div class="session-body">
+                                    <div class="form-group">
+                                        <label class="form-label">รหัสผู้ใช้งาน <a
+                                            href="https://www.scopus.com/freelookup/form/author.uri">
+                                                Scopus
+                                            </a>
+                                        </label>
+                                        <input type="text" class="form-control" placeholder="กรอกรหัสผู้ใช้งาน" name="spID" value="{{ $edit_profile->spID }}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Citations</label>
+                                        <input type="number" class="form-control" placeholder="จำนวน Citations" name="spCite" value="{{ $edit_profile->spCite }}">
+                                    </div>
+                                    <div class="form-group mb-0">
+                                        <label class="form-label">ค่า H-index จาก Scopus</label>
+                                        <input  type="number"
+                                                class="form-control"
+                                                placeholder="กรอกค่า H-index"
+                                                name="spIndex"
+                                                value="{{ $edit_profile->spIndex }}"
+                                                min="0" max="99"
+                                        >
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Web of Science Session -->
+                            <div class="session-card wos-card">
+                                <div class="session-header">
+                                    <h6 class="session-title">
+                                        <div class="session-icon">
+                                            <i class="fas fa-globe"></i>
+                                        </div>
+                                        Web of Science
+                                    </h6>
+                                </div>
+                                <div class="session-body">
+                                    <div class="form-group">
+                                        <label class="form-label">รหัสผู้ใช้งาน <a
+                                            href="https://shorturl-ddc.moph.go.th/SsVzx">
+                                                Web of science
+                                            </a>
+                                        </label>
+                                        <input type="text" class="form-control" placeholder="กรอกรหัสผู้ใช้งาน" name="wosID" value="{{ $edit_profile->wosID }}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Citations</label>
+                                        <input type="number" class="form-control" placeholder="จำนวน Citations" name="wosCite" value="{{ $edit_profile->wosCite }}">
+                                    </div>
+                                    <div class="form-group mb-0">
+                                        <label class="form-label">ค่า H-index จาก Web of Science</label>
+                                        <input  type="number"
+                                                class="form-control"
+                                                placeholder="กรอกค่า H-index"
+                                                name="wosIndex"
+                                                value="{{ $edit_profile->wosIndex }}"
+                                                min="0" max="99"
+                                        >
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Google Scholar Session -->
+                            <div class="session-card scholar-card">
+                                <div class="session-header">
+                                    <h6 class="session-title">
+                                        <div class="session-icon">
+                                            <i class="fas fa-graduation-cap"></i>
+                                        </div>
+                                        Google Scholar
+                                    </h6>
+                                </div>
+                                <div class="session-body">
+                                    <div class="form-group">
+                                        <label class="form-label">รหัสผู้ใช้งาน <a
+                                            href="https://scholar.google.com/">
+                                                Google Scholar
+                                            </a>
+                                        </label>
+                                        <input type="text" class="form-control" placeholder="กรอกรหัสผู้ใช้งาน" name="gsID" value="{{ $edit_profile->gsID }}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Citations</label>
+                                        <input type="number" class="form-control" placeholder="จำนวน Citations" name="gsCite" value="{{ $edit_profile->gsCite }}">
+                                    </div>
+                                    <div class="form-group mb-0">
+                                        <label class="form-label">ค่า H-index จาก Google Scholar</label>
+                                        <input  type="number"
+                                                class="form-control"
+                                                placeholder="กรอกค่า H-index"
+                                                name="gsIndex"
+                                                value="{{ $edit_profile->gsIndex }}"
+                                                min="0" max="99"
+                                        >
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                  </div>
+                  <br>
+                </div>
+                <div class="modal-footer justify-content-between">
+                  <button type="button" class="btn btn-default" data-dismiss="modal"> Close </button>
+                  <button type="submit" class="btn btn-warning float-right" value="บันทึกข้อมูล">
+                    <i class="fas fa-save"></i> &nbsp;บันทึกข้อมูล
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      <!-- END MODAL [modal-edit-hindex] -->
+
       <!-- MODAL EDIT [modal-edit-profile] -->
         <div class="modal fade" id="modal-edit-profile">
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
-                <h4 class="modal-title"><i class="fas fa-user-edit"></i><b> แก้ไขข้อมูลนักวิจัย </b></h4>
+                <h4 class="modal-title"><i class="fas fa-user-edit"></i><b> เพิ่มข้อมูล H-index </b></h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>

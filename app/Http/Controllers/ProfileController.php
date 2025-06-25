@@ -16,8 +16,13 @@ class ProfileController extends Controller
     public function index(){
 
       $data = DB::table('users')
-            ->select('id', 'idCard', 'nriis_id', 'orcid_id')
+            ->select('id', 'idCard', 'nriis_id', 'orcid_id', 'spIndex', 'wosIndex', 'gsIndex')
             ->selectRaw("COALESCE(researcher_level, '0') as researcher_level")
+            ->where('idCard', Auth::user()->preferred_username)
+            ->get();
+
+      $h_index = DB::table('users')
+            ->select('id', 'idCard', 'spID', 'spCite', 'spIndex', 'wosID', 'wosCite', 'wosIndex', 'gsID', 'gsCite', 'gsIndex')
             ->where('idCard', Auth::user()->preferred_username)
             ->get();
 
@@ -55,6 +60,7 @@ class ProfileController extends Controller
            'data'          => $data,
            'edit_profile'  => $edit_profile,
            'researcherLevel' => $researcherLevel,
+           'h_index_data'  => $h_index,
         ]);
     }
 
@@ -66,7 +72,6 @@ class ProfileController extends Controller
                                         'nriis_id'  =>  $request->nriis_id,
                                         'orcid_id'  =>  $request->orcid_id
                                     ]);
-                  // dd($update_profile);
 
       if($update_profile){
           session()->put('messages', 'okkkkkayyyyy');
@@ -76,6 +81,29 @@ class ProfileController extends Controller
       }
     }
 
+    public function save_update_hindex(Request $request){
+
+      $update_profile = DB::table('users')
+                            ->where('idCard', Auth::user()->preferred_username)
+                            ->update([
+                                        'spID'   =>  $request->spID,
+                                        'spCite'   =>  $request->spCite,
+                                        'spIndex'   =>  $request->spIndex,
+                                        'wosID'   =>  $request->wosID,
+                                        'wosCite'   =>  $request->wosCite,
+                                        'wosIndex'  =>  $request->wosIndex,
+                                        'gsID'   =>  $request->gsID,
+                                        'gsCite'   =>  $request->gsCite,
+                                        'gsIndex'   =>  $request->gsIndex
+                                    ]);
+
+      if($update_profile){
+          session()->put('messages', 'okkkkkayyyyy');
+          return redirect()->route('page.profile');
+      }else {
+        return redirect()->back()->with('swl_err', 'บันทึกไม่สำเร็จ');
+      }
+    }
 
 
     //  -- INSERT  --

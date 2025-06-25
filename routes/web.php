@@ -38,6 +38,8 @@ Route::group(['middleware' => 'keycloak-web'], function () {
     Route::post('/profile_insert','ProfileController@insert')->name('profile.insert');
     //  -- UPDATE PROFILE --
     Route::post('profile/update', 'ProfileController@save_update_profile')->name('profile.save');
+    // -- UPDATE / SAVE H-INDEX
+    Route::post('profile/H-index', 'ProfileController@save_update_hindex')->name('profile.h_index');
     // update ajax
     Route::get('profile/chk_update/{obj?}', 'ProfileController@chk_update')->name('profile.chk_update');
 
@@ -145,6 +147,8 @@ Route::group(['middleware' => 'keycloak-web'], function () {
     Route::get('export_journal', 'ExportController@export_journal')->name('export_journal');
 
     Route::get('export_util', 'ExportController@export_util')->name('export_util');
+
+    Route::get('export_total', 'ExportController@export_total')->name('export_total');
 
 
     // Users-ManageUser-Role for "ADMIN"
