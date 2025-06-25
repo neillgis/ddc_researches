@@ -220,6 +220,7 @@ class SummaryController extends Controller
       $tbheader[] = "วารสาร (ผู้นิพนธ์ร่วม)";
       $tbheader[] = "การนำไปใช้ประโยชน์";
       $tbheader[] = "ระดับนักวิจัย";
+      $tbheader[] = "H-index";
       $tbheader[] = "ผู้ตรวจสอบ";
       $tbheader[] = "Actions";
 
@@ -248,6 +249,7 @@ class SummaryController extends Controller
             box($tbtemp,'journal_q1q3',$cid),
             box($tbtemp,'journal_co-author',$cid),
             box($tbtemp,'util',$cid),
+            box($tbtemp,'hindex',$cid),
             empty($tbtemp['relv'][$cid])?"<span class='badge bg-danger'> No results </span>":$tbtemp['relv'][$cid],
             empty($tbtemp['data_auditor'][$cid])?"<span class='badge bg-danger'> No results </span>":$tbtemp['data_auditor'][$cid],
             $btn
@@ -398,6 +400,7 @@ class SummaryController extends Controller
       $tbheader[] = "วารสาร (Q1-Q3)";
       $tbheader[] = "วารสาร (ผู้นิพนธ์ร่วม)";
       $tbheader[] = "การนำไปใช้ประโยชน์";
+      $tbheader[] = "H-index";
       $tbheader[] = "ระดับนักวิจัย";
       foreach($data_users as $item) {
         $cid = $item->idCard;
@@ -418,6 +421,7 @@ class SummaryController extends Controller
             box($tbtemp,'journal_q1q3',$cid),
             box($tbtemp,'journal_co-author',$cid),
             box($tbtemp,'util',$cid),
+            box($tbtemp,'hindex',$cid),
             empty($tbtemp['relv'][$cid])?"<span class='badge bg-danger'> No results </span>":$tbtemp['relv'][$cid],
           ];
           $tbbody[] = $temp;
@@ -884,6 +888,7 @@ class SummaryController extends Controller
                       ->update([
                                 'researcher_level'  => $request->researcher_level,
                                 'data_auditor'      => $request->data_auditor,
+                                'spIndex'           => $request->spIndex,
                                 'updated_at'        => date('Y-m-d H:i:s')
                               ]);
 

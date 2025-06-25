@@ -192,6 +192,10 @@
                       @endforeach
                     </select>
                   </div>
+                  <div class="col-md-12 mt-1">
+                    <label for="h-index">ค่า H-index</label>
+                    <input type="number" class="form-control" name="spIndex" id="spIndex" placeholder="กรุณากรอกค่า H-index" min="0" max="99">
+                  </div>
                 </div>
                 <br>
               </div>
@@ -267,6 +271,7 @@
         $("#fullname").text(value['title']+value['fname']+" "+value['lname']);
         $("#idCard").val(value['idCard']);
         $("#researcher_level").val(value['researcher_level']);
+        $("#spIndex").val(value['spIndex']);
         //-------------------------------------
         let myModal = new bootstrap.Modal(document.getElementById('ModalAuditor'));
         myModal.show();
