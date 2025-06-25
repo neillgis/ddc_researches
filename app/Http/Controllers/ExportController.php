@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\export_research;
 use App\export_journal;
 use App\export_util;
+use App\export_total;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ExportController extends Controller
@@ -36,6 +37,11 @@ class ExportController extends Controller
     // /**
     // * @return \Illuminate\Support\Collection
     // */
+
+    public function export_total()
+    {
+        return Excel::download(new export_total, 'researchtotal.xlsx');
+    }
 
 
 

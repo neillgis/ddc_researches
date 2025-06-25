@@ -102,6 +102,12 @@
                   <p> นำไปใช้ประโยชน์ </p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{ route('export_total') }}" >
+                  <i class="far fa-circle nav-icon text-warning"></i>
+                  <p> สรุปข้อมูลนักวิจัย </p>
+                </a>
+              </li>
             </ul>
           </li>
           @endcan
@@ -124,12 +130,6 @@
                 <a class="nav-link {{ Active::check('faq') }} " href="{{ route('page.faq') }}">
                   <i class="far fa-circle nav-icon text-success"></i>
                   <p> คำถามที่พบบ่อย (FAQ) </p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="https://drive.google.com/file/d/1w5bQCErPud_6YIbB6KpVBSJmn5B67SdU/view" target="_blank">
-                  <i class="far fa-circle nav-icon text-info"></i>
-                  <p> ข้อมูลทั่วไป </p>
                 </a>
               </li>
             </ul>
