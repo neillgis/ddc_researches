@@ -434,7 +434,7 @@
                     </div>
                     <div class="col-md-4">
                         <label for="exampleInput1"> ฐานข้อมูล <br>Web Of Science </label>
-                        <span></br>ลิงก์ไปยังเว็บไซต์ <br><a href="https://shorturl-ddc.moph.go.th/SsVzx">Web Of Science</a></span>
+                        <span></br>ลิงก์ไปยังเว็บไซต์ <br><a href="https://shorturl-ddc.moph.go.th/gTUFG">Web Of Science</a></span>
                         @foreach($h_index_data as $value)
                             @if($value->wosIndex != "")
                             <div class="border p-2" style="background-color: #e9ecef;opacity: 1; font-size: 16px;">
@@ -612,7 +612,7 @@
                                 <div class="session-body">
                                     <div class="form-group">
                                         <label class="form-label">รหัสผู้ใช้งาน <a
-                                            href="https://shorturl-ddc.moph.go.th/SsVzx">
+                                            href="https://shorturl-ddc.moph.go.th/gTUFG">
                                                 Web of science
                                             </a>
                                         </label>
