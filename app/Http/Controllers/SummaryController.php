@@ -118,6 +118,8 @@ class SummaryController extends Controller
             }
 
           }
+
+          $tbtemp['hindex'][$item->idCard] = $item->spIndex;
           //-------------------------------------------------
 
       }
