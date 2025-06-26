@@ -219,8 +219,8 @@ class SummaryController extends Controller
       $tbheader[] = "วารสาร (Q1-Q3)";
       $tbheader[] = "วารสาร (ผู้นิพนธ์ร่วม)";
       $tbheader[] = "การนำไปใช้ประโยชน์";
-      $tbheader[] = "ระดับนักวิจัย";
       $tbheader[] = "H-index";
+      $tbheader[] = "ระดับนักวิจัย";
       $tbheader[] = "ผู้ตรวจสอบ";
       $tbheader[] = "Actions";
 
