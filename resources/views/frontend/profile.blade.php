@@ -342,6 +342,11 @@
                     <i class="fas fa-user-edit"></i>
                     &nbsp;แก้ไขข้อมูลนักวิจัย
                   </button>
+                  @if (($h_index_data['0']->spIndex != null || $h_index_data['0']->wosIndex != null || $h_index_data['0']->gsIndex != null) ? 'disabled' : '')
+                    <button type="button" class="btn btn-blue-dark shadow" data-toggle="modal" data-target="#modal-edit-hindex">แก้ไขข้อมูล H-index</button>
+                  @else
+                    <button type="button" class="btn btn-blue-dark shadow" data-toggle="modal" data-target="#modal-edit-hindex">เพิ่มข้อมูล H-index</button>
+                  @endif
                 @else
                   <button type="button" class="btn btn-info shadow" data-toggle="modal" data-target="#modal-default"
                     <?=(count($data)>0)?'disabled':''?>> <!-- Check Value in เพิ่มข้อมูลนักวิจัย if>0 = disabled  -->
@@ -354,12 +359,6 @@
                     <i class="fas fa-check"></i>
                     &nbsp;หากไม่มีข้อมูลเพิ่ม กรุณากดยืนยัน
                   </button>
-                @endif
-
-                @if (($h_index_data['0']->spIndex != null || $h_index_data['0']->wosIndex != null || $h_index_data['0']->gsIndex != null) ? 'disabled' : '')
-                    <button type="button" class="btn btn-blue-dark shadow" data-toggle="modal" data-target="#modal-edit-hindex">แก้ไขข้อมูล H-index</button>
-                @else
-                    <button type="button" class="btn btn-blue-dark shadow" data-toggle="modal" data-target="#modal-edit-hindex">เพิ่มข้อมูล H-index</button>
                 @endif
 
                 @if((count($data)>0)?'disabled':'')
@@ -408,13 +407,6 @@
                     @endforeach
                 </div>
             </div>
-
-          @else
-
-            <!-- No Show BUTTON -->
-
-          @endif
-
             @if ((($h_index_data['0']->spIndex != null || $h_index_data['0']->wosIndex != null || $h_index_data['0']->gsIndex != null) ? 'disabled' : ''))
                 <div class="row mt-2">
                     <div class="col-md-4">
@@ -464,7 +456,11 @@
                     </div>
                 </div>
             @endif
+          @else
 
+            <!-- No Show BUTTON -->
+
+          @endif
           </div> <!-- card-body -->
         </div>
 
@@ -544,24 +540,25 @@
 
 
       <!-- MODAL EDIT [modal-edit-hindex] -->
+      @if ((count($h_index_data)>0)?'disabled':'')
         <div class="modal fade" id="modal-edit-hindex">
-          <div class="modal-dialog">
+            <div class="modal-dialog">
             <div class="modal-content">
-              <div class="modal-header">
+                <div class="modal-header">
                 @if (($h_index_data['0']->spIndex != null || $h_index_data['0']->wosIndex != null || $h_index_data['0']->gsIndex != null) ? 'disabled' : '')
                     <h4 class="modal-title"><i class="fas fa-user-edit"></i><b> แก้ไขข้อมูล H-index </b></h4>
                 @else
                     <h4 class="modal-title"><i class="fas fa-user-edit"></i><b> เพิ่มข้อมูล H-index </b></h4>
                 @endif
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
+                    <span aria-hidden="true">&times;</span>
                 </button>
-              </div>
-              <form action="{{ route('profile.h_index') }}" method="POST">
+                </div>
+                <form action="{{ route('profile.h_index') }}" method="POST">
                 @csrf
 
                 <div class="modal-body">
-                  <div class="row">
+                    <div class="row">
                     <div class="col-md-12">
                         <!-- Scopus Session -->
                             <div class="session-card scopus-card">
@@ -671,19 +668,20 @@
                                 </div>
                             </div>
                     </div>
-                  </div>
-                  <br>
+                    </div>
+                    <br>
                 </div>
                 <div class="modal-footer justify-content-between">
-                  <button type="button" class="btn btn-default" data-dismiss="modal"> Close </button>
-                  <button type="submit" class="btn btn-warning float-right" value="บันทึกข้อมูล">
+                    <button type="button" class="btn btn-default" data-dismiss="modal"> Close </button>
+                    <button type="submit" class="btn btn-warning float-right" value="บันทึกข้อมูล">
                     <i class="fas fa-save"></i> &nbsp;บันทึกข้อมูล
-                  </button>
+                    </button>
                 </div>
-              </form>
+                </form>
             </div>
-          </div>
+            </div>
         </div>
+      @endif
       <!-- END MODAL [modal-edit-hindex] -->
 
       <!-- MODAL EDIT [modal-edit-profile] -->
