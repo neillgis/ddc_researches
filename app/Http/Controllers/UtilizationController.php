@@ -396,6 +396,7 @@ class UtilizationController extends Controller
                                 END as source_type')
                         )
                         ->whereNull('db_utilization.deleted_at')
+                        ->groupBy('db_utilization.id')
                         ->orderBy('db_utilization.id', 'DESC')
                         ->get();
 
@@ -444,6 +445,7 @@ class UtilizationController extends Controller
                         ->where('users.dept_id', Session::get('dep_id'))
                         // ->whereNull('db_research_project.deleted_at')
                         ->whereNull('db_utilization.deleted_at')
+                        ->groupBy('db_utilization.id')
                         ->orderBy('id', 'DESC')
                         ->get();
 
@@ -486,6 +488,7 @@ class UtilizationController extends Controller
                         ->where('db_utilization.users_id', Auth::user()->preferred_username)
                         // ->whereNull('db_research_project.deleted_at')
                         ->whereNull('db_utilization.deleted_at')
+                        ->groupBy('db_utilization.id')
                         ->orderBy('id', 'DESC')
                         ->get();
     }

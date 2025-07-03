@@ -201,6 +201,7 @@ class JournalController extends Controller
                          )
                 ->where('pro_id', null)
                 ->whereNull('deleted_at')
+                ->groupby('id')
                 // ->whereNotIn('db_published_journal.verified', ['9'])
                 ->orderby('id', 'DESC')
                 ->limit(2000)
