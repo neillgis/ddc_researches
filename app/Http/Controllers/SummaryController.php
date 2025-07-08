@@ -235,9 +235,9 @@ class SummaryController extends Controller
 
 
         if( $status==1 ) {
-            $addrow = (!empty($tbtemp['research'][$cid]) || !empty($tbtemp['journal_verify'][$cid]) || !empty($tbtemp['journal_co-author'][$cid]));
+          $addrow = (!empty($tbtemp['research'][$cid]) || !empty($tbtemp['journal_verify'][$cid]) || !empty($tbtemp['journal_co-author'][$cid]) || !empty($tbtemp['hindex'][$cid]));
         }else{
-            $addrow = (empty($tbtemp['research'][$cid]) && empty($tbtemp['journal_verify'][$cid]) && empty($tbtemp['journal_co-author'][$cid]));
+          $addrow = (empty($tbtemp['research'][$cid]) && empty($tbtemp['journal_verify'][$cid]) && empty($tbtemp['journal_co-author'][$cid]) && empty($tbtemp['hindex'][$cid]));
         }
         if( $addrow ) {
           $temp = [
@@ -408,9 +408,9 @@ class SummaryController extends Controller
         $cid = $item->idCard;
 
         if( $status==1 ) {
-            $addrow = (!empty($tbtemp['research'][$cid]) || !empty($tbtemp['journal_verify'][$cid]) || !empty($tbtemp['journal_co-author'][$cid]));
+          $addrow = (!empty($tbtemp['research'][$cid]) || !empty($tbtemp['journal_verify'][$cid]) || !empty($tbtemp['journal_co-author'][$cid]) || !empty($tbtemp['hindex'][$cid]));
         }else{
-            $addrow = (empty($tbtemp['research'][$cid]) && empty($tbtemp['journal_verify'][$cid]) && empty($tbtemp['journal_co-author'][$cid]));
+          $addrow = (empty($tbtemp['research'][$cid]) && empty($tbtemp['journal_verify'][$cid]) && empty($tbtemp['journal_co-author'][$cid]) && empty($tbtemp['hindex'][$cid]));
         }
         if( $addrow ) {
           $temp = [
