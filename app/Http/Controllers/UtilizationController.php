@@ -563,52 +563,71 @@ class UtilizationController extends Controller
 
       $edit = util::where('id' , $request->id)->first();
 
-      $edit_1 = DB::table('db_utilization')
-                  ->join('db_research_project', 'db_utilization.pro_id', '=', 'db_research_project.id')
-                  ->select('db_utilization.id',
-                           'db_utilization.util_type',
-                           'db_utilization.files',
-                           'db_utilization.verified',
-                           'db_utilization.util_descrip',
-                           'db_utilization.util_year',
-                           'db_research_project.pro_name_th',
-                           'db_research_project.pro_name_en',
-                           'db_research_project.users_id',
-                           'db_research_project.users_name',
-                          )
-                  ->where ('db_utilization.id' , $request->id)
-                  ->first();
+      $query_edit =   DB::table('db_utilization')
+                        ->leftJoin('db_research_project', 'db_utilization.pro_id', '=', 'db_research_project.id')
+                        ->leftJoin('db_published_journal', 'db_utilization.journal_id', '=', 'db_published_journal.id')
+                        ->leftJoin('users', 'db_utilization.users_id', '=', 'users.idCard')
+                        ->select(
+                            'db_utilization.id',
+                            'db_utilization.users_id',
+                            'db_utilization.util_type',
+                            'db_utilization.files',
+                            'db_utilization.verified',
+                            'db_utilization.status',
+                            'db_utilization.util_year',
+                            // ชื่อภาษาไทย
+                            DB::raw('CASE
+                                WHEN db_utilization.journal_id IS NOT NULL THEN db_published_journal.article_name_th
+                                ELSE db_research_project.pro_name_th
+                                END as pro_name_th'),
+                            // ชื่อภาษาอังกฤษ
+                            DB::raw('CASE
+                                WHEN db_utilization.journal_id IS NOT NULL THEN db_published_journal.article_name_en
+                                ELSE db_research_project.pro_name_en
+                                END as pro_name_en'),
+                            // ชื่อผู้ทำวิจัย/ผู้เขียนบทความ
+                            DB::raw('CASE
+                            WHEN db_utilization.journal_id IS NOT NULL THEN db_published_journal.users_name
+                            ELSE db_research_project.users_name
+                            END as users_name'),
+                            'users.deptName',
+                        )
+                        ->where ('db_utilization.id' , $request->id)
+                        ->groupby('id')
+                        ->orderBy('db_utilization.id', 'DESC')
+                        ->first();
 
 
-        $edit_2 = ['เชิงนโยบาย'       => 'เชิงนโยบาย',
-                    'เชิงวิชาการ'        => 'เชิงวิชาการ',
-                    'เชิงสังคม/ชุมชน'    => 'เชิงสังคม/ชุมชน',
-                    'เชิงพาณิชย์'        => 'เชิงพาณิชย์'
-                    ];
+      $edit_2 = ['เชิงนโยบาย'       => 'เชิงนโยบาย',
+                 'เชิงวิชาการ'        => 'เชิงวิชาการ',
+                 'เชิงสังคม/ชุมชน'    => 'เชิงสังคม/ชุมชน',
+                 'เชิงพาณิชย์'        => 'เชิงพาณิชย์'
+                 ];
 
-        $edit_util_year = [];
+      $edit_util_year = [];
 
-        // Create a DateTime object for the current date/time
-        $currentDate = new DateTime();
+      // Create a DateTime object for the current date/time
+      $currentDate = new DateTime();
 
-        // Get the current Gregorian year
-        $currentGregorianYear = (int)$currentDate->format('Y');
+      // Get the current Gregorian year
+      $currentGregorianYear = (int)$currentDate->format('Y');
 
-        // Convert to Thai year by adding 543
-        $currentThaiYear = $currentGregorianYear + 543;
+      // Convert to Thai year by adding 543
+      $currentThaiYear = $currentGregorianYear + 543;
 
-        // Define a range: for example, 10 years back to 10 years ahead
-        $startThaiYear = $currentThaiYear - 30;
-        $endThaiYear   = $currentThaiYear;
+      // Define a range: for example, 10 years back to 10 years ahead
+      $startThaiYear = $currentThaiYear - 30;
+      $endThaiYear   = $currentThaiYear;
 
-        for ($year = $startThaiYear; $year <= $endThaiYear; $year++){
+      for ($year = $startThaiYear; $year <= $endThaiYear; $year++){
         $edit_util_year[] = $year;
-        };
+      };
+
 
      return view('frontend.util_edit',
        [
         'edit_util'       => $edit,
-        'edit_data'       => $edit_1,
+        'edit_data'       => $query_edit,
         'edit_utiltype'   => $edit_2,
         'edit_util_year'  => $edit_util_year
        ]);
