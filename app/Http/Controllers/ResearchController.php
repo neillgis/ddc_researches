@@ -92,8 +92,8 @@ class ResearchController extends Controller
                   ->whereNull('deleted_at')
                   ->whereIn('users_id', $users_active)
                   ->orderBy('id','DESC')
-                  ->limit(2200)
-                  ->get();
+                  ->paginate(3000);
+                //   ->get();
 
     if(Gate::allows('admin') || Gate::allows('manager')){
       $query = DB::table('db_research_project')
